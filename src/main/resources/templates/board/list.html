@@ -2,19 +2,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default_layout}">
+      layout:decorate="layout/default_layout">
 
 <th:block layout:fagment="head" th:include="@{/common/head}">
 </th:block>
 
 <div layout:fragment="content" class="content">
+    <input type="hidden" id="pageNo" th:value="${pageNo}" />
     <div class="container">
         <h1 class="page-header">게시판 목록</h1>
         <br>
         <div class="input-group">
-            <input type="text" id="searchVal" class="form-control" placeholder="Search">
+            <input type="text" id="searchVal" onkeyup="enterkey()" class="form-control" placeholder="Search" th:value="${searchVal}">
             <div class="input-group-btn">
-                <button class="btn btn-default" type="button">
+                <button class="btn btn-default" type="button" onclick="search()">
                     <i class="glyphicon glyphicon-search"></i>
                 </button>
             </div>
@@ -24,63 +25,66 @@
         <form>
             <table class="table table-hover">
                 <colgroup>
-                    <col width="2%" />
-                    <col width="5%" />
-                    <col width="20%" />
-                    <col width="5%" />
-                    <col width="5%" />
-                    <col width="5%" />
-                    <col width="5%" />
+                    <col width="10%" />
+                    <col width="50%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
                 </colgroup>
                 <thead>
                 <tr>
-                    <th>
-                        <label class="checkbox-inline">
-                            <input type="checkbox" id="allCheckBox" class="chk">
-                        </label>
-                    </th>
                     <th>번호</th>
                     <th>제목</th>
                     <th>작성자</th>
                     <th>날짜</th>
                     <th>조회수</th>
-                    <th>파일유무</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="chk" name="cchk" value="">
-                        </label>
-                    <td></td>
-                    <td><a href=""></a></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                    <tr th:if="${totalPage == 0}">
+                        <td colspan="5" style="text-align:center">조회된 리스트가 없습니다.</td>
+                    </tr>
+
+                    <tr th:each="list, index : ${board}">
+                        <td th:text="${resultDataTotal - (size * number) - index.index}"></td>
+                        <td><a th:text="${list.boardTitle}" th:href="@{/board/detail/} + ${list.boardIdx}"></a></td>
+                        <td th:text="${list.regId}"></td>
+                        <td th:text="${#temporals.format(list.regDate, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${list.viewCount}"></td>
+                    </tr>
                 </tbody>
             </table>
 
-            <!-- ADMIN 권한일경우에만 글쓰기 권한있음 -->
             <div class="text-right">
-                <a href='javascript:boardDelete();' class="btn btn-danger">글삭제</a>
-                <a href="/write" class="btn btn-primary">글쓰기</a>
+                <a href="/board/edit" class="btn btn-primary">글쓰기</a>
             </div>
 
-            <div class="text-center">
+            <div th:if="${totalPage != 0}" class="text-center">
                 <ul class="pagination">
-                    <li><a href="#">prev</a></li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">next</a></li>
+                    <li th:each="page : ${#numbers.sequence(0, totalPage - 1)}">
+                        <a th:classappend="${pageStat.index == pageNo} ? on" th:href="@{/(page=${pageStat.index}, searchVal=${searchVal})}" th:text="${pageStat.index + 1}"></a>
+                    </li>
                 </ul>
             </div>
         </form>
     </div>
 </div>
 </html>
+
+<script th:inline="javascript">
+
+    //검색기능
+    function search(){
+        let searchVal = $.trim($("#searchVal").val());
+        location.href="/?searchVal="+searchVal;
+    }
+
+    //엔터키 클릭시 검색
+    function enterkey() {
+        if (window.event.keyCode == 13) {
+            // 엔터키가 눌렸을 때
+            search()
+        }
+    }
+
+</script>

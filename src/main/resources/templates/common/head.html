@@ -1,4 +1,4 @@
-<head>
+<head xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
     <meta charset="UTF-8">
     <title>게시판 예제</title>
     <!-- 합쳐지고 최소화된 최신 CSS -->
@@ -8,6 +8,12 @@
     <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://code.jquery.com/jquery-migrate-1.4.1.min.js"></script>
+
+    <!-- Content Page의 CSS fragment 삽입 -->
+    <th:block layout:fragment="css"></th:block>
+
+    <!-- Content Page의 script fragment 삽입 -->
+    <th:block layout:fragment="script"></th:block>
     <style>
         /* paginate */
         .pagination a.on {color:#fff;font-weight:600;background:#a0afbf;}

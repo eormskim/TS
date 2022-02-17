@@ -2,37 +2,43 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default_layout}">
+      layout:decorate="layout/default_layout">
 
 <th:block layout:fagment="head" th:include="@{/common/head}">
 </th:block>
 
 <div layout:fragment="content" class="content">
+    <input type="hidden" id="boardIdx" th:value="${board.boardIdx}" />
+    <input type="hidden" id="regDate" th:value="${board.regDate}" />
     <article>
         <div class="container" role="main">
             <h2>게시판 상세</h2>
             <form name="form" id="form" role="form" method="post" action="${pageContext.request.contextPath}/board/saveBoard">
                 <div class="mb-3">
                     <label for="boardTitle">제목</label>
-                    <input type="text" class="form-control" id="boardTitle" name="boardTitle" placeholder="제목을 입력해 주세요" value="" >
+                    <input type="text" class="form-control" id="boardTitle" name="boardTitle" placeholder="제목을 입력해 주세요" th:value="${board.boardTitle}" >
                 </div>
 
                 <div class="mb-3">
                     <label for="regId">작성자</label>
-                    <input type="text" class="form-control" id="regId" name="regId"  value="" readonly>
+                    <input type="text" class="form-control" id="regId" name="regId"  th:value="${board.regId}" readonly>
                 </div>
 
+                <div class="mb-3">
+                    <label for="password">비밀번호</label>
+                    <input type="password" class="form-control" id="password" name="password"  value="">
+                </div>
 
                 <div class="mb-3">
                     <label for="boardContent">내용</label>
-                    <textarea class="form-control" rows="5" id="boardContent" name="boardContent" placeholder="내용을 입력해 주세요"></textarea>
+                    <textarea class="form-control" rows="5" id="boardContent" name="boardContent" placeholder="내용을 입력해 주세요" th:text="${board.boardContent}"></textarea>
                 </div>
 
             </form>
 
             <br>
             <div>
-                <button onclick="registerAction()" type="button" class="btn btn-sm btn-primary" id="btnSave">수정</button>
+                <button onclick="boardUpdate()" type="button" class="btn btn-sm btn-primary" id="btnSave">수정</button>
                 <button onclick="boardDelete()" type="button" class="btn btn-sm btn-danger" >삭제</button>
                 <button onclick="location.href='/'" type="button" class="btn btn-sm btn-primary" id="btnList">목록</button>
             </div>
@@ -40,3 +46,96 @@
     </article>
 </div>
 </html>
+
+<script th:inline="javascript">
+
+    //수정 버튼
+    function boardUpdate(){
+
+        let params = {
+            boardTitle : $.trim($("#boardTitle").val())
+            ,boardContent : $.trim($("#boardContent").val())
+            ,regId : $("#regId").val()
+            ,password : $("#password").val()
+            ,boardIdx : $("#boardIdx").val()
+            ,delYn : "N"
+            ,regDate : $("#regDate").val()
+        }
+
+        console.log(params);
+
+        if(params.boardTitle == ""){
+            alert("제목을 입력해주세요.");
+            $("#boardTitle").focus();
+            return false;
+        }else if(params.boardContent == ""){
+            alert("내용을 입력해주세요.");
+            $("#boardContent").focus();
+            return false;
+        }else if(params.password == ""){
+            alert("비밀번호를 입력해주세요.");
+            $("#password").focus();
+            return false;
+        }
+
+
+        $.ajax({
+            type : 'POST'
+            ,url : "/board/update"
+            ,dataType : 'json'
+            ,data : JSON.stringify(params)
+            ,contentType: 'application/json'
+            ,success : function(result) {
+                console.log(result);
+                if(result == 0){
+                    alert("비밀번호가 다릅니다.");
+                    $("#password").focus();
+                }else{
+                    alert("글 수정완료");
+                    location.href= "/";
+                }
+            },
+            error: function(request, status, error) {
+
+            }
+        })
+    }
+    //게시판 삭제하기
+    function boardDelete(){
+        let params = {
+            boardIdx : $("#boardIdx").val()
+           ,password : $("#password").val()
+
+        }
+        console.log(params);
+
+        if(params.password == ""){
+            alert("비밀번호를 입력해주세요.");
+            $("#password").focus();
+            return false;
+        }
+
+        let confirmAlert = confirm('정말로 삭제하시겠습니까?');
+        if(confirmAlert){
+            $.ajax({
+                type : 'POST'
+                ,url : "/board/delete"
+                ,dataType : 'json'
+                ,data : JSON.stringify(params)
+                ,contentType: 'application/json'
+                ,success : function(result) {
+                    if(result == 0){
+                        alert("비밀번호가 다릅니다.");
+                        $("#password").focus();
+                    }else {
+                        alert("해당글이 삭제되었습니다.");
+                        location.href = "/";
+                    }
+                },
+                error: function(request, status, error) {
+
+                }
+            })
+        }
+    }
+</script>
