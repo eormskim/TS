@@ -11,6 +11,9 @@
     <input type="hidden" id="pageNo" th:value="${pageNo}" />
     <div class="container">
         <h1 class="page-header">게시판 목록</h1>
+        <div class="text-right">
+            <a href="/ts" class="btn btn-primary">TS 페이지</a>
+        </div>
         <br>
         <div class="input-group">
             <input type="text" id="searchVal" onkeyup="enterkey()" class="form-control" placeholder="Search" th:value="${searchVal}">

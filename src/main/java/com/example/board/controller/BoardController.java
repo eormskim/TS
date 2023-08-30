@@ -98,4 +98,9 @@ public class BoardController {
         boardService.saveBoard(board);
         return board;
     }
+
+    @GetMapping("/ts")
+    public String tsPage(){
+        return "ts/test";
+    }
 }
