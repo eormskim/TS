@@ -64,13 +64,17 @@ public final class CSVWriteFunction extends FunctionN {
     /**
      * Sets delimiter options.
      *
-     * @param csv             the CSV utility instance
-     * @param fieldSeparator  the field separator
-     * @param fieldDelimiter  the field delimiter
-     * @param escapeCharacter the escape character
+     * @param csv
+     *            the CSV utility instance
+     * @param fieldSeparator
+     *            the field separator
+     * @param fieldDelimiter
+     *            the field delimiter
+     * @param escapeCharacter
+     *            the escape character
      */
     public static void setCsvDelimiterEscape(Csv csv, String fieldSeparator, String fieldDelimiter,
-                                             String escapeCharacter) {
+            String escapeCharacter) {
         if (fieldSeparator != null) {
             csv.setFieldSeparatorWrite(fieldSeparator);
             if (!fieldSeparator.isEmpty()) {
@@ -110,12 +114,12 @@ public final class CSVWriteFunction extends FunctionN {
             return false;
         }
         switch (visitor.getType()) {
-            case ExpressionVisitor.DETERMINISTIC:
-            case ExpressionVisitor.QUERY_COMPARABLE:
-            case ExpressionVisitor.READONLY:
-                return false;
-            default:
-                return true;
+        case ExpressionVisitor.DETERMINISTIC:
+        case ExpressionVisitor.QUERY_COMPARABLE:
+        case ExpressionVisitor.READONLY:
+            return false;
+        default:
+            return true;
         }
     }
 

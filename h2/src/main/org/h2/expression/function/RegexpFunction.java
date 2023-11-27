@@ -59,67 +59,67 @@ public final class RegexpFunction extends FunctionN {
         Value v2 = args[1].getValue(session);
         int length = args.length;
         switch (function) {
-            case REGEXP_LIKE: {
-                Value v3 = length >= 3 ? args[2].getValue(session) : null;
-                if (v1 == ValueNull.INSTANCE || v2 == ValueNull.INSTANCE || v3 == ValueNull.INSTANCE) {
-                    return ValueNull.INSTANCE;
-                }
-                String regexp = v2.getString();
-                String regexpMode = v3 != null ? v3.getString() : null;
-                int flags = makeRegexpFlags(regexpMode, false);
-                try {
-                    v1 = ValueBoolean.get(Pattern.compile(regexp, flags).matcher(v1.getString()).find());
-                } catch (PatternSyntaxException e) {
-                    throw DbException.get(ErrorCode.LIKE_ESCAPE_ERROR_1, e, regexp);
-                }
-                break;
+        case REGEXP_LIKE: {
+            Value v3 = length >= 3 ? args[2].getValue(session) : null;
+            if (v1 == ValueNull.INSTANCE || v2 == ValueNull.INSTANCE || v3 == ValueNull.INSTANCE) {
+                return ValueNull.INSTANCE;
             }
-            case REGEXP_REPLACE: {
-                String input = v1.getString();
-                if (session.getMode().getEnum() == ModeEnum.Oracle) {
-                    String replacement = args[2].getValue(session).getString();
-                    int position = length >= 4 ? args[3].getValue(session).getInt() : 1;
-                    int occurrence = length >= 5 ? args[4].getValue(session).getInt() : 0;
-                    String regexpMode = length >= 6 ? args[5].getValue(session).getString() : null;
-                    if (input == null) {
-                        v1 = ValueNull.INSTANCE;
-                    } else {
-                        String regexp = v2.getString();
-                        v1 = regexpReplace(session, input, regexp != null ? regexp : "",
-                                replacement != null ? replacement : "", position, occurrence, regexpMode);
-                    }
+            String regexp = v2.getString();
+            String regexpMode = v3 != null ? v3.getString() : null;
+            int flags = makeRegexpFlags(regexpMode, false);
+            try {
+                v1 = ValueBoolean.get(Pattern.compile(regexp, flags).matcher(v1.getString()).find());
+            } catch (PatternSyntaxException e) {
+                throw DbException.get(ErrorCode.LIKE_ESCAPE_ERROR_1, e, regexp);
+            }
+            break;
+        }
+        case REGEXP_REPLACE: {
+            String input = v1.getString();
+            if (session.getMode().getEnum() == ModeEnum.Oracle) {
+                String replacement = args[2].getValue(session).getString();
+                int position = length >= 4 ? args[3].getValue(session).getInt() : 1;
+                int occurrence = length >= 5 ? args[4].getValue(session).getInt() : 0;
+                String regexpMode = length >= 6 ? args[5].getValue(session).getString() : null;
+                if (input == null) {
+                    v1 = ValueNull.INSTANCE;
                 } else {
-                    if (length > 4) {
-                        throw DbException.get(ErrorCode.INVALID_PARAMETER_COUNT_2, getName(), "3..4");
-                    }
-                    Value v3 = args[2].getValue(session);
-                    Value v4 = length == 4 ? args[3].getValue(session) : null;
-                    if (v1 == ValueNull.INSTANCE || v2 == ValueNull.INSTANCE || v3 == ValueNull.INSTANCE
-                            || v4 == ValueNull.INSTANCE) {
-                        v1 = ValueNull.INSTANCE;
-                    } else {
-                        v1 = regexpReplace(session, input, v2.getString(), v3.getString(), 1, 0,
-                                v4 != null ? v4.getString() : null);
-                    }
+                    String regexp = v2.getString();
+                    v1 = regexpReplace(session, input, regexp != null ? regexp : "",
+                            replacement != null ? replacement : "", position, occurrence, regexpMode);
                 }
-                break;
+            } else {
+                if (length > 4) {
+                    throw DbException.get(ErrorCode.INVALID_PARAMETER_COUNT_2, getName(), "3..4");
+                }
+                Value v3 = args[2].getValue(session);
+                Value v4 = length == 4 ? args[3].getValue(session) : null;
+                if (v1 == ValueNull.INSTANCE || v2 == ValueNull.INSTANCE || v3 == ValueNull.INSTANCE
+                        || v4 == ValueNull.INSTANCE) {
+                    v1 = ValueNull.INSTANCE;
+                } else {
+                    v1 = regexpReplace(session, input, v2.getString(), v3.getString(), 1, 0,
+                            v4 != null ? v4.getString() : null);
+                }
             }
-            case REGEXP_SUBSTR: {
-                Value v3 = length >= 3 ? args[2].getValue(session) : null;
-                Value v4 = length >= 4 ? args[3].getValue(session) : null;
-                Value v5 = length >= 5 ? args[4].getValue(session) : null;
-                Value v6 = length >= 6 ? args[5].getValue(session) : null;
-                v1 = regexpSubstr(v1, v2, v3, v4, v5, v6, session);
-                break;
-            }
-            default:
-                throw DbException.getInternalError("function=" + function);
+            break;
+        }
+        case REGEXP_SUBSTR: {
+            Value v3 = length >= 3 ? args[2].getValue(session) : null;
+            Value v4 = length >= 4 ? args[3].getValue(session) : null;
+            Value v5 = length >= 5 ? args[4].getValue(session) : null;
+            Value v6 = length >= 6 ? args[5].getValue(session) : null;
+            v1 = regexpSubstr(v1, v2, v3, v4, v5, v6, session);
+            break;
+        }
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         return v1;
     }
 
     private static Value regexpReplace(SessionLocal session, String input, String regexp, String replacement,
-                                       int position, int occurrence, String regexpMode) {
+            int position, int occurrence, String regexpMode) {
         Mode mode = session.getMode();
         if (mode.regexpReplaceBackslashReferences) {
             if ((replacement.indexOf('\\') >= 0) || (replacement.indexOf('$') >= 0)) {
@@ -167,7 +167,7 @@ public final class RegexpFunction extends FunctionN {
     }
 
     private static Value regexpSubstr(Value inputString, Value regexpArg, Value positionArg, Value occurrenceArg,
-                                      Value regexpModeArg, Value subexpressionArg, SessionLocal session) {
+            Value regexpModeArg, Value subexpressionArg, SessionLocal session) {
         if (inputString == ValueNull.INSTANCE || regexpArg == ValueNull.INSTANCE || positionArg == ValueNull.INSTANCE
                 || occurrenceArg == ValueNull.INSTANCE || subexpressionArg == ValueNull.INSTANCE) {
             return ValueNull.INSTANCE;
@@ -204,25 +204,25 @@ public final class RegexpFunction extends FunctionN {
         if (stringFlags != null) {
             for (int i = 0; i < stringFlags.length(); ++i) {
                 switch (stringFlags.charAt(i)) {
-                    case 'i':
-                        flags |= Pattern.CASE_INSENSITIVE;
+                case 'i':
+                    flags |= Pattern.CASE_INSENSITIVE;
+                    break;
+                case 'c':
+                    flags &= ~Pattern.CASE_INSENSITIVE;
+                    break;
+                case 'n':
+                    flags |= Pattern.DOTALL;
+                    break;
+                case 'm':
+                    flags |= Pattern.MULTILINE;
+                    break;
+                case 'g':
+                    if (ignoreGlobalFlag) {
                         break;
-                    case 'c':
-                        flags &= ~Pattern.CASE_INSENSITIVE;
-                        break;
-                    case 'n':
-                        flags |= Pattern.DOTALL;
-                        break;
-                    case 'm':
-                        flags |= Pattern.MULTILINE;
-                        break;
-                    case 'g':
-                        if (ignoreGlobalFlag) {
-                            break;
-                        }
-                        //$FALL-THROUGH$
-                    default:
-                        throw DbException.get(ErrorCode.INVALID_VALUE_2, stringFlags);
+                    }
+                    //$FALL-THROUGH$
+                default:
+                    throw DbException.get(ErrorCode.INVALID_VALUE_2, stringFlags);
                 }
             }
         }
@@ -234,23 +234,23 @@ public final class RegexpFunction extends FunctionN {
         boolean allConst = optimizeArguments(session, true);
         int min, max;
         switch (function) {
-            case REGEXP_LIKE:
-                min = 2;
-                max = 3;
-                type = TypeInfo.TYPE_BOOLEAN;
-                break;
-            case REGEXP_REPLACE:
-                min = 3;
-                max = 6;
-                type = TypeInfo.TYPE_VARCHAR;
-                break;
-            case REGEXP_SUBSTR:
-                min = 2;
-                max = 6;
-                type = TypeInfo.TYPE_VARCHAR;
-                break;
-            default:
-                throw DbException.getInternalError("function=" + function);
+        case REGEXP_LIKE:
+            min = 2;
+            max = 3;
+            type = TypeInfo.TYPE_BOOLEAN;
+            break;
+        case REGEXP_REPLACE:
+            min = 3;
+            max = 6;
+            type = TypeInfo.TYPE_VARCHAR;
+            break;
+        case REGEXP_SUBSTR:
+            min = 2;
+            max = 6;
+            type = TypeInfo.TYPE_VARCHAR;
+            break;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         int len = args.length;
         if (len < min || len > max) {

@@ -25,7 +25,8 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Run just this test.
      *
-     * @param a ignored
+     * @param a
+     *            ignored
      */
     public static void main(String... a) throws Exception {
         TestBase.createCaller().init().testFromMain();
@@ -86,8 +87,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test for batch updates and MERGE INTO operator.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testBatchAndMergeInto(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -148,8 +151,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test for PRIMARY KEY columns.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrimaryKey(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -171,8 +176,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for INSERT ... SELECT operator.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testInsertWithSelect(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -192,8 +199,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for UPDATE operator.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testUpdate(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -214,8 +223,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for MERGE USING operator.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testMergeUsing(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -267,8 +278,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for incompatible statements.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testWrongStatement(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -289,8 +302,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * Test method for shared connection between several statements in different
      * threads.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testMultithreaded(final Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -341,8 +356,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for case of letters in column names.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testNameCase(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -350,7 +367,7 @@ public class TestGetGeneratedKeys extends TestDb {
                 + "\"id\" UUID NOT NULL DEFAULT RANDOM_UUID(), V INT NOT NULL)");
         // Test columns with only difference in case
         PreparedStatement prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (10)",
-                new String[]{"id", "ID"});
+                new String[] { "id", "ID" });
         prep.executeUpdate();
         ResultSet rs = prep.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
@@ -363,11 +380,11 @@ public class TestGetGeneratedKeys extends TestDb {
         rs.close();
         // Test lower case name of upper case column
         stat.execute("ALTER TABLE TEST DROP COLUMN \"id\"");
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new String[]{"id"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new String[] { "id" });
         testNameCase1(prep, 2L, true);
         // Test upper case name of lower case column
         stat.execute("ALTER TABLE TEST ALTER COLUMN ID RENAME TO \"id\"");
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new String[]{"ID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new String[] { "ID" });
         testNameCase1(prep, 3L, false);
         stat.execute("DROP TABLE TEST");
     }
@@ -386,18 +403,20 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for column not found exception.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testColumnNotFound(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
         stat.execute("CREATE TABLE TEST (ID BIGINT PRIMARY KEY AUTO_INCREMENT, V INT NOT NULL)");
         assertThrows(ErrorCode.COLUMN_NOT_FOUND_1, stat).execute("INSERT INTO TEST(V) VALUES (1)", //
-                new int[]{0});
+                new int[] { 0 });
         assertThrows(ErrorCode.COLUMN_NOT_FOUND_1, stat).execute("INSERT INTO TEST(V) VALUES (1)", //
-                new int[]{3});
+                new int[] { 3 });
         assertThrows(ErrorCode.COLUMN_NOT_FOUND_1, stat).execute("INSERT INTO TEST(V) VALUES (1)", //
-                new String[]{"X"});
+                new String[] { "X" });
         stat.execute("DROP TABLE TEST");
     }
 
@@ -406,8 +425,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String)}
      * .{@link PreparedStatement#execute()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_Execute(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -426,8 +447,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String)}
      * .{@link PreparedStatement#executeBatch()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_ExecuteBatch(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -448,8 +471,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String)}
      * .{@link PreparedStatement#executeLargeBatch()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_ExecuteLargeBatch(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -470,8 +495,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String)}
      * .{@link PreparedStatement#executeLargeUpdate()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_ExecuteLargeUpdate(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -490,8 +517,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String)}
      * .{@link PreparedStatement#executeUpdate()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_ExecuteUpdate(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -510,8 +539,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String, int)}
      * .{@link PreparedStatement#execute()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_int_Execute(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -542,8 +573,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String, int)}
      * .{@link PreparedStatement#executeBatch()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_int_ExecuteBatch(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -586,8 +619,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * Test method for {@link Connection#prepareStatement(String, int)}
      * .{@link PreparedStatement#executeLargeBatch()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_int_ExecuteLargeBatch(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -631,8 +666,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String, int)}
      * .{@link PreparedStatement#executeLargeUpdate()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_int_ExecuteLargeUpdate(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -663,8 +700,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String, int)}
      * .{@link PreparedStatement#executeUpdate()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_int_ExecuteUpdate(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -695,8 +734,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String, int[])}
      * .{@link PreparedStatement#execute()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_intArray_Execute(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -707,7 +748,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = prep.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new int[]{1, 2});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new int[] { 1, 2 });
         prep.execute();
         rs = prep.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
@@ -718,7 +759,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new int[]{2, 1});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new int[] { 2, 1 });
         prep.execute();
         rs = prep.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
@@ -729,7 +770,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(3L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new int[]{2});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new int[] { 2 });
         prep.execute();
         rs = prep.getGeneratedKeys();
         assertEquals(1, rs.getMetaData().getColumnCount());
@@ -746,8 +787,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String, int[])}
      * .{@link PreparedStatement#executeBatch()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_intArray_ExecuteBatch(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -760,7 +803,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = prep.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new int[]{1, 2});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new int[] { 1, 2 });
         prep.addBatch();
         prep.addBatch();
         prep.executeBatch();
@@ -776,7 +819,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new int[]{2, 1});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new int[] { 2, 1 });
         prep.addBatch();
         prep.addBatch();
         prep.executeBatch();
@@ -792,7 +835,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(6L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new int[]{2});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new int[] { 2 });
         prep.addBatch();
         prep.addBatch();
         prep.executeBatch();
@@ -813,8 +856,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String, int[])}
      * .{@link PreparedStatement#executeLargeBatch()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_intArray_ExecuteLargeBatch(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -827,7 +872,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = prep.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new int[]{1, 2});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new int[] { 1, 2 });
         prep.addBatch();
         prep.addBatch();
         prep.executeLargeBatch();
@@ -843,7 +888,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new int[]{2, 1});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new int[] { 2, 1 });
         prep.addBatch();
         prep.addBatch();
         prep.executeLargeBatch();
@@ -859,7 +904,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(6L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new int[]{2});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new int[] { 2 });
         prep.addBatch();
         prep.addBatch();
         prep.executeLargeBatch();
@@ -880,8 +925,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String, int[])}
      * .{@link PreparedStatement#executeLargeUpdate()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_intArray_ExecuteLargeUpdate(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -892,7 +939,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = prep.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new int[]{1, 2});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new int[] { 1, 2 });
         prep.executeLargeUpdate();
         rs = prep.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
@@ -903,7 +950,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new int[]{2, 1});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new int[] { 2, 1 });
         prep.executeLargeUpdate();
         rs = prep.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
@@ -914,7 +961,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(3L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new int[]{2});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new int[] { 2 });
         prep.executeLargeUpdate();
         rs = prep.getGeneratedKeys();
         assertEquals(1, rs.getMetaData().getColumnCount());
@@ -931,8 +978,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String, int[])}
      * .{@link PreparedStatement#executeUpdate()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_intArray_ExecuteUpdate(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -943,7 +992,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = prep.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new int[]{1, 2});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new int[] { 1, 2 });
         prep.executeUpdate();
         rs = prep.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
@@ -954,7 +1003,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new int[]{2, 1});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new int[] { 2, 1 });
         prep.executeUpdate();
         rs = prep.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
@@ -965,7 +1014,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(3L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new int[]{2});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new int[] { 2 });
         prep.executeUpdate();
         rs = prep.getGeneratedKeys();
         assertEquals(1, rs.getMetaData().getColumnCount());
@@ -982,8 +1031,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String, String[])}
      * .{@link PreparedStatement#execute()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_StringArray_Execute(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -994,7 +1045,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = prep.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new String[]{"ID", "UID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new String[] { "ID", "UID" });
         prep.execute();
         rs = prep.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
@@ -1005,7 +1056,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new String[]{"UID", "ID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new String[] { "UID", "ID" });
         prep.execute();
         rs = prep.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
@@ -1016,7 +1067,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(3L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new String[]{"UID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new String[] { "UID" });
         prep.execute();
         rs = prep.getGeneratedKeys();
         assertEquals(1, rs.getMetaData().getColumnCount());
@@ -1033,8 +1084,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String, String[])}
      * .{@link PreparedStatement#executeBatch()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_StringArray_ExecuteBatch(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1047,7 +1100,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = prep.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new String[]{"ID", "UID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new String[] { "ID", "UID" });
         prep.addBatch();
         prep.addBatch();
         prep.executeBatch();
@@ -1063,7 +1116,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new String[]{"UID", "ID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new String[] { "UID", "ID" });
         prep.addBatch();
         prep.addBatch();
         prep.executeBatch();
@@ -1079,7 +1132,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(6L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new String[]{"UID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new String[] { "UID" });
         prep.addBatch();
         prep.addBatch();
         prep.executeBatch();
@@ -1100,8 +1153,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String, String[])}
      * .{@link PreparedStatement#executeLargeBatch()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_StringArray_ExecuteLargeBatch(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1114,7 +1169,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = prep.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new String[]{"ID", "UID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new String[] { "ID", "UID" });
         prep.addBatch();
         prep.addBatch();
         prep.executeLargeBatch();
@@ -1130,7 +1185,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new String[]{"UID", "ID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new String[] { "UID", "ID" });
         prep.addBatch();
         prep.addBatch();
         prep.executeLargeBatch();
@@ -1146,7 +1201,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(6L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new String[]{"UID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new String[] { "UID" });
         prep.addBatch();
         prep.addBatch();
         prep.executeLargeBatch();
@@ -1167,8 +1222,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * {@link Connection#prepareStatement(String, String[])}
      * .{@link PreparedStatement#executeLargeUpdate()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_StringArray_ExecuteLargeUpdate(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1179,7 +1236,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = prep.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new String[]{"ID", "UID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new String[] { "ID", "UID" });
         prep.executeLargeUpdate();
         rs = prep.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
@@ -1190,7 +1247,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new String[]{"UID", "ID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new String[] { "UID", "ID" });
         prep.executeLargeUpdate();
         rs = prep.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
@@ -1201,7 +1258,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(3L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new String[]{"UID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new String[] { "UID" });
         prep.executeLargeUpdate();
         rs = prep.getGeneratedKeys();
         assertEquals(1, rs.getMetaData().getColumnCount());
@@ -1217,8 +1274,10 @@ public class TestGetGeneratedKeys extends TestDb {
      * Test method for {@link Connection#prepareStatement(String, String[])}
      * .{@link PreparedStatement#executeUpdate()}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testPrepareStatement_StringArray_ExecuteUpdate(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1229,7 +1288,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = prep.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new String[]{"ID", "UID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (20)", new String[] { "ID", "UID" });
         prep.executeUpdate();
         rs = prep.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
@@ -1240,7 +1299,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new String[]{"UID", "ID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (30)", new String[] { "UID", "ID" });
         prep.executeUpdate();
         rs = prep.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
@@ -1251,7 +1310,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(3L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new String[]{"UID"});
+        prep = conn.prepareStatement("INSERT INTO TEST(V) VALUES (40)", new String[] { "UID" });
         prep.executeUpdate();
         rs = prep.getGeneratedKeys();
         assertEquals(1, rs.getMetaData().getColumnCount());
@@ -1266,8 +1325,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for {@link Statement#execute(String)}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testStatementExecute(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1283,8 +1344,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for {@link Statement#execute(String, int)}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testStatementExecute_int(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1310,8 +1373,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for {@link Statement#execute(String, int[])}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testStatementExecute_intArray(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1321,7 +1386,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = stat.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        stat.execute("INSERT INTO TEST(V) VALUES (20)", new int[]{1, 2});
+        stat.execute("INSERT INTO TEST(V) VALUES (20)", new int[] { 1, 2 });
         rs = stat.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
         assertEquals("ID", rs.getMetaData().getColumnName(1));
@@ -1331,7 +1396,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        stat.execute("INSERT INTO TEST(V) VALUES (30)", new int[]{2, 1});
+        stat.execute("INSERT INTO TEST(V) VALUES (30)", new int[] { 2, 1 });
         rs = stat.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
         assertEquals("UID", rs.getMetaData().getColumnName(1));
@@ -1341,7 +1406,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(3L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        stat.execute("INSERT INTO TEST(V) VALUES (40)", new int[]{2});
+        stat.execute("INSERT INTO TEST(V) VALUES (40)", new int[] { 2 });
         rs = stat.getGeneratedKeys();
         assertEquals(1, rs.getMetaData().getColumnCount());
         assertEquals("UID", rs.getMetaData().getColumnName(1));
@@ -1355,8 +1420,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for {@link Statement#executeUpdate(String, String[])}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testStatementExecute_StringArray(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1366,7 +1433,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = stat.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        stat.execute("INSERT INTO TEST(V) VALUES (20)", new String[]{"ID", "UID"});
+        stat.execute("INSERT INTO TEST(V) VALUES (20)", new String[] { "ID", "UID" });
         rs = stat.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
         assertEquals("ID", rs.getMetaData().getColumnName(1));
@@ -1376,7 +1443,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        stat.execute("INSERT INTO TEST(V) VALUES (30)", new String[]{"UID", "ID"});
+        stat.execute("INSERT INTO TEST(V) VALUES (30)", new String[] { "UID", "ID" });
         rs = stat.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
         assertEquals("UID", rs.getMetaData().getColumnName(1));
@@ -1386,7 +1453,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(3L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        stat.execute("INSERT INTO TEST(V) VALUES (40)", new String[]{"UID"});
+        stat.execute("INSERT INTO TEST(V) VALUES (40)", new String[] { "UID" });
         rs = stat.getGeneratedKeys();
         assertEquals(1, rs.getMetaData().getColumnCount());
         assertEquals("UID", rs.getMetaData().getColumnName(1));
@@ -1400,8 +1467,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for {@link Statement#executeLargeUpdate(String)}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testStatementExecuteLargeUpdate(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1417,8 +1486,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for {@link Statement#executeLargeUpdate(String, int)}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testStatementExecuteLargeUpdate_int(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1444,8 +1515,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for {@link Statement#executeLargeUpdate(String, int[])}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testStatementExecuteLargeUpdate_intArray(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1455,7 +1528,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = stat.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        stat.executeLargeUpdate("INSERT INTO TEST(V) VALUES (20)", new int[]{1, 2});
+        stat.executeLargeUpdate("INSERT INTO TEST(V) VALUES (20)", new int[] { 1, 2 });
         rs = stat.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
         assertEquals("ID", rs.getMetaData().getColumnName(1));
@@ -1465,7 +1538,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        stat.executeLargeUpdate("INSERT INTO TEST(V) VALUES (30)", new int[]{2, 1});
+        stat.executeLargeUpdate("INSERT INTO TEST(V) VALUES (30)", new int[] { 2, 1 });
         rs = stat.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
         assertEquals("UID", rs.getMetaData().getColumnName(1));
@@ -1475,7 +1548,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(3L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        stat.executeLargeUpdate("INSERT INTO TEST(V) VALUES (40)", new int[]{2});
+        stat.executeLargeUpdate("INSERT INTO TEST(V) VALUES (40)", new int[] { 2 });
         rs = stat.getGeneratedKeys();
         assertEquals(1, rs.getMetaData().getColumnCount());
         assertEquals("UID", rs.getMetaData().getColumnName(1));
@@ -1489,8 +1562,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for {@link Statement#executeLargeUpdate(String, String[])}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testStatementExecuteLargeUpdate_StringArray(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1500,7 +1575,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = stat.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        stat.executeLargeUpdate("INSERT INTO TEST(V) VALUES (20)", new String[]{"ID", "UID"});
+        stat.executeLargeUpdate("INSERT INTO TEST(V) VALUES (20)", new String[] { "ID", "UID" });
         rs = stat.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
         assertEquals("ID", rs.getMetaData().getColumnName(1));
@@ -1510,7 +1585,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        stat.executeLargeUpdate("INSERT INTO TEST(V) VALUES (30)", new String[]{"UID", "ID"});
+        stat.executeLargeUpdate("INSERT INTO TEST(V) VALUES (30)", new String[] { "UID", "ID" });
         rs = stat.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
         assertEquals("UID", rs.getMetaData().getColumnName(1));
@@ -1520,7 +1595,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(3L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        stat.executeLargeUpdate("INSERT INTO TEST(V) VALUES (40)", new String[]{"UID"});
+        stat.executeLargeUpdate("INSERT INTO TEST(V) VALUES (40)", new String[] { "UID" });
         rs = stat.getGeneratedKeys();
         assertEquals(1, rs.getMetaData().getColumnCount());
         assertEquals("UID", rs.getMetaData().getColumnName(1));
@@ -1534,8 +1609,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for {@link Statement#executeUpdate(String)}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testStatementExecuteUpdate(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1551,8 +1628,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for {@link Statement#executeUpdate(String, int)}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testStatementExecuteUpdate_int(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1578,8 +1657,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for {@link Statement#executeUpdate(String, int[])}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testStatementExecuteUpdate_intArray(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1589,7 +1670,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = stat.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        stat.executeUpdate("INSERT INTO TEST(V) VALUES (20)", new int[]{1, 2});
+        stat.executeUpdate("INSERT INTO TEST(V) VALUES (20)", new int[] { 1, 2 });
         rs = stat.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
         assertEquals("ID", rs.getMetaData().getColumnName(1));
@@ -1599,7 +1680,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        stat.executeUpdate("INSERT INTO TEST(V) VALUES (30)", new int[]{2, 1});
+        stat.executeUpdate("INSERT INTO TEST(V) VALUES (30)", new int[] { 2, 1 });
         rs = stat.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
         assertEquals("UID", rs.getMetaData().getColumnName(1));
@@ -1609,7 +1690,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(3L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        stat.executeUpdate("INSERT INTO TEST(V) VALUES (40)", new int[]{2});
+        stat.executeUpdate("INSERT INTO TEST(V) VALUES (40)", new int[] { 2 });
         rs = stat.getGeneratedKeys();
         assertEquals(1, rs.getMetaData().getColumnCount());
         assertEquals("UID", rs.getMetaData().getColumnName(1));
@@ -1623,8 +1704,10 @@ public class TestGetGeneratedKeys extends TestDb {
     /**
      * Test method for {@link Statement#executeUpdate(String, String[])}.
      *
-     * @param conn connection
-     * @throws Exception on exception
+     * @param conn
+     *            connection
+     * @throws Exception
+     *             on exception
      */
     private void testStatementExecuteUpdate_StringArray(Connection conn) throws Exception {
         Statement stat = conn.createStatement();
@@ -1634,7 +1717,7 @@ public class TestGetGeneratedKeys extends TestDb {
         ResultSet rs = stat.getGeneratedKeys();
         assertFalse(rs.next());
         rs.close();
-        stat.executeUpdate("INSERT INTO TEST(V) VALUES (20)", new String[]{"ID", "UID"});
+        stat.executeUpdate("INSERT INTO TEST(V) VALUES (20)", new String[] { "ID", "UID" });
         rs = stat.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
         assertEquals("ID", rs.getMetaData().getColumnName(1));
@@ -1644,7 +1727,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(UUID.class, rs.getObject(2).getClass());
         assertFalse(rs.next());
         rs.close();
-        stat.executeUpdate("INSERT INTO TEST(V) VALUES (30)", new String[]{"UID", "ID"});
+        stat.executeUpdate("INSERT INTO TEST(V) VALUES (30)", new String[] { "UID", "ID" });
         rs = stat.getGeneratedKeys();
         assertEquals(2, rs.getMetaData().getColumnCount());
         assertEquals("UID", rs.getMetaData().getColumnName(1));
@@ -1654,7 +1737,7 @@ public class TestGetGeneratedKeys extends TestDb {
         assertEquals(3L, rs.getLong(2));
         assertFalse(rs.next());
         rs.close();
-        stat.executeUpdate("INSERT INTO TEST(V) VALUES (40)", new String[]{"UID"});
+        stat.executeUpdate("INSERT INTO TEST(V) VALUES (40)", new String[] { "UID" });
         rs = stat.getGeneratedKeys();
         assertEquals(1, rs.getMetaData().getColumnCount());
         assertEquals("UID", rs.getMetaData().getColumnName(1));

@@ -6,7 +6,6 @@
 package org.h2.command.ddl;
 
 import java.util.ArrayList;
-
 import org.h2.api.ErrorCode;
 import org.h2.command.CommandInterface;
 import org.h2.constraint.ConstraintActionType;
@@ -78,7 +77,7 @@ public class DropView extends SchemaCommand {
             session.getDatabase().removeSchemaObject(session, view);
 
             // remove dependent table expressions
-            for (Table childTable : copyOfDependencies) {
+            for (Table childTable: copyOfDependencies) {
                 if (TableType.VIEW == childTable.getTableType()) {
                     TableView childTableView = (TableView) childTable;
                     if (childTableView.isTableExpression() && childTableView.getName() != null) {

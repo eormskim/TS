@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.h2.tools.DeleteDbFiles;
 import org.h2.tools.TriggerAdapter;
 
@@ -92,7 +91,7 @@ public class RowAccessRights extends TriggerAdapter {
 
     @Override
     public void init(Connection conn, String schemaName, String triggerName,
-                     String tableName, boolean before, int type) throws SQLException {
+            String tableName, boolean before, int type) throws SQLException {
         prepDelete = conn.prepareStatement(
                 "delete from test_data where id = ? and `user` = ?");
         prepInsert = conn.prepareStatement(

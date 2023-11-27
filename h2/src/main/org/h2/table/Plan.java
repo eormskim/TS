@@ -29,8 +29,8 @@ public class Plan {
     /**
      * Create a query plan with the given order.
      *
-     * @param filters   the tables of the query
-     * @param count     the number of table items
+     * @param filters the tables of the query
+     * @param count the number of table items
      * @param condition the condition in the WHERE clause
      */
     public Plan(TableFilter[] filters, int count, Expression condition) {
@@ -96,7 +96,7 @@ public class Plan {
     /**
      * Calculate the cost of this query plan.
      *
-     * @param session       the session
+     * @param session the session
      * @param allColumnsSet calculates all columns on-demand
      * @return the cost
      */

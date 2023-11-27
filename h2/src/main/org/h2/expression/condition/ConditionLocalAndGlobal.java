@@ -137,15 +137,15 @@ public class ConditionLocalAndGlobal extends Condition {
     @Override
     public Expression getSubexpression(int index) {
         switch (index) {
-            case 0:
-                return local != null ? local : global;
-            case 1:
-                if (local != null) {
-                    return global;
-                }
-                //$FALL-THROUGH$
-            default:
-                throw new IndexOutOfBoundsException();
+        case 0:
+            return local != null ? local : global;
+        case 1:
+            if (local != null) {
+                return global;
+            }
+            //$FALL-THROUGH$
+        default:
+            throw new IndexOutOfBoundsException();
         }
     }
 

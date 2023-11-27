@@ -47,14 +47,14 @@ public abstract class ValueLob extends Value {
     /**
      * Create an input stream that is s subset of the given stream.
      *
-     * @param inputStream    the source input stream
+     * @param inputStream the source input stream
      * @param oneBasedOffset the offset (1 means no offset)
-     * @param length         the length of the result, in bytes
-     * @param dataSize       the length of the input, in bytes
+     * @param length the length of the result, in bytes
+     * @param dataSize the length of the input, in bytes
      * @return the smaller input stream
      */
     protected static InputStream rangeInputStream(InputStream inputStream, long oneBasedOffset, long length,
-                                                  long dataSize) {
+            long dataSize) {
         if (dataSize > 0) {
             rangeCheck(oneBasedOffset - 1, length, dataSize);
         } else {
@@ -70,10 +70,10 @@ public abstract class ValueLob extends Value {
     /**
      * Create a reader that is s subset of the given reader.
      *
-     * @param reader         the input reader
+     * @param reader the input reader
      * @param oneBasedOffset the offset (1 means no offset)
-     * @param length         the length of the result, in bytes
-     * @param dataSize       the length of the input, in bytes
+     * @param length the length of the result, in bytes
+     * @param dataSize the length of the input, in bytes
      * @return the smaller input stream
      */
     static Reader rangeReader(Reader reader, long oneBasedOffset, long length, long dataSize) {
@@ -116,7 +116,6 @@ public abstract class ValueLob extends Value {
 
     /**
      * Create file name for temporary LOB storage
-     *
      * @param handler to get path from
      * @return full path and name of the created file
      * @throws IOException if file creation fails
@@ -174,7 +173,7 @@ public abstract class ValueLob extends Value {
      * kept fully in memory this method has no effect.
      *
      * @param database the data handler
-     * @param tableId  the table where this object is used
+     * @param tableId the table where this object is used
      * @return the new value or itself
      */
     public abstract ValueLob copy(DataHandler database, int tableId);

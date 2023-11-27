@@ -22,10 +22,14 @@ public abstract class MetaSchema extends Schema {
     /**
      * Creates a new instance of meta data schema.
      *
-     * @param database   the database
-     * @param id         the object id
-     * @param schemaName the schema name
-     * @param owner      the owner of the schema
+     * @param database
+     *            the database
+     * @param id
+     *            the object id
+     * @param schemaName
+     *            the schema name
+     * @param owner
+     *            the owner of the schema
      */
     public MetaSchema(Database database, int id, String schemaName, User owner) {
         super(database, id, schemaName, owner, true);

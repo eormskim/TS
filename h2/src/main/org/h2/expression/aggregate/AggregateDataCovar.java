@@ -23,7 +23,8 @@ final class AggregateDataCovar extends AggregateDataBinarySet {
     private double sumY, sumX, sumYX;
 
     /**
-     * @param aggregateType the type of the aggregate operation
+     * @param aggregateType
+     *            the type of the aggregate operation
      */
     AggregateDataCovar(AggregateType aggregateType) {
         this.aggregateType = aggregateType;
@@ -42,26 +43,26 @@ final class AggregateDataCovar extends AggregateDataBinarySet {
     Value getValue(SessionLocal session) {
         double v;
         switch (aggregateType) {
-            case COVAR_POP:
-                if (count < 1) {
-                    return ValueNull.INSTANCE;
-                }
-                v = (sumYX - sumX * sumY / count) / count;
-                break;
-            case COVAR_SAMP:
-                if (count < 2) {
-                    return ValueNull.INSTANCE;
-                }
-                v = (sumYX - sumX * sumY / count) / (count - 1);
-                break;
-            case REGR_SXY:
-                if (count < 1) {
-                    return ValueNull.INSTANCE;
-                }
-                v = sumYX - sumX * sumY / count;
-                break;
-            default:
-                throw DbException.getInternalError("type=" + aggregateType);
+        case COVAR_POP:
+            if (count < 1) {
+                return ValueNull.INSTANCE;
+            }
+            v = (sumYX - sumX * sumY / count) / count;
+            break;
+        case COVAR_SAMP:
+            if (count < 2) {
+                return ValueNull.INSTANCE;
+            }
+            v = (sumYX - sumX * sumY / count) / (count - 1);
+            break;
+        case REGR_SXY:
+            if (count < 1) {
+                return ValueNull.INSTANCE;
+            }
+            v = sumYX - sumX * sumY / count;
+            break;
+        default:
+            throw DbException.getInternalError("type=" + aggregateType);
         }
         return ValueDouble.get(v);
     }

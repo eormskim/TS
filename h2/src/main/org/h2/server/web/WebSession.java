@@ -74,7 +74,7 @@ class WebSession {
     /**
      * Put an attribute value in the map.
      *
-     * @param key   the key
+     * @param key the key
      * @param value the new value
      */
     void put(String key, Object value) {

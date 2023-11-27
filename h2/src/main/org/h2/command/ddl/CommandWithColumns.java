@@ -30,7 +30,8 @@ public abstract class CommandWithColumns extends SchemaCommand {
     /**
      * Add a column to this table.
      *
-     * @param column the column to add
+     * @param column
+     *            the column to add
      */
     public abstract void addColumn(Column column);
 
@@ -38,7 +39,8 @@ public abstract class CommandWithColumns extends SchemaCommand {
      * Add a constraint statement to this statement. The primary key definition is
      * one possible constraint statement.
      *
-     * @param command the statement to add
+     * @param command
+     *            the statement to add
      */
     public void addConstraintCommand(DefineCommand command) {
         if (!(command instanceof CreateIndex)) {
@@ -88,7 +90,7 @@ public abstract class CommandWithColumns extends SchemaCommand {
      * columns (if needed), and then get the list of all sequences of the
      * columns.
      *
-     * @param columns   the columns
+     * @param columns the columns
      * @param temporary whether generated sequences should be temporary
      * @return the list of sequences (may be empty)
      */
@@ -128,9 +130,10 @@ public abstract class CommandWithColumns extends SchemaCommand {
      * {@code false}.
      * </p>
      *
-     * @param primaryKey the primary key
+     * @param primaryKey
+     *            the primary key
      * @return whether another primary key with the same columns was already set
-     * and the specified primary key should be ignored
+     *         and the specified primary key should be ignored
      */
     private boolean setPrimaryKey(AlterTableAddConstraint primaryKey) {
         if (this.primaryKey != null) {

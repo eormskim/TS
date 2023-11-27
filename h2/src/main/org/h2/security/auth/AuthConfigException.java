@@ -7,6 +7,7 @@ package org.h2.security.auth;
 
 /**
  * Exception thrown when an issue occurs during the authentication configuration
+ *
  */
 public class AuthConfigException extends RuntimeException {
     private static final long serialVersionUID = 1L;

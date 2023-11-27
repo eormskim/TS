@@ -57,7 +57,7 @@ public final class LinkSchemaFunction extends TableFunction {
             // Workaround for PostgreSQL to avoid index names
             if (url.startsWith("jdbc:postgresql:")) {
                 rs = c2.getMetaData().getTables(null, sourceSchema, null,
-                        new String[]{"TABLE", "LINKED TABLE", "VIEW", "EXTERNAL"});
+                        new String[] { "TABLE", "LINKED TABLE", "VIEW", "EXTERNAL" });
             } else {
                 rs = c2.getMetaData().getTables(null, sourceSchema, null, null);
             }

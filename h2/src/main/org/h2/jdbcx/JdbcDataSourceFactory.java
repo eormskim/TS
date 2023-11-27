@@ -44,17 +44,17 @@ public final class JdbcDataSourceFactory implements ObjectFactory {
      * Creates a new object using the specified location or reference
      * information.
      *
-     * @param obj         the reference (this factory only supports objects of type
-     *                    javax.naming.Reference)
-     * @param name        unused
-     * @param nameCtx     unused
+     * @param obj the reference (this factory only supports objects of type
+     *            javax.naming.Reference)
+     * @param name unused
+     * @param nameCtx unused
      * @param environment unused
      * @return the new JdbcDataSource, or null if the reference class name is
-     * not JdbcDataSource.
+     *         not JdbcDataSource.
      */
     @Override
     public synchronized Object getObjectInstance(Object obj, Name name,
-                                                 Context nameCtx, Hashtable<?, ?> environment) {
+            Context nameCtx, Hashtable<?, ?> environment) {
         if (trace.isDebugEnabled()) {
             trace.debug("getObjectInstance obj={0} name={1} " +
                     "nameCtx={2} environment={3}", obj, name, nameCtx, environment);
@@ -77,7 +77,6 @@ public final class JdbcDataSourceFactory implements ObjectFactory {
 
     /**
      * INTERNAL
-     *
      * @return TraceSystem
      */
     public static TraceSystem getTraceSystem() {

@@ -7,7 +7,6 @@ package org.h2.compress;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 import org.h2.engine.Constants;
 
 /**

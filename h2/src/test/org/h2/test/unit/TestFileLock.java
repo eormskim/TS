@@ -7,7 +7,6 @@ package org.h2.test.unit;
 
 import java.io.File;
 import java.sql.Connection;
-
 import org.h2.api.ErrorCode;
 import org.h2.engine.Constants;
 import org.h2.message.TraceSystem;

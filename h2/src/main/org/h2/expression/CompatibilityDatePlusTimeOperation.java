@@ -29,26 +29,26 @@ public class CompatibilityDatePlusTimeOperation extends Operation2 {
         TypeInfo l = left.getType(), r = right.getType();
         int t;
         switch (l.getValueType()) {
-            case Value.TIMESTAMP_TZ:
-                if (r.getValueType() == Value.TIME_TZ) {
-                    throw DbException.getUnsupportedException("TIMESTAMP WITH TIME ZONE + TIME WITH TIME ZONE");
-                }
-                //$FALL-THROUGH$
-            case Value.TIME:
-                t = r.getValueType() == Value.DATE ? Value.TIMESTAMP : l.getValueType();
-                break;
-            case Value.TIME_TZ:
-                if (r.getValueType() == Value.TIME_TZ) {
-                    throw DbException.getUnsupportedException("TIME WITH TIME ZONE + TIME WITH TIME ZONE");
-                }
-                t = r.getValueType() == Value.DATE ? Value.TIMESTAMP_TZ : l.getValueType();
-                break;
-            case Value.TIMESTAMP:
-                t = r.getValueType() == Value.TIME_TZ ? Value.TIMESTAMP_TZ : Value.TIMESTAMP;
-                break;
-            default:
-                throw DbException.getUnsupportedException(
-                        Value.getTypeName(l.getValueType()) + " + " + Value.getTypeName(r.getValueType()));
+        case Value.TIMESTAMP_TZ:
+            if (r.getValueType() == Value.TIME_TZ) {
+                throw DbException.getUnsupportedException("TIMESTAMP WITH TIME ZONE + TIME WITH TIME ZONE");
+            }
+            //$FALL-THROUGH$
+        case Value.TIME:
+            t = r.getValueType() == Value.DATE ? Value.TIMESTAMP : l.getValueType();
+            break;
+        case Value.TIME_TZ:
+            if (r.getValueType() == Value.TIME_TZ) {
+                throw DbException.getUnsupportedException("TIME WITH TIME ZONE + TIME WITH TIME ZONE");
+            }
+            t = r.getValueType() == Value.DATE ? Value.TIMESTAMP_TZ : l.getValueType();
+            break;
+        case Value.TIMESTAMP:
+            t = r.getValueType() == Value.TIME_TZ ? Value.TIMESTAMP_TZ : Value.TIMESTAMP;
+            break;
+        default:
+            throw DbException.getUnsupportedException(
+                    Value.getTypeName(l.getValueType()) + " + " + Value.getTypeName(r.getValueType()));
         }
         type = TypeInfo.getTypeInfo(t, 0L, Math.max(l.getScale(), r.getScale()), null);
     }
@@ -72,27 +72,27 @@ public class CompatibilityDatePlusTimeOperation extends Operation2 {
             return ValueNull.INSTANCE;
         }
         switch (l.getValueType()) {
-            case Value.TIME:
-                if (r.getValueType() == Value.DATE) {
-                    return ValueTimestamp.fromDateValueAndNanos(((ValueDate) r).getDateValue(), //
-                            ((ValueTime) l).getNanos());
-                }
-                break;
-            case Value.TIME_TZ:
-                if (r.getValueType() == Value.DATE) {
-                    ValueTimeTimeZone t = (ValueTimeTimeZone) l;
-                    return ValueTimestampTimeZone.fromDateValueAndNanos(((ValueDate) r).getDateValue(), t.getNanos(),
-                            t.getTimeZoneOffsetSeconds());
-                }
-                break;
-            case Value.TIMESTAMP: {
-                if (r.getValueType() == Value.TIME_TZ) {
-                    ValueTimestamp ts = (ValueTimestamp) l;
-                    l = ValueTimestampTimeZone.fromDateValueAndNanos(ts.getDateValue(), ts.getTimeNanos(),
-                            ((ValueTimeTimeZone) r).getTimeZoneOffsetSeconds());
-                }
-                break;
+        case Value.TIME:
+            if (r.getValueType() == Value.DATE) {
+                return ValueTimestamp.fromDateValueAndNanos(((ValueDate) r).getDateValue(), //
+                        ((ValueTime) l).getNanos());
             }
+            break;
+        case Value.TIME_TZ:
+            if (r.getValueType() == Value.DATE) {
+                ValueTimeTimeZone t = (ValueTimeTimeZone) l;
+                return ValueTimestampTimeZone.fromDateValueAndNanos(((ValueDate) r).getDateValue(), t.getNanos(),
+                        t.getTimeZoneOffsetSeconds());
+            }
+            break;
+        case Value.TIMESTAMP: {
+            if (r.getValueType() == Value.TIME_TZ) {
+                ValueTimestamp ts = (ValueTimestamp) l;
+                l = ValueTimestampTimeZone.fromDateValueAndNanos(ts.getDateValue(), ts.getTimeNanos(),
+                        ((ValueTimeTimeZone) r).getTimeZoneOffsetSeconds());
+            }
+            break;
+        }
         }
         long[] a = DateTimeUtils.dateAndTimeFromValue(l, session);
         long dateValue = a[0], timeNanos = a[1]

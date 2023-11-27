@@ -66,7 +66,7 @@ public class TestBitStream extends TestBase {
     }
 
     private void testHuffman() {
-        int[] freq = {36, 18, 12, 9, 7, 6, 5, 4};
+        int[] freq = { 36, 18, 12, 9, 7, 6, 5, 4 };
         BitStream.Huffman huff = new BitStream.Huffman(freq);
         final StringBuilder buff = new StringBuilder();
         Out o = new Out(null) {
@@ -82,13 +82,13 @@ public class TestBitStream extends TestBase {
         }
         assertEquals(
                 "0: 0\n" +
-                        "1: 110\n" +
-                        "2: 100\n" +
-                        "3: 1110\n" +
-                        "4: 1011\n" +
-                        "5: 1010\n" +
-                        "6: 11111\n" +
-                        "7: 11110\n", buff.toString());
+                "1: 110\n" +
+                "2: 100\n" +
+                "3: 1110\n" +
+                "4: 1011\n" +
+                "5: 1010\n" +
+                "6: 11111\n" +
+                "7: 11110\n", buff.toString());
     }
 
     private void testGolomb(String expected, int div, int value) {

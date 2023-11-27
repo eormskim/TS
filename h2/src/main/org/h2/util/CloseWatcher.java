@@ -44,7 +44,7 @@ public class CloseWatcher extends PhantomReference<Object> {
     private AutoCloseable closeable;
 
     public CloseWatcher(Object referent, ReferenceQueue<Object> q,
-                        AutoCloseable closeable) {
+            AutoCloseable closeable) {
         super(referent, q);
         this.closeable = closeable;
     }
@@ -73,10 +73,10 @@ public class CloseWatcher extends PhantomReference<Object> {
      * Register an object. Before calling this method, pollUnclosed() should be
      * called in a loop to remove old references.
      *
-     * @param o          the object
-     * @param closeable  the object to close
+     * @param o the object
+     * @param closeable the object to close
      * @param stackTrace whether the stack trace should be registered (this is
-     *                   relatively slow)
+     *            relatively slow)
      * @return the close watcher
      */
     public static CloseWatcher register(Object o, AutoCloseable closeable, boolean stackTrace) {

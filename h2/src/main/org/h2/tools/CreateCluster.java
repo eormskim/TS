@@ -15,13 +15,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
 import org.h2.jdbc.JdbcConnection;
 import org.h2.util.Tool;
 
 /**
  * Creates a cluster from a stand-alone database.
- * <p>
+ *
  * Copies a database to another location if required.
  */
 public class CreateCluster extends Tool {
@@ -87,24 +86,24 @@ public class CreateCluster extends Tool {
     /**
      * Creates a cluster.
      *
-     * @param urlSource  the database URL of the original database
-     * @param urlTarget  the database URL of the copy
-     * @param user       the user name
-     * @param password   the password
+     * @param urlSource the database URL of the original database
+     * @param urlTarget the database URL of the copy
+     * @param user the user name
+     * @param password the password
      * @param serverList the server list
      * @throws SQLException on failure
      */
     public void execute(String urlSource, String urlTarget,
-                        String user, String password, String serverList) throws SQLException {
+            String user, String password, String serverList) throws SQLException {
         process(urlSource, urlTarget, user, password, serverList);
     }
 
     private static void process(String urlSource, String urlTarget,
-                                String user, String password, String serverList) throws SQLException {
+            String user, String password, String serverList) throws SQLException {
         // use cluster='' so connecting is possible
         // even if the cluster is enabled
         try (JdbcConnection connSource = new JdbcConnection(urlSource + ";CLUSTER=''", null, user, password, false);
-             Statement statSource = connSource.createStatement()) {
+                Statement statSource = connSource.createStatement()) {
             // enable the exclusive mode and close other connections,
             // so that data can't change while restoring the second database
             statSource.execute("SET EXCLUSIVE 2");
@@ -118,11 +117,11 @@ public class CreateCluster extends Tool {
     }
 
     private static void performTransfer(Statement statSource, String urlTarget, String user, String password,
-                                        String serverList) throws SQLException {
+            String serverList) throws SQLException {
 
         // Delete the target database first.
         try (JdbcConnection connTarget = new JdbcConnection(urlTarget + ";CLUSTER=''", null, user, password, false);
-             Statement statTarget = connTarget.createStatement()) {
+                Statement statTarget = connTarget.createStatement()) {
             statTarget.execute("DROP ALL OBJECTS DELETE FILES");
         }
 
@@ -131,7 +130,7 @@ public class CreateCluster extends Tool {
 
             // Read data from pipe reader, restore on target.
             try (JdbcConnection connTarget = new JdbcConnection(urlTarget, null, user, password, false);
-                 Statement statTarget = connTarget.createStatement()) {
+                    Statement statTarget = connTarget.createStatement()) {
                 RunScript.execute(connTarget, pipeReader);
 
                 // Check if the writer encountered any exception
@@ -153,7 +152,7 @@ public class CreateCluster extends Tool {
     }
 
     private static Future<?> startWriter(final PipedReader pipeReader,
-                                         final Statement statSource) throws IOException {
+            final Statement statSource) throws IOException {
         final ExecutorService thread = Executors.newFixedThreadPool(1);
         final PipedWriter pipeWriter = new PipedWriter(pipeReader);
         // Since exceptions cannot be thrown across thread boundaries, return
@@ -165,7 +164,7 @@ public class CreateCluster extends Tool {
             // occurs. The reader's IOException will then trigger the
             // finally{} that releases exclusive mode on the source DB.
             try (PipedWriter writer = pipeWriter;
-                 final ResultSet rs = statSource.executeQuery("SCRIPT")) {
+                    final ResultSet rs = statSource.executeQuery("SCRIPT")) {
                 while (rs.next()) {
                     writer.write(rs.getString(1) + "\n");
                 }

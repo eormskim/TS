@@ -60,21 +60,28 @@ public abstract class MVTempResult implements ResultExternal {
     /**
      * Creates MVStore-based temporary result.
      *
-     * @param database           database
-     * @param expressions        expressions
-     * @param distinct           is output distinct
-     * @param distinctIndexes    indexes of distinct columns for DISTINCT ON results
-     * @param visibleColumnCount count of visible columns
-     * @param resultColumnCount  the number of columns including visible columns and additional
-     *                           virtual columns for ORDER BY and DISTINCT ON clauses
-     * @param sort               sort order, or {@code null}
+     * @param database
+     *            database
+     * @param expressions
+     *            expressions
+     * @param distinct
+     *            is output distinct
+     * @param distinctIndexes
+     *            indexes of distinct columns for DISTINCT ON results
+     * @param visibleColumnCount
+     *            count of visible columns
+     * @param resultColumnCount
+     *            the number of columns including visible columns and additional
+     *            virtual columns for ORDER BY and DISTINCT ON clauses
+     * @param sort
+     *            sort order, or {@code null}
      * @return temporary result
      */
     public static ResultExternal of(Database database, Expression[] expressions, boolean distinct,
-                                    int[] distinctIndexes, int visibleColumnCount, int resultColumnCount, SortOrder sort) {
+            int[] distinctIndexes, int visibleColumnCount, int resultColumnCount, SortOrder sort) {
         return distinct || distinctIndexes != null || sort != null
                 ? new MVSortedTempResult(database, expressions, distinct, distinctIndexes, visibleColumnCount,
-                resultColumnCount, sort)
+                        resultColumnCount, sort)
                 : new MVPlainTempResult(database, expressions, visibleColumnCount, resultColumnCount);
     }
 
@@ -138,7 +145,8 @@ public abstract class MVTempResult implements ResultExternal {
     /**
      * Creates a shallow copy of the result.
      *
-     * @param parent parent result
+     * @param parent
+     *                   parent result
      */
     MVTempResult(MVTempResult parent) {
         this.parent = parent;
@@ -155,10 +163,14 @@ public abstract class MVTempResult implements ResultExternal {
     /**
      * Creates a new temporary result.
      *
-     * @param database           database
-     * @param expressions        column expressions
-     * @param visibleColumnCount count of visible columns
-     * @param resultColumnCount  total count of columns
+     * @param database
+     *            database
+     * @param expressions
+     *            column expressions
+     * @param visibleColumnCount
+     *            count of visible columns
+     * @param resultColumnCount
+     *            total count of columns
      */
     MVTempResult(Database database, Expression[] expressions, int visibleColumnCount, int resultColumnCount) {
         this.database = database;

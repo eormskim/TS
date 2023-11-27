@@ -49,25 +49,24 @@ public final class SessionControlFunction extends Function1 {
         }
         int targetSessionId = v.getInt();
         session.getUser().checkAdmin();
-        loop:
-        for (SessionLocal s : session.getDatabase().getSessions(false)) {
+        loop: for (SessionLocal s : session.getDatabase().getSessions(false)) {
             if (s.getId() == targetSessionId) {
                 Command c = s.getCurrentCommand();
                 switch (function) {
-                    case ABORT_SESSION:
-                        if (c != null) {
-                            c.cancel();
-                        }
-                        s.close();
+                case ABORT_SESSION:
+                    if (c != null) {
+                        c.cancel();
+                    }
+                    s.close();
+                    return ValueBoolean.TRUE;
+                case CANCEL_SESSION:
+                    if (c != null) {
+                        c.cancel();
                         return ValueBoolean.TRUE;
-                    case CANCEL_SESSION:
-                        if (c != null) {
-                            c.cancel();
-                            return ValueBoolean.TRUE;
-                        }
-                        break loop;
-                    default:
-                        throw DbException.getInternalError("function=" + function);
+                    }
+                    break loop;
+                default:
+                    throw DbException.getInternalError("function=" + function);
                 }
             }
         }
@@ -84,10 +83,10 @@ public final class SessionControlFunction extends Function1 {
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-            case ExpressionVisitor.DETERMINISTIC:
-            case ExpressionVisitor.READONLY:
-            case ExpressionVisitor.QUERY_COMPARABLE:
-                return false;
+        case ExpressionVisitor.DETERMINISTIC:
+        case ExpressionVisitor.READONLY:
+        case ExpressionVisitor.QUERY_COMPARABLE:
+            return false;
         }
         return super.isEverything(visitor);
     }

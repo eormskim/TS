@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
-
 import org.h2.command.CommandInterface;
 import org.h2.command.Prepared;
 import org.h2.engine.Database;
@@ -72,7 +71,7 @@ public class Explain extends Prepared {
     @Override
     public ResultInterface query(long maxrows) {
         Database db = session.getDatabase();
-        Expression[] expressions = {new ExpressionColumn(db, new Column("PLAN", TypeInfo.TYPE_VARCHAR))};
+        Expression[] expressions = { new ExpressionColumn(db, new Column("PLAN", TypeInfo.TYPE_VARCHAR)) };
         result = new LocalResult(session, expressions, 1, 1);
         int sqlFlags = HasSQL.ADD_PLAN_INFORMATION;
         if (maxrows >= 0) {

@@ -23,19 +23,13 @@ public class SimpleResult implements ResultInterface, ResultTarget {
      * Column info for the simple result.
      */
     static final class Column {
-        /**
-         * Column alias.
-         */
+        /** Column alias. */
         final String alias;
 
-        /**
-         * Column name.
-         */
+        /** Column name. */
         final String columnName;
 
-        /**
-         * Column type.
-         */
+        /** Column type. */
         final TypeInfo columnType;
 
         Column(String alias, String columnName, TypeInfo columnType) {
@@ -94,8 +88,10 @@ public class SimpleResult implements ResultInterface, ResultTarget {
     /**
      * Creates new instance of simple result.
      *
-     * @param schemaName the name of the schema
-     * @param tableName  the name of the table
+     * @param schemaName
+     *            the name of the schema
+     * @param tableName
+     *            the name of the table
      */
     public SimpleResult(String schemaName, String tableName) {
         this.columns = Utils.newSmallArrayList();
@@ -116,11 +112,16 @@ public class SimpleResult implements ResultInterface, ResultTarget {
     /**
      * Add column to the result.
      *
-     * @param alias           Column's alias.
-     * @param columnName      Column's name.
-     * @param columnType      Column's value type.
-     * @param columnPrecision Column's precision.
-     * @param columnScale     Column's scale.
+     * @param alias
+     *            Column's alias.
+     * @param columnName
+     *            Column's name.
+     * @param columnType
+     *            Column's value type.
+     * @param columnPrecision
+     *            Column's precision.
+     * @param columnScale
+     *            Column's scale.
      */
     public void addColumn(String alias, String columnName, int columnType, long columnPrecision, int columnScale) {
         addColumn(alias, columnName, TypeInfo.getTypeInfo(columnType, columnPrecision, columnScale, null));
@@ -129,8 +130,10 @@ public class SimpleResult implements ResultInterface, ResultTarget {
     /**
      * Add column to the result.
      *
-     * @param columnName Column's name.
-     * @param columnType Column's type.
+     * @param columnName
+     *            Column's name.
+     * @param columnType
+     *            Column's type.
      */
     public void addColumn(String columnName, TypeInfo columnType) {
         addColumn(new Column(columnName, columnName, columnType));
@@ -139,9 +142,12 @@ public class SimpleResult implements ResultInterface, ResultTarget {
     /**
      * Add column to the result.
      *
-     * @param alias      Column's alias.
-     * @param columnName Column's name.
-     * @param columnType Column's type.
+     * @param alias
+     *            Column's alias.
+     * @param columnName
+     *            Column's name.
+     * @param columnType
+     *            Column's type.
      */
     public void addColumn(String alias, String columnName, TypeInfo columnType) {
         addColumn(new Column(alias, columnName, columnType));
@@ -150,7 +156,8 @@ public class SimpleResult implements ResultInterface, ResultTarget {
     /**
      * Add column to the result.
      *
-     * @param column Column info.
+     * @param column
+     *            Column info.
      */
     void addColumn(Column column) {
         assert rows.isEmpty();
@@ -285,7 +292,8 @@ public class SimpleResult implements ResultInterface, ResultTarget {
     /**
      * Sort rows in the list.
      *
-     * @param comparator the comparator
+     * @param comparator
+     *            the comparator
      */
     public void sortRows(Comparator<? super Value[]> comparator) {
         rows.sort(comparator);

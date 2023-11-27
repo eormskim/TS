@@ -7,7 +7,6 @@ package org.h2.command;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import org.h2.engine.GeneratedKeysMode;
 import org.h2.engine.SessionRemote;
 import org.h2.engine.SysProperties;
@@ -43,7 +42,7 @@ public class CommandRemote implements CommandInterface {
     private final int created;
 
     public CommandRemote(SessionRemote session,
-                         ArrayList<Transfer> transferList, String sql, int fetchSize) {
+            ArrayList<Transfer> transferList, String sql, int fetchSize) {
         this.transferList = transferList;
         trace = session.getTrace();
         this.sql = sql;
@@ -74,7 +73,7 @@ public class CommandRemote implements CommandInterface {
                 } else {
                     s.traceOperation("SESSION_PREPARE", id);
                     transfer.writeInt(SessionRemote.SESSION_PREPARE).
-                            writeInt(id).writeString(sql);
+                        writeInt(id).writeString(sql);
                 }
                 s.done(transfer);
                 isQuery = transfer.readBoolean();
@@ -208,22 +207,22 @@ public class CommandRemote implements CommandInterface {
                     sendParameters(transfer);
                     transfer.writeInt(generatedKeysMode);
                     switch (generatedKeysMode) {
-                        case GeneratedKeysMode.COLUMN_NUMBERS: {
-                            int[] keys = (int[]) generatedKeysRequest;
-                            transfer.writeInt(keys.length);
-                            for (int key : keys) {
-                                transfer.writeInt(key);
-                            }
-                            break;
+                    case GeneratedKeysMode.COLUMN_NUMBERS: {
+                        int[] keys = (int[]) generatedKeysRequest;
+                        transfer.writeInt(keys.length);
+                        for (int key : keys) {
+                            transfer.writeInt(key);
                         }
-                        case GeneratedKeysMode.COLUMN_NAMES: {
-                            String[] keys = (String[]) generatedKeysRequest;
-                            transfer.writeInt(keys.length);
-                            for (String key : keys) {
-                                transfer.writeString(key);
-                            }
-                            break;
+                        break;
+                    }
+                    case GeneratedKeysMode.COLUMN_NAMES: {
+                        String[] keys = (String[]) generatedKeysRequest;
+                        transfer.writeInt(keys.length);
+                        for (String key : keys) {
+                            transfer.writeString(key);
                         }
+                        break;
+                    }
                     }
                     session.done(transfer);
                     updateCount = transfer.readRowCount();

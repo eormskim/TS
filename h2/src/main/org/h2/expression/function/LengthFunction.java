@@ -53,17 +53,17 @@ public final class LengthFunction extends Function1 {
         }
         long l;
         switch (function) {
-            case CHAR_LENGTH:
-                l = v.charLength();
-                break;
-            case OCTET_LENGTH:
-                l = v.octetLength();
-                break;
-            case BIT_LENGTH:
-                l = v.octetLength() * 8;
-                break;
-            default:
-                throw DbException.getInternalError("function=" + function);
+        case CHAR_LENGTH:
+            l = v.charLength();
+            break;
+        case OCTET_LENGTH:
+            l = v.octetLength();
+            break;
+        case BIT_LENGTH:
+            l = v.octetLength() * 8;
+            break;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         return ValueBigint.get(l);
     }

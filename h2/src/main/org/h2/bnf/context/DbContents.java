@@ -126,8 +126,9 @@ public class DbContents {
     }
 
     /**
-     * @param mayHaveStandardViews whether standard INFORMATION_SCHEMA.VIEWS is detected as
-     *                             supported
+     * @param mayHaveStandardViews
+     *            whether standard INFORMATION_SCHEMA.VIEWS is detected as
+     *            supported
      */
     public void setMayHaveStandardViews(boolean mayHaveStandardViews) {
         this.mayHaveStandardViews = mayHaveStandardViews;
@@ -136,7 +137,7 @@ public class DbContents {
     /**
      * Read the contents of this database from the database meta data.
      *
-     * @param url  the database URL
+     * @param url the database URL
      * @param conn the connection
      * @throws SQLException on failure
      */
@@ -157,7 +158,7 @@ public class DbContents {
             Session.StaticSettings settings = ((JdbcConnection) conn).getStaticSettings();
             databaseToUpper = settings.databaseToUpper;
             databaseToLower = settings.databaseToLower;
-        } else if (isMySQL || isPostgreSQL) {
+        }else if (isMySQL || isPostgreSQL) {
             databaseToUpper = false;
             databaseToLower = true;
         } else {
@@ -177,8 +178,8 @@ public class DbContents {
                 defaultSchema = schema;
             }
             schemas[i] = schema;
-            String[] tableTypes = {"TABLE", "SYSTEM TABLE", "VIEW",
-                    "SYSTEM VIEW", "TABLE LINK", "SYNONYM", "EXTERNAL"};
+            String[] tableTypes = { "TABLE", "SYSTEM TABLE", "VIEW",
+                    "SYSTEM VIEW", "TABLE LINK", "SYNONYM", "EXTERNAL" };
             schema.readTables(meta, tableTypes);
             if (!isPostgreSQL && !isDB2) {
                 schema.readProcedures(meta);
@@ -204,9 +205,9 @@ public class DbContents {
 
     private String[] getSchemaNames(DatabaseMetaData meta) throws SQLException {
         if (isMySQL || isSQLite) {
-            return new String[]{""};
+            return new String[] { "" };
         } else if (isFirebird) {
-            return new String[]{null};
+            return new String[] { null };
         }
         ResultSet rs = meta.getSchemas();
         ArrayList<String> schemaList = Utils.newSmallArrayList();
@@ -214,21 +215,21 @@ public class DbContents {
             String schema = rs.getString("TABLE_SCHEM");
             String[] ignoreNames = null;
             if (isOracle) {
-                ignoreNames = new String[]{"CTXSYS", "DIP", "DBSNMP",
+                ignoreNames = new String[] { "CTXSYS", "DIP", "DBSNMP",
                         "DMSYS", "EXFSYS", "FLOWS_020100", "FLOWS_FILES",
                         "MDDATA", "MDSYS", "MGMT_VIEW", "OLAPSYS", "ORDSYS",
                         "ORDPLUGINS", "OUTLN", "SI_INFORMTN_SCHEMA", "SYS",
-                        "SYSMAN", "SYSTEM", "TSMSYS", "WMSYS", "XDB"};
+                        "SYSMAN", "SYSTEM", "TSMSYS", "WMSYS", "XDB" };
             } else if (isMSSQLServer) {
-                ignoreNames = new String[]{"sys", "db_accessadmin",
+                ignoreNames = new String[] { "sys", "db_accessadmin",
                         "db_backupoperator", "db_datareader", "db_datawriter",
                         "db_ddladmin", "db_denydatareader",
-                        "db_denydatawriter", "db_owner", "db_securityadmin"};
+                        "db_denydatawriter", "db_owner", "db_securityadmin" };
             } else if (isDB2) {
-                ignoreNames = new String[]{"NULLID", "SYSFUN",
+                ignoreNames = new String[] { "NULLID", "SYSFUN",
                         "SYSIBMINTERNAL", "SYSIBMTS", "SYSPROC", "SYSPUBLIC",
                         // not empty, but not sure what they contain
-                        "SYSCAT", "SYSIBM", "SYSIBMADM",
+                        "SYSCAT",  "SYSIBM", "SYSIBMADM",
                         "SYSSTAT", "SYSTOOLS",
                 };
 

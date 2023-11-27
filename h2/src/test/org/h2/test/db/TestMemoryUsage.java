@@ -187,7 +187,7 @@ public class TestMemoryUsage extends TestDb {
         }
         long base = Utils.getMemoryUsed();
         stat.execute("create index idx_test_id on test(id)");
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             System.gc();
             long used = Utils.getMemoryUsed() - base;
             if (used <= getSize(7500, 12000)) {

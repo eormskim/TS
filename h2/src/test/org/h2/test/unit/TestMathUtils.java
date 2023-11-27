@@ -52,15 +52,15 @@ public class TestMathUtils extends TestBase {
     private void testNextPowerOf2Int() {
         // the largest power of two that fits into an integer
         final int largestPower2 = 0x40000000;
-        int[] testValues = {0, 1, 2, 3, 4, 12, 17, 500, 1023,
-                largestPower2 - 500, largestPower2};
-        int[] resultValues = {1, 1, 2, 4, 4, 16, 32, 512, 1024,
-                largestPower2, largestPower2};
+        int[] testValues = { 0, 1, 2, 3, 4, 12, 17, 500, 1023,
+                largestPower2 - 500, largestPower2 };
+        int[] resultValues = { 1, 1, 2, 4, 4, 16, 32, 512, 1024,
+                largestPower2, largestPower2 };
 
         for (int i = 0; i < testValues.length; i++) {
             assertEquals(resultValues[i], MathUtils.nextPowerOf2(testValues[i]));
         }
-        testValues = new int[]{Integer.MIN_VALUE, -1, largestPower2 + 1, Integer.MAX_VALUE};
+        testValues = new int[] { Integer.MIN_VALUE, -1, largestPower2 + 1, Integer.MAX_VALUE };
         for (int v : testValues) {
             assertThrows(IllegalArgumentException.class, () -> MathUtils.nextPowerOf2(v));
         }

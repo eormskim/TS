@@ -33,9 +33,9 @@ import org.h2.util.Utils;
  */
 class WebThread extends WebApp implements Runnable {
 
-    private static final byte[] RN = {'\r', '\n'};
+    private static final byte[] RN = { '\r', '\n' };
 
-    private static final byte[] RNRN = {'\r', '\n', '\r', '\n'};
+    private static final byte[] RNRN = { '\r', '\n', '\r', '\n' };
 
     protected OutputStream output;
     protected final Socket socket;
@@ -293,7 +293,7 @@ class WebThread extends WebApp implements Runnable {
     private void parseBodyAttributes() throws IOException {
         if (dataLength > 0) {
             byte[] bytes = Utils.newBytes(dataLength);
-            for (int pos = 0; pos < dataLength; ) {
+            for (int pos = 0; pos < dataLength;) {
                 pos += input.read(bytes, pos, dataLength - pos);
             }
             String s = new String(bytes, StandardCharsets.UTF_8);
@@ -332,7 +332,7 @@ class WebThread extends WebApp implements Runnable {
         host = null;
         ifModifiedSince = null;
         boolean multipart = false;
-        for (String line; (line = readHeaderLine()) != null; ) {
+        for (String line; (line = readHeaderLine()) != null;) {
             trace(" " + line);
             String lower = StringUtils.toLowerEnglish(line);
             if (lower.startsWith("host")) {

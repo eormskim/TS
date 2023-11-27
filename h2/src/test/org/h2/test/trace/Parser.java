@@ -47,7 +47,7 @@ class Parser {
      * Parse a Java statement.
      *
      * @param player the player
-     * @param line   the statement text
+     * @param line the statement text
      * @return the statement
      */
     static Statement parseStatement(Player player, String line) {
@@ -95,59 +95,59 @@ class Parser {
         int start = pos;
         char ch = line.charAt(pos);
         switch (ch) {
-            case '\"':
-                tokenType = STRING;
+        case '\"':
+            tokenType = STRING;
+            pos++;
+            while (pos < line.length()) {
+                ch = line.charAt(pos);
+                if (ch == '\\') {
+                    pos += 2;
+                } else if (ch == '\"') {
+                    pos++;
+                    break;
+                } else {
+                    pos++;
+                }
+            }
+            break;
+        case '.':
+        case ',':
+        case '(':
+        case ')':
+        case ';':
+        case '{':
+        case '}':
+        case '[':
+        case ']':
+        case '=':
+            tokenType = SPECIAL;
+            pos++;
+            break;
+        default:
+            if (Character.isLetter(ch) || ch == '_') {
+                tokenType = NAME;
                 pos++;
-                while (pos < line.length()) {
+                while (true) {
                     ch = line.charAt(pos);
-                    if (ch == '\\') {
-                        pos += 2;
-                    } else if (ch == '\"') {
+                    if (Character.isLetterOrDigit(ch) || ch == '_') {
                         pos++;
-                        break;
                     } else {
-                        pos++;
+                        break;
                     }
                 }
-                break;
-            case '.':
-            case ',':
-            case '(':
-            case ')':
-            case ';':
-            case '{':
-            case '}':
-            case '[':
-            case ']':
-            case '=':
-                tokenType = SPECIAL;
+            } else if (ch == '-' || Character.isDigit(ch)) {
+                tokenType = NUMBER;
                 pos++;
-                break;
-            default:
-                if (Character.isLetter(ch) || ch == '_') {
-                    tokenType = NAME;
-                    pos++;
-                    while (true) {
-                        ch = line.charAt(pos);
-                        if (Character.isLetterOrDigit(ch) || ch == '_') {
-                            pos++;
-                        } else {
-                            break;
-                        }
-                    }
-                } else if (ch == '-' || Character.isDigit(ch)) {
-                    tokenType = NUMBER;
-                    pos++;
-                    while (true) {
-                        ch = line.charAt(pos);
-                        if (Character.isDigit(ch)
-                                || ".+-eElLxabcdefABCDEF".indexOf(ch) >= 0) {
-                            pos++;
-                        } else {
-                            break;
-                        }
+                while (true) {
+                    ch = line.charAt(pos);
+                    if (Character.isDigit(ch)
+                            || ".+-eElLxabcdefABCDEF".indexOf(ch) >= 0) {
+                        pos++;
+                    } else {
+                        break;
                     }
                 }
+            }
         }
         token = line.substring(start, pos);
     }

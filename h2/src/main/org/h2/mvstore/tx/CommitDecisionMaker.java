@@ -28,9 +28,9 @@ final class CommitDecisionMaker<V> extends MVMap.DecisionMaker<VersionedValue<V>
     public MVMap.Decision decide(VersionedValue<V> existingValue, VersionedValue<V> providedValue) {
         assert decision == null;
         if (existingValue == null ||
-                // map entry was treated as already committed, and then
-                // it has been removed by another transaction (committed and closed by now)
-                existingValue.getOperationId() != undoKey) {
+            // map entry was treated as already committed, and then
+            // it has been removed by another transaction (committed and closed by now)
+            existingValue.getOperationId() != undoKey) {
             // this is not a final undo log entry for this key,
             // or map entry was treated as already committed and then
             // overwritten by another transaction

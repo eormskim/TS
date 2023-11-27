@@ -26,9 +26,10 @@ class VersionedValueUncommitted<T> extends VersionedValueCommitted<T> {
     /**
      * Create new VersionedValueUncommitted.
      *
-     * @param <X>            type of the value to get the VersionedValue for
-     * @param operationId    combined log/transaction id
-     * @param value          value before commit
+     * @param <X> type of the value to get the VersionedValue for
+     *
+     * @param operationId combined log/transaction id
+     * @param value value before commit
      * @param committedValue value after commit
      * @return VersionedValue instance
      */

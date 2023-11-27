@@ -17,9 +17,9 @@ public abstract class SchemaObject extends DbObject {
     /**
      * Initialize some attributes of this object.
      *
-     * @param newSchema     the schema
-     * @param id            the object id
-     * @param name          the name
+     * @param newSchema the schema
+     * @param id the object id
+     * @param name the name
      * @param traceModuleId the trace module id
      */
     protected SchemaObject(Schema newSchema, int id, String name, int traceModuleId) {

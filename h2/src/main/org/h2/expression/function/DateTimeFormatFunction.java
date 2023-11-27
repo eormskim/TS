@@ -130,14 +130,14 @@ public final class DateTimeFormatFunction extends FunctionN {
             tz = locale = null;
         }
         switch (function) {
-            case FORMATDATETIME:
-                v1 = ValueVarchar.get(formatDateTime(session, v1, format, locale, tz));
-                break;
-            case PARSEDATETIME:
-                v1 = parseDateTime(session, v1.getString(), format, locale, tz);
-                break;
-            default:
-                throw DbException.getInternalError("function=" + function);
+        case FORMATDATETIME:
+            v1 = ValueVarchar.get(formatDateTime(session, v1, format, locale, tz));
+            break;
+        case PARSEDATETIME:
+            v1 = parseDateTime(session, v1.getString(), format, locale, tz);
+            break;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         return v1;
     }
@@ -145,15 +145,20 @@ public final class DateTimeFormatFunction extends FunctionN {
     /**
      * Formats a date using a format string.
      *
-     * @param session  the session
-     * @param date     the date to format
-     * @param format   the format string
-     * @param locale   the locale
-     * @param timeZone the time zone
+     * @param session
+     *            the session
+     * @param date
+     *            the date to format
+     * @param format
+     *            the format string
+     * @param locale
+     *            the locale
+     * @param timeZone
+     *            the time zone
      * @return the formatted date
      */
     public static String formatDateTime(SessionLocal session, Value date, String format, String locale,
-                                        String timeZone) {
+            String timeZone) {
         CacheValue formatAndZone = getDateFormat(format, locale, timeZone);
         ZoneId zoneId = formatAndZone.zoneId;
         TemporalAccessor value;
@@ -177,15 +182,20 @@ public final class DateTimeFormatFunction extends FunctionN {
     /**
      * Parses a date using a format string.
      *
-     * @param session  the session
-     * @param date     the date to parse
-     * @param format   the parsing format
-     * @param locale   the locale
-     * @param timeZone the time zone
+     * @param session
+     *            the session
+     * @param date
+     *            the date to parse
+     * @param format
+     *            the parsing format
+     * @param locale
+     *            the locale
+     * @param timeZone
+     *            the time zone
      * @return the parsed date
      */
     public static ValueTimestampTimeZone parseDateTime(SessionLocal session, String date, String format, String locale,
-                                                       String timeZone) {
+            String timeZone) {
         CacheValue formatAndZone = getDateFormat(format, locale, timeZone);
         try {
             ValueTimestampTimeZone result;
@@ -217,14 +227,14 @@ public final class DateTimeFormatFunction extends FunctionN {
                         result = parsedZoneId != null
                                 ? JSR310Utils.zonedDateTimeToValue(localDateTime.atZone(parsedZoneId))
                                 : (ValueTimestampTimeZone) JSR310Utils.localDateTimeToValue(localDateTime)
-                                .convertTo(Value.TIMESTAMP_TZ, session);
+                                        .convertTo(Value.TIMESTAMP_TZ, session);
                     } else {
                         result = parsedZoneId != null
                                 ? JSR310Utils.zonedDateTimeToValue(
-                                JSR310Utils.valueToInstant(session.currentTimestamp(), session)
-                                        .atZone(parsedZoneId).with(localTime))
+                                        JSR310Utils.valueToInstant(session.currentTimestamp(), session)
+                                                .atZone(parsedZoneId).with(localTime))
                                 : (ValueTimestampTimeZone) ValueTime.fromNanos(localTime.toNanoOfDay())
-                                .convertTo(Value.TIMESTAMP_TZ, session);
+                                        .convertTo(Value.TIMESTAMP_TZ, session);
                     }
                 }
             }
@@ -280,14 +290,14 @@ public final class DateTimeFormatFunction extends FunctionN {
     public Expression optimize(SessionLocal session) {
         boolean allConst = optimizeArguments(session, true);
         switch (function) {
-            case FORMATDATETIME:
-                type = TypeInfo.TYPE_VARCHAR;
-                break;
-            case PARSEDATETIME:
-                type = TypeInfo.TYPE_TIMESTAMP_TZ;
-                break;
-            default:
-                throw DbException.getInternalError("function=" + function);
+        case FORMATDATETIME:
+            type = TypeInfo.TYPE_VARCHAR;
+            break;
+        case PARSEDATETIME:
+            type = TypeInfo.TYPE_TIMESTAMP_TZ;
+            break;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         if (allConst) {
             return TypedValueExpression.getTypedIfNull(getValue(session), type);

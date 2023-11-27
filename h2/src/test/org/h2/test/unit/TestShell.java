@@ -14,7 +14,6 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
-
 import org.h2.test.TestBase;
 import org.h2.tools.Shell;
 import org.h2.util.Task;

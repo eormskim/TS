@@ -8,7 +8,6 @@ package org.h2.store.fs.rec;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
-
 import org.h2.store.fs.FilePath;
 import org.h2.store.fs.FilePathWrapper;
 import org.h2.store.fs.Recorder;
@@ -86,7 +85,7 @@ public class FilePathRec extends FilePathWrapper {
     /**
      * Log the operation.
      *
-     * @param op       the operation
+     * @param op the operation
      * @param fileName the file name(s)
      */
     void log(int op, String fileName) {
@@ -96,10 +95,10 @@ public class FilePathRec extends FilePathWrapper {
     /**
      * Log the operation.
      *
-     * @param op       the operation
+     * @param op the operation
      * @param fileName the file name
-     * @param data     the data or null
-     * @param x        the value or 0
+     * @param data the data or null
+     * @param x the value or 0
      */
     void log(int op, String fileName, byte[] data, long x) {
         if (recorder != null) {

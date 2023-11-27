@@ -233,14 +233,18 @@ public abstract class SelectGroups {
     /**
      * Creates new instance of grouped data.
      *
-     * @param session      the session
-     * @param expressions  the expressions
-     * @param isGroupQuery is this query is a group query
-     * @param groupIndex   the indexes of group expressions, or null
+     * @param session
+     *            the session
+     * @param expressions
+     *            the expressions
+     * @param isGroupQuery
+     *            is this query is a group query
+     * @param groupIndex
+     *            the indexes of group expressions, or null
      * @return new instance of the grouped data.
      */
     public static SelectGroups getInstance(SessionLocal session, ArrayList<Expression> expressions,
-                                           boolean isGroupQuery, int[] groupIndex) {
+            boolean isGroupQuery, int[] groupIndex) {
         return isGroupQuery ? new Grouped(session, expressions, groupIndex) : new Plain(session, expressions);
     }
 
@@ -253,7 +257,7 @@ public abstract class SelectGroups {
      * Is there currently a group-by active.
      *
      * @return {@code true} if there is currently a group-by active,
-     * otherwise returns {@code false}.
+     *          otherwise returns {@code false}.
      */
     public boolean isCurrentGroup() {
         return currentGroupByExprData != null;
@@ -262,7 +266,8 @@ public abstract class SelectGroups {
     /**
      * Get the group-by data for the current group and the passed in expression.
      *
-     * @param expr expression
+     * @param expr
+     *            expression
      * @return expression data or null
      */
     public final Object getCurrentGroupExprData(Expression expr) {
@@ -276,8 +281,10 @@ public abstract class SelectGroups {
     /**
      * Set the group-by data for the current group and the passed in expression.
      *
-     * @param expr expression
-     * @param obj  expression data to set
+     * @param expr
+     *            expression
+     * @param obj
+     *            expression data to set
      */
     public final void setCurrentGroupExprData(Expression expr, Object obj) {
         Integer index = exprToIndexInGroupByData.get(expr);
@@ -307,8 +314,10 @@ public abstract class SelectGroups {
     /**
      * Get the window data for the specified expression.
      *
-     * @param expr         expression
-     * @param partitionKey a key of partition
+     * @param expr
+     *            expression
+     * @param partitionKey
+     *            a key of partition
      * @return expression data or null
      */
     public final PartitionData getWindowExprData(DataAnalysisOperation expr, Value partitionKey) {
@@ -323,9 +332,12 @@ public abstract class SelectGroups {
     /**
      * Set the window data for the specified expression.
      *
-     * @param expr         expression
-     * @param partitionKey a key of partition
-     * @param obj          window expression data to set
+     * @param expr
+     *            expression
+     * @param partitionKey
+     *            a key of partition
+     * @param obj
+     *            window expression data to set
      */
     public final void setWindowExprData(DataAnalysisOperation expr, Value partitionKey, PartitionData obj) {
         if (partitionKey == null) {

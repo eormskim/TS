@@ -151,7 +151,7 @@ public final class Transfer {
      * Create a new transfer object for the specified session.
      *
      * @param session the session
-     * @param s       the socket
+     * @param s the socket
      */
     public Transfer(Session session, Socket s) {
         this.session = session;
@@ -161,7 +161,6 @@ public final class Transfer {
     /**
      * Initialize the transfer object. This method will try to open an input and
      * output stream.
-     *
      * @throws IOException on failure
      */
     public synchronized void init() throws IOException {
@@ -177,7 +176,6 @@ public final class Transfer {
 
     /**
      * Write pending changes.
-     *
      * @throws IOException on failure
      */
     public void flush() throws IOException {
@@ -395,8 +393,8 @@ public final class Transfer {
      * Write a number of bytes.
      *
      * @param buff the value
-     * @param off  the offset
-     * @param len  the length
+     * @param off the offset
+     * @param len the length
      * @return itself
      * @throws IOException on failure
      */
@@ -425,8 +423,8 @@ public final class Transfer {
      * Read a number of bytes.
      *
      * @param buff the target buffer
-     * @param off  the offset
-     * @param len  the number of bytes to read
+     * @param off the offset
+     * @param len the number of bytes to read
      * @throws IOException on failure
      */
     public void readBytes(byte[] buff, int off, int len) throws IOException {
@@ -471,76 +469,76 @@ public final class Transfer {
         int valueType = type.getValueType();
         writeInt(VALUE_TO_TI[valueType + 1]);
         switch (valueType) {
-            case Value.UNKNOWN:
-            case Value.NULL:
-            case Value.BOOLEAN:
-            case Value.TINYINT:
-            case Value.SMALLINT:
-            case Value.INTEGER:
-            case Value.BIGINT:
-            case Value.DATE:
-            case Value.UUID:
-                break;
-            case Value.CHAR:
-            case Value.VARCHAR:
-            case Value.VARCHAR_IGNORECASE:
-            case Value.BINARY:
-            case Value.VARBINARY:
-            case Value.DECFLOAT:
-            case Value.JAVA_OBJECT:
-            case Value.JSON:
-                writeInt((int) type.getDeclaredPrecision());
-                break;
-            case Value.CLOB:
-            case Value.BLOB:
-                writeLong(type.getDeclaredPrecision());
-                break;
-            case Value.NUMERIC:
-                writeInt((int) type.getDeclaredPrecision());
-                writeInt(type.getDeclaredScale());
-                writeBoolean(type.getExtTypeInfo() != null);
-                break;
-            case Value.REAL:
-            case Value.DOUBLE:
-            case Value.INTERVAL_YEAR:
-            case Value.INTERVAL_MONTH:
-            case Value.INTERVAL_DAY:
-            case Value.INTERVAL_HOUR:
-            case Value.INTERVAL_MINUTE:
-            case Value.INTERVAL_YEAR_TO_MONTH:
-            case Value.INTERVAL_DAY_TO_HOUR:
-            case Value.INTERVAL_DAY_TO_MINUTE:
-            case Value.INTERVAL_HOUR_TO_MINUTE:
-                writeBytePrecisionWithDefault(type.getDeclaredPrecision());
-                break;
-            case Value.TIME:
-            case Value.TIME_TZ:
-            case Value.TIMESTAMP:
-            case Value.TIMESTAMP_TZ:
-                writeByteScaleWithDefault(type.getDeclaredScale());
-                break;
-            case Value.INTERVAL_SECOND:
-            case Value.INTERVAL_DAY_TO_SECOND:
-            case Value.INTERVAL_HOUR_TO_SECOND:
-            case Value.INTERVAL_MINUTE_TO_SECOND:
-                writeBytePrecisionWithDefault(type.getDeclaredPrecision());
-                writeByteScaleWithDefault(type.getDeclaredScale());
-                break;
-            case Value.ENUM:
-                writeTypeInfoEnum(type);
-                break;
-            case Value.GEOMETRY:
-                writeTypeInfoGeometry(type);
-                break;
-            case Value.ARRAY:
-                writeInt((int) type.getDeclaredPrecision());
-                writeTypeInfo((TypeInfo) type.getExtTypeInfo());
-                break;
-            case Value.ROW:
-                writeTypeInfoRow(type);
-                break;
-            default:
-                throw DbException.getUnsupportedException("value type " + valueType);
+        case Value.UNKNOWN:
+        case Value.NULL:
+        case Value.BOOLEAN:
+        case Value.TINYINT:
+        case Value.SMALLINT:
+        case Value.INTEGER:
+        case Value.BIGINT:
+        case Value.DATE:
+        case Value.UUID:
+            break;
+        case Value.CHAR:
+        case Value.VARCHAR:
+        case Value.VARCHAR_IGNORECASE:
+        case Value.BINARY:
+        case Value.VARBINARY:
+        case Value.DECFLOAT:
+        case Value.JAVA_OBJECT:
+        case Value.JSON:
+            writeInt((int) type.getDeclaredPrecision());
+            break;
+        case Value.CLOB:
+        case Value.BLOB:
+            writeLong(type.getDeclaredPrecision());
+            break;
+        case Value.NUMERIC:
+            writeInt((int) type.getDeclaredPrecision());
+            writeInt(type.getDeclaredScale());
+            writeBoolean(type.getExtTypeInfo() != null);
+            break;
+        case Value.REAL:
+        case Value.DOUBLE:
+        case Value.INTERVAL_YEAR:
+        case Value.INTERVAL_MONTH:
+        case Value.INTERVAL_DAY:
+        case Value.INTERVAL_HOUR:
+        case Value.INTERVAL_MINUTE:
+        case Value.INTERVAL_YEAR_TO_MONTH:
+        case Value.INTERVAL_DAY_TO_HOUR:
+        case Value.INTERVAL_DAY_TO_MINUTE:
+        case Value.INTERVAL_HOUR_TO_MINUTE:
+            writeBytePrecisionWithDefault(type.getDeclaredPrecision());
+            break;
+        case Value.TIME:
+        case Value.TIME_TZ:
+        case Value.TIMESTAMP:
+        case Value.TIMESTAMP_TZ:
+            writeByteScaleWithDefault(type.getDeclaredScale());
+            break;
+        case Value.INTERVAL_SECOND:
+        case Value.INTERVAL_DAY_TO_SECOND:
+        case Value.INTERVAL_HOUR_TO_SECOND:
+        case Value.INTERVAL_MINUTE_TO_SECOND:
+            writeBytePrecisionWithDefault(type.getDeclaredPrecision());
+            writeByteScaleWithDefault(type.getDeclaredScale());
+            break;
+        case Value.ENUM:
+            writeTypeInfoEnum(type);
+            break;
+        case Value.GEOMETRY:
+            writeTypeInfoGeometry(type);
+            break;
+        case Value.ARRAY:
+            writeInt((int) type.getDeclaredPrecision());
+            writeTypeInfo((TypeInfo) type.getExtTypeInfo());
+            break;
+        case Value.ROW:
+            writeTypeInfoRow(type);
+            break;
+        default:
+            throw DbException.getUnsupportedException("value type " + valueType);
         }
     }
 
@@ -603,12 +601,12 @@ public final class Transfer {
     private void writeTypeInfo19(TypeInfo type) throws IOException {
         int valueType = type.getValueType();
         switch (valueType) {
-            case Value.BINARY:
-                valueType = Value.VARBINARY;
-                break;
-            case Value.DECFLOAT:
-                valueType = Value.NUMERIC;
-                break;
+        case Value.BINARY:
+            valueType = Value.VARBINARY;
+            break;
+        case Value.DECFLOAT:
+            valueType = Value.NUMERIC;
+            break;
         }
         writeInt(VALUE_TO_TI[valueType + 1]).writeLong(type.getPrecision()).writeInt(type.getScale());
     }
@@ -633,78 +631,78 @@ public final class Transfer {
         int scale = -1;
         ExtTypeInfo ext = null;
         switch (valueType) {
-            case Value.UNKNOWN:
-            case Value.NULL:
-            case Value.BOOLEAN:
-            case Value.TINYINT:
-            case Value.SMALLINT:
-            case Value.INTEGER:
-            case Value.BIGINT:
-            case Value.DATE:
-            case Value.UUID:
-                break;
-            case Value.CHAR:
-            case Value.VARCHAR:
-            case Value.VARCHAR_IGNORECASE:
-            case Value.BINARY:
-            case Value.VARBINARY:
-            case Value.DECFLOAT:
-            case Value.JAVA_OBJECT:
-            case Value.JSON:
-                precision = readInt();
-                break;
-            case Value.CLOB:
-            case Value.BLOB:
-                precision = readLong();
-                break;
-            case Value.NUMERIC:
-                precision = readInt();
-                scale = readInt();
-                if (readBoolean()) {
-                    ext = ExtTypeInfoNumeric.DECIMAL;
-                }
-                break;
-            case Value.REAL:
-            case Value.DOUBLE:
-            case Value.INTERVAL_YEAR:
-            case Value.INTERVAL_MONTH:
-            case Value.INTERVAL_DAY:
-            case Value.INTERVAL_HOUR:
-            case Value.INTERVAL_MINUTE:
-            case Value.INTERVAL_YEAR_TO_MONTH:
-            case Value.INTERVAL_DAY_TO_HOUR:
-            case Value.INTERVAL_DAY_TO_MINUTE:
-            case Value.INTERVAL_HOUR_TO_MINUTE:
-                precision = readByte();
-                break;
-            case Value.TIME:
-            case Value.TIME_TZ:
-            case Value.TIMESTAMP:
-            case Value.TIMESTAMP_TZ:
-                scale = readByte();
-                break;
-            case Value.INTERVAL_SECOND:
-            case Value.INTERVAL_DAY_TO_SECOND:
-            case Value.INTERVAL_HOUR_TO_SECOND:
-            case Value.INTERVAL_MINUTE_TO_SECOND:
-                precision = readByte();
-                scale = readByte();
-                break;
-            case Value.ENUM:
-                ext = readTypeInfoEnum();
-                break;
-            case Value.GEOMETRY:
-                ext = readTypeInfoGeometry();
-                break;
-            case Value.ARRAY:
-                precision = readInt();
-                ext = readTypeInfo();
-                break;
-            case Value.ROW:
-                ext = readTypeInfoRow();
-                break;
-            default:
-                throw DbException.getUnsupportedException("value type " + valueType);
+        case Value.UNKNOWN:
+        case Value.NULL:
+        case Value.BOOLEAN:
+        case Value.TINYINT:
+        case Value.SMALLINT:
+        case Value.INTEGER:
+        case Value.BIGINT:
+        case Value.DATE:
+        case Value.UUID:
+            break;
+        case Value.CHAR:
+        case Value.VARCHAR:
+        case Value.VARCHAR_IGNORECASE:
+        case Value.BINARY:
+        case Value.VARBINARY:
+        case Value.DECFLOAT:
+        case Value.JAVA_OBJECT:
+        case Value.JSON:
+            precision = readInt();
+            break;
+        case Value.CLOB:
+        case Value.BLOB:
+            precision = readLong();
+            break;
+        case Value.NUMERIC:
+            precision = readInt();
+            scale = readInt();
+            if (readBoolean()) {
+                ext = ExtTypeInfoNumeric.DECIMAL;
+            }
+            break;
+        case Value.REAL:
+        case Value.DOUBLE:
+        case Value.INTERVAL_YEAR:
+        case Value.INTERVAL_MONTH:
+        case Value.INTERVAL_DAY:
+        case Value.INTERVAL_HOUR:
+        case Value.INTERVAL_MINUTE:
+        case Value.INTERVAL_YEAR_TO_MONTH:
+        case Value.INTERVAL_DAY_TO_HOUR:
+        case Value.INTERVAL_DAY_TO_MINUTE:
+        case Value.INTERVAL_HOUR_TO_MINUTE:
+            precision = readByte();
+            break;
+        case Value.TIME:
+        case Value.TIME_TZ:
+        case Value.TIMESTAMP:
+        case Value.TIMESTAMP_TZ:
+            scale = readByte();
+            break;
+        case Value.INTERVAL_SECOND:
+        case Value.INTERVAL_DAY_TO_SECOND:
+        case Value.INTERVAL_HOUR_TO_SECOND:
+        case Value.INTERVAL_MINUTE_TO_SECOND:
+            precision = readByte();
+            scale = readByte();
+            break;
+        case Value.ENUM:
+            ext = readTypeInfoEnum();
+            break;
+        case Value.GEOMETRY:
+            ext = readTypeInfoGeometry();
+            break;
+        case Value.ARRAY:
+            precision = readInt();
+            ext = readTypeInfo();
+            break;
+        case Value.ROW:
+            ext = readTypeInfoRow();
+            break;
+        default:
+            throw DbException.getUnsupportedException("value type " + valueType);
         }
         return TypeInfo.getTypeInfo(valueType, precision, scale, ext);
     }
@@ -728,20 +726,20 @@ public final class Transfer {
         ExtTypeInfo ext;
         int e = readByte();
         switch (e) {
-            case 0:
-                ext = null;
-                break;
-            case 1:
-                ext = new ExtTypeInfoGeometry(readShort(), null);
-                break;
-            case 2:
-                ext = new ExtTypeInfoGeometry(0, readInt());
-                break;
-            case 3:
-                ext = new ExtTypeInfoGeometry(readShort(), readInt());
-                break;
-            default:
-                throw DbException.getUnsupportedException("GEOMETRY type encoding " + e);
+        case 0:
+            ext = null;
+            break;
+        case 1:
+            ext = new ExtTypeInfoGeometry(readShort(), null);
+            break;
+        case 2:
+            ext = new ExtTypeInfoGeometry(0, readInt());
+            break;
+        case 3:
+            ext = new ExtTypeInfoGeometry(readShort(), readInt());
+            break;
+        default:
+            throw DbException.getUnsupportedException("GEOMETRY type encoding " + e);
         }
         return ext;
     }
@@ -770,269 +768,269 @@ public final class Transfer {
     public void writeValue(Value v) throws IOException {
         int type = v.getValueType();
         switch (type) {
-            case Value.NULL:
-                writeInt(NULL);
-                break;
-            case Value.BINARY:
-                if (version >= Constants.TCP_PROTOCOL_VERSION_20) {
-                    writeInt(BINARY);
-                    writeBytes(v.getBytesNoCopy());
-                    break;
-                }
-                //$FALL-THROUGH$
-            case Value.VARBINARY:
-                writeInt(VARBINARY);
+        case Value.NULL:
+            writeInt(NULL);
+            break;
+        case Value.BINARY:
+            if (version >= Constants.TCP_PROTOCOL_VERSION_20) {
+                writeInt(BINARY);
                 writeBytes(v.getBytesNoCopy());
-                break;
-            case Value.JAVA_OBJECT:
-                writeInt(JAVA_OBJECT);
-                writeBytes(v.getBytesNoCopy());
-                break;
-            case Value.UUID: {
-                writeInt(UUID);
-                ValueUuid uuid = (ValueUuid) v;
-                writeLong(uuid.getHigh());
-                writeLong(uuid.getLow());
                 break;
             }
-            case Value.BOOLEAN:
-                writeInt(BOOLEAN);
-                writeBoolean(v.getBoolean());
-                break;
-            case Value.TINYINT:
-                writeInt(TINYINT);
-                writeByte(v.getByte());
-                break;
-            case Value.TIME:
+            //$FALL-THROUGH$
+        case Value.VARBINARY:
+            writeInt(VARBINARY);
+            writeBytes(v.getBytesNoCopy());
+            break;
+        case Value.JAVA_OBJECT:
+            writeInt(JAVA_OBJECT);
+            writeBytes(v.getBytesNoCopy());
+            break;
+        case Value.UUID: {
+            writeInt(UUID);
+            ValueUuid uuid = (ValueUuid) v;
+            writeLong(uuid.getHigh());
+            writeLong(uuid.getLow());
+            break;
+        }
+        case Value.BOOLEAN:
+            writeInt(BOOLEAN);
+            writeBoolean(v.getBoolean());
+            break;
+        case Value.TINYINT:
+            writeInt(TINYINT);
+            writeByte(v.getByte());
+            break;
+        case Value.TIME:
+            writeInt(TIME);
+            writeLong(((ValueTime) v).getNanos());
+            break;
+        case Value.TIME_TZ: {
+            ValueTimeTimeZone t = (ValueTimeTimeZone) v;
+            if (version >= Constants.TCP_PROTOCOL_VERSION_19) {
+                writeInt(TIME_TZ);
+                writeLong(t.getNanos());
+                writeInt(t.getTimeZoneOffsetSeconds());
+            } else {
                 writeInt(TIME);
-                writeLong(((ValueTime) v).getNanos());
-                break;
-            case Value.TIME_TZ: {
-                ValueTimeTimeZone t = (ValueTimeTimeZone) v;
-                if (version >= Constants.TCP_PROTOCOL_VERSION_19) {
-                    writeInt(TIME_TZ);
-                    writeLong(t.getNanos());
-                    writeInt(t.getTimeZoneOffsetSeconds());
-                } else {
-                    writeInt(TIME);
-                    /*
-                     * Don't call SessionRemote.currentTimestamp(), it may require
-                     * own remote call and old server will not return custom time
-                     * zone anyway.
-                     */
-                    ValueTimestampTimeZone current = session.isRemote()
-                            ? DateTimeUtils.currentTimestamp(DateTimeUtils.getTimeZone()) : session.currentTimestamp();
-                    writeLong(DateTimeUtils.normalizeNanosOfDay(t.getNanos() +
-                            (t.getTimeZoneOffsetSeconds() - current.getTimeZoneOffsetSeconds())
-                                    * DateTimeUtils.NANOS_PER_DAY));
-                }
+                /*
+                 * Don't call SessionRemote.currentTimestamp(), it may require
+                 * own remote call and old server will not return custom time
+                 * zone anyway.
+                 */
+                ValueTimestampTimeZone current = session.isRemote()
+                        ? DateTimeUtils.currentTimestamp(DateTimeUtils.getTimeZone()) : session.currentTimestamp();
+                writeLong(DateTimeUtils.normalizeNanosOfDay(t.getNanos() +
+                        (t.getTimeZoneOffsetSeconds() - current.getTimeZoneOffsetSeconds())
+                        * DateTimeUtils.NANOS_PER_DAY));
+            }
+            break;
+        }
+        case Value.DATE:
+            writeInt(DATE);
+            writeLong(((ValueDate) v).getDateValue());
+            break;
+        case Value.TIMESTAMP: {
+            writeInt(TIMESTAMP);
+            ValueTimestamp ts = (ValueTimestamp) v;
+            writeLong(ts.getDateValue());
+            writeLong(ts.getTimeNanos());
+            break;
+        }
+        case Value.TIMESTAMP_TZ: {
+            writeInt(TIMESTAMP_TZ);
+            ValueTimestampTimeZone ts = (ValueTimestampTimeZone) v;
+            writeLong(ts.getDateValue());
+            writeLong(ts.getTimeNanos());
+            int timeZoneOffset = ts.getTimeZoneOffsetSeconds();
+            writeInt(version >= Constants.TCP_PROTOCOL_VERSION_19 //
+                    ? timeZoneOffset : timeZoneOffset / 60);
+            break;
+        }
+        case Value.DECFLOAT:
+            if (version >= Constants.TCP_PROTOCOL_VERSION_20) {
+                writeInt(DECFLOAT);
+                writeString(v.getString());
                 break;
             }
-            case Value.DATE:
-                writeInt(DATE);
-                writeLong(((ValueDate) v).getDateValue());
-                break;
-            case Value.TIMESTAMP: {
-                writeInt(TIMESTAMP);
-                ValueTimestamp ts = (ValueTimestamp) v;
-                writeLong(ts.getDateValue());
-                writeLong(ts.getTimeNanos());
-                break;
+        //$FALL-THROUGH$
+        case Value.NUMERIC:
+            writeInt(NUMERIC);
+            writeString(v.getString());
+            break;
+        case Value.DOUBLE:
+            writeInt(DOUBLE);
+            writeDouble(v.getDouble());
+            break;
+        case Value.REAL:
+            writeInt(REAL);
+            writeFloat(v.getFloat());
+            break;
+        case Value.INTEGER:
+            writeInt(INTEGER);
+            writeInt(v.getInt());
+            break;
+        case Value.BIGINT:
+            writeInt(BIGINT);
+            writeLong(v.getLong());
+            break;
+        case Value.SMALLINT:
+            writeInt(SMALLINT);
+            if (version >= Constants.TCP_PROTOCOL_VERSION_20) {
+                writeShort(v.getShort());
+            } else {
+                writeInt(v.getShort());
             }
-            case Value.TIMESTAMP_TZ: {
-                writeInt(TIMESTAMP_TZ);
-                ValueTimestampTimeZone ts = (ValueTimestampTimeZone) v;
-                writeLong(ts.getDateValue());
-                writeLong(ts.getTimeNanos());
-                int timeZoneOffset = ts.getTimeZoneOffsetSeconds();
-                writeInt(version >= Constants.TCP_PROTOCOL_VERSION_19 //
-                        ? timeZoneOffset : timeZoneOffset / 60);
-                break;
-            }
-            case Value.DECFLOAT:
-                if (version >= Constants.TCP_PROTOCOL_VERSION_20) {
-                    writeInt(DECFLOAT);
-                    writeString(v.getString());
-                    break;
-                }
-                //$FALL-THROUGH$
-            case Value.NUMERIC:
-                writeInt(NUMERIC);
-                writeString(v.getString());
-                break;
-            case Value.DOUBLE:
-                writeInt(DOUBLE);
-                writeDouble(v.getDouble());
-                break;
-            case Value.REAL:
-                writeInt(REAL);
-                writeFloat(v.getFloat());
-                break;
-            case Value.INTEGER:
-                writeInt(INTEGER);
-                writeInt(v.getInt());
-                break;
-            case Value.BIGINT:
-                writeInt(BIGINT);
-                writeLong(v.getLong());
-                break;
-            case Value.SMALLINT:
-                writeInt(SMALLINT);
-                if (version >= Constants.TCP_PROTOCOL_VERSION_20) {
-                    writeShort(v.getShort());
-                } else {
-                    writeInt(v.getShort());
-                }
-                break;
-            case Value.VARCHAR:
-                writeInt(VARCHAR);
-                writeString(v.getString());
-                break;
-            case Value.VARCHAR_IGNORECASE:
-                writeInt(VARCHAR_IGNORECASE);
-                writeString(v.getString());
-                break;
-            case Value.CHAR:
-                writeInt(CHAR);
-                writeString(v.getString());
-                break;
-            case Value.BLOB: {
-                writeInt(BLOB);
-                ValueBlob lob = (ValueBlob) v;
-                LobData lobData = lob.getLobData();
-                long length = lob.octetLength();
-                if (lobData instanceof LobDataDatabase) {
-                    LobDataDatabase lobDataDatabase = (LobDataDatabase) lobData;
-                    writeLong(-1);
-                    writeInt(lobDataDatabase.getTableId());
-                    writeLong(lobDataDatabase.getLobId());
-                    writeBytes(calculateLobMac(lobDataDatabase.getLobId()));
-                    writeLong(length);
-                    break;
-                }
-                if (length < 0) {
-                    throw DbException.get(
-                            ErrorCode.CONNECTION_BROKEN_1, "length=" + length);
-                }
+            break;
+        case Value.VARCHAR:
+            writeInt(VARCHAR);
+            writeString(v.getString());
+            break;
+        case Value.VARCHAR_IGNORECASE:
+            writeInt(VARCHAR_IGNORECASE);
+            writeString(v.getString());
+            break;
+        case Value.CHAR:
+            writeInt(CHAR);
+            writeString(v.getString());
+            break;
+        case Value.BLOB: {
+            writeInt(BLOB);
+            ValueBlob lob = (ValueBlob) v;
+            LobData lobData = lob.getLobData();
+            long length = lob.octetLength();
+            if (lobData instanceof LobDataDatabase) {
+                LobDataDatabase lobDataDatabase = (LobDataDatabase) lobData;
+                writeLong(-1);
+                writeInt(lobDataDatabase.getTableId());
+                writeLong(lobDataDatabase.getLobId());
+                writeBytes(calculateLobMac(lobDataDatabase.getLobId()));
                 writeLong(length);
-                long written = IOUtils.copyAndCloseInput(lob.getInputStream(), out);
-                if (written != length) {
-                    throw DbException.get(
-                            ErrorCode.CONNECTION_BROKEN_1, "length:" + length + " written:" + written);
-                }
-                writeInt(LOB_MAGIC);
                 break;
             }
-            case Value.CLOB: {
-                writeInt(CLOB);
-                ValueClob lob = (ValueClob) v;
-                LobData lobData = lob.getLobData();
-                long charLength = lob.charLength();
-                if (lobData instanceof LobDataDatabase) {
-                    LobDataDatabase lobDataDatabase = (LobDataDatabase) lobData;
-                    writeLong(-1);
-                    writeInt(lobDataDatabase.getTableId());
-                    writeLong(lobDataDatabase.getLobId());
-                    writeBytes(calculateLobMac(lobDataDatabase.getLobId()));
-                    if (version >= Constants.TCP_PROTOCOL_VERSION_20) {
-                        writeLong(lob.octetLength());
-                    }
-                    writeLong(charLength);
-                    break;
-                }
-                if (charLength < 0) {
-                    throw DbException.get(
-                            ErrorCode.CONNECTION_BROKEN_1, "length=" + charLength);
+            if (length < 0) {
+                throw DbException.get(
+                        ErrorCode.CONNECTION_BROKEN_1, "length=" + length);
+            }
+            writeLong(length);
+            long written = IOUtils.copyAndCloseInput(lob.getInputStream(), out);
+            if (written != length) {
+                throw DbException.get(
+                        ErrorCode.CONNECTION_BROKEN_1, "length:" + length + " written:" + written);
+            }
+            writeInt(LOB_MAGIC);
+            break;
+        }
+        case Value.CLOB: {
+            writeInt(CLOB);
+            ValueClob lob = (ValueClob) v;
+            LobData lobData = lob.getLobData();
+            long charLength = lob.charLength();
+            if (lobData instanceof LobDataDatabase) {
+                LobDataDatabase lobDataDatabase = (LobDataDatabase) lobData;
+                writeLong(-1);
+                writeInt(lobDataDatabase.getTableId());
+                writeLong(lobDataDatabase.getLobId());
+                writeBytes(calculateLobMac(lobDataDatabase.getLobId()));
+                if (version >= Constants.TCP_PROTOCOL_VERSION_20) {
+                    writeLong(lob.octetLength());
                 }
                 writeLong(charLength);
-                Reader reader = lob.getReader();
-                Data.copyString(reader, out);
-                writeInt(LOB_MAGIC);
                 break;
             }
-            case Value.ARRAY: {
-                writeInt(ARRAY);
-                ValueArray va = (ValueArray) v;
-                Value[] list = va.getList();
-                int len = list.length;
-                writeInt(len);
-                for (Value value : list) {
-                    writeValue(value);
-                }
-                break;
+            if (charLength < 0) {
+                throw DbException.get(
+                        ErrorCode.CONNECTION_BROKEN_1, "length=" + charLength);
             }
-            case Value.ROW: {
-                writeInt(version >= Constants.TCP_PROTOCOL_VERSION_18 ? ROW : ARRAY);
-                ValueRow va = (ValueRow) v;
-                Value[] list = va.getList();
-                int len = list.length;
-                writeInt(len);
-                for (Value value : list) {
-                    writeValue(value);
-                }
-                break;
+            writeLong(charLength);
+            Reader reader = lob.getReader();
+            Data.copyString(reader, out);
+            writeInt(LOB_MAGIC);
+            break;
+        }
+        case Value.ARRAY: {
+            writeInt(ARRAY);
+            ValueArray va = (ValueArray) v;
+            Value[] list = va.getList();
+            int len = list.length;
+            writeInt(len);
+            for (Value value : list) {
+                writeValue(value);
             }
-            case Value.ENUM: {
-                writeInt(ENUM);
-                writeInt(v.getInt());
-                if (version < Constants.TCP_PROTOCOL_VERSION_20) {
-                    writeString(v.getString());
-                }
-                break;
+            break;
+        }
+        case Value.ROW: {
+            writeInt(version >= Constants.TCP_PROTOCOL_VERSION_18 ? ROW : ARRAY);
+            ValueRow va = (ValueRow) v;
+            Value[] list = va.getList();
+            int len = list.length;
+            writeInt(len);
+            for (Value value : list) {
+                writeValue(value);
             }
-            case Value.GEOMETRY:
-                writeInt(GEOMETRY);
-                writeBytes(v.getBytesNoCopy());
-                break;
-            case Value.INTERVAL_YEAR:
-            case Value.INTERVAL_MONTH:
-            case Value.INTERVAL_DAY:
-            case Value.INTERVAL_HOUR:
-            case Value.INTERVAL_MINUTE:
-                if (version >= Constants.TCP_PROTOCOL_VERSION_18) {
-                    ValueInterval interval = (ValueInterval) v;
-                    int ordinal = type - Value.INTERVAL_YEAR;
-                    if (interval.isNegative()) {
-                        ordinal = ~ordinal;
-                    }
-                    writeInt(INTERVAL);
-                    writeByte((byte) ordinal);
-                    writeLong(interval.getLeading());
-                } else {
-                    writeInt(VARCHAR);
-                    writeString(v.getString());
-                }
-                break;
-            case Value.INTERVAL_SECOND:
-            case Value.INTERVAL_YEAR_TO_MONTH:
-            case Value.INTERVAL_DAY_TO_HOUR:
-            case Value.INTERVAL_DAY_TO_MINUTE:
-            case Value.INTERVAL_DAY_TO_SECOND:
-            case Value.INTERVAL_HOUR_TO_MINUTE:
-            case Value.INTERVAL_HOUR_TO_SECOND:
-            case Value.INTERVAL_MINUTE_TO_SECOND:
-                if (version >= Constants.TCP_PROTOCOL_VERSION_18) {
-                    ValueInterval interval = (ValueInterval) v;
-                    int ordinal = type - Value.INTERVAL_YEAR;
-                    if (interval.isNegative()) {
-                        ordinal = ~ordinal;
-                    }
-                    writeInt(INTERVAL);
-                    writeByte((byte) ordinal);
-                    writeLong(interval.getLeading());
-                    writeLong(interval.getRemaining());
-                } else {
-                    writeInt(VARCHAR);
-                    writeString(v.getString());
-                }
-                break;
-            case Value.JSON: {
-                writeInt(JSON);
-                writeBytes(v.getBytesNoCopy());
-                break;
+            break;
+        }
+        case Value.ENUM: {
+            writeInt(ENUM);
+            writeInt(v.getInt());
+            if (version < Constants.TCP_PROTOCOL_VERSION_20) {
+                writeString(v.getString());
             }
-            default:
-                throw DbException.get(ErrorCode.CONNECTION_BROKEN_1, "type=" + type);
+            break;
+        }
+        case Value.GEOMETRY:
+            writeInt(GEOMETRY);
+            writeBytes(v.getBytesNoCopy());
+            break;
+        case Value.INTERVAL_YEAR:
+        case Value.INTERVAL_MONTH:
+        case Value.INTERVAL_DAY:
+        case Value.INTERVAL_HOUR:
+        case Value.INTERVAL_MINUTE:
+            if (version >= Constants.TCP_PROTOCOL_VERSION_18) {
+                ValueInterval interval = (ValueInterval) v;
+                int ordinal = type - Value.INTERVAL_YEAR;
+                if (interval.isNegative()) {
+                    ordinal = ~ordinal;
+                }
+                writeInt(INTERVAL);
+                writeByte((byte) ordinal);
+                writeLong(interval.getLeading());
+            } else {
+                writeInt(VARCHAR);
+                writeString(v.getString());
+            }
+            break;
+        case Value.INTERVAL_SECOND:
+        case Value.INTERVAL_YEAR_TO_MONTH:
+        case Value.INTERVAL_DAY_TO_HOUR:
+        case Value.INTERVAL_DAY_TO_MINUTE:
+        case Value.INTERVAL_DAY_TO_SECOND:
+        case Value.INTERVAL_HOUR_TO_MINUTE:
+        case Value.INTERVAL_HOUR_TO_SECOND:
+        case Value.INTERVAL_MINUTE_TO_SECOND:
+            if (version >= Constants.TCP_PROTOCOL_VERSION_18) {
+                ValueInterval interval = (ValueInterval) v;
+                int ordinal = type - Value.INTERVAL_YEAR;
+                if (interval.isNegative()) {
+                    ordinal = ~ordinal;
+                }
+                writeInt(INTERVAL);
+                writeByte((byte) ordinal);
+                writeLong(interval.getLeading());
+                writeLong(interval.getRemaining());
+            } else {
+                writeInt(VARCHAR);
+                writeString(v.getString());
+            }
+            break;
+        case Value.JSON: {
+            writeInt(JSON);
+            writeBytes(v.getBytesNoCopy());
+            break;
+        }
+        default:
+            throw DbException.get(ErrorCode.CONNECTION_BROKEN_1, "type=" + type);
         }
     }
 
@@ -1046,164 +1044,164 @@ public final class Transfer {
     public Value readValue(TypeInfo columnType) throws IOException {
         int type = readInt();
         switch (type) {
-            case NULL:
-                return ValueNull.INSTANCE;
-            case VARBINARY:
-                return ValueVarbinary.getNoCopy(readBytes());
-            case BINARY:
-                return ValueBinary.getNoCopy(readBytes());
-            case UUID:
-                return ValueUuid.get(readLong(), readLong());
-            case JAVA_OBJECT:
-                return ValueJavaObject.getNoCopy(readBytes());
-            case BOOLEAN:
-                return ValueBoolean.get(readBoolean());
-            case TINYINT:
-                return ValueTinyint.get(readByte());
-            case DATE:
-                return ValueDate.fromDateValue(readLong());
-            case TIME:
-                return ValueTime.fromNanos(readLong());
-            case TIME_TZ:
-                return ValueTimeTimeZone.fromNanos(readLong(), readInt());
-            case TIMESTAMP:
-                return ValueTimestamp.fromDateValueAndNanos(readLong(), readLong());
-            case TIMESTAMP_TZ: {
-                long dateValue = readLong(), timeNanos = readLong();
-                int timeZoneOffset = readInt();
-                return ValueTimestampTimeZone.fromDateValueAndNanos(dateValue, timeNanos,
-                        version >= Constants.TCP_PROTOCOL_VERSION_19 ? timeZoneOffset : timeZoneOffset * 60);
+        case NULL:
+            return ValueNull.INSTANCE;
+        case VARBINARY:
+            return ValueVarbinary.getNoCopy(readBytes());
+        case BINARY:
+            return ValueBinary.getNoCopy(readBytes());
+        case UUID:
+            return ValueUuid.get(readLong(), readLong());
+        case JAVA_OBJECT:
+            return ValueJavaObject.getNoCopy(readBytes());
+        case BOOLEAN:
+            return ValueBoolean.get(readBoolean());
+        case TINYINT:
+            return ValueTinyint.get(readByte());
+        case DATE:
+            return ValueDate.fromDateValue(readLong());
+        case TIME:
+            return ValueTime.fromNanos(readLong());
+        case TIME_TZ:
+            return ValueTimeTimeZone.fromNanos(readLong(), readInt());
+        case TIMESTAMP:
+            return ValueTimestamp.fromDateValueAndNanos(readLong(), readLong());
+        case TIMESTAMP_TZ: {
+            long dateValue = readLong(), timeNanos = readLong();
+            int timeZoneOffset = readInt();
+            return ValueTimestampTimeZone.fromDateValueAndNanos(dateValue, timeNanos,
+                    version >= Constants.TCP_PROTOCOL_VERSION_19 ? timeZoneOffset : timeZoneOffset * 60);
+        }
+        case NUMERIC:
+            return ValueNumeric.get(new BigDecimal(readString()));
+        case DOUBLE:
+            return ValueDouble.get(readDouble());
+        case REAL:
+            return ValueReal.get(readFloat());
+        case ENUM: {
+            int ordinal = readInt();
+            if (version >= Constants.TCP_PROTOCOL_VERSION_20) {
+                return ((ExtTypeInfoEnum) columnType.getExtTypeInfo()).getValue(ordinal, session);
             }
-            case NUMERIC:
-                return ValueNumeric.get(new BigDecimal(readString()));
-            case DOUBLE:
-                return ValueDouble.get(readDouble());
-            case REAL:
-                return ValueReal.get(readFloat());
-            case ENUM: {
-                int ordinal = readInt();
-                if (version >= Constants.TCP_PROTOCOL_VERSION_20) {
-                    return ((ExtTypeInfoEnum) columnType.getExtTypeInfo()).getValue(ordinal, session);
-                }
-                return ValueEnumBase.get(readString(), ordinal);
+            return ValueEnumBase.get(readString(), ordinal);
+        }
+        case INTEGER:
+            return ValueInteger.get(readInt());
+        case BIGINT:
+            return ValueBigint.get(readLong());
+        case SMALLINT:
+            if (version >= Constants.TCP_PROTOCOL_VERSION_20) {
+                return ValueSmallint.get(readShort());
+            } else {
+                return ValueSmallint.get((short) readInt());
             }
-            case INTEGER:
-                return ValueInteger.get(readInt());
-            case BIGINT:
-                return ValueBigint.get(readLong());
-            case SMALLINT:
-                if (version >= Constants.TCP_PROTOCOL_VERSION_20) {
-                    return ValueSmallint.get(readShort());
-                } else {
-                    return ValueSmallint.get((short) readInt());
-                }
-            case VARCHAR:
-                return ValueVarchar.get(readString());
-            case VARCHAR_IGNORECASE:
-                return ValueVarcharIgnoreCase.get(readString());
-            case CHAR:
-                return ValueChar.get(readString());
-            case BLOB: {
-                long length = readLong();
-                if (length == -1) {
-                    // fetch-on-demand LOB
-                    int tableId = readInt();
-                    long id = readLong();
-                    byte[] hmac = readBytes();
-                    long precision = readLong();
-                    return new ValueBlob(new LobDataFetchOnDemand(session.getDataHandler(), tableId, id, hmac), precision);
-                }
-                Value v = session.getDataHandler().getLobStorage().createBlob(in, length);
-                int magic = readInt();
-                if (magic != LOB_MAGIC) {
-                    throw DbException.get(
-                            ErrorCode.CONNECTION_BROKEN_1, "magic=" + magic);
-                }
-                return v;
+        case VARCHAR:
+            return ValueVarchar.get(readString());
+        case VARCHAR_IGNORECASE:
+            return ValueVarcharIgnoreCase.get(readString());
+        case CHAR:
+            return ValueChar.get(readString());
+        case BLOB: {
+            long length = readLong();
+            if (length == -1) {
+                // fetch-on-demand LOB
+                int tableId = readInt();
+                long id = readLong();
+                byte[] hmac = readBytes();
+                long precision = readLong();
+                return new ValueBlob(new LobDataFetchOnDemand(session.getDataHandler(), tableId, id, hmac), precision);
             }
-            case CLOB: {
-                long charLength = readLong();
-                if (charLength == -1) {
-                    // fetch-on-demand LOB
-                    int tableId = readInt();
-                    long id = readLong();
-                    byte[] hmac = readBytes();
-                    long octetLength = version >= Constants.TCP_PROTOCOL_VERSION_20 ? readLong() : -1L;
-                    charLength = readLong();
-                    return new ValueClob(new LobDataFetchOnDemand(session.getDataHandler(), tableId, id, hmac),
-                            octetLength, charLength);
-                }
-                if (charLength < 0) {
-                    throw DbException.get(
-                            ErrorCode.CONNECTION_BROKEN_1, "length=" + charLength);
-                }
-                Value v = session.getDataHandler().getLobStorage().
-                        createClob(new DataReader(in), charLength);
-                int magic = readInt();
-                if (magic != LOB_MAGIC) {
-                    throw DbException.get(
-                            ErrorCode.CONNECTION_BROKEN_1, "magic=" + magic);
-                }
-                return v;
+            Value v = session.getDataHandler().getLobStorage().createBlob(in, length);
+            int magic = readInt();
+            if (magic != LOB_MAGIC) {
+                throw DbException.get(
+                        ErrorCode.CONNECTION_BROKEN_1, "magic=" + magic);
             }
-            case ARRAY: {
-                int len = readInt();
-                if (len < 0) {
-                    // Unlikely, but possible with H2 1.4.200 and older versions
-                    len = ~len;
-                    readString();
-                }
-                if (columnType != null) {
-                    TypeInfo elementType = (TypeInfo) columnType.getExtTypeInfo();
-                    return ValueArray.get(elementType, readArrayElements(len, elementType), session);
-                }
-                return ValueArray.get(readArrayElements(len, null), session);
+            return v;
+        }
+        case CLOB: {
+            long charLength = readLong();
+            if (charLength == -1) {
+                // fetch-on-demand LOB
+                int tableId = readInt();
+                long id = readLong();
+                byte[] hmac = readBytes();
+                long octetLength = version >= Constants.TCP_PROTOCOL_VERSION_20 ? readLong() : -1L;
+                charLength = readLong();
+                return new ValueClob(new LobDataFetchOnDemand(session.getDataHandler(), tableId, id, hmac),
+                        octetLength, charLength);
             }
-            case ROW: {
-                int len = readInt();
-                Value[] list = new Value[len];
-                if (columnType != null) {
-                    ExtTypeInfoRow extTypeInfoRow = (ExtTypeInfoRow) columnType.getExtTypeInfo();
-                    Iterator<Entry<String, TypeInfo>> fields = extTypeInfoRow.getFields().iterator();
-                    for (int i = 0; i < len; i++) {
-                        list[i] = readValue(fields.next().getValue());
-                    }
-                    return ValueRow.get(columnType, list);
-                }
+            if (charLength < 0) {
+                throw DbException.get(
+                        ErrorCode.CONNECTION_BROKEN_1, "length="+ charLength);
+            }
+            Value v = session.getDataHandler().getLobStorage().
+                    createClob(new DataReader(in), charLength);
+            int magic = readInt();
+            if (magic != LOB_MAGIC) {
+                throw DbException.get(
+                        ErrorCode.CONNECTION_BROKEN_1, "magic=" + magic);
+            }
+            return v;
+        }
+        case ARRAY: {
+            int len = readInt();
+            if (len < 0) {
+                // Unlikely, but possible with H2 1.4.200 and older versions
+                len = ~len;
+                readString();
+            }
+            if (columnType != null) {
+                TypeInfo elementType = (TypeInfo) columnType.getExtTypeInfo();
+                return ValueArray.get(elementType, readArrayElements(len, elementType), session);
+            }
+            return ValueArray.get(readArrayElements(len, null), session);
+        }
+        case ROW: {
+            int len = readInt();
+            Value[] list = new Value[len];
+            if (columnType != null) {
+                ExtTypeInfoRow extTypeInfoRow = (ExtTypeInfoRow) columnType.getExtTypeInfo();
+                Iterator<Entry<String, TypeInfo>> fields = extTypeInfoRow.getFields().iterator();
                 for (int i = 0; i < len; i++) {
-                    list[i] = readValue(null);
+                    list[i] = readValue(fields.next().getValue());
                 }
-                return ValueRow.get(list);
+                return ValueRow.get(columnType, list);
             }
-            case GEOMETRY:
-                return ValueGeometry.get(readBytes());
-            case INTERVAL: {
-                int ordinal = readByte();
-                boolean negative = ordinal < 0;
-                if (negative) {
-                    ordinal = ~ordinal;
-                }
-                return ValueInterval.from(IntervalQualifier.valueOf(ordinal), negative, readLong(),
-                        ordinal < 5 ? 0 : readLong());
+            for (int i = 0; i < len; i++) {
+                list[i] = readValue(null);
             }
-            case JSON:
-                // Do not trust the value
-                return ValueJson.fromJson(readBytes());
-            case DECFLOAT: {
-                String s = readString();
-                switch (s) {
-                    case "-Infinity":
-                        return ValueDecfloat.NEGATIVE_INFINITY;
-                    case "Infinity":
-                        return ValueDecfloat.POSITIVE_INFINITY;
-                    case "NaN":
-                        return ValueDecfloat.NAN;
-                    default:
-                        return ValueDecfloat.get(new BigDecimal(s));
-                }
+            return ValueRow.get(list);
+        }
+        case GEOMETRY:
+            return ValueGeometry.get(readBytes());
+        case INTERVAL: {
+            int ordinal = readByte();
+            boolean negative = ordinal < 0;
+            if (negative) {
+                ordinal = ~ordinal;
             }
+            return ValueInterval.from(IntervalQualifier.valueOf(ordinal), negative, readLong(),
+                    ordinal < 5 ? 0 : readLong());
+        }
+        case JSON:
+            // Do not trust the value
+            return ValueJson.fromJson(readBytes());
+        case DECFLOAT: {
+            String s = readString();
+            switch (s) {
+            case "-Infinity":
+                return ValueDecfloat.NEGATIVE_INFINITY;
+            case "Infinity":
+                return ValueDecfloat.POSITIVE_INFINITY;
+            case "NaN":
+                return ValueDecfloat.NAN;
             default:
-                throw DbException.get(ErrorCode.CONNECTION_BROKEN_1, "type=" + type);
+                return ValueDecfloat.get(new BigDecimal(s));
+            }
+        }
+        default:
+            throw DbException.get(ErrorCode.CONNECTION_BROKEN_1, "type=" + type);
         }
     }
 
@@ -1294,13 +1292,13 @@ public final class Transfer {
     /**
      * Verify the HMAC.
      *
-     * @param hmac  the message authentication code
+     * @param hmac the message authentication code
      * @param lobId the lobId
      * @throws DbException if the HMAC does not match
      */
     public void verifyLobMac(byte[] hmac, long lobId) {
         byte[] result = calculateLobMac(lobId);
-        if (!Utils.compareSecure(hmac, result)) {
+        if (!Utils.compareSecure(hmac,  result)) {
             throw DbException.get(ErrorCode.CONNECTION_BROKEN_1,
                     "Invalid lob hmac; possibly the connection was re-opened internally");
         }

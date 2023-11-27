@@ -95,19 +95,19 @@ public final class SHA3 extends MessageDigest {
         absorbQueue();
         byte[] r = new byte[digestLength];
         switch (digestLength) {
-            case 64:
-                Bits.writeLongLE(r, 56, state07);
-                Bits.writeLongLE(r, 48, state06);
-                //$FALL-THROUGH$
-            case 48:
-                Bits.writeLongLE(r, 40, state05);
-                Bits.writeLongLE(r, 32, state04);
-                //$FALL-THROUGH$
-            case 32:
-                Bits.writeLongLE(r, 24, state03);
-                break;
-            case 28:
-                Bits.writeIntLE(r, 24, (int) state03);
+        case 64:
+            Bits.writeLongLE(r, 56, state07);
+            Bits.writeLongLE(r, 48, state06);
+            //$FALL-THROUGH$
+        case 48:
+            Bits.writeLongLE(r, 40, state05);
+            Bits.writeLongLE(r, 32, state04);
+            //$FALL-THROUGH$
+        case 32:
+            Bits.writeLongLE(r, 24, state03);
+            break;
+        case 28:
+            Bits.writeIntLE(r, 24, (int) state03);
         }
         Bits.writeLongLE(r, 16, state02);
         Bits.writeLongLE(r, 8, state01);
@@ -173,20 +173,20 @@ public final class SHA3 extends MessageDigest {
          * because so large number of local variables only hurts performance.
          */
         switch (digestLength) {
-            case 28:
-                state17 ^= Bits.readLongLE(data, offset + 136);
-                //$FALL-THROUGH$
-            case 32:
-                state13 ^= Bits.readLongLE(data, offset + 104);
-                state14 ^= Bits.readLongLE(data, offset + 112);
-                state15 ^= Bits.readLongLE(data, offset + 120);
-                state16 ^= Bits.readLongLE(data, offset + 128);
-                //$FALL-THROUGH$
-            case 48:
-                state09 ^= Bits.readLongLE(data, offset + 72);
-                state10 ^= Bits.readLongLE(data, offset + 80);
-                state11 ^= Bits.readLongLE(data, offset + 88);
-                state12 ^= Bits.readLongLE(data, offset + 96);
+        case 28:
+            state17 ^= Bits.readLongLE(data, offset + 136);
+            //$FALL-THROUGH$
+        case 32:
+            state13 ^= Bits.readLongLE(data, offset + 104);
+            state14 ^= Bits.readLongLE(data, offset + 112);
+            state15 ^= Bits.readLongLE(data, offset + 120);
+            state16 ^= Bits.readLongLE(data, offset + 128);
+            //$FALL-THROUGH$
+        case 48:
+            state09 ^= Bits.readLongLE(data, offset + 72);
+            state10 ^= Bits.readLongLE(data, offset + 80);
+            state11 ^= Bits.readLongLE(data, offset + 88);
+            state12 ^= Bits.readLongLE(data, offset + 96);
         }
         state00 ^= Bits.readLongLE(data, offset);
         state01 ^= Bits.readLongLE(data, offset + 8);

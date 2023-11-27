@@ -40,7 +40,8 @@ public final class Interval {
     /**
      * Creates a new INTERVAL YEAR.
      *
-     * @param years years, |years|&lt;10<sup>18</sup>
+     * @param years
+     *            years, |years|&lt;10<sup>18</sup>
      * @return INTERVAL YEAR
      */
     public static Interval ofYears(long years) {
@@ -50,7 +51,8 @@ public final class Interval {
     /**
      * Creates a new INTERVAL MONTH.
      *
-     * @param months months, |months|&lt;10<sup>18</sup>
+     * @param months
+     *            months, |months|&lt;10<sup>18</sup>
      * @return INTERVAL MONTH
      */
     public static Interval ofMonths(long months) {
@@ -60,7 +62,8 @@ public final class Interval {
     /**
      * Creates a new INTERVAL DAY.
      *
-     * @param days days, |days|&lt;10<sup>18</sup>
+     * @param days
+     *            days, |days|&lt;10<sup>18</sup>
      * @return INTERVAL DAY
      */
     public static Interval ofDays(long days) {
@@ -70,7 +73,8 @@ public final class Interval {
     /**
      * Creates a new INTERVAL HOUR.
      *
-     * @param hours hours, |hours|&lt;10<sup>18</sup>
+     * @param hours
+     *            hours, |hours|&lt;10<sup>18</sup>
      * @return INTERVAL HOUR
      */
     public static Interval ofHours(long hours) {
@@ -80,7 +84,8 @@ public final class Interval {
     /**
      * Creates a new INTERVAL MINUTE.
      *
-     * @param minutes minutes, |minutes|&lt;10<sup>18</sup>
+     * @param minutes
+     *            minutes, |minutes|&lt;10<sup>18</sup>
      * @return interval
      */
     public static Interval ofMinutes(long minutes) {
@@ -90,7 +95,8 @@ public final class Interval {
     /**
      * Creates a new INTERVAL SECOND.
      *
-     * @param seconds seconds, |seconds|&lt;10<sup>18</sup>
+     * @param seconds
+     *            seconds, |seconds|&lt;10<sup>18</sup>
      * @return INTERVAL SECOND
      */
     public static Interval ofSeconds(long seconds) {
@@ -104,8 +110,10 @@ public final class Interval {
      * If both arguments are not equal to zero they should have the same sign.
      * </p>
      *
-     * @param seconds seconds, |seconds|&lt;10<sup>18</sup>
-     * @param nanos   nanoseconds, |nanos|&lt;1,000,000,000
+     * @param seconds
+     *            seconds, |seconds|&lt;10<sup>18</sup>
+     * @param nanos
+     *            nanoseconds, |nanos|&lt;1,000,000,000
      * @return INTERVAL SECOND
      */
     public static Interval ofSeconds(long seconds, int nanos) {
@@ -128,7 +136,8 @@ public final class Interval {
     /**
      * Creates a new INTERVAL SECOND.
      *
-     * @param nanos nanoseconds (including seconds)
+     * @param nanos
+     *            nanoseconds (including seconds)
      * @return INTERVAL SECOND
      */
     public static Interval ofNanos(long nanos) {
@@ -150,8 +159,10 @@ public final class Interval {
      * If both arguments are not equal to zero they should have the same sign.
      * </p>
      *
-     * @param years  years, |years|&lt;10<sup>18</sup>
-     * @param months months, |months|&lt;12
+     * @param years
+     *            years, |years|&lt;10<sup>18</sup>
+     * @param months
+     *            months, |months|&lt;12
      * @return INTERVAL YEAR TO MONTH
      */
     public static Interval ofYearsMonths(long years, int months) {
@@ -178,8 +189,10 @@ public final class Interval {
      * If both arguments are not equal to zero they should have the same sign.
      * </p>
      *
-     * @param days  days, |days|&lt;10<sup>18</sup>
-     * @param hours hours, |hours|&lt;24
+     * @param days
+     *            days, |days|&lt;10<sup>18</sup>
+     * @param hours
+     *            hours, |hours|&lt;24
      * @return INTERVAL DAY TO HOUR
      */
     public static Interval ofDaysHours(long days, int hours) {
@@ -206,9 +219,12 @@ public final class Interval {
      * Non-zero arguments should have the same sign.
      * </p>
      *
-     * @param days    days, |days|&lt;10<sup>18</sup>
-     * @param hours   hours, |hours|&lt;24
-     * @param minutes minutes, |minutes|&lt;60
+     * @param days
+     *            days, |days|&lt;10<sup>18</sup>
+     * @param hours
+     *            hours, |hours|&lt;24
+     * @param minutes
+     *            minutes, |minutes|&lt;60
      * @return INTERVAL DAY TO MINUTE
      */
     public static Interval ofDaysHoursMinutes(long days, int hours, int minutes) {
@@ -244,10 +260,14 @@ public final class Interval {
      * Non-zero arguments should have the same sign.
      * </p>
      *
-     * @param days    days, |days|&lt;10<sup>18</sup>
-     * @param hours   hours, |hours|&lt;24
-     * @param minutes minutes, |minutes|&lt;60
-     * @param seconds seconds, |seconds|&lt;60
+     * @param days
+     *            days, |days|&lt;10<sup>18</sup>
+     * @param hours
+     *            hours, |hours|&lt;24
+     * @param minutes
+     *            minutes, |minutes|&lt;60
+     * @param seconds
+     *            seconds, |seconds|&lt;60
      * @return INTERVAL DAY TO SECOND
      */
     public static Interval ofDaysHoursMinutesSeconds(long days, int hours, int minutes, int seconds) {
@@ -261,10 +281,14 @@ public final class Interval {
      * Non-zero arguments should have the same sign.
      * </p>
      *
-     * @param days    days, |days|&lt;10<sup>18</sup>
-     * @param hours   hours, |hours|&lt;24
-     * @param minutes minutes, |minutes|&lt;60
-     * @param nanos   nanoseconds, |nanos|&lt;60,000,000,000
+     * @param days
+     *            days, |days|&lt;10<sup>18</sup>
+     * @param hours
+     *            hours, |hours|&lt;24
+     * @param minutes
+     *            minutes, |minutes|&lt;60
+     * @param nanos
+     *            nanoseconds, |nanos|&lt;60,000,000,000
      * @return INTERVAL DAY TO SECOND
      */
     public static Interval ofDaysHoursMinutesNanos(long days, int hours, int minutes, long nanos) {
@@ -302,8 +326,10 @@ public final class Interval {
      * If both arguments are not equal to zero they should have the same sign.
      * </p>
      *
-     * @param hours   hours, |hours|&lt;10<sup>18</sup>
-     * @param minutes minutes, |minutes|&lt;60
+     * @param hours
+     *            hours, |hours|&lt;10<sup>18</sup>
+     * @param minutes
+     *            minutes, |minutes|&lt;60
      * @return INTERVAL HOUR TO MINUTE
      */
     public static Interval ofHoursMinutes(long hours, int minutes) {
@@ -330,9 +356,12 @@ public final class Interval {
      * Non-zero arguments should have the same sign.
      * </p>
      *
-     * @param hours   hours, |hours|&lt;10<sup>18</sup>
-     * @param minutes minutes, |minutes|&lt;60
-     * @param seconds seconds, |seconds|&lt;60
+     * @param hours
+     *            hours, |hours|&lt;10<sup>18</sup>
+     * @param minutes
+     *            minutes, |minutes|&lt;60
+     * @param seconds
+     *            seconds, |seconds|&lt;60
      * @return INTERVAL HOUR TO SECOND
      */
     public static Interval ofHoursMinutesSeconds(long hours, int minutes, int seconds) {
@@ -346,9 +375,12 @@ public final class Interval {
      * Non-zero arguments should have the same sign.
      * </p>
      *
-     * @param hours   hours, |hours|&lt;10<sup>18</sup>
-     * @param minutes minutes, |minutes|&lt;60
-     * @param nanos   nanoseconds, |seconds|&lt;60,000,000,000
+     * @param hours
+     *            hours, |hours|&lt;10<sup>18</sup>
+     * @param minutes
+     *            minutes, |minutes|&lt;60
+     * @param nanos
+     *            nanoseconds, |seconds|&lt;60,000,000,000
      * @return INTERVAL HOUR TO SECOND
      */
     public static Interval ofHoursMinutesNanos(long hours, int minutes, long nanos) {
@@ -384,8 +416,10 @@ public final class Interval {
      * If both arguments are not equal to zero they should have the same sign.
      * </p>
      *
-     * @param minutes minutes, |minutes|&lt;10<sup>18</sup>
-     * @param seconds seconds, |seconds|&lt;60
+     * @param minutes
+     *            minutes, |minutes|&lt;10<sup>18</sup>
+     * @param seconds
+     *            seconds, |seconds|&lt;60
      * @return INTERVAL MINUTE TO SECOND
      */
     public static Interval ofMinutesSeconds(long minutes, int seconds) {
@@ -399,8 +433,10 @@ public final class Interval {
      * If both arguments are not equal to zero they should have the same sign.
      * </p>
      *
-     * @param minutes minutes, |minutes|&lt;10<sup>18</sup>
-     * @param nanos   nanoseconds, |nanos|&lt;60,000,000,000
+     * @param minutes
+     *            minutes, |minutes|&lt;10<sup>18</sup>
+     * @param nanos
+     *            nanoseconds, |nanos|&lt;60,000,000,000
      * @return INTERVAL MINUTE TO SECOND
      */
     public static Interval ofMinutesNanos(long minutes, long nanos) {
@@ -423,10 +459,14 @@ public final class Interval {
      * Creates a new interval. Do not use this constructor, use static methods
      * instead.
      *
-     * @param qualifier qualifier
-     * @param negative  whether interval is negative
-     * @param leading   value of leading field
-     * @param remaining combined value of all remaining fields
+     * @param qualifier
+     *            qualifier
+     * @param negative
+     *            whether interval is negative
+     * @param leading
+     *            value of leading field
+     * @param remaining
+     *            combined value of all remaining fields
      */
     public Interval(IntervalQualifier qualifier, boolean negative, long leading, long remaining) {
         this.qualifier = qualifier;

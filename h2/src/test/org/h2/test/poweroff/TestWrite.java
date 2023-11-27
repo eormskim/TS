@@ -59,11 +59,11 @@ public class TestWrite {
         file.setLength(0);
         FileDescriptor fd = file.getFD();
         long start = System.nanoTime();
-        byte[] data = {0};
+        byte[] data = { 0 };
         file.write(data);
         int i = 0;
         if (flush) {
-            for (; ; i++) {
+            for (;; i++) {
                 file.seek(0);
                 file.write(data);
                 fd.sync();
@@ -75,7 +75,7 @@ public class TestWrite {
                 }
             }
         } else {
-            for (; ; i++) {
+            for (;; i++) {
                 file.seek(0);
                 file.write(data);
                 if ((i & 1023) == 0) {
@@ -96,7 +96,7 @@ public class TestWrite {
     }
 
     private static void testDatabase(String driver, String url, String user,
-                                     String password) throws Exception {
+            String password) throws Exception {
         Class.forName(driver);
         Connection conn = DriverManager.getConnection(url, user, password);
         System.out.println("Testing Database, URL=" + url);
@@ -111,7 +111,7 @@ public class TestWrite {
                 "INSERT INTO TEST VALUES(?)");
         long start = System.nanoTime();
         int i = 0;
-        for (; ; i++) {
+        for (;; i++) {
             prep.setInt(1, i);
             // autocommit is on by default, so this commits as well
             prep.execute();

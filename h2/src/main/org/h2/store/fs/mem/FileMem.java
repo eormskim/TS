@@ -10,7 +10,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.FileLock;
 import java.nio.channels.NonWritableChannelException;
-
 import org.h2.store.fs.FakeFileChannel;
 import org.h2.store.fs.FileBaseDefault;
 
@@ -102,7 +101,7 @@ class FileMem extends FileBaseDefault {
 
     @Override
     public FileLock tryLock(long position, long size,
-                            boolean shared) throws IOException {
+            boolean shared) throws IOException {
         if (closed) {
             throw new ClosedChannelException();
         }

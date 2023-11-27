@@ -59,14 +59,14 @@ public final class TrimFunction extends Function1_2 {
         builder.append(getName()).append('(');
         boolean needFrom = false;
         switch (flags) {
-            case LEADING:
-                builder.append("LEADING ");
-                needFrom = true;
-                break;
-            case TRAILING:
-                builder.append("TRAILING ");
-                needFrom = true;
-                break;
+        case LEADING:
+            builder.append("LEADING ");
+            needFrom = true;
+            break;
+        case TRAILING:
+            builder.append("TRAILING ");
+            needFrom = true;
+            break;
         }
         if (right != null) {
             right.getUnenclosedSQL(builder, sqlFlags);

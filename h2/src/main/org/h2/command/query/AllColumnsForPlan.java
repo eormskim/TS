@@ -7,7 +7,6 @@ package org.h2.command.query;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.h2.expression.ExpressionVisitor;
 import org.h2.table.Column;
 import org.h2.table.Table;

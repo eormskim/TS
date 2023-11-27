@@ -20,7 +20,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-
 import org.h2.api.ErrorCode;
 import org.h2.store.fs.FileUtils;
 import org.h2.test.TestBase;
@@ -121,7 +120,7 @@ public class TestCases extends TestDb {
         stat.execute("create table b(id int)");
         stat.execute("drop table a");
         assertThrows(ErrorCode.FEATURE_NOT_SUPPORTED_1, stat).
-                execute("create table a(id int check id < select max(id) from b)");
+            execute("create table a(id int check id < select max(id) from b)");
         stat.execute("drop table b");
         stat.execute("create table b(id int)");
         stat.execute("create table a(id int check id < select max(id) from b)");
@@ -318,7 +317,7 @@ public class TestCases extends TestDb {
         Connection conn = getConnection("cases");
         Statement stat = conn.createStatement();
         stat.execute("create table test(id identity, name text)");
-        String[] data = {"\uff1e", "\ud848\udf1e"};
+        String[] data = { "\uff1e", "\ud848\udf1e" };
         PreparedStatement prep = conn.prepareStatement(
                 "insert into test(name) values(?)");
         for (int i = 0; i < data.length; i++) {
@@ -420,7 +419,7 @@ public class TestCases extends TestDb {
 
         PreparedStatement ps = conn.prepareStatement(
                 "select name from test where id in " +
-                        "(select id from test where name = ?)");
+                "(select id from test where name = ?)");
         ps.setString(1, "Hello");
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
@@ -452,7 +451,7 @@ public class TestCases extends TestDb {
         stat.execute("create table test(id int)");
         stat.execute("insert into test values(1)");
         String sql = "select ?, ?, (select count(*) from test inner join " +
-                "(select id from test where 0=?) as t2 on t2.id=test.id) from test";
+            "(select id from test where 0=?) as t2 on t2.id=test.id) from test";
         ResultSet rs;
         rs = stat.executeQuery(sql.replace('?', '0'));
         rs.next();
@@ -483,7 +482,7 @@ public class TestCases extends TestDb {
     }
 
     private void testCompareDoubleWithIntColumn(Statement stat, boolean pk,
-                                                double x, boolean prepared) throws SQLException {
+            double x, boolean prepared) throws SQLException {
         if (pk) {
             stat.execute("create table test(id int primary key)");
         } else {
@@ -617,8 +616,8 @@ public class TestCases extends TestDb {
                 "create table t(i identity, n varchar) as select 1, 'x'");
         PreparedStatement prep = conn.prepareStatement(
                 "select 1 from dual " +
-                        "inner join(select n from t where i=?) a on a.n='x' " +
-                        "inner join(select n from t where i=?) b on b.n='x'");
+                "inner join(select n from t where i=?) a on a.n='x' " +
+                "inner join(select n from t where i=?) b on b.n='x'");
         prep.setInt(1, 1);
         prep.setInt(2, 1);
         prep.execute();
@@ -638,7 +637,7 @@ public class TestCases extends TestDb {
         byte[] encrypted = rs.getBytes(1);
         PreparedStatement prep2 = conn.prepareStatement(
                 "CALL TRIM(CHAR(0) FROM " +
-                        "UTF8TOSTRING(DECRYPT('AES', RAWTOHEX(?), ?)))");
+                "UTF8TOSTRING(DECRYPT('AES', RAWTOHEX(?), ?)))");
         prep2.setCharacterStream(1, new StringReader(key), -1);
         prep2.setBinaryStream(2, new ByteArrayInputStream(encrypted), -1);
         ResultSet rs2 = prep2.executeQuery();
@@ -827,7 +826,7 @@ public class TestCases extends TestDb {
         for (int i = 0; i < 1000; i++) {
             stat.execute("INSERT INTO TEST() VALUES()");
         }
-        SQLException[] stopped = {null};
+        SQLException[] stopped = { null };
         Thread t = new Thread(() -> {
             try {
                 long time = System.nanoTime();
@@ -902,120 +901,120 @@ public class TestCases extends TestDb {
                 "(id int primary key, orgId int, name varchar(100), salary int)");
 
         checkExplain(stat, "/* bla-bla */ EXPLAIN SELECT ID FROM ORGANIZATION WHERE id = ?",
-                "SELECT\n" +
-                        "    \"ID\"\n" +
-                        "FROM \"PUBLIC\".\"ORGANIZATION\"\n" +
-                        "    /* PUBLIC.PRIMARY_KEY_D: ID = ?1 */\n" +
-                        "WHERE \"ID\" = ?1");
+            "SELECT\n" +
+                "    \"ID\"\n" +
+                "FROM \"PUBLIC\".\"ORGANIZATION\"\n" +
+                "    /* PUBLIC.PRIMARY_KEY_D: ID = ?1 */\n" +
+                "WHERE \"ID\" = ?1");
 
         checkExplain(stat, "EXPLAIN SELECT ID FROM ORGANIZATION WHERE id = 1",
-                "SELECT\n" +
-                        "    \"ID\"\n" +
-                        "FROM \"PUBLIC\".\"ORGANIZATION\"\n" +
-                        "    /* PUBLIC.PRIMARY_KEY_D: ID = 1 */\n" +
-                        "WHERE \"ID\" = 1");
+            "SELECT\n" +
+                "    \"ID\"\n" +
+                "FROM \"PUBLIC\".\"ORGANIZATION\"\n" +
+                "    /* PUBLIC.PRIMARY_KEY_D: ID = 1 */\n" +
+                "WHERE \"ID\" = 1");
 
         checkExplain(stat, "EXPLAIN SELECT * FROM PERSON WHERE id = ?",
-                "SELECT\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"ID\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"ORGID\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"NAME\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"SALARY\"\n" +
-                        "FROM \"PUBLIC\".\"PERSON\"\n" +
-                        "    /* PUBLIC.PRIMARY_KEY_8: ID = ?1 */\n" +
-                        "WHERE \"ID\" = ?1");
+            "SELECT\n" +
+                "    \"PUBLIC\".\"PERSON\".\"ID\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"ORGID\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"NAME\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"SALARY\"\n" +
+                "FROM \"PUBLIC\".\"PERSON\"\n" +
+                "    /* PUBLIC.PRIMARY_KEY_8: ID = ?1 */\n" +
+                "WHERE \"ID\" = ?1");
 
         checkExplain(stat, "EXPLAIN SELECT * FROM PERSON WHERE id = 50",
-                "SELECT\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"ID\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"ORGID\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"NAME\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"SALARY\"\n" +
-                        "FROM \"PUBLIC\".\"PERSON\"\n" +
-                        "    /* PUBLIC.PRIMARY_KEY_8: ID = 50 */\n" +
-                        "WHERE \"ID\" = 50");
+            "SELECT\n" +
+                "    \"PUBLIC\".\"PERSON\".\"ID\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"ORGID\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"NAME\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"SALARY\"\n" +
+                "FROM \"PUBLIC\".\"PERSON\"\n" +
+                "    /* PUBLIC.PRIMARY_KEY_8: ID = 50 */\n" +
+                "WHERE \"ID\" = 50");
 
         checkExplain(stat, "EXPLAIN SELECT * FROM PERSON WHERE salary > ? and salary < ?",
-                "SELECT\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"ID\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"ORGID\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"NAME\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"SALARY\"\n" +
-                        "FROM \"PUBLIC\".\"PERSON\"\n" +
-                        "    /* PUBLIC.PERSON.tableScan */\n" +
-                        "WHERE (\"SALARY\" > ?1)\n" +
-                        "    AND (\"SALARY\" < ?2)");
+            "SELECT\n" +
+                "    \"PUBLIC\".\"PERSON\".\"ID\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"ORGID\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"NAME\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"SALARY\"\n" +
+                "FROM \"PUBLIC\".\"PERSON\"\n" +
+                "    /* PUBLIC.PERSON.tableScan */\n" +
+                "WHERE (\"SALARY\" > ?1)\n" +
+                "    AND (\"SALARY\" < ?2)");
 
         checkExplain(stat, "EXPLAIN SELECT * FROM PERSON WHERE salary > 1000 and salary < 2000",
-                "SELECT\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"ID\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"ORGID\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"NAME\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"SALARY\"\n" +
-                        "FROM \"PUBLIC\".\"PERSON\"\n" +
-                        "    /* PUBLIC.PERSON.tableScan */\n" +
-                        "WHERE (\"SALARY\" > 1000)\n" +
-                        "    AND (\"SALARY\" < 2000)");
+            "SELECT\n" +
+                "    \"PUBLIC\".\"PERSON\".\"ID\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"ORGID\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"NAME\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"SALARY\"\n" +
+                "FROM \"PUBLIC\".\"PERSON\"\n" +
+                "    /* PUBLIC.PERSON.tableScan */\n" +
+                "WHERE (\"SALARY\" > 1000)\n" +
+                "    AND (\"SALARY\" < 2000)");
 
         checkExplain(stat, "EXPLAIN SELECT * FROM PERSON WHERE name = lower(?)",
-                "SELECT\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"ID\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"ORGID\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"NAME\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"SALARY\"\n" +
-                        "FROM \"PUBLIC\".\"PERSON\"\n" +
-                        "    /* PUBLIC.PERSON.tableScan */\n" +
-                        "WHERE \"NAME\" = LOWER(?1)");
+            "SELECT\n" +
+                "    \"PUBLIC\".\"PERSON\".\"ID\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"ORGID\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"NAME\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"SALARY\"\n" +
+                "FROM \"PUBLIC\".\"PERSON\"\n" +
+                "    /* PUBLIC.PERSON.tableScan */\n" +
+                "WHERE \"NAME\" = LOWER(?1)");
 
         checkExplain(stat, "EXPLAIN SELECT * FROM PERSON WHERE name = lower('Smith')",
-                "SELECT\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"ID\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"ORGID\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"NAME\",\n" +
-                        "    \"PUBLIC\".\"PERSON\".\"SALARY\"\n" +
-                        "FROM \"PUBLIC\".\"PERSON\"\n" +
-                        "    /* PUBLIC.PERSON.tableScan */\n" +
-                        "WHERE \"NAME\" = 'smith'");
+            "SELECT\n" +
+                "    \"PUBLIC\".\"PERSON\".\"ID\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"ORGID\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"NAME\",\n" +
+                "    \"PUBLIC\".\"PERSON\".\"SALARY\"\n" +
+                "FROM \"PUBLIC\".\"PERSON\"\n" +
+                "    /* PUBLIC.PERSON.tableScan */\n" +
+                "WHERE \"NAME\" = 'smith'");
 
         checkExplain(stat, "EXPLAIN SELECT * FROM PERSON p " +
-                        "INNER JOIN ORGANIZATION o ON p.id = o.id WHERE o.id = ? AND p.salary > ?",
-                "SELECT\n" +
-                        "    \"P\".\"ID\",\n" +
-                        "    \"P\".\"ORGID\",\n" +
-                        "    \"P\".\"NAME\",\n" +
-                        "    \"P\".\"SALARY\",\n" +
-                        "    \"O\".\"ID\",\n" +
-                        "    \"O\".\"NAME\"\n" +
-                        "FROM \"PUBLIC\".\"ORGANIZATION\" \"O\"\n" +
-                        "    /* PUBLIC.PRIMARY_KEY_D: ID = ?1 */\n" +
-                        "    /* WHERE O.ID = ?1\n" +
-                        "    */\n" +
-                        "INNER JOIN \"PUBLIC\".\"PERSON\" \"P\"\n" +
-                        "    /* PUBLIC.PRIMARY_KEY_8: ID = O.ID */\n" +
-                        "    ON 1=1\n" +
-                        "WHERE (\"P\".\"ID\" = \"O\".\"ID\")\n" +
-                        "    AND (\"O\".\"ID\" = ?1)\n" +
-                        "    AND (\"P\".\"SALARY\" > ?2)");
+            "INNER JOIN ORGANIZATION o ON p.id = o.id WHERE o.id = ? AND p.salary > ?",
+            "SELECT\n" +
+                "    \"P\".\"ID\",\n" +
+                "    \"P\".\"ORGID\",\n" +
+                "    \"P\".\"NAME\",\n" +
+                "    \"P\".\"SALARY\",\n" +
+                "    \"O\".\"ID\",\n" +
+                "    \"O\".\"NAME\"\n" +
+                "FROM \"PUBLIC\".\"ORGANIZATION\" \"O\"\n" +
+                "    /* PUBLIC.PRIMARY_KEY_D: ID = ?1 */\n" +
+                "    /* WHERE O.ID = ?1\n" +
+                "    */\n" +
+                "INNER JOIN \"PUBLIC\".\"PERSON\" \"P\"\n" +
+                "    /* PUBLIC.PRIMARY_KEY_8: ID = O.ID */\n" +
+                "    ON 1=1\n" +
+                "WHERE (\"P\".\"ID\" = \"O\".\"ID\")\n" +
+                "    AND (\"O\".\"ID\" = ?1)\n" +
+                "    AND (\"P\".\"SALARY\" > ?2)");
 
         checkExplain(stat, "EXPLAIN SELECT * FROM PERSON p " +
-                        "INNER JOIN ORGANIZATION o ON p.id = o.id WHERE o.id = 10 AND p.salary > 1000",
-                "SELECT\n" +
-                        "    \"P\".\"ID\",\n" +
-                        "    \"P\".\"ORGID\",\n" +
-                        "    \"P\".\"NAME\",\n" +
-                        "    \"P\".\"SALARY\",\n" +
-                        "    \"O\".\"ID\",\n" +
-                        "    \"O\".\"NAME\"\n" +
-                        "FROM \"PUBLIC\".\"ORGANIZATION\" \"O\"\n" +
-                        "    /* PUBLIC.PRIMARY_KEY_D: ID = 10 */\n" +
-                        "    /* WHERE O.ID = 10\n" +
-                        "    */\n" +
-                        "INNER JOIN \"PUBLIC\".\"PERSON\" \"P\"\n" +
-                        "    /* PUBLIC.PRIMARY_KEY_8: ID = O.ID */\n" +
-                        "    ON 1=1\n" +
-                        "WHERE (\"P\".\"ID\" = \"O\".\"ID\")\n" +
-                        "    AND (\"O\".\"ID\" = 10)\n" +
-                        "    AND (\"P\".\"SALARY\" > 1000)");
+            "INNER JOIN ORGANIZATION o ON p.id = o.id WHERE o.id = 10 AND p.salary > 1000",
+            "SELECT\n" +
+                "    \"P\".\"ID\",\n" +
+                "    \"P\".\"ORGID\",\n" +
+                "    \"P\".\"NAME\",\n" +
+                "    \"P\".\"SALARY\",\n" +
+                "    \"O\".\"ID\",\n" +
+                "    \"O\".\"NAME\"\n" +
+                "FROM \"PUBLIC\".\"ORGANIZATION\" \"O\"\n" +
+                "    /* PUBLIC.PRIMARY_KEY_D: ID = 10 */\n" +
+                "    /* WHERE O.ID = 10\n" +
+                "    */\n" +
+                "INNER JOIN \"PUBLIC\".\"PERSON\" \"P\"\n" +
+                "    /* PUBLIC.PRIMARY_KEY_8: ID = O.ID */\n" +
+                "    ON 1=1\n" +
+                "WHERE (\"P\".\"ID\" = \"O\".\"ID\")\n" +
+                "    AND (\"O\".\"ID\" = 10)\n" +
+                "    AND (\"P\".\"SALARY\" > 1000)");
 
         PreparedStatement pStat = conn.prepareStatement(
                 "/* bla-bla */ EXPLAIN SELECT ID FROM ORGANIZATION WHERE id = ?");
@@ -1025,11 +1024,11 @@ public class TestCases extends TestDb {
         assertTrue(rs.next());
 
         assertEquals("SELECT\n" +
-                        "    \"ID\"\n" +
-                        "FROM \"PUBLIC\".\"ORGANIZATION\"\n" +
-                        "    /* PUBLIC.PRIMARY_KEY_D: ID = ?1 */\n" +
-                        "WHERE \"ID\" = ?1",
-                rs.getString(1));
+                "    \"ID\"\n" +
+                "FROM \"PUBLIC\".\"ORGANIZATION\"\n" +
+                "    /* PUBLIC.PRIMARY_KEY_D: ID = ?1 */\n" +
+                "WHERE \"ID\" = ?1",
+            rs.getString(1));
 
         conn.close();
     }
@@ -1067,15 +1066,15 @@ public class TestCases extends TestDb {
         assertTrue(rs.next());
 
         assertEquals("SELECT\n" +
-                        "    \"ID\"\n" +
-                        "FROM \"PUBLIC\".\"ORGANIZATION\"\n" +
-                        "    /* PUBLIC.PRIMARY_KEY_D: ID = ?1 */\n" +
-                        "    /* scanCount: 2 */\n" +
-                        "WHERE \"ID\" = ?1",
-                rs.getString(1));
+                "    \"ID\"\n" +
+                "FROM \"PUBLIC\".\"ORGANIZATION\"\n" +
+                "    /* PUBLIC.PRIMARY_KEY_D: ID = ?1 */\n" +
+                "    /* scanCount: 2 */\n" +
+                "WHERE \"ID\" = ?1",
+            rs.getString(1));
 
         pStat = conn.prepareStatement("EXPLAIN ANALYZE SELECT * FROM PERSON p " +
-                "INNER JOIN ORGANIZATION o ON o.id = p.id WHERE o.id = ?");
+            "INNER JOIN ORGANIZATION o ON o.id = p.id WHERE o.id = ?");
 
         assertThrows(ErrorCode.PARAMETER_NOT_SET_1, pStat).executeQuery();
 
@@ -1086,24 +1085,24 @@ public class TestCases extends TestDb {
         assertTrue(rs.next());
 
         assertEquals("SELECT\n" +
-                        "    \"P\".\"ID\",\n" +
-                        "    \"P\".\"ORGID\",\n" +
-                        "    \"P\".\"NAME\",\n" +
-                        "    \"P\".\"SALARY\",\n" +
-                        "    \"O\".\"ID\",\n" +
-                        "    \"O\".\"NAME\"\n" +
-                        "FROM \"PUBLIC\".\"PERSON\" \"P\"\n" +
-                        "    /* PUBLIC.PRIMARY_KEY_8: ID = ?1 */\n" +
-                        "    /* scanCount: 2 */\n" +
-                        "INNER JOIN \"PUBLIC\".\"ORGANIZATION\" \"O\"\n" +
-                        "    /* PUBLIC.PRIMARY_KEY_D: ID = ?1\n" +
-                        "        AND ID = P.ID\n" +
-                        "     */\n" +
-                        "    ON 1=1\n" +
-                        "    /* scanCount: 2 */\n" +
-                        "WHERE (\"O\".\"ID\" = ?1)\n" +
-                        "    AND (\"O\".\"ID\" = \"P\".\"ID\")",
-                rs.getString(1));
+                "    \"P\".\"ID\",\n" +
+                "    \"P\".\"ORGID\",\n" +
+                "    \"P\".\"NAME\",\n" +
+                "    \"P\".\"SALARY\",\n" +
+                "    \"O\".\"ID\",\n" +
+                "    \"O\".\"NAME\"\n" +
+                "FROM \"PUBLIC\".\"PERSON\" \"P\"\n" +
+                "    /* PUBLIC.PRIMARY_KEY_8: ID = ?1 */\n" +
+                "    /* scanCount: 2 */\n" +
+                "INNER JOIN \"PUBLIC\".\"ORGANIZATION\" \"O\"\n" +
+                "    /* PUBLIC.PRIMARY_KEY_D: ID = ?1\n" +
+                "        AND ID = P.ID\n" +
+                "     */\n" +
+                "    ON 1=1\n" +
+                "    /* scanCount: 2 */\n" +
+                "WHERE (\"O\".\"ID\" = ?1)\n" +
+                "    AND (\"O\".\"ID\" = \"P\".\"ID\")",
+            rs.getString(1));
 
         conn.close();
     }
@@ -1481,8 +1480,8 @@ public class TestCases extends TestDb {
         c0.createStatement().executeUpdate("SET AUTOCOMMIT FALSE");
         c0.createStatement().executeUpdate(
                 "create table australia (ID  INTEGER NOT NULL, " +
-                        "Name VARCHAR(100), firstName VARCHAR(100), " +
-                        "Points INTEGER, LicenseID INTEGER, PRIMARY KEY(ID))");
+                "Name VARCHAR(100), firstName VARCHAR(100), " +
+                "Points INTEGER, LicenseID INTEGER, PRIMARY KEY(ID))");
         c0.createStatement().executeUpdate("COMMIT");
         c0.close();
 
@@ -1529,7 +1528,7 @@ public class TestCases extends TestDb {
         c0.createStatement().executeUpdate("SET AUTOCOMMIT FALSE");
         PreparedStatement p65 = c0.prepareStatement(
                 "insert into australia" +
-                        "(id, Name, FirstName, Points, LicenseID) values (?, ?, ?, ?, ?)");
+                "(id, Name, FirstName, Points, LicenseID) values (?, ?, ?, ?, ?)");
         len = getSize(1, 1000);
         for (int i = 0; i < len; i++) {
             p65.setInt(1, i);
@@ -1584,9 +1583,9 @@ public class TestCases extends TestDb {
 
         ResultSet rs = stat.executeQuery(
                 "select master.id, master.name " +
-                        "from master " +
-                        "where master.id in (select detail.id from detail) " +
-                        "order by master.id");
+                "from master " +
+                "where master.id in (select detail.id from detail) " +
+                "order by master.id");
         assertTrue(rs.next());
         assertEquals(1, rs.getInt(1));
         assertTrue(rs.next());
@@ -1715,9 +1714,7 @@ public class TestCases extends TestDb {
         conn.close();
     }
 
-    /**
-     * Tests fix for bug #682: Queries with 'like' expressions may filter rows incorrectly
-     */
+    /** Tests fix for bug #682: Queries with 'like' expressions may filter rows incorrectly */
     private void testLikeExpressions() throws SQLException {
         Connection conn = getConnection("cases");
         Statement stat = conn.createStatement();

@@ -13,8 +13,7 @@ package org.h2.value;
  */
 public class VersionedValue<T> {
 
-    protected VersionedValue() {
-    }
+    protected VersionedValue() {}
 
     public boolean isCommitted() {
         return true;
@@ -26,12 +25,12 @@ public class VersionedValue<T> {
 
     @SuppressWarnings("unchecked")
     public T getCurrentValue() {
-        return (T) this;
+        return (T)this;
     }
 
     @SuppressWarnings("unchecked")
     public T getCommittedValue() {
-        return (T) this;
+        return (T)this;
     }
 
 }

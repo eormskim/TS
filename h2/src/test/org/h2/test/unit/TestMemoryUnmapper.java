@@ -15,14 +15,14 @@ import org.h2.util.MemoryUnmapper;
  * Tests memory unmapper.
  */
 public class TestMemoryUnmapper extends TestBase {
-    private static final int OK = 0, /* EXCEPTION = 1, */
-            UNAVAILABLE = 2;
+    private static final int OK = 0, /* EXCEPTION = 1, */ UNAVAILABLE = 2;
 
     /**
      * May be used to run only this test and may be launched by this test in a
      * subprocess.
      *
-     * @param a if empty run this test only
+     * @param a
+     *            if empty run this test only
      */
     public static void main(String... a) throws Exception {
         if (a.length == 0) {

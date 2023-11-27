@@ -62,7 +62,7 @@ public class ConstraintDomain extends Constraint {
      * Set the expression.
      *
      * @param session the session
-     * @param expr    the expression
+     * @param expr the expression
      */
     public void setExpression(SessionLocal session, Expression expr) {
         expr.mapColumns(resolver, 0, Expression.MAP_INITIAL);
@@ -116,8 +116,10 @@ public class ConstraintDomain extends Constraint {
     /**
      * Check the specified value.
      *
-     * @param session the session
-     * @param value   the value to check
+     * @param session
+     *            the session
+     * @param value
+     *            the value to check
      */
     public void check(SessionLocal session, Value value) {
         Value v;
@@ -134,7 +136,7 @@ public class ConstraintDomain extends Constraint {
     /**
      * Get the check constraint expression for this column.
      *
-     * @param session    the session
+     * @param session the session
      * @param columnName the column name
      * @return the expression
      */
@@ -216,7 +218,7 @@ public class ConstraintDomain extends Constraint {
         private boolean checkColumn(Domain domain, Column targetColumn) {
             Table table = targetColumn.getTable();
             TableFilter filter = new TableFilter(session, table, null, true, null, 0, null);
-            TableFilter[] filters = {filter};
+            TableFilter[] filters = { filter };
             PlanItem item = filter.getBestPlanItem(session, filters, 0, new AllColumnsForPlan(filters));
             filter.setPlanItem(item);
             filter.prepare();

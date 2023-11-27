@@ -13,7 +13,7 @@ import org.h2.mvstore.type.DataType;
 
 /**
  * Class MemoryEstimator.
- * <p>
+ *
  * Calculation of the amount of memory occupied by keys, values and pages of the MVTable
  * may become expensive operation for complex data types like Row.
  * On the other hand, result of the calculation is used by page cache to limit it's size
@@ -48,16 +48,14 @@ public final class MemoryEstimator {
     private static final int WINDOW_HALF_SIZE = WINDOW_SIZE >> 1;
     private static final int SUM_SHIFT = 32;
 
-    private MemoryEstimator() {
-    }
+    private MemoryEstimator() {}
 
     /**
      * Estimates memory size of the data based on previous values.
-     *
-     * @param stats    AtomicLong holding statistical data about the estimated sequence
+     * @param stats AtomicLong holding statistical data about the estimated sequence
      * @param dataType used for calculation of the next sequence value, if necessary
-     * @param data     which size is to be calculated as the next sequence value, if necessary
-     * @param <T>      type of the data
+     * @param data which size is to be calculated as the next sequence value, if necessary
+     * @param <T> type of the data
      * @return next estimated or calculated value of the sequence
      */
     public static <T> int estimateMemory(AtomicLong stats, DataType<T> dataType, T data) {
@@ -93,12 +91,11 @@ public final class MemoryEstimator {
 
     /**
      * Estimates memory size of the data set based on previous values.
-     *
-     * @param stats    AtomicLong holding statistical data about the estimated sequence
+     * @param stats AtomicLong holding statistical data about the estimated sequence
      * @param dataType used for calculation of the next sequence value, if necessary
-     * @param storage  of the data set, which size is to be calculated
-     * @param count    number of data items in the storage
-     * @param <T>      type of the data in the storage
+     * @param storage of the data set, which size is to be calculated
+     * @param count number of data items in the storage
+     * @param <T> type of the data in the storage
      * @return next estimated or calculated size of the storage
      */
     public static <T> int estimateMemory(AtomicLong stats, DataType<T> dataType, T[] storage, int count) {
@@ -141,7 +138,6 @@ public final class MemoryEstimator {
 
     /**
      * Calculates percentage of how many times actual calculation happened (vs. estimation)
-     *
      * @param stats AtomicLong holding statistical data about the estimated sequence
      * @return sampling percentage in range 0 - 100
      */
@@ -165,7 +161,7 @@ public final class MemoryEstimator {
                                         int counter, int skipSum, long initialized, long sum,
                                         int itemsCount, int itemsMem) {
         return updateStatsData(stats, statsData,
-                constructStatsData(sum, initialized, skipSum, counter), itemsCount, itemsMem);
+                                constructStatsData(sum, initialized, skipSum, counter), itemsCount, itemsMem);
     }
 
     private static long constructStatsData(long sum, long initialized, int skipSum, int counter) {
@@ -186,14 +182,14 @@ public final class MemoryEstimator {
     }
 
     private static int getCounter(long statsData) {
-        return (int) (statsData & COUNTER_MASK);
+        return (int)(statsData & COUNTER_MASK);
     }
 
     private static int getSkipSum(long statsData) {
-        return (int) ((statsData >> SKIP_SUM_SHIFT) & SKIP_SUM_MASK);
+        return (int)((statsData >> SKIP_SUM_SHIFT) & SKIP_SUM_MASK);
     }
 
     private static int getAverage(long updatedStatsData) {
-        return (int) (updatedStatsData >>> (SUM_SHIFT + WINDOW_SHIFT));
+        return (int)(updatedStatsData >>> (SUM_SHIFT + WINDOW_SHIFT));
     }
 }

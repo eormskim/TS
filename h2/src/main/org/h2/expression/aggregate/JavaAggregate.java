@@ -6,7 +6,6 @@
 package org.h2.expression.aggregate;
 
 import java.sql.SQLException;
-
 import org.h2.api.Aggregate;
 import org.h2.command.query.Select;
 import org.h2.engine.SessionLocal;
@@ -64,16 +63,16 @@ public class JavaAggregate extends AbstractAggregate {
             return false;
         }
         switch (visitor.getType()) {
-            case ExpressionVisitor.DETERMINISTIC:
-                // TODO optimization: some functions are deterministic, but we don't
-                // know (no setting for that)
-            case ExpressionVisitor.OPTIMIZABLE_AGGREGATE:
-                // user defined aggregate functions can not be optimized
-                return false;
-            case ExpressionVisitor.GET_DEPENDENCIES:
-                visitor.addDependency(userAggregate);
-                break;
-            default:
+        case ExpressionVisitor.DETERMINISTIC:
+            // TODO optimization: some functions are deterministic, but we don't
+            // know (no setting for that)
+        case ExpressionVisitor.OPTIMIZABLE_AGGREGATE:
+            // user defined aggregate functions can not be optimized
+            return false;
+        case ExpressionVisitor.GET_DEPENDENCIES:
+            visitor.addDependency(userAggregate);
+            break;
+        default:
         }
         for (Expression e : args) {
             if (e != null && !e.isEverything(visitor)) {

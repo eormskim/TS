@@ -119,8 +119,8 @@ public class TcpServer implements Service {
     /**
      * Add a connection to the management database.
      *
-     * @param id   the connection id
-     * @param url  the database URL
+     * @param id the connection id
+     * @param url the database URL
      * @param user the user name
      */
     synchronized void addConnection(int id, String url, String user) {
@@ -204,7 +204,7 @@ public class TcpServer implements Service {
      * Returns whether a secure protocol is used.
      *
      * @return {@code true} if SSL socket is used, {@code false} if plain socket
-     * is used
+     *         is used
      */
     public boolean getSSL() {
         return ssl;
@@ -331,8 +331,8 @@ public class TcpServer implements Service {
      * Stop a running server. This method is called via reflection from the
      * STOP_SERVER function.
      *
-     * @param port         the port where the server runs, or 0 for all running servers
-     * @param password     the password (or null)
+     * @param port the port where the server runs, or 0 for all running servers
+     * @param password the password (or null)
      * @param shutdownMode the shutdown mode, SHUTDOWN_NORMAL or SHUTDOWN_FORCE.
      */
     public static void stopServer(int port, String password, int shutdownMode) {
@@ -394,7 +394,6 @@ public class TcpServer implements Service {
             System.out.println(s);
         }
     }
-
     /**
      * Print a stack trace if the trace flag is enabled.
      *
@@ -428,15 +427,15 @@ public class TcpServer implements Service {
     /**
      * Stop the TCP server with the given URL.
      *
-     * @param url      the database URL
+     * @param url the database URL
      * @param password the password
-     * @param force    if the server should be stopped immediately
-     * @param all      whether all TCP servers that are running in the JVM should be
-     *                 stopped
+     * @param force if the server should be stopped immediately
+     * @param all whether all TCP servers that are running in the JVM should be
+     *            stopped
      * @throws SQLException on failure
      */
     public static synchronized void shutdown(String url, String password,
-                                             boolean force, boolean all) throws SQLException {
+            boolean force, boolean all) throws SQLException {
         try {
             int port = Constants.DEFAULT_TCP_PORT;
             int idx = url.lastIndexOf(':');
@@ -479,7 +478,7 @@ public class TcpServer implements Service {
     /**
      * Cancel a running statement.
      *
-     * @param sessionId   the session id
+     * @param sessionId the session id
      * @param statementId the statement id
      */
     void cancelStatement(String sessionId, int statementId) {

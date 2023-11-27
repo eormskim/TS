@@ -24,15 +24,20 @@ public abstract class AlterDomain extends SchemaOwnerCommand {
     /**
      * Processes all columns and domains that use the specified domain.
      *
-     * @param session              the session
-     * @param domain               the domain to process
-     * @param columnProcessor      column handler
-     * @param domainProcessor      domain handler
-     * @param recompileExpressions whether processed expressions need to be recompiled
+     * @param session
+     *            the session
+     * @param domain
+     *            the domain to process
+     * @param columnProcessor
+     *            column handler
+     * @param domainProcessor
+     *            domain handler
+     * @param recompileExpressions
+     *            whether processed expressions need to be recompiled
      */
     public static void forAllDependencies(SessionLocal session, Domain domain,
-                                          BiPredicate<Domain, Column> columnProcessor, BiPredicate<Domain, Domain> domainProcessor,
-                                          boolean recompileExpressions) {
+            BiPredicate<Domain, Column> columnProcessor, BiPredicate<Domain, Domain> domainProcessor,
+            boolean recompileExpressions) {
         Database db = session.getDatabase();
         for (Schema schema : db.getAllSchemasNoMeta()) {
             for (Domain targetDomain : schema.getAllDomains()) {
@@ -57,7 +62,7 @@ public abstract class AlterDomain extends SchemaOwnerCommand {
     }
 
     private static boolean forTable(SessionLocal session, Domain domain, BiPredicate<Domain, Column> columnProcessor,
-                                    boolean recompileExpressions, Table t) {
+            boolean recompileExpressions, Table t) {
         boolean modified = false;
         for (Column targetColumn : t.getColumns()) {
             if (targetColumn.getDomain() == domain) {

@@ -39,7 +39,8 @@ public final class ValueTimeTimeZone extends Value {
     private final int timeZoneOffsetSeconds;
 
     /**
-     * @param nanos nanoseconds since midnight
+     * @param nanos
+     *            nanoseconds since midnight
      */
     private ValueTimeTimeZone(long nanos, int timeZoneOffsetSeconds) {
         this.nanos = nanos;
@@ -49,8 +50,10 @@ public final class ValueTimeTimeZone extends Value {
     /**
      * Get or create a time value.
      *
-     * @param nanos                 the nanoseconds since midnight
-     * @param timeZoneOffsetSeconds the timezone offset in seconds
+     * @param nanos
+     *            the nanoseconds since midnight
+     * @param timeZoneOffsetSeconds
+     *            the timezone offset in seconds
      * @return the value
      */
     public static ValueTimeTimeZone fromNanos(long nanos, int timeZoneOffsetSeconds) {
@@ -72,7 +75,8 @@ public final class ValueTimeTimeZone extends Value {
     /**
      * Parse a string to a ValueTime.
      *
-     * @param s the string to parse
+     * @param s
+     *            the string to parse
      * @return the time
      */
     public static ValueTimeTimeZone parse(String s) {

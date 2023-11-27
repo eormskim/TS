@@ -54,16 +54,16 @@ public class TestMultiDimension extends TestDb {
         assertEquals(5, m.interleave(3, 0));
         assertEquals(5, m.interleave(new int[]{3, 0}));
         assertEquals(10, m.interleave(0, 3));
-        assertEquals(10, m.interleave(new int[]{0, 3}));
+        assertEquals(10, m.interleave(new int[] { 0, 3 }));
         long v = Integer.MAX_VALUE | ((long) Integer.MAX_VALUE << 31L);
         assertEquals(v, m.interleave(Integer.MAX_VALUE, Integer.MAX_VALUE));
-        assertEquals(v, m.interleave(new int[]{
-                Integer.MAX_VALUE, Integer.MAX_VALUE}));
+        assertEquals(v, m.interleave(new int[] {
+                Integer.MAX_VALUE, Integer.MAX_VALUE }));
         Random random = new Random(1);
         for (int i = 0; i < 1000; i++) {
             int x = random.nextInt(Integer.MAX_VALUE), y =
                     random.nextInt(Integer.MAX_VALUE);
-            v = m.interleave(new int[]{x, y});
+            v = m.interleave(new int[] {x, y});
             long v2 = m.interleave(x, y);
             assertEquals(v, v2);
             int x1 = m.deinterleave(2, v, 0);
@@ -75,7 +75,7 @@ public class TestMultiDimension extends TestDb {
             int x = random.nextInt(1000), y = random.nextInt(1000),
                     z = random.nextInt(1000);
             MultiDimension tool = MultiDimension.getInstance();
-            long xyz = tool.interleave(new int[]{x, y, z});
+            long xyz = tool.interleave(new int[] { x, y, z });
             assertEquals(x, tool.deinterleave(3, xyz, 0));
             assertEquals(y, tool.deinterleave(3, xyz, 1));
             assertEquals(z, tool.deinterleave(3, xyz, 2));
@@ -125,10 +125,10 @@ public class TestMultiDimension extends TestDb {
         stat.execute("ANALYZE SAMPLE_SIZE 10000");
         PreparedStatement prepRegular = conn.prepareStatement(
                 "SELECT * FROM TEST WHERE X BETWEEN ? AND ? " +
-                        "AND Y BETWEEN ? AND ? ORDER BY X, Y");
+                "AND Y BETWEEN ? AND ? ORDER BY X, Y");
         MultiDimension multi = MultiDimension.getInstance();
         String sql = multi.generatePreparedQuery("TEST", "XY",
-                new String[]{"X", "Y"});
+                new String[] { "X", "Y" });
         sql += " ORDER BY X, Y";
         PreparedStatement prepMulti = conn.prepareStatement(sql);
         long timeMulti = 0, timeRegular = 0;
@@ -141,7 +141,7 @@ public class TestMultiDimension extends TestDb {
             int maxX = minX + size, maxY = minY + size;
             time = System.nanoTime();
             ResultSet rs1 = multi.getResult(prepMulti,
-                    new int[]{minX, minY}, new int[]{maxX, maxY});
+                    new int[] { minX, minY }, new int[] { maxX, maxY });
             timeMulti += System.nanoTime() - time;
             time = System.nanoTime();
             prepRegular.setInt(1, minX);
@@ -201,10 +201,10 @@ public class TestMultiDimension extends TestDb {
         stat.execute("ANALYZE SAMPLE_SIZE 10000");
         PreparedStatement prepRegular = conn.prepareStatement(
                 "SELECT * FROM TEST WHERE X BETWEEN ? AND ? " +
-                        "AND Y BETWEEN ? AND ? AND Z BETWEEN ? AND ? ORDER BY X, Y, Z");
+                "AND Y BETWEEN ? AND ? AND Z BETWEEN ? AND ? ORDER BY X, Y, Z");
         MultiDimension multi = MultiDimension.getInstance();
-        String sql = multi.generatePreparedQuery("TEST", "XYZ", new String[]{
-                "X", "Y", "Z"});
+        String sql = multi.generatePreparedQuery("TEST", "XYZ", new String[] {
+                "X", "Y", "Z" });
         sql += " ORDER BY X, Y, Z";
         PreparedStatement prepMulti = conn.prepareStatement(sql);
         long timeMulti = 0, timeRegular = 0;
@@ -217,8 +217,8 @@ public class TestMultiDimension extends TestDb {
             int minZ = rand.nextInt(max - size);
             int maxX = minX + size, maxY = minY + size, maxZ = minZ + size;
             time = System.nanoTime();
-            ResultSet rs1 = multi.getResult(prepMulti, new int[]{minX, minY,
-                    minZ}, new int[]{maxX, maxY, maxZ});
+            ResultSet rs1 = multi.getResult(prepMulti, new int[] { minX, minY,
+                    minZ }, new int[] { maxX, maxY, maxZ });
             timeMulti += System.nanoTime() - time;
             time = System.nanoTime();
             prepRegular.setInt(1, minX);
@@ -262,7 +262,7 @@ public class TestMultiDimension extends TestDb {
      * @return the bit-interleaved value
      */
     public static long interleave(int x, int y, int z) {
-        return MultiDimension.getInstance().interleave(new int[]{x, y, z});
+        return MultiDimension.getInstance().interleave(new int[] { x, y, z });
     }
 
 }

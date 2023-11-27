@@ -68,7 +68,7 @@ public class FileFunctions {
      * @throws IOException on failure
      */
     public static String readTextFileWithEncoding(String fileName,
-                                                  String encoding) throws IOException {
+            String encoding) throws IOException {
         byte[] buff = readFile(fileName);
         String s = new String(buff, encoding);
         return s;

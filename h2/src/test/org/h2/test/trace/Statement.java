@@ -126,7 +126,7 @@ class Statement {
     /**
      * This statement is an assignment.
      *
-     * @param className    the class of the variable
+     * @param className the class of the variable
      * @param variableName the variable name
      */
     void setAssign(String className, String variableName) {
@@ -150,8 +150,8 @@ class Statement {
      * variable.
      *
      * @param variableName the variable name
-     * @param object       the object
-     * @param methodName   the method name
+     * @param object the object
+     * @param methodName the method name
      */
     void setMethodCall(String variableName, Object object, String methodName) {
         this.objectName = variableName;

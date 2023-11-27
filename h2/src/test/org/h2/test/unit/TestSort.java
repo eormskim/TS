@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.h2.dev.sort.InPlaceStableMergeSort;
 import org.h2.dev.sort.InPlaceStableQuicksort;
 import org.h2.test.TestBase;
@@ -86,7 +85,7 @@ public class TestSort extends TestBase {
      *
      * @param type the type of data
      */
-    private void test(@SuppressWarnings("unused") String type) throws Exception {
+    private void  test(@SuppressWarnings("unused") String type) throws Exception {
         compareCount.set(0);
 
         // long t = System.nanoTime();

@@ -37,23 +37,23 @@ public abstract class RowFactory {
     /**
      * Create a new row factory.
      *
-     * @param provider     the cast provider
-     * @param compareMode  the compare mode
-     * @param handler      the data handler
-     * @param columns      the list of columns
+     * @param provider the cast provider
+     * @param compareMode the compare mode
+     * @param handler the data handler
+     * @param columns the list of columns
      * @param indexColumns the list of index columns
-     * @param storeKeys    whether row keys are stored
+     * @param storeKeys whether row keys are stored
      * @return the (possibly new) row factory
      */
     public RowFactory createRowFactory(CastDataProvider provider, CompareMode compareMode, DataHandler handler,
-                                       Typed[] columns, IndexColumn[] indexColumns, boolean storeKeys) {
+            Typed[] columns, IndexColumn[] indexColumns, boolean storeKeys) {
         return this;
     }
 
     /**
      * Create a new row.
      *
-     * @param data   the values
+     * @param data the values
      * @param memory the estimated memory usage in bytes
      * @return the created row
      */
@@ -82,10 +82,10 @@ public abstract class RowFactory {
      */
     public static final class DefaultRowFactory extends RowFactory {
         private final RowDataType dataType;
-        private final int columnCount;
-        private final int[] indexes;
-        private TypeInfo[] columnTypes;
-        private final int[] map;
+        private final int         columnCount;
+        private final int[]       indexes;
+        private TypeInfo[]        columnTypes;
+        private final int[]       map;
 
         public static final DefaultRowFactory INSTANCE = new DefaultRowFactory();
 
@@ -101,7 +101,7 @@ public abstract class RowFactory {
                 map = null;
             } else {
                 map = new int[columnCount];
-                for (int i = 0, l = indexes.length; i < l; ) {
+                for (int i = 0, l = indexes.length; i < l;) {
                     map[indexes[i]] = ++i;
                 }
             }
@@ -110,7 +110,7 @@ public abstract class RowFactory {
 
         @Override
         public RowFactory createRowFactory(CastDataProvider provider, CompareMode compareMode, DataHandler handler,
-                                           Typed[] columns, IndexColumn[] indexColumns, boolean storeKeys) {
+                Typed[] columns, IndexColumn[] indexColumns, boolean storeKeys) {
             int[] indexes = null;
             int[] sortTypes = null;
             TypeInfo[] columnTypes = null;
@@ -144,18 +144,18 @@ public abstract class RowFactory {
         /**
          * Create a new row factory.
          *
-         * @param provider    the cast provider
+         * @param provider the cast provider
          * @param compareMode the compare mode
-         * @param handler     the data handler
-         * @param sortTypes   the sort types
-         * @param indexes     the list of indexed columns
+         * @param handler the data handler
+         * @param sortTypes the sort types
+         * @param indexes the list of indexed columns
          * @param columnTypes the list of column data type information
          * @param columnCount the number of columns
-         * @param storeKeys   whether row keys are stored
+         * @param storeKeys whether row keys are stored
          * @return the (possibly new) row factory
          */
         public RowFactory createRowFactory(CastDataProvider provider, CompareMode compareMode, DataHandler handler,
-                                           int[] sortTypes, int[] indexes, TypeInfo[] columnTypes, int columnCount, boolean storeKeys) {
+                int[] sortTypes, int[] indexes, TypeInfo[] columnTypes, int columnCount, boolean storeKeys) {
             RowDataType rowDataType = new RowDataType(provider, compareMode, handler, sortTypes, indexes, columnCount,
                     storeKeys);
             RowFactory rowFactory = new DefaultRowFactory(rowDataType, columnCount, indexes, columnTypes);

@@ -21,8 +21,10 @@ public interface ColumnTemplate {
     /**
      * Set the default expression.
      *
-     * @param session           the session
-     * @param defaultExpression the default expression
+     * @param session
+     *            the session
+     * @param defaultExpression
+     *            the default expression
      */
     void setDefaultExpression(SessionLocal session, Expression defaultExpression);
 
@@ -35,8 +37,10 @@ public interface ColumnTemplate {
     /**
      * Set the on update expression.
      *
-     * @param session            the session
-     * @param onUpdateExpression the on update expression
+     * @param session
+     *            the session
+     * @param onUpdateExpression
+     *            the on update expression
      */
     void setOnUpdateExpression(SessionLocal session, Expression onUpdateExpression);
 
@@ -49,7 +53,8 @@ public interface ColumnTemplate {
     /**
      * Prepare all expressions of this column or domain.
      *
-     * @param session the session
+     * @param session
+     *            the session
      */
     void prepareExpressions(SessionLocal session);
 

@@ -15,7 +15,8 @@ public interface ExpressionWithVariableParameters {
     /**
      * Adds the parameter expression.
      *
-     * @param param the expression
+     * @param param
+     *            the expression
      */
     void addParameter(Expression param);
 
@@ -24,7 +25,8 @@ public interface ExpressionWithVariableParameters {
      * checks if the parameter count is correct when required by the
      * implementation.
      *
-     * @throws DbException if the parameter count is incorrect.
+     * @throws DbException
+     *             if the parameter count is incorrect.
      */
     void doneWithParameters() throws DbException;
 

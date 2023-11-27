@@ -157,7 +157,7 @@ public class IntArray {
      * Remove a number of elements.
      *
      * @param fromIndex the index of the first item to remove
-     * @param toIndex   upper bound (exclusive)
+     * @param toIndex upper bound (exclusive)
      */
     public void removeRange(int fromIndex, int toIndex) {
         if (fromIndex > toIndex || toIndex > size) {

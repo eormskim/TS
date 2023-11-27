@@ -40,7 +40,7 @@ public final class DBObjectFunction extends FunctionN {
     private final int function;
 
     public DBObjectFunction(Expression objectType, Expression arg1, Expression arg2, int function) {
-        super(arg2 == null ? new Expression[]{objectType, arg1,} : new Expression[]{objectType, arg1, arg2});
+        super(arg2 == null ? new Expression[] { objectType, arg1, } : new Expression[] { objectType, arg1, arg2 });
         this.function = function;
     }
 
@@ -56,67 +56,67 @@ public final class DBObjectFunction extends FunctionN {
             }
             String objectName = v3.getString();
             switch (objectType) {
-                case "CONSTANT":
-                    object = schema.findConstant(objectName);
-                    break;
-                case "CONSTRAINT":
-                    object = schema.findConstraint(session, objectName);
-                    break;
-                case "DOMAIN":
-                    object = schema.findDomain(objectName);
-                    break;
-                case "INDEX":
-                    object = schema.findIndex(session, objectName);
-                    break;
-                case "ROUTINE":
-                    object = schema.findFunctionOrAggregate(objectName);
-                    break;
-                case "SEQUENCE":
-                    object = schema.findSequence(objectName);
-                    break;
-                case "SYNONYM":
-                    object = schema.getSynonym(objectName);
-                    break;
-                case "TABLE":
-                    object = schema.findTableOrView(session, objectName);
-                    break;
-                case "TRIGGER":
-                    object = schema.findTrigger(objectName);
-                    break;
-                default:
-                    return ValueNull.INSTANCE;
+            case "CONSTANT":
+                object = schema.findConstant(objectName);
+                break;
+            case "CONSTRAINT":
+                object = schema.findConstraint(session, objectName);
+                break;
+            case "DOMAIN":
+                object = schema.findDomain(objectName);
+                break;
+            case "INDEX":
+                object = schema.findIndex(session, objectName);
+                break;
+            case "ROUTINE":
+                object = schema.findFunctionOrAggregate(objectName);
+                break;
+            case "SEQUENCE":
+                object = schema.findSequence(objectName);
+                break;
+            case "SYNONYM":
+                object = schema.getSynonym(objectName);
+                break;
+            case "TABLE":
+                object = schema.findTableOrView(session, objectName);
+                break;
+            case "TRIGGER":
+                object = schema.findTrigger(objectName);
+                break;
+            default:
+                return ValueNull.INSTANCE;
             }
         } else {
             String objectName = v2.getString();
             Database database = session.getDatabase();
             switch (objectType) {
-                case "ROLE":
-                    object = database.findRole(objectName);
-                    break;
-                case "SETTING":
-                    object = database.findSetting(objectName);
-                    break;
-                case "SCHEMA":
-                    object = database.findSchema(objectName);
-                    break;
-                case "USER":
-                    object = database.findUser(objectName);
-                    break;
-                default:
-                    return ValueNull.INSTANCE;
+            case "ROLE":
+                object = database.findRole(objectName);
+                break;
+            case "SETTING":
+                object = database.findSetting(objectName);
+                break;
+            case "SCHEMA":
+                object = database.findSchema(objectName);
+                break;
+            case "USER":
+                object = database.findUser(objectName);
+                break;
+            default:
+                return ValueNull.INSTANCE;
             }
         }
         if (object == null) {
             return ValueNull.INSTANCE;
         }
         switch (function) {
-            case DB_OBJECT_ID:
-                return ValueInteger.get(object.getId());
-            case DB_OBJECT_SQL:
-                String sql = object.getCreateSQLForMeta();
-                return sql != null ? ValueVarchar.get(sql, session) : ValueNull.INSTANCE;
-            default:
-                throw DbException.getInternalError("function=" + function);
+        case DB_OBJECT_ID:
+            return ValueInteger.get(object.getId());
+        case DB_OBJECT_SQL:
+            String sql = object.getCreateSQLForMeta();
+            return sql != null ? ValueVarchar.get(sql, session) : ValueNull.INSTANCE;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
     }
 
@@ -130,8 +130,8 @@ public final class DBObjectFunction extends FunctionN {
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-            case ExpressionVisitor.DETERMINISTIC:
-                return false;
+        case ExpressionVisitor.DETERMINISTIC:
+            return false;
         }
         return super.isEverything(visitor);
     }

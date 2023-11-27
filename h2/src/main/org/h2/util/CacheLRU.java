@@ -8,7 +8,6 @@ package org.h2.util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
-
 import org.h2.engine.Constants;
 import org.h2.engine.SysProperties;
 import org.h2.message.DbException;
@@ -70,13 +69,13 @@ public class CacheLRU implements Cache {
     /**
      * Create a cache of the given type and size.
      *
-     * @param writer    the cache writer
+     * @param writer the cache writer
      * @param cacheType the cache type
      * @param cacheSize the size
      * @return the cache object
      */
     public static Cache getCache(CacheWriter writer, String cacheType,
-                                 int cacheSize) {
+            int cacheSize) {
         Map<Integer, CacheObject> secondLevel = null;
         if (cacheType.startsWith("SOFT_")) {
             secondLevel = new SoftValuesHashMap<>();
@@ -103,7 +102,7 @@ public class CacheLRU implements Cache {
         values = null;
         values = new CacheObject[len];
         recordCount = 0;
-        memory = len * (long) Constants.MEMORY_POINTER;
+        memory = len * (long)Constants.MEMORY_POINTER;
     }
 
     @Override

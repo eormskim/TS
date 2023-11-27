@@ -20,7 +20,6 @@ import javax.sql.DataSource;
 import javax.sql.PooledConnection;
 import javax.sql.XAConnection;
 import javax.sql.XADataSource;
-
 import org.h2.jdbc.JdbcConnection;
 import org.h2.message.DbException;
 import org.h2.message.TraceObject;
@@ -43,7 +42,7 @@ import org.h2.util.StringUtils;
  * Context ctx = new InitialContext();
  * ctx.bind(&quot;jdbc/dsName&quot;, ds);
  * </pre>
- * <p>
+ *
  * To use a data source that is already registered, use the following code:
  *
  * <pre>
@@ -55,7 +54,7 @@ import org.h2.util.StringUtils;
  * DataSource ds = (DataSource) ctx.lookup(&quot;jdbc/dsName&quot;);
  * Connection conn = ds.getConnection();
  * </pre>
- * <p>
+ *
  * In this example the user name and password are serialized as
  * well; this may be a security problem in some cases.
  */
@@ -68,7 +67,7 @@ public final class JdbcDataSource extends TraceObject implements XADataSource, D
     private transient PrintWriter logWriter;
     private int loginTimeout;
     private String userName = "";
-    private char[] passwordChars = {};
+    private char[] passwordChars = { };
     private String url = "";
     private String description;
 
@@ -85,7 +84,7 @@ public final class JdbcDataSource extends TraceObject implements XADataSource, D
      * Called when de-serializing the object.
      *
      * @param in the input stream
-     * @throws IOException            on failure
+     * @throws IOException on failure
      * @throws ClassNotFoundException on failure
      */
     private void readObject(ObjectInputStream in) throws IOException,
@@ -160,7 +159,7 @@ public final class JdbcDataSource extends TraceObject implements XADataSource, D
      * Open a new connection using the current URL and the specified user name
      * and password.
      *
-     * @param user     the user name
+     * @param user the user name
      * @param password the password
      * @return the connection
      */
@@ -327,7 +326,7 @@ public final class JdbcDataSource extends TraceObject implements XADataSource, D
      * Open a new XA connection using the current URL and the specified user
      * name and password.
      *
-     * @param user     the user name
+     * @param user the user name
      * @param password the password
      * @return the connection
      */
@@ -357,7 +356,7 @@ public final class JdbcDataSource extends TraceObject implements XADataSource, D
      * Open a new pooled connection using the current URL and the specified user
      * name and password.
      *
-     * @param user     the user name
+     * @param user the user name
      * @param password the password
      * @return the connection
      */

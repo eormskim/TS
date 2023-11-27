@@ -23,32 +23,34 @@ public final class RandomDataUtils {
      * separate fonts with different sets of glyphs can be needed.
      * </p>
      *
-     * @param r     the source of random data
-     * @param chars the character array to fill
+     * @param r
+     *            the source of random data
+     * @param chars
+     *            the character array to fill
      */
     public static void randomChars(Random r, char[] chars) {
-        for (int i = 0, l = chars.length; i < l; ) {
+        for (int i = 0, l = chars.length; i < l;) {
             int from, to;
             switch (r.nextInt(4)) {
-                case 3:
-                    if (i + 1 < l) {
-                        from = 0x1F030;
-                        to = 0x1F093;
-                        break;
-                    }
-                    //$FALL-THROUGH$
-                default:
-                    from = ' ';
-                    to = '~';
+            case 3:
+                if (i + 1 < l) {
+                    from = 0x1F030;
+                    to = 0x1F093;
                     break;
-                case 1:
-                    from = 0xA0;
-                    to = 0x24F;
-                    break;
-                case 2:
-                    from = 0x2800;
-                    to = 0x28FF;
-                    break;
+                }
+                //$FALL-THROUGH$
+            default:
+                from = ' ';
+                to = '~';
+                break;
+            case 1:
+                from = 0xA0;
+                to = 0x24F;
+                break;
+            case 2:
+                from = 0x2800;
+                to = 0x28FF;
+                break;
             }
             i += Character.toChars(from + r.nextInt(to - from + 1), chars, i);
         }

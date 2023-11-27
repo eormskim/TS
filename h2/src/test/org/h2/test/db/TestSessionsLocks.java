@@ -101,7 +101,7 @@ public class TestSessionsLocks extends TestDb {
         assertTrue(otherId != sessionId);
         assertFalse(rs.next());
         stat2.execute("set throttle 1");
-        boolean[] done = {false};
+        boolean[] done = { false };
         Runnable runnable = () -> {
             try {
                 stat2.execute("select count(*) from " +

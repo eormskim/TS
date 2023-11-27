@@ -103,7 +103,7 @@ public class SourceCompiler {
      * This will reset all compiled classes.
      *
      * @param className the class name
-     * @param source    the source code
+     * @param source the source code
      */
     public void setSource(String className, String source) {
         sources.put(className, source);
@@ -252,8 +252,8 @@ public class SourceCompiler {
      * in a separate process.
      *
      * @param packageName the package name
-     * @param className   the class name
-     * @param source      the source code
+     * @param className the class name
+     * @param source the source code
      * @return the class file
      */
     byte[] javacCompile(String packageName, String className, String source) {
@@ -296,12 +296,12 @@ public class SourceCompiler {
      * on).
      *
      * @param packageName the package name
-     * @param className   the class name
-     * @param source      the (possibly shortened) source code
+     * @param className the class name
+     * @param source the (possibly shortened) source code
      * @return the full source code
      */
     static String getCompleteSourceCode(String packageName, String className,
-                                        String source) {
+            String source) {
         if (source.startsWith("package ")) {
             return source;
         }
@@ -311,9 +311,9 @@ public class SourceCompiler {
         }
         int endImport = source.indexOf("@CODE");
         String importCode =
-                "import java.util.*;\n" +
-                        "import java.math.*;\n" +
-                        "import java.sql.*;\n";
+            "import java.util.*;\n" +
+            "import java.math.*;\n" +
+            "import java.sql.*;\n";
         if (endImport >= 0) {
             importCode = source.substring(0, endImport);
             source = source.substring("@CODE".length() + endImport);
@@ -321,7 +321,7 @@ public class SourceCompiler {
         buff.append(importCode);
         buff.append("public class ").append(className).append(
                 " {\n" +
-                        "    public static ").append(source).append("\n" +
+                "    public static ").append(source).append("\n" +
                 "}\n");
         return buff.toString();
     }
@@ -330,8 +330,8 @@ public class SourceCompiler {
      * Compile using the standard java compiler.
      *
      * @param packageName the package name
-     * @param className   the class name
-     * @param source      the source code
+     * @param className the class name
+     * @param source the source code
      * @return the class
      */
     Class<?> javaxToolsJavac(String packageName, String className, String source) {
@@ -339,7 +339,7 @@ public class SourceCompiler {
         StringWriter writer = new StringWriter();
         try (JavaFileManager fileManager = new
                 ClassFileManager(JAVA_COMPILER
-                .getStandardFileManager(null, null, null))) {
+                    .getStandardFileManager(null, null, null))) {
             ArrayList<JavaFileObject> compilationUnits = new ArrayList<>();
             compilationUnits.add(new StringJavaFileObject(fullClassName, source));
             // cannot concurrently compile
@@ -349,7 +349,7 @@ public class SourceCompiler {
                         null, compilationUnits).call();
             }
             String output = writer.toString();
-            handleSyntaxError(output, (ok ? 0 : 1));
+            handleSyntaxError(output, (ok? 0: 1));
             return fileManager.getClassLoader(null).loadClass(fullClassName);
         } catch (ClassNotFoundException | IOException e) {
             throw DbException.convert(e);
@@ -407,12 +407,12 @@ public class SourceCompiler {
             // Bugfix: Here we should check exit status value instead of parsing javac output text.
             // Because of the output text is different in different locale environment.
             // @since 2018-07-20 little-pan
-            final Integer status = (Integer) compile.invoke(javac, (Object) new String[]{
+            final Integer status = (Integer)compile.invoke(javac, (Object) new String[] {
                     "-sourcepath", COMPILE_DIR,
                     // "-Xlint:unchecked",
                     "-d", COMPILE_DIR,
                     "-encoding", "UTF-8",
-                    javaFile.toAbsolutePath().toString()});
+                    javaFile.toAbsolutePath().toString() });
             String output = Utils10.byteArrayOutputStreamToString(buff, StandardCharsets.UTF_8);
             handleSyntaxError(output, status);
         } catch (Exception e) {
@@ -423,13 +423,13 @@ public class SourceCompiler {
     }
 
     private static void handleSyntaxError(String output, int exitStatus) {
-        if (0 == exitStatus) {
+        if(0 == exitStatus){
             return;
         }
         boolean syntaxError = false;
         final BufferedReader reader = new BufferedReader(new StringReader(output));
         try {
-            for (String line; (line = reader.readLine()) != null; ) {
+            for (String line; (line = reader.readLine()) != null;) {
                 if (line.endsWith("warning") || line.endsWith("warnings")) {
                     // ignore summary line
                 } else if (line.startsWith("Note:")
@@ -477,7 +477,7 @@ public class SourceCompiler {
                         "groovy.sql.Sql",
                         "org.h2.tools.SimpleResultSet"
                 };
-                Utils.callMethod(importCustomizer, "addImports", new Object[]{importsArray});
+                Utils.callMethod(importCustomizer, "addImports", new Object[] { importsArray });
 
                 // Call the method
                 // CompilerConfiguration.addCompilationCustomizers(
@@ -500,7 +500,7 @@ public class SourceCompiler {
         }
 
         public static Class<?> parseClass(String source,
-                                          String packageAndClassName) {
+                String packageAndClassName) {
             if (LOADER == null) {
                 throw new RuntimeException(
                         "Compile fail: no Groovy jar in the classpath", INIT_FAIL_EXCEPTION);
@@ -526,7 +526,7 @@ public class SourceCompiler {
 
         public StringJavaFileObject(String className, String sourceCode) {
             super(URI.create("string:///" + className.replace('.', '/')
-                    + Kind.SOURCE.extension), Kind.SOURCE);
+                + Kind.SOURCE.extension), Kind.SOURCE);
             this.sourceCode = sourceCode;
         }
 
@@ -546,7 +546,7 @@ public class SourceCompiler {
 
         public JavaClassObject(String name, Kind kind) {
             super(URI.create("string:///" + name.replace('.', '/')
-                    + kind.extension), kind);
+                + kind.extension), kind);
         }
 
         public byte[] getBytes() {
@@ -592,7 +592,7 @@ public class SourceCompiler {
 
         @Override
         public JavaFileObject getJavaFileForOutput(Location location,
-                                                   String className, Kind kind, FileObject sibling) throws IOException {
+                String className, Kind kind, FileObject sibling) throws IOException {
             JavaClassObject classObject = new JavaClassObject(className, kind);
             classObjectsByName.put(className, classObject);
             return classObject;

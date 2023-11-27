@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.h2.api.ErrorCode;
 import org.h2.command.query.Select;
 import org.h2.test.TestBase;
@@ -132,7 +131,7 @@ public class TestIndex extends TestDb {
     private void testIndexTypes() throws SQLException {
         Connection conn = getConnection("index");
         stat = conn.createStatement();
-        for (String type : new String[]{"unique", "hash", "unique hash"}) {
+        for (String type : new String[] { "unique", "hash", "unique hash" }) {
             stat.execute("create table test(id int)");
             stat.execute("create " + type + " index idx_name on test(id)");
             stat.execute("insert into test select x from system_range(1, 1000)");
@@ -215,7 +214,7 @@ public class TestIndex extends TestDb {
         boolean haveDuplicateKeyException;
 
         ConcurrentUpdateThread(Connection c, AtomicInteger concurrentUpdateId,
-                               AtomicInteger concurrentUpdateValue) throws SQLException {
+                AtomicInteger concurrentUpdateValue) throws SQLException {
             this.concurrentUpdateId = concurrentUpdateId;
             this.concurrentUpdateValue = concurrentUpdateValue;
             psInsert = c.prepareStatement("insert into test(id, v) values (?, ?)");
@@ -236,14 +235,14 @@ public class TestIndex extends TestDb {
                     }
                 } catch (SQLException ex) {
                     switch (ex.getErrorCode()) {
-                        case 23505:
-                            haveDuplicateKeyException = true;
-                            break;
-                        case 90131:
-                            // Unlikely but possible
-                            break;
-                        default:
-                            ex.printStackTrace();
+                    case 23505:
+                        haveDuplicateKeyException = true;
+                        break;
+                    case 90131:
+                        // Unlikely but possible
+                        break;
+                    default:
+                        ex.printStackTrace();
                     }
                 }
                 if (Math.random() > 0.95)
@@ -374,26 +373,26 @@ public class TestIndex extends TestDb {
         int len = getSize(100, 1000);
         for (int i = 0; i < len; i++) {
             switch (rand.nextInt(4)) {
-                case 0:
-                    if (rand.nextInt(10) == 0) {
-                        if (reopen) {
-                            trace("reconnect");
-                            reconnect();
-                        }
+            case 0:
+                if (rand.nextInt(10) == 0) {
+                    if (reopen) {
+                        trace("reconnect");
+                        reconnect();
                     }
-                    break;
-                case 1:
-                    trace("insert");
-                    stat.execute("insert into test(id) values(null)");
-                    break;
-                case 2:
-                    trace("delete");
-                    stat.execute("delete from test");
-                    break;
-                case 3:
-                    trace("insert 1-100");
-                    stat.execute("insert into test select null from system_range(1, 100)");
-                    break;
+                }
+                break;
+            case 1:
+                trace("insert");
+                stat.execute("insert into test(id) values(null)");
+                break;
+            case 2:
+                trace("delete");
+                stat.execute("delete from test");
+                break;
+            case 3:
+                trace("insert 1-100");
+                stat.execute("insert into test select null from system_range(1, 100)");
+                break;
             }
         }
         stat.execute("drop table test");
@@ -413,16 +412,16 @@ public class TestIndex extends TestDb {
             int x = rand.nextInt(len);
             String sql = "";
             switch (rand.nextInt(3)) {
-                case 0:
-                    sql = "delete from testA where id = " + x;
-                    break;
-                case 1:
-                    sql = "update testA set name = " + rand.nextInt(100) + " where id = " + x;
-                    break;
-                case 2:
-                    sql = "select name from testA where id = " + x;
-                    break;
-                default:
+            case 0:
+                sql = "delete from testA where id = " + x;
+                break;
+            case 1:
+                sql = "update testA set name = " + rand.nextInt(100) + " where id = " + x;
+                break;
+            case 2:
+                sql = "select name from testA where id = " + x;
+                break;
+            default:
             }
             boolean result = stat.execute(sql);
             if (result) {

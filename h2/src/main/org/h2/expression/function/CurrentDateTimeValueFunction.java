@@ -43,10 +43,10 @@ public final class CurrentDateTimeValueFunction extends Operation0 implements Na
      */
     public static final int LOCALTIMESTAMP = 4;
 
-    private static final int[] TYPES = {Value.DATE, Value.TIME_TZ, Value.TIME, Value.TIMESTAMP_TZ, Value.TIMESTAMP};
+    private static final int[] TYPES = { Value.DATE, Value.TIME_TZ, Value.TIME, Value.TIMESTAMP_TZ, Value.TIMESTAMP };
 
-    private static final String[] NAMES = {"CURRENT_DATE", "CURRENT_TIME", "LOCALTIME", "CURRENT_TIMESTAMP",
-            "LOCALTIMESTAMP"};
+    private static final String[] NAMES = { "CURRENT_DATE", "CURRENT_TIME", "LOCALTIME", "CURRENT_TIMESTAMP",
+            "LOCALTIMESTAMP" };
 
     /**
      * Get the name for this function id.
@@ -88,8 +88,8 @@ public final class CurrentDateTimeValueFunction extends Operation0 implements Na
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-            case ExpressionVisitor.DETERMINISTIC:
-                return false;
+        case ExpressionVisitor.DETERMINISTIC:
+            return false;
         }
         return true;
     }

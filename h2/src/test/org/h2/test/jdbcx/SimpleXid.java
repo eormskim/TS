@@ -8,7 +8,6 @@ package org.h2.test.jdbcx;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.transaction.xa.Xid;
-
 import org.h2.util.MathUtils;
 
 /**
@@ -23,7 +22,7 @@ public class SimpleXid implements Xid {
     private final byte[] globalTransactionId;
 
     private SimpleXid(int formatId, byte[] branchQualifier,
-                      byte[] globalTransactionId) {
+            byte[] globalTransactionId) {
         this.formatId = formatId;
         this.branchQualifier = branchQualifier;
         this.globalTransactionId = globalTransactionId;

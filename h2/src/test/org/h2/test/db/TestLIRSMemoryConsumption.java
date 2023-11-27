@@ -6,7 +6,6 @@
 package org.h2.test.db;
 
 import java.util.Random;
-
 import org.h2.mvstore.cache.CacheLongKeyLIRS;
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
@@ -25,7 +24,8 @@ public class TestLIRSMemoryConsumption extends TestDb {
     /**
      * Run just this test.
      *
-     * @param a ignored
+     * @param a
+     *              ignored
      */
     public static void main(String... a) throws Exception {
         TestBase.createCaller().init().testFromMain();
@@ -54,7 +54,7 @@ public class TestLIRSMemoryConsumption extends TestDb {
             for (int i = 0; i < size; i++) {
                 int key;
                 int mode = rng.nextInt(4);
-                switch (mode) {
+                switch(mode) {
                     default:
                     case 0:
                         key = rng.nextInt(10);
@@ -85,9 +85,9 @@ public class TestLIRSMemoryConsumption extends TestDb {
             long misses = cache.getMisses();
             System.out.println(mb + " | " +
                     (memoryUsed - memoryUsedInitial + 512) / 1024 + " | " +
-                    (sizeResident + sizeNonResident) + " | " +
+                    (sizeResident+sizeNonResident) + " | " +
                     sizeHot + " | " + (sizeResident - sizeHot) + " | " + sizeNonResident +
-                    " | " + (hits * 100 / (hits + misses)));
+                    " | " + (hits * 100 / (hits + misses)) );
         }
     }
 

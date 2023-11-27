@@ -24,14 +24,14 @@ public class BoardController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-ㅇ
+
     @GetMapping("/")
     public String list(Model model
             , @RequestParam(required = false, defaultValue = "0", value = "page") int page
-            , @RequestParam(required = false, defaultValue = "", value = "searchVal") String searchVal) {
+            , @RequestParam(required = false, defaultValue = "", value = "searchVal") String searchVal){
 
         //불러올 페이지의 데이터 1페이지는 0부터 시작
-        Page<Board> listPage = boardService.list(page, searchVal);
+        Page<Board> listPage =  boardService.list(page,searchVal);
 
         //총페이지수
         int totalPage = listPage.getTotalPages();
@@ -49,7 +49,7 @@ public class BoardController {
 
     //게시판 상세
     @GetMapping("/board/detail/{boardIdx}")
-    public String detail(@PathVariable Long boardIdx, Model model) {
+    public String detail(@PathVariable Long boardIdx, Model model){
         log.info("boardIdx={}", boardIdx);
         Board boardDetail = boardService.getDetail(boardIdx);
         log.info("boardDetail={}", boardDetail);
@@ -60,13 +60,13 @@ public class BoardController {
     //수정
     @ResponseBody
     @PostMapping("/board/update")
-    public Long updateBoard(@RequestBody Board board) {
+    public Long updateBoard(@RequestBody Board board){
         log.info("params={}", board);
 
         boolean isSuccess = boardService.getIsSuccess(board);
-        if (isSuccess) {
+        if(isSuccess){
             return boardService.saveBoard(board);
-        } else {
+        }else{
             return 0L;
         }
     }
@@ -74,33 +74,33 @@ public class BoardController {
     //삭제
     @ResponseBody
     @PostMapping("/board/delete")
-    public long deleteBoard(@RequestBody Board board) {
+    public long deleteBoard(@RequestBody Board board){
         log.info("params={}", board);
         boolean isSuccess = boardService.getIsSuccess(board);
-        if (isSuccess) {
+        if(isSuccess){
             return boardService.deleteBoard(board.getBoardIdx());
-        } else {
+        }else{
             return 0L;
         }
     }
 
     @GetMapping("/board/edit")
-    public String edit() {
+    public String edit(){
         return "board/edit";
     }
 
     //게시판 저장
     @ResponseBody
     @PostMapping("/board/save")
-    public Board editBoard(@RequestBody Board board) {
-        log.info("params={}", board);
+    public Board editBoard(@RequestBody Board board){
+        log.info("params={}",board);
 
         boardService.saveBoard(board);
         return board;
     }
 
     @GetMapping("/ts")
-    public String tsPage() {
+    public String tsPage(){
         return "ts/test";
     }
 }

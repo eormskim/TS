@@ -30,7 +30,8 @@ public final class ByteStack {
     /**
      * Pushes an item onto the top of this stack.
      *
-     * @param item the item to push
+     * @param item
+     *            the item to push
      */
     public void push(byte item) {
         int index = size;
@@ -46,7 +47,8 @@ public final class ByteStack {
      * Removes the item at the top of this stack and returns that item.
      *
      * @return the item at the top of this stack
-     * @throws NoSuchElementException if stack is empty
+     * @throws NoSuchElementException
+     *             if stack is empty
      */
     public byte pop() {
         int index = size - 1;
@@ -60,7 +62,8 @@ public final class ByteStack {
     /**
      * Removes the item at the top of this stack and returns that item.
      *
-     * @param defaultValue value to return if stack is empty
+     * @param defaultValue
+     *            value to return if stack is empty
      * @return the item at the top of this stack, or default value
      */
     public int poll(int defaultValue) {
@@ -75,7 +78,8 @@ public final class ByteStack {
     /**
      * Looks at the item at the top of this stack without removing it.
      *
-     * @param defaultValue value to return if stack is empty
+     * @param defaultValue
+     *            value to return if stack is empty
      * @return the item at the top of this stack, or default value
      */
     public int peek(int defaultValue) {

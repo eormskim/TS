@@ -8,7 +8,6 @@ package org.h2.store;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-
 import org.h2.engine.SessionRemote;
 import org.h2.value.ValueBlob;
 import org.h2.value.ValueClob;
@@ -48,7 +47,7 @@ public class LobStorageFrontend implements LobStorageInterface {
 
     @Override
     public InputStream getInputStream(long lobId,
-                                      long byteCount) throws IOException {
+            long byteCount) throws IOException {
         // this method is only implemented on the server side of a TCP connection
         throw new IllegalStateException();
     }
@@ -86,7 +85,7 @@ public class LobStorageFrontend implements LobStorageInterface {
     /**
      * Create a CLOB object.
      *
-     * @param reader    the reader
+     * @param reader the reader
      * @param maxLength the maximum length (-1 if not known)
      * @return the LOB
      */

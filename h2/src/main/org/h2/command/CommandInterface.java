@@ -6,7 +6,6 @@
 package org.h2.command;
 
 import java.util.ArrayList;
-
 import org.h2.expression.ParameterInterface;
 import org.h2.result.ResultInterface;
 import org.h2.result.ResultWithGeneratedKeys;
@@ -566,7 +565,7 @@ public interface CommandInterface extends AutoCloseable {
     /**
      * Execute the query.
      *
-     * @param maxRows    the maximum number of rows returned
+     * @param maxRows the maximum number of rows returned
      * @param scrollable if the result set must be scrollable
      * @return the result
      */
@@ -575,11 +574,13 @@ public interface CommandInterface extends AutoCloseable {
     /**
      * Execute the statement
      *
-     * @param generatedKeysRequest {@code null} or {@code false} if generated keys are not
-     *                             needed, {@code true} if generated keys should be configured
-     *                             automatically, {@code int[]} to specify column indices to
-     *                             return generated keys from, or {@code String[]} to specify
-     *                             column names to return generated keys from
+     * @param generatedKeysRequest
+     *            {@code null} or {@code false} if generated keys are not
+     *            needed, {@code true} if generated keys should be configured
+     *            automatically, {@code int[]} to specify column indices to
+     *            return generated keys from, or {@code String[]} to specify
+     *            column names to return generated keys from
+     *
      * @return the update count and generated keys, if any
      */
     ResultWithGeneratedKeys executeUpdate(Object generatedKeysRequest);

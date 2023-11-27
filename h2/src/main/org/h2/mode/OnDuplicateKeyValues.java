@@ -45,8 +45,8 @@ public final class OnDuplicateKeyValues extends Operation0 {
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-            case ExpressionVisitor.DETERMINISTIC:
-                return false;
+        case ExpressionVisitor.DETERMINISTIC:
+            return false;
         }
         return true;
     }

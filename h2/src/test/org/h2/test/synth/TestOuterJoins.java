@@ -64,7 +64,7 @@ public class TestOuterJoins extends TestDb {
             Class.forName("org.apache.derby.iapi.jdbc.AutoloadedDriver");
             Connection c2 = DriverManager.getConnection(
                     "jdbc:derby:" + getBaseDir() +
-                            "/derby/test;create=true", "sa", "sa");
+                    "/derby/test;create=true", "sa", "sa");
             dbs.add(c2.createStatement());
         } catch (Throwable e) {
             // database not installed - ok
@@ -157,7 +157,7 @@ public class TestOuterJoins extends TestDb {
     }
 
     private void appendRandomJoin(Random random, StringBuilder buff, int min,
-                                  int max) {
+            int max) {
         if (min == max) {
             buff.append("t" + min);
             return;
@@ -167,15 +167,15 @@ public class TestOuterJoins extends TestDb {
         int left = min + (m == min ? 0 : random.nextInt(m - min));
         appendRandomJoin(random, buff, min, m);
         switch (random.nextInt(3)) {
-            case 0:
-                buff.append(" inner join ");
-                break;
-            case 1:
-                buff.append(" left outer join ");
-                break;
-            case 2:
-                buff.append(" right outer join ");
-                break;
+        case 0:
+            buff.append(" inner join ");
+            break;
+        case 1:
+            buff.append(" left outer join ");
+            break;
+        case 2:
+            buff.append(" right outer join ");
+            break;
         }
         m++;
         int right = m + (m == max ? 0 : random.nextInt(max - m));
@@ -185,7 +185,7 @@ public class TestOuterJoins extends TestDb {
     }
 
     private static void appendRandomCondition(Random random,
-                                              StringBuilder buff, int max) {
+            StringBuilder buff, int max) {
         if (max > 0 && random.nextInt(4) == 0) {
             return;
         }
@@ -197,42 +197,42 @@ public class TestOuterJoins extends TestDb {
             }
             buff.append("t" + random.nextInt(max) + ".x");
             switch (random.nextInt(8)) {
-                case 0:
-                    buff.append("=");
-                    appendRandomValueOrColumn(random, buff, max);
-                    break;
-                case 1:
-                    buff.append(">=");
-                    appendRandomValueOrColumn(random, buff, max);
-                    break;
-                case 2:
-                    buff.append("<=");
-                    appendRandomValueOrColumn(random, buff, max);
-                    break;
-                case 3:
-                    buff.append("<");
-                    appendRandomValueOrColumn(random, buff, max);
-                    break;
-                case 4:
-                    buff.append(">");
-                    appendRandomValueOrColumn(random, buff, max);
-                    break;
-                case 5:
-                    buff.append("<>");
-                    appendRandomValueOrColumn(random, buff, max);
-                    break;
-                case 6:
-                    buff.append(" is not null");
-                    break;
-                case 7:
-                    buff.append(" is null");
-                    break;
+            case 0:
+                buff.append("=");
+                appendRandomValueOrColumn(random, buff, max);
+                break;
+            case 1:
+                buff.append(">=");
+                appendRandomValueOrColumn(random, buff, max);
+                break;
+            case 2:
+                buff.append("<=");
+                appendRandomValueOrColumn(random, buff, max);
+                break;
+            case 3:
+                buff.append("<");
+                appendRandomValueOrColumn(random, buff, max);
+                break;
+            case 4:
+                buff.append(">");
+                appendRandomValueOrColumn(random, buff, max);
+                break;
+            case 5:
+                buff.append("<>");
+                appendRandomValueOrColumn(random, buff, max);
+                break;
+            case 6:
+                buff.append(" is not null");
+                break;
+            case 7:
+                buff.append(" is null");
+                break;
             }
         }
     }
 
     private static void appendRandomValueOrColumn(Random random,
-                                                  StringBuilder buff, int max) {
+            StringBuilder buff, int max) {
         if (random.nextBoolean()) {
             buff.append(random.nextInt(8) - 2);
         } else {

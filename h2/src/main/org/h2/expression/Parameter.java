@@ -94,10 +94,10 @@ public final class Parameter extends Operation0 implements ParameterInterface {
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-            case ExpressionVisitor.INDEPENDENT:
-                return value != null;
-            default:
-                return true;
+        case ExpressionVisitor.INDEPENDENT:
+            return value != null;
+        default:
+            return true;
         }
     }
 

@@ -11,7 +11,6 @@ import java.nio.channels.FileChannel;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Random;
-
 import org.h2.mvstore.MVStore;
 import org.h2.mvstore.MVStoreException;
 import org.h2.mvstore.MVStoreTool;
@@ -48,7 +47,7 @@ public class TestReorderWrites extends TestBase {
     private void testMVStore(final boolean partialWrite) {
         // Add partial write test
         // @since 2019-07-31 little-pan
-        println(String.format("testMVStore(): %s partial write", partialWrite ? "Enable" : "Disable"));
+        println(String.format("testMVStore(): %s partial write", partialWrite? "Enable": "Disable"));
         FilePathReorderWrites.setPartialWrites(partialWrite);
 
         FilePathReorderWrites fs = FilePathReorderWrites.register();
@@ -88,15 +87,15 @@ public class TestReorderWrites extends TestBase {
                         log("op " + j + ": ");
                         store.commit();
                         switch (r.nextInt(10)) {
-                            case 0:
-                                log("op compact");
-                                store.compact(100, 10 * 1024);
-                                break;
-                            case 1:
-                                log("op compactMoveChunks");
-                                store.compactMoveChunks();
-                                log("op compactMoveChunks done");
-                                break;
+                        case 0:
+                            log("op compact");
+                            store.compact(100, 10 * 1024);
+                            break;
+                        case 1:
+                            log("op compactMoveChunks");
+                            store.compactMoveChunks();
+                            log("op compactMoveChunks done");
+                            break;
                         }
                     }
                     // write has to fail at some point
@@ -151,7 +150,7 @@ public class TestReorderWrites extends TestBase {
         // Add partial write enable test
         // @since 2019-07-31 little-pan
         FilePathReorderWrites.setPartialWrites(partialWrite);
-        println(String.format("testFileSystem(): %s partial write", partialWrite ? "Enable" : "Disable"));
+        println(String.format("testFileSystem(): %s partial write", partialWrite? "Enable": "Disable"));
 
         String fileName = "reorder:memFS:test";
         final ByteBuffer empty = ByteBuffer.allocate(1024);

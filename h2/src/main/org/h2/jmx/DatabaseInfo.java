@@ -13,7 +13,6 @@ import java.util.Map.Entry;
 import javax.management.JMException;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
-
 import org.h2.command.Command;
 import org.h2.engine.ConnectionInfo;
 import org.h2.engine.Constants;
@@ -32,9 +31,7 @@ public class DatabaseInfo implements DatabaseInfoMBean {
 
     private static final Map<String, ObjectName> MBEANS = new HashMap<>();
 
-    /**
-     * Database.
-     */
+    /** Database. */
     private final Database database;
 
     private DatabaseInfo(Database database) {
@@ -66,11 +63,11 @@ public class DatabaseInfo implements DatabaseInfoMBean {
      * Registers an MBean for the database.
      *
      * @param connectionInfo connection info
-     * @param database       database
+     * @param database database
      * @throws JMException on failure
      */
     public static void registerMBean(ConnectionInfo connectionInfo,
-                                     Database database) throws JMException {
+            Database database) throws JMException {
         String path = connectionInfo.getName();
         if (!MBEANS.containsKey(path)) {
             MBeanServer mbeanServer = ManagementFactory.getPlatformMBeanServer();

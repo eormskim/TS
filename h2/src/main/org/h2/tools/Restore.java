@@ -12,7 +12,6 @@ import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
 import org.h2.engine.Constants;
 import org.h2.message.DbException;
 import org.h2.store.fs.FileUtils;
@@ -129,8 +128,8 @@ public class Restore extends Tool {
      * Restores database files.
      *
      * @param zipFileName the name of the backup file
-     * @param directory   the directory name
-     * @param db          the database name (null for all databases)
+     * @param directory the directory name
+     * @param db the database name (null for all databases)
      * @throws DbException if there is an IOException
      */
     public static void execute(String zipFileName, String directory, String db) {

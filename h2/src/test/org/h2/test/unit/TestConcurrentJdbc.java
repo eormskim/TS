@@ -40,13 +40,13 @@ public class TestConcurrentJdbc extends TestBase {
             stat.execute("create table test(id int primary key)");
             String sql = "";
             switch (x % 6) {
-                case 0:
-                    sql = "select 1";
-                    break;
-                case 1:
-                case 2:
-                    sql = "delete from test";
-                    break;
+            case 0:
+                sql = "select 1";
+                break;
+            case 1:
+            case 2:
+                sql = "delete from test";
+                break;
             }
             final PreparedStatement prep = conn.prepareStatement(sql);
             final CountDownLatch executedUpdate = new CountDownLatch(1);
@@ -56,24 +56,24 @@ public class TestConcurrentJdbc extends TestBase {
                     while (!conn.isClosed()) {
                         executedUpdate.countDown();
                         switch (x % 6) {
-                            case 0:
-                                prep.executeQuery();
-                                break;
-                            case 1:
-                                prep.execute();
-                                break;
-                            case 2:
-                                prep.executeUpdate();
-                                break;
-                            case 3:
-                                stat.executeQuery("select 1");
-                                break;
-                            case 4:
-                                stat.execute("select 1");
-                                break;
-                            case 5:
-                                stat.execute("delete from test");
-                                break;
+                        case 0:
+                            prep.executeQuery();
+                            break;
+                        case 1:
+                            prep.execute();
+                            break;
+                        case 2:
+                            prep.executeUpdate();
+                            break;
+                        case 3:
+                            stat.executeQuery("select 1");
+                            break;
+                        case 4:
+                            stat.execute("select 1");
+                            break;
+                        case 5:
+                            stat.execute("delete from test");
+                            break;
                         }
                     }
                 }

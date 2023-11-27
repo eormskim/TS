@@ -90,7 +90,7 @@ public class TestBackup extends TestDb {
         task.execute();
         for (int i = 0; i < 10; i++) {
             updateEnd.set(System.nanoTime() + TimeUnit.SECONDS.toNanos(2));
-            stat2.execute("backup to '" + getBaseDir() + "/backup.zip'");
+            stat2.execute("backup to '"+getBaseDir()+"/backup.zip'");
             stat2.execute("checkpoint");
             Restore.execute(getBaseDir() + "/backup.zip", getBaseDir() + "/t" + i, "backup");
             Connection conn3 = getConnection("t" + i + "/backup");
@@ -148,7 +148,7 @@ public class TestBackup extends TestDb {
         conn.createStatement().execute(
                 "create table test(x clob) as select space(10000)");
         conn.createStatement().execute("backup to '" +
-                getBaseDir() + "/backup.zip" + "'");
+                getBaseDir() + "/backup.zip"+"'");
         conn.close();
         deleteDb("backup");
         Restore.execute(getBaseDir() + "/backup.zip",

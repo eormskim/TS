@@ -56,7 +56,7 @@ public class JakartaDbStarter implements ServletContextListener {
     }
 
     private static String getParameter(ServletContext servletContext,
-                                       String key, String defaultValue) {
+            String key, String defaultValue) {
         String value = servletContext.getInitParameter(key);
         return value == null ? defaultValue : value;
     }

@@ -51,7 +51,8 @@ public final class FunctionsOracle extends ModeFunction {
     /**
      * Returns mode-specific function for a given name, or {@code null}.
      *
-     * @param upperName the upper-case name of a function
+     * @param upperName
+     *            the upper-case name of a function
      * @return the function with specified name or {@code null}
      */
     public static FunctionsOracle getFunction(String upperName) {
@@ -67,17 +68,17 @@ public final class FunctionsOracle extends ModeFunction {
     protected void checkParameterCount(int len) {
         int min = 0, max = Integer.MAX_VALUE;
         switch (info.type) {
-            case TO_TIMESTAMP:
-            case TO_TIMESTAMP_TZ:
-                min = 1;
-                max = 2;
-                break;
-            case TO_DATE:
-                min = 1;
-                max = 3;
-                break;
-            default:
-                throw DbException.getInternalError("type=" + info.type);
+        case TO_TIMESTAMP:
+        case TO_TIMESTAMP_TZ:
+            min = 1;
+            max = 2;
+            break;
+        case TO_DATE:
+            min = 1;
+            max = 3;
+            break;
+        default:
+            throw DbException.getInternalError("type=" + info.type);
         }
         if (len < min || len > max) {
             throw DbException.get(ErrorCode.INVALID_PARAMETER_COUNT_2, info.name, min + ".." + max);
@@ -88,11 +89,11 @@ public final class FunctionsOracle extends ModeFunction {
     public Expression optimize(SessionLocal session) {
         boolean allConst = optimizeArguments(session);
         switch (info.type) {
-            case SYS_GUID:
-                type = TypeInfo.getTypeInfo(Value.VARBINARY, 16, 0, null);
-                break;
-            default:
-                type = TypeInfo.getTypeInfo(info.returnDataType);
+        case SYS_GUID:
+            type = TypeInfo.getTypeInfo(Value.VARBINARY, 16, 0, null);
+            break;
+        default:
+            type = TypeInfo.getTypeInfo(info.returnDataType);
         }
         if (allConst) {
             return ValueExpression.get(getValue(session));
@@ -110,23 +111,23 @@ public final class FunctionsOracle extends ModeFunction {
         Value v1 = getNullOrValue(session, args, values, 1);
         Value result;
         switch (info.type) {
-            case ADD_MONTHS:
-                result = DateTimeFunction.dateadd(session, DateTimeFunction.MONTH, v1.getInt(), v0);
-                break;
-            case SYS_GUID:
-                result = ValueUuid.getNewRandom().convertTo(TypeInfo.TYPE_VARBINARY);
-                break;
-            case TO_DATE:
-                result = ToDateParser.toDate(session, v0.getString(), v1 == null ? null : v1.getString());
-                break;
-            case TO_TIMESTAMP:
-                result = ToDateParser.toTimestamp(session, v0.getString(), v1 == null ? null : v1.getString());
-                break;
-            case TO_TIMESTAMP_TZ:
-                result = ToDateParser.toTimestampTz(session, v0.getString(), v1 == null ? null : v1.getString());
-                break;
-            default:
-                throw DbException.getInternalError("type=" + info.type);
+        case ADD_MONTHS:
+            result = DateTimeFunction.dateadd(session, DateTimeFunction.MONTH, v1.getInt(), v0);
+            break;
+        case SYS_GUID:
+            result = ValueUuid.getNewRandom().convertTo(TypeInfo.TYPE_VARBINARY);
+            break;
+        case TO_DATE:
+            result = ToDateParser.toDate(session, v0.getString(), v1 == null ? null : v1.getString());
+            break;
+        case TO_TIMESTAMP:
+            result = ToDateParser.toTimestamp(session, v0.getString(), v1 == null ? null : v1.getString());
+            break;
+        case TO_TIMESTAMP_TZ:
+            result = ToDateParser.toTimestampTz(session, v0.getString(), v1 == null ? null : v1.getString());
+            break;
+        default:
+            throw DbException.getInternalError("type=" + info.type);
         }
         return result;
     }

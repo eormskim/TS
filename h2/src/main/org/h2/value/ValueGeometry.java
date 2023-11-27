@@ -55,7 +55,7 @@ public final class ValueGeometry extends ValueBytesBase {
     /**
      * Create a new geometry object.
      *
-     * @param bytes    the EWKB bytes
+     * @param bytes the EWKB bytes
      * @param envelope the envelope
      */
     private ValueGeometry(byte[] bytes, double[] envelope) {
@@ -74,7 +74,7 @@ public final class ValueGeometry extends ValueBytesBase {
      * Get or create a geometry value for the given geometry.
      *
      * @param o the geometry object (of type
-     *          org.locationtech.jts.geom.Geometry)
+     *            org.locationtech.jts.geom.Geometry)
      * @return the value
      */
     public static ValueGeometry getFromGeometry(Object o) {

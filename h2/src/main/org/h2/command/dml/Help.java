@@ -39,7 +39,7 @@ public class Help extends Prepared {
         super(session);
         this.conditions = conditions;
         Database db = session.getDatabase();
-        expressions = new Expression[]{ //
+        expressions = new Expression[] { //
                 new ExpressionColumn(db, new Column("SECTION", TypeInfo.TYPE_VARCHAR)), //
                 new ExpressionColumn(db, new Column("TOPIC", TypeInfo.TYPE_VARCHAR)), //
                 new ExpressionColumn(db, new Column("SYNTAX", TypeInfo.TYPE_VARCHAR)), //
@@ -59,8 +59,7 @@ public class Help extends Prepared {
         LocalResult result = new LocalResult(session, expressions, 4, 4);
         try {
             ResultSet rs = getTable();
-            loop:
-            while (rs.next()) {
+            loop: while (rs.next()) {
                 String topic = rs.getString(2).trim();
                 for (String condition : conditions) {
                     if (!topic.contains(condition)) {
@@ -86,7 +85,6 @@ public class Help extends Prepared {
 
     /**
      * Strip out the special annotations we use to help build the railroad/BNF diagrams
-     *
      * @param s to process
      * @return cleaned text
      */
@@ -99,7 +97,6 @@ public class Help extends Prepared {
 
     /**
      * Sanitize value read from csv file (i.e. help.csv)
-     *
      * @param s text to process
      * @return text without wrapping quotes and trimmed
      */
@@ -126,7 +123,8 @@ public class Help extends Prepared {
      * Returns HELP table.
      *
      * @return HELP table with columns SECTION,TOPIC,SYNTAX,TEXT
-     * @throws IOException on I/O exception
+     * @throws IOException
+     *             on I/O exception
      */
     public static ResultSet getTable() throws IOException {
         Reader reader = new InputStreamReader(new ByteArrayInputStream(Utils.getResource("/org/h2/res/help.csv")));

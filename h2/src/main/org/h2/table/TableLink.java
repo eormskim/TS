@@ -66,11 +66,11 @@ public class TableLink extends Table {
     private boolean readOnly;
     private final boolean targetsMySql;
     private int fetchSize = 0;
-    private boolean autocommit = true;
+    private boolean autocommit =true;
 
     public TableLink(Schema schema, int id, String name, String driver,
-                     String url, String user, String password, String originalSchema,
-                     String originalTable, boolean emitUpdates, boolean force) {
+            String url, String user, String password, String originalSchema,
+            String originalTable, boolean emitUpdates, boolean force) {
         super(schema, id, name, false, true);
         this.driver = driver;
         this.url = url;
@@ -86,7 +86,7 @@ public class TableLink extends Table {
             if (!force) {
                 throw e;
             }
-            Column[] cols = {};
+            Column[] cols = { };
             setColumns(cols);
             linkedIndex = new LinkedIndex(this, id, IndexColumn.wrap(cols), 0, IndexType.createNonUnique(false));
             indexes.add(linkedIndex);
@@ -95,7 +95,7 @@ public class TableLink extends Table {
 
     private void connect() {
         connectException = null;
-        for (int retry = 0; ; retry++) {
+        for (int retry = 0;; retry++) {
             try {
                 conn = database.getLinkConnection(driver, url, user, password);
                 conn.setAutoCommit(autocommit);
@@ -178,12 +178,12 @@ public class TableLink extends Table {
         // check if the table is accessible
 
         try (Statement stat = conn.getConnection().createStatement();
-             ResultSet rs = stat.executeQuery("SELECT * FROM " + qualifiedTableName + " T WHERE 1=0")) {
+                ResultSet rs = stat.executeQuery("SELECT * FROM " + qualifiedTableName + " T WHERE 1=0")) {
             if (rs instanceof JdbcResultSet) {
                 ResultInterface result = ((JdbcResultSet) rs).getResult();
                 columnList.clear();
                 columnMap.clear();
-                for (int i = 0, l = result.getVisibleColumnCount(); i < l; ) {
+                for (int i = 0, l = result.getVisibleColumnCount(); i < l;) {
                     String n = result.getColumnName(i);
                     Column col = new Column(n, result.getColumnType(i), this, ++i);
                     columnList.add(col);
@@ -192,7 +192,7 @@ public class TableLink extends Table {
             } else if (columnList.isEmpty()) {
                 // alternative solution
                 ResultSetMetaData rsMeta = rs.getMetaData();
-                for (int i = 0, l = rsMeta.getColumnCount(); i < l; ) {
+                for (int i = 0, l = rsMeta.getColumnCount(); i < l;) {
                     String n = rsMeta.getColumnName(i + 1);
                     n = convertColumnName(n);
                     int sqlType = rsMeta.getColumnType(i + 1);
@@ -308,21 +308,21 @@ public class TableLink extends Table {
         // for DATE columns, the reported precision is 7
         // for DECIMAL columns, the reported precision is 0
         switch (sqlType) {
-            case Types.DECIMAL:
-            case Types.NUMERIC:
-                if (precision == 0) {
-                    precision = 65535;
-                }
-                break;
-            case Types.DATE:
-                precision = Math.max(ValueDate.PRECISION, precision);
-                break;
-            case Types.TIMESTAMP:
-                precision = Math.max(ValueTimestamp.MAXIMUM_PRECISION, precision);
-                break;
-            case Types.TIME:
-                precision = Math.max(ValueTime.MAXIMUM_PRECISION, precision);
-                break;
+        case Types.DECIMAL:
+        case Types.NUMERIC:
+            if (precision == 0) {
+                precision = 65535;
+            }
+            break;
+        case Types.DATE:
+            precision = Math.max(ValueDate.PRECISION, precision);
+            break;
+        case Types.TIMESTAMP:
+            precision = Math.max(ValueTimestamp.MAXIMUM_PRECISION, precision);
+            break;
+        case Types.TIME:
+            precision = Math.max(ValueTime.MAXIMUM_PRECISION, precision);
+            break;
         }
         return precision;
     }
@@ -331,18 +331,18 @@ public class TableLink extends Table {
         // workaround for an Oracle problem:
         // for DECIMAL columns, the reported precision is -127
         switch (sqlType) {
-            case Types.DECIMAL:
-            case Types.NUMERIC:
-                if (scale < 0) {
-                    scale = 32767;
-                }
-                break;
+        case Types.DECIMAL:
+        case Types.NUMERIC:
+            if (scale < 0) {
+                scale = 32767;
+            }
+            break;
         }
         return scale;
     }
 
     private String convertColumnName(String columnName) {
-        if (targetsMySql) {
+        if(targetsMySql) {
             // MySQL column names are not case-sensitive on any platform
             columnName = StringUtils.toUpperEnglish(columnName);
         } else if ((storesMixedCase || storesLowerCase) &&
@@ -414,7 +414,7 @@ public class TableLink extends Table {
         if (fetchSize != 0) {
             buff.append(" FETCH_SIZE ").append(fetchSize);
         }
-        if (!autocommit) {
+        if(!autocommit) {
             buff.append(" AUTOCOMMIT OFF");
         }
         buff.append(" /*").append(DbException.HIDE_SQL).append("*/");
@@ -423,7 +423,7 @@ public class TableLink extends Table {
 
     @Override
     public Index addIndex(SessionLocal session, String indexName, int indexId, IndexColumn[] cols,
-                          int uniqueColumnCount, IndexType indexType, boolean create, String indexComment) {
+            int uniqueColumnCount, IndexType indexType, boolean create, String indexComment) {
         throw DbException.getUnsupportedException("LINK");
     }
 
@@ -487,7 +487,7 @@ public class TableLink extends Table {
      * Wrap a SQL exception that occurred while accessing a linked table.
      *
      * @param sql the SQL statement
-     * @param ex  the exception from the remote database
+     * @param ex the exception from the remote database
      * @return the wrapped exception
      */
     public static DbException wrapException(String sql, Exception ex) {
@@ -504,18 +504,18 @@ public class TableLink extends Table {
      * Execute a SQL statement using the given parameters. Prepared
      * statements are kept in a hash map to avoid re-creating them.
      *
-     * @param sql           the SQL statement
-     * @param params        the parameters or null
+     * @param sql the SQL statement
+     * @param params the parameters or null
      * @param reusePrepared if the prepared statement can be re-used immediately
-     * @param session       the session
+     * @param session the session
      * @return the prepared statement, or null if it is re-used
      */
     public PreparedStatement execute(String sql, ArrayList<Value> params, boolean reusePrepared, //
-                                     SessionLocal session) {
+            SessionLocal session) {
         if (conn == null) {
             throw connectException;
         }
-        for (int retry = 0; ; retry++) {
+        for (int retry = 0;; retry++) {
             try {
                 synchronized (conn) {
                     PreparedStatement prep = preparedMap.remove(sql);
@@ -529,7 +529,7 @@ public class TableLink extends Table {
                         StringBuilder builder = new StringBuilder(getName()).append(":\n").append(sql);
                         if (params != null && !params.isEmpty()) {
                             builder.append(" {");
-                            for (int i = 0, l = params.size(); i < l; ) {
+                            for (int i = 0, l = params.size(); i < l;) {
                                 Value v = params.get(i);
                                 if (i > 0) {
                                     builder.append(", ");
@@ -655,7 +655,7 @@ public class TableLink extends Table {
      * Add this prepared statement to the list of cached statements.
      *
      * @param prep the prepared statement
-     * @param sql  the SQL statement
+     * @param sql the SQL statement
      */
     public void reusePreparedStatement(PreparedStatement prep, String sql) {
         synchronized (conn) {
@@ -716,15 +716,14 @@ public class TableLink extends Table {
      * @param mode to set
      */
     public void setAutoCommit(boolean mode) {
-        this.autocommit = mode;
+        this.autocommit= mode;
     }
 
     /**
      * The autocommit mode
-     *
      * @return true if autocommit is on
      */
-    public boolean getAutocommit() {
+    public boolean getAutocommit(){
         return autocommit;
     }
 

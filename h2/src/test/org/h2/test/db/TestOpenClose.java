@@ -80,7 +80,7 @@ public class TestOpenClose extends TestDb {
         conn.createStatement().execute("create table test(id int, name varchar) " +
                 "as select 1, space(1000000)");
         conn.close();
-        FileChannel c = FileUtils.open(fn + ".1.part", "rw");
+        FileChannel c = FileUtils.open(fn+".1.part", "rw");
         c.position(c.size() * 2 - 1);
         c.write(ByteBuffer.wrap(new byte[1]));
         c.close();
@@ -244,25 +244,25 @@ public class TestOpenClose extends TestDb {
         public void setProgress(int state, String name, long current, long max) {
             String stateName;
             switch (state) {
-                case STATE_SCAN_FILE:
-                    stateName = "Scan " + name + " " + current + "/" + max;
-                    if (current > 0) {
-                        throw new AssertionError("unexpected: " + stateName);
-                    }
-                    break;
-                case STATE_STATEMENT_START:
-                    break;
-                case STATE_CREATE_INDEX:
-                    stateName = "Create Index " + name + " " + current + "/" + max;
-                    if (!"SYS:SYS_ID".equals(name)) {
-                        throw new AssertionError("unexpected: " + stateName);
-                    }
-                    break;
-                case STATE_RECOVER:
-                    stateName = "Recover " + current + "/" + max;
-                    break;
-                default:
-                    stateName = "?";
+            case STATE_SCAN_FILE:
+                stateName = "Scan " + name + " " + current + "/" + max;
+                if (current > 0) {
+                    throw new AssertionError("unexpected: " + stateName);
+                }
+                break;
+            case STATE_STATEMENT_START:
+                break;
+            case STATE_CREATE_INDEX:
+                stateName = "Create Index " + name + " " + current + "/" + max;
+                if (!"SYS:SYS_ID".equals(name)) {
+                    throw new AssertionError("unexpected: " + stateName);
+                }
+                break;
+            case STATE_RECOVER:
+                stateName = "Recover " + current + "/" + max;
+                break;
+            default:
+                stateName = "?";
             }
             // System.out.println(": " + stateName);
         }

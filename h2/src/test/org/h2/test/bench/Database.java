@@ -24,7 +24,6 @@ import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.h2.test.TestBase;
 import org.h2.tools.Server;
 import org.h2.util.StringUtils;
@@ -126,7 +125,7 @@ class Database {
             serverDerby = Class.forName(
                     "org.apache.derby.drda.NetworkServerControl").getDeclaredConstructor().newInstance();
             Method m = serverDerby.getClass().getMethod("start", PrintWriter.class);
-            m.invoke(serverDerby, new Object[]{null});
+            m.invoke(serverDerby, new Object[] { null });
             // serverDerby = new NetworkServerControl();
             // serverDerby.start(null);
             Thread.sleep(100);
@@ -139,9 +138,9 @@ class Database {
                     c = Class.forName("org.hsqldb.Server");
                 }
                 Method m = c.getMethod("main", String[].class);
-                m.invoke(null, new Object[]{new String[]{"-database.0",
+                m.invoke(null, new Object[] { new String[] { "-database.0",
                         "data/mydb;hsqldb.default_table_type=cached;hsqldb.write_delay_millis=1000",
-                        "-dbname.0", "xdb"}});
+                        "-dbname.0", "xdb" } });
                 // org.hsqldb.Server.main(new String[]{"-database.0", "mydb", "-dbname.0", "xdb"});
                 serverHSQLDB = true;
                 Thread.sleep(100);
@@ -175,9 +174,9 @@ class Database {
     /**
      * Parse a database configuration and create a database object from it.
      *
-     * @param test       the test application
-     * @param id         the database id
-     * @param dbString   the configuration string
+     * @param test the test application
+     * @param id the database id
+     * @param dbString the configuration string
      * @param properties to use
      * @return a new database object with the given settings
      */
@@ -294,7 +293,7 @@ class Database {
     /**
      * Start the benchmark.
      *
-     * @param bench  the benchmark
+     * @param bench the benchmark
      * @param action the action
      */
     void start(Bench bench, String action) {
@@ -321,7 +320,7 @@ class Database {
         long totalGCTime = 0;
         for (GarbageCollectorMXBean gcMXBean : ManagementFactory.getGarbageCollectorMXBeans()) {
             long collectionTime = gcMXBean.getCollectionTime();
-            if (collectionTime > 0) {
+            if(collectionTime > 0) {
                 totalGCTime += collectionTime;
             }
         }
@@ -344,7 +343,7 @@ class Database {
     /**
      * Execute an SQL statement.
      *
-     * @param prep         the prepared statement
+     * @param prep the prepared statement
      * @param traceMessage the trace message
      */
     void update(PreparedStatement prep, String traceMessage) throws SQLException {
@@ -399,8 +398,8 @@ class Database {
      * Print trace information if trace is enabled.
      *
      * @param action the action
-     * @param i      the current value
-     * @param max    the maximum value
+     * @param i the current value
+     * @param max the maximum value
      */
     void trace(String action, int i, int max) {
         if (TRACE) {
@@ -418,7 +417,7 @@ class Database {
      * If data collection is enabled, add the currently used memory size to the
      * log.
      *
-     * @param bench  the benchmark
+     * @param bench the benchmark
      * @param action the action
      */
     void logMemory(Bench bench, String action) {
@@ -429,8 +428,8 @@ class Database {
      * If data collection is enabled, add this information to the log.
      *
      * @param action the action
-     * @param unit   of the value
-     * @param value  the value
+     * @param unit of the value
+     * @param value the value
      */
     void log(String action, String unit, int value) {
         if (test.isCollect()) {
@@ -513,7 +512,6 @@ class Database {
 
         /**
          * Load testing properties
-         *
          * @return Properties
          * @throws IOException on failure
          */
@@ -526,7 +524,8 @@ class Database {
         }
     }
 
-    public static final class Measurement {
+    public static final class Measurement
+    {
         final String name;
         final String unit;
         final int value;

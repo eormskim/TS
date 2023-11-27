@@ -27,7 +27,7 @@ public abstract class JSONTextSource {
      */
     final void parse() {
         boolean comma = false;
-        for (int ch; (ch = nextCharAfterWhitespace()) >= 0; ) {
+        for (int ch; (ch = nextCharAfterWhitespace()) >= 0;) {
             if (ch == '}' || ch == ']') {
                 if (comma) {
                     throw new IllegalArgumentException();
@@ -51,53 +51,53 @@ public abstract class JSONTextSource {
             }
             comma = false;
             switch (ch) {
-                case 'f':
-                    readKeyword1("false");
-                    target.valueFalse();
-                    break;
-                case 'n':
-                    readKeyword1("null");
-                    target.valueNull();
-                    break;
-                case 't':
-                    readKeyword1("true");
-                    target.valueTrue();
-                    break;
-                case '{':
-                    target.startObject();
-                    break;
-                case '[':
-                    target.startArray();
-                    break;
-                case '"': {
-                    String s = readString();
-                    if (target.isPropertyExpected()) {
-                        if (nextCharAfterWhitespace() != ':') {
-                            throw new IllegalArgumentException();
-                        }
-                        target.member(s);
-                    } else {
-                        target.valueString(s);
+            case 'f':
+                readKeyword1("false");
+                target.valueFalse();
+                break;
+            case 'n':
+                readKeyword1("null");
+                target.valueNull();
+                break;
+            case 't':
+                readKeyword1("true");
+                target.valueTrue();
+                break;
+            case '{':
+                target.startObject();
+                break;
+            case '[':
+                target.startArray();
+                break;
+            case '"': {
+                String s = readString();
+                if (target.isPropertyExpected()) {
+                    if (nextCharAfterWhitespace() != ':') {
+                        throw new IllegalArgumentException();
                     }
-                    break;
+                    target.member(s);
+                } else {
+                    target.valueString(s);
                 }
-                case '-':
-                    parseNumber(false);
-                    break;
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                    parseNumber(true);
-                    break;
-                default:
-                    throw new IllegalArgumentException();
+                break;
+            }
+            case '-':
+                parseNumber(false);
+                break;
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                parseNumber(true);
+                break;
+            default:
+                throw new IllegalArgumentException();
             }
         }
     }
@@ -141,54 +141,54 @@ public abstract class JSONTextSource {
     private String readString() {
         builder.setLength(0);
         boolean inSurrogate = false;
-        for (; ; ) {
+        for (;;) {
             int ch = nextChar();
             switch (ch) {
+            case '"':
+                if (inSurrogate) {
+                    throw new IllegalArgumentException();
+                }
+                return builder.toString();
+            case '\\':
+                ch = nextChar();
+                switch (ch) {
                 case '"':
+                case '/':
+                case '\\':
+                    appendNonSurrogate((char) ch, inSurrogate);
+                    break;
+                case 'b':
+                    appendNonSurrogate('\b', inSurrogate);
+                    break;
+                case 'f':
+                    appendNonSurrogate('\f', inSurrogate);
+                    break;
+                case 'n':
+                    appendNonSurrogate('\n', inSurrogate);
+                    break;
+                case 'r':
+                    appendNonSurrogate('\r', inSurrogate);
+                    break;
+                case 't':
+                    appendNonSurrogate('\t', inSurrogate);
+                    break;
+                case 'u':
+                    inSurrogate = appendChar(readHex(), inSurrogate);
+                    break;
+                default:
+                    throw new IllegalArgumentException();
+                }
+                break;
+            default:
+                if (Character.isBmpCodePoint(ch)) {
+                    inSurrogate = appendChar((char) ch, inSurrogate);
+                } else {
                     if (inSurrogate) {
                         throw new IllegalArgumentException();
                     }
-                    return builder.toString();
-                case '\\':
-                    ch = nextChar();
-                    switch (ch) {
-                        case '"':
-                        case '/':
-                        case '\\':
-                            appendNonSurrogate((char) ch, inSurrogate);
-                            break;
-                        case 'b':
-                            appendNonSurrogate('\b', inSurrogate);
-                            break;
-                        case 'f':
-                            appendNonSurrogate('\f', inSurrogate);
-                            break;
-                        case 'n':
-                            appendNonSurrogate('\n', inSurrogate);
-                            break;
-                        case 'r':
-                            appendNonSurrogate('\r', inSurrogate);
-                            break;
-                        case 't':
-                            appendNonSurrogate('\t', inSurrogate);
-                            break;
-                        case 'u':
-                            inSurrogate = appendChar(readHex(), inSurrogate);
-                            break;
-                        default:
-                            throw new IllegalArgumentException();
-                    }
-                    break;
-                default:
-                    if (Character.isBmpCodePoint(ch)) {
-                        inSurrogate = appendChar((char) ch, inSurrogate);
-                    } else {
-                        if (inSurrogate) {
-                            throw new IllegalArgumentException();
-                        }
-                        builder.appendCodePoint(ch);
-                        inSurrogate = false;
-                    }
+                    builder.appendCodePoint(ch);
+                    inSurrogate = false;
+                }
             }
         }
     }

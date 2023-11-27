@@ -11,7 +11,6 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
 import java.util.concurrent.atomic.AtomicLong;
-
 import org.h2.mvstore.cache.FilePathCache;
 import org.h2.store.fs.FilePath;
 import org.h2.store.fs.encrypt.FileEncrypt;
@@ -118,11 +117,11 @@ public class FileStore {
     /**
      * Try to open the file.
      *
-     * @param fileName      the file name
-     * @param readOnly      whether the file should only be opened in read-only mode,
-     *                      even if the file is writable
+     * @param fileName the file name
+     * @param readOnly whether the file should only be opened in read-only mode,
+     *            even if the file is writable
      * @param encryptionKey the encryption key, or null if encryption is not
-     *                      used
+     *            used
      */
     public void open(String fileName, boolean readOnly, char[] encryptionKey) {
         if (file != null) {
@@ -160,20 +159,14 @@ public class FileStore {
                         "The file is locked: {0}", fileName, e);
             }
             if (fileLock == null) {
-                try {
-                    close();
-                } catch (Exception ignore) {
-                }
+                try { close(); } catch (Exception ignore) {}
                 throw DataUtils.newMVStoreException(
                         DataUtils.ERROR_FILE_LOCKED,
                         "The file is locked: {0}", fileName);
             }
             fileSize = file.size();
         } catch (IOException e) {
-            try {
-                close();
-            } catch (Exception ignore) {
-            }
+            try { close(); } catch (Exception ignore) {}
             throw DataUtils.newMVStoreException(
                     DataUtils.ERROR_READING_FAILED,
                     "Could not open file {0}", fileName, e);
@@ -185,7 +178,7 @@ public class FileStore {
      */
     public void close() {
         try {
-            if (file != null && file.isOpen()) {
+            if(file != null && file.isOpen()) {
                 if (fileLock != null) {
                     fileLock.release();
                 }
@@ -329,7 +322,7 @@ public class FileStore {
     /**
      * Mark the space as in use.
      *
-     * @param pos    the position in bytes
+     * @param pos the position in bytes
      * @param length the number of bytes
      */
     public void markUsed(long pos, int length) {
@@ -339,8 +332,8 @@ public class FileStore {
     /**
      * Allocate a number of blocks and mark them as used.
      *
-     * @param length       the number of bytes to allocate
-     * @param reservedLow  start block index of the reserved area (inclusive)
+     * @param length the number of bytes to allocate
+     * @param reservedLow start block index of the reserved area (inclusive)
      * @param reservedHigh end block index of the reserved area (exclusive),
      *                     special value -1 means beginning of the infinite free area
      * @return the start position in bytes
@@ -352,8 +345,8 @@ public class FileStore {
     /**
      * Calculate starting position of the prospective allocation.
      *
-     * @param blocks       the number of blocks to allocate
-     * @param reservedLow  start block index of the reserved area (inclusive)
+     * @param blocks the number of blocks to allocate
+     * @param reservedLow start block index of the reserved area (inclusive)
      * @param reservedHigh end block index of the reserved area (exclusive),
      *                     special value -1 means beginning of the infinite free area
      * @return the starting block index
@@ -369,7 +362,7 @@ public class FileStore {
     /**
      * Mark the space as free.
      *
-     * @param pos    the position in bytes
+     * @param pos the position in bytes
      * @param length the number of bytes
      */
     public void free(long pos, int length) {
@@ -385,7 +378,8 @@ public class FileStore {
      * of sparsely populated chunk(s) and evacuation of still live data into a
      * new chunk.
      *
-     * @param vacatedBlocks number of blocks vacated
+     * @param vacatedBlocks
+     *            number of blocks vacated
      * @return prospective fill rate (0 - 100)
      */
     public int getProjectedFillRate(int vacatedBlocks) {

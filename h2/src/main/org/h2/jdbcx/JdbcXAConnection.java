@@ -46,7 +46,7 @@ public final class JdbcXAConnection extends TraceObject implements XAConnection,
     private boolean prepared;
 
     JdbcXAConnection(JdbcDataSourceFactory factory, int id,
-                     JdbcConnection physicalConn) {
+            JdbcConnection physicalConn) {
         this.factory = factory;
         setTrace(factory.getTrace(), TraceObject.XA_DATA_SOURCE, id);
         this.physicalConn = physicalConn;
@@ -181,7 +181,7 @@ public final class JdbcXAConnection extends TraceObject implements XAConnection,
      * the transaction manager during recovery.
      *
      * @param flag TMSTARTRSCAN, TMENDRSCAN, or TMNOFLAGS. If no other flags are
-     *             set, TMNOFLAGS must be used.
+     *            set, TMNOFLAGS must be used.
      * @return zero or more Xid objects
      */
     @Override
@@ -279,7 +279,7 @@ public final class JdbcXAConnection extends TraceObject implements XAConnection,
     /**
      * End a transaction.
      *
-     * @param xid   the transaction id
+     * @param xid the transaction id
      * @param flags TMSUCCESS, TMFAIL, or TMSUSPEND
      */
     @Override
@@ -300,7 +300,7 @@ public final class JdbcXAConnection extends TraceObject implements XAConnection,
     /**
      * Start or continue to work on a transaction.
      *
-     * @param xid   the transaction id
+     * @param xid the transaction id
      * @param flags TMNOFLAGS, TMJOIN, or TMRESUME
      */
     @Override
@@ -330,7 +330,7 @@ public final class JdbcXAConnection extends TraceObject implements XAConnection,
     /**
      * Commit a transaction.
      *
-     * @param xid      the transaction id
+     * @param xid the transaction id
      * @param onePhase use a one-phase protocol if true
      */
     @Override

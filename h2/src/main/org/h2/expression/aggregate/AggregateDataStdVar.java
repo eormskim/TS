@@ -24,7 +24,8 @@ final class AggregateDataStdVar extends AggregateData {
     private double m2, mean;
 
     /**
-     * @param aggregateType the type of the aggregate operation
+     * @param aggregateType
+     *            the type of the aggregate operation
      */
     AggregateDataStdVar(AggregateType aggregateType) {
         this.aggregateType = aggregateType;
@@ -53,35 +54,35 @@ final class AggregateDataStdVar extends AggregateData {
     Value getValue(SessionLocal session) {
         double v;
         switch (aggregateType) {
-            case STDDEV_SAMP:
-            case VAR_SAMP:
-                if (count < 2) {
-                    return ValueNull.INSTANCE;
-                }
-                v = m2 / (count - 1);
-                if (aggregateType == AggregateType.STDDEV_SAMP) {
-                    v = Math.sqrt(v);
-                }
-                break;
-            case STDDEV_POP:
-            case VAR_POP:
-                if (count < 1) {
-                    return ValueNull.INSTANCE;
-                }
-                v = m2 / count;
-                if (aggregateType == AggregateType.STDDEV_POP) {
-                    v = Math.sqrt(v);
-                }
-                break;
-            case REGR_SXX:
-            case REGR_SYY:
-                if (count < 1) {
-                    return ValueNull.INSTANCE;
-                }
-                v = m2;
-                break;
-            default:
-                throw DbException.getInternalError("type=" + aggregateType);
+        case STDDEV_SAMP:
+        case VAR_SAMP:
+            if (count < 2) {
+                return ValueNull.INSTANCE;
+            }
+            v = m2 / (count - 1);
+            if (aggregateType == AggregateType.STDDEV_SAMP) {
+                v = Math.sqrt(v);
+            }
+            break;
+        case STDDEV_POP:
+        case VAR_POP:
+            if (count < 1) {
+                return ValueNull.INSTANCE;
+            }
+            v = m2 / count;
+            if (aggregateType == AggregateType.STDDEV_POP) {
+                v = Math.sqrt(v);
+            }
+            break;
+        case REGR_SXX:
+        case REGR_SYY:
+            if (count < 1) {
+                return ValueNull.INSTANCE;
+            }
+            v = m2;
+            break;
+        default:
+            throw DbException.getInternalError("type=" + aggregateType);
         }
         return ValueDouble.get(v);
     }

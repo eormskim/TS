@@ -19,6 +19,7 @@ import org.h2.util.Utils;
 /**
  * This credentials validator matches the user and password with the configured
  * Usage should be limited to test purposes
+ *
  */
 public class StaticUserCredentialsValidator implements CredentialsValidator {
 
@@ -30,22 +31,22 @@ public class StaticUserCredentialsValidator implements CredentialsValidator {
     public StaticUserCredentialsValidator() {
     }
 
-    public StaticUserCredentialsValidator(String userNamePattern, String password) {
-        if (userNamePattern != null) {
-            this.userNamePattern = Pattern.compile(userNamePattern.toUpperCase());
+    public StaticUserCredentialsValidator(String userNamePattern,String password) {
+        if (userNamePattern!=null) {
+            this.userNamePattern=Pattern.compile(userNamePattern.toUpperCase());
         }
-        salt = MathUtils.secureRandomBytes(256);
-        hashWithSalt = SHA256.getHashWithSalt(password.getBytes(), salt);
+        salt=MathUtils.secureRandomBytes(256);
+        hashWithSalt=SHA256.getHashWithSalt(password.getBytes(), salt);
     }
 
     @Override
     public boolean validateCredentials(AuthenticationInfo authenticationInfo) throws AuthenticationException {
-        if (userNamePattern != null) {
+        if (userNamePattern!=null) {
             if (!userNamePattern.matcher(authenticationInfo.getUserName()).matches()) {
                 return false;
             }
         }
-        if (password != null) {
+        if (password!=null) {
             return password.equals(authenticationInfo.getPassword());
         }
         return Utils.compareSecure(hashWithSalt,
@@ -54,17 +55,17 @@ public class StaticUserCredentialsValidator implements CredentialsValidator {
 
     @Override
     public void configure(ConfigProperties configProperties) {
-        String userNamePatternString = configProperties.getStringValue("userNamePattern", null);
-        if (userNamePatternString != null) {
+        String userNamePatternString=configProperties.getStringValue("userNamePattern",null);
+        if (userNamePatternString!=null) {
             userNamePattern = Pattern.compile(userNamePatternString);
         }
-        password = configProperties.getStringValue("password", password);
-        String saltString = configProperties.getStringValue("salt", null);
-        if (saltString != null) {
-            salt = StringUtils.convertHexToBytes(saltString);
+        password=configProperties.getStringValue("password",password);
+        String saltString =configProperties.getStringValue("salt",null);
+        if (saltString!=null) {
+            salt=StringUtils.convertHexToBytes(saltString);
         }
-        String hashString = configProperties.getStringValue("hash", null);
-        if (hashString != null) {
+        String hashString=configProperties.getStringValue("hash", null);
+        if (hashString!=null) {
             hashWithSalt = SHA256.getHashWithSalt(StringUtils.convertHexToBytes(hashString), salt);
         }
     }

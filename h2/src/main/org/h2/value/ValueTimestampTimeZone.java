@@ -68,14 +68,14 @@ public final class ValueTimestampTimeZone extends Value {
     /**
      * Get or create a date value for the given date.
      *
-     * @param dateValue             the date value, a bit field with bits for the year,
-     *                              month, and day
-     * @param timeNanos             the nanoseconds since midnight
+     * @param dateValue the date value, a bit field with bits for the year,
+     *            month, and day
+     * @param timeNanos the nanoseconds since midnight
      * @param timeZoneOffsetSeconds the timezone offset in seconds
      * @return the value
      */
     public static ValueTimestampTimeZone fromDateValueAndNanos(long dateValue, long timeNanos,
-                                                               int timeZoneOffsetSeconds) {
+            int timeZoneOffsetSeconds) {
         return (ValueTimestampTimeZone) Value.cache(new ValueTimestampTimeZone(
                 dateValue, timeNanos, timeZoneOffsetSeconds));
     }
@@ -85,9 +85,10 @@ public final class ValueTimestampTimeZone extends Value {
      * +/-year-month-day hour:minute:seconds.fractional and an optional timezone
      * part.
      *
-     * @param s        the string to parse
-     * @param provider the cast information provider, may be {@code null} for
-     *                 literals with time zone
+     * @param s the string to parse
+     * @param provider
+     *            the cast information provider, may be {@code null} for
+     *            literals with time zone
      * @return the date
      */
     public static ValueTimestampTimeZone parse(String s, CastDataProvider provider) {

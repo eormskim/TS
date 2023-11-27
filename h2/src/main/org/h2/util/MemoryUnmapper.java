@@ -58,7 +58,8 @@ public final class MemoryUnmapper {
      * in unsafe way if {@link SysProperties#NIO_CLEANER_HACK} is enabled and
      * access is not denied by a security manager.
      *
-     * @param buffer mapped byte buffer
+     * @param buffer
+     *            mapped byte buffer
      * @return whether operation was successful
      */
     public static boolean unmap(ByteBuffer buffer) {

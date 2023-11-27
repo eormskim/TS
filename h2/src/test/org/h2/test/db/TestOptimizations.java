@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
-
 import org.h2.api.ErrorCode;
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
@@ -289,7 +288,7 @@ public class TestOptimizations extends TestDb {
         stat.execute("insert into test(_rowid_, data) values(20, 'Hello')");
         stat.execute(
                 "merge into test using (values(20, 'Hallo')) s(id, data) on test._rowid_ = s.id"
-                        + " when matched then update set data = s.data");
+                + " when matched then update set data = s.data");
         rs = stat.executeQuery(
                 "select _rowid_, data from test order by _rowid_");
         rs.next();
@@ -480,7 +479,7 @@ public class TestOptimizations extends TestDb {
         stat.executeUpdate("CREATE TABLE test (x int)");
         ResultSet resultSet;
         resultSet = stat.executeQuery(
-                "EXPLAIN SELECT x FROM test WHERE x = '5'");
+            "EXPLAIN SELECT x FROM test WHERE x = '5'");
 
         assertTrue(resultSet.next());
         // String constant '5' has been converted to int constant 5 on
@@ -565,7 +564,7 @@ public class TestOptimizations extends TestDb {
 
         prep = conn.prepareStatement(
                 "select 2 from test a where a=? and b in(" +
-                        "select b.c from test b where b.d=?)");
+                "select b.c from test b where b.d=?)");
         prep.setInt(1, 1);
         prep.setInt(2, 1);
         rs = prep.executeQuery();
@@ -787,7 +786,7 @@ public class TestOptimizations extends TestDb {
         Statement stat = conn.createStatement();
         testQuerySpeed(stat,
                 "select sum(a.n), sum(b.x) from system_range(1, 100) b, " +
-                        "(select sum(x) n from system_range(1, 4000)) a");
+                "(select sum(x) n from system_range(1, 4000)) a");
         conn.close();
     }
 
@@ -830,7 +829,7 @@ public class TestOptimizations extends TestDb {
         stat.execute("insert into test values(1), (1), (2)");
         stat.execute("insert into test2 values(1)");
         PreparedStatement prep = conn.prepareStatement(
-                "select * from test where id = (select id from test2)");
+                    "select * from test where id = (select id from test2)");
         ResultSet rs1 = prep.executeQuery();
         rs1.next();
         assertEquals(1, rs1.getInt(1));
@@ -867,58 +866,58 @@ public class TestOptimizations extends TestDb {
                 }
             }
             switch (random.nextInt(10)) {
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                    if (random.nextInt(1000) == 1) {
-                        stat.execute("insert into test values(" + i + ", null)");
-                        map.put(i, null);
-                    } else {
-                        int value = random.nextInt();
-                        stat.execute("insert into test values(" + i + ", " + value + ")");
-                        map.put(i, value);
-                        set.add(value);
-                    }
-                    break;
-                case 6:
-                case 7:
-                case 8: {
-                    if (map.size() > 0) {
-                        for (int j = random.nextInt(i), k = 0; k < 10; k++, j++) {
-                            if (map.containsKey(j)) {
-                                Integer x = map.remove(j);
-                                if (x != null) {
-                                    set.remove(x);
-                                }
-                                stat.execute("delete from test where id=" + j);
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                if (random.nextInt(1000) == 1) {
+                    stat.execute("insert into test values(" + i + ", null)");
+                    map.put(i, null);
+                } else {
+                    int value = random.nextInt();
+                    stat.execute("insert into test values(" + i + ", " + value + ")");
+                    map.put(i, value);
+                    set.add(value);
+                }
+                break;
+            case 6:
+            case 7:
+            case 8: {
+                if (map.size() > 0) {
+                    for (int j = random.nextInt(i), k = 0; k < 10; k++, j++) {
+                        if (map.containsKey(j)) {
+                            Integer x = map.remove(j);
+                            if (x != null) {
+                                set.remove(x);
                             }
+                            stat.execute("delete from test where id=" + j);
                         }
                     }
-                    break;
                 }
-                case 9: {
-                    ArrayList<Integer> list = new ArrayList<>(map.values());
-                    int count = list.size();
-                    Integer min = null, max = null;
-                    if (count > 0) {
-                        min = set.first();
-                        max = set.last();
-                    }
-                    ResultSet rs = stat.executeQuery(
-                            "select min(v), max(v), count(*) from test");
-                    rs.next();
-                    Integer minDb = (Integer) rs.getObject(1);
-                    Integer maxDb = (Integer) rs.getObject(2);
-                    int countDb = rs.getInt(3);
-                    assertEquals(minDb, min);
-                    assertEquals(maxDb, max);
-                    assertEquals(countDb, count);
-                    break;
+                break;
+            }
+            case 9: {
+                ArrayList<Integer> list = new ArrayList<>(map.values());
+                int count = list.size();
+                Integer min = null, max = null;
+                if (count > 0) {
+                    min = set.first();
+                    max = set.last();
                 }
-                default:
+                ResultSet rs = stat.executeQuery(
+                        "select min(v), max(v), count(*) from test");
+                rs.next();
+                Integer minDb = (Integer) rs.getObject(1);
+                Integer maxDb = (Integer) rs.getObject(2);
+                int countDb = rs.getInt(3);
+                assertEquals(minDb, min);
+                assertEquals(maxDb, max);
+                assertEquals(countDb, count);
+                break;
+            }
+            default:
             }
         }
         conn.close();
@@ -1008,7 +1007,7 @@ public class TestOptimizations extends TestDb {
         stat.execute("CREATE INDEX my_index ON my_table(K1, VAL)");
         ResultSet rs = stat.executeQuery(
                 "EXPLAIN PLAN FOR SELECT * FROM my_table WHERE K1=7 " +
-                        "ORDER BY K1, VAL");
+                "ORDER BY K1, VAL");
         rs.next();
         assertContains(rs.getString(1), "/* PUBLIC.MY_INDEX: K1 = 7 */");
 
@@ -1021,7 +1020,7 @@ public class TestOptimizations extends TestDb {
         stat.execute("CREATE INDEX my_index2 ON my_table(K1, K2, VAL)");
         rs = stat.executeQuery(
                 "EXPLAIN PLAN FOR SELECT * FROM my_table WHERE K1=7 " +
-                        "ORDER BY K1, K2, VAL");
+                "ORDER BY K1, K2, VAL");
         rs.next();
         assertContains(rs.getString(1), "/* PUBLIC.MY_INDEX2: K1 = 7 */");
 
@@ -1044,15 +1043,15 @@ public class TestOptimizations extends TestDb {
 
 
         rs = stat.executeQuery(
-                "EXPLAIN PLAN FOR SELECT * FROM my_table " +
-                        "ORDER BY K1 ASC NULLS FIRST");
+            "EXPLAIN PLAN FOR SELECT * FROM my_table " +
+                "ORDER BY K1 ASC NULLS FIRST");
         rs.next();
         result = rs.getString(1);
         assertContains(result, "/* index sorted */");
 
         rs = stat.executeQuery(
-                "SELECT * FROM my_table " +
-                        "ORDER BY K1 ASC NULLS FIRST");
+            "SELECT * FROM my_table " +
+                "ORDER BY K1 ASC NULLS FIRST");
         rs.next();
         assertNull(rs.getObject(1));
         rs.next();
@@ -1062,8 +1061,8 @@ public class TestOptimizations extends TestDb {
 
         // ===
         rs = stat.executeQuery(
-                "EXPLAIN PLAN FOR SELECT * FROM my_table " +
-                        "ORDER BY K1 DESC NULLS FIRST");
+            "EXPLAIN PLAN FOR SELECT * FROM my_table " +
+                "ORDER BY K1 DESC NULLS FIRST");
         rs.next();
         result = rs.getString(1);
         if (result.contains("/* index sorted */")) {
@@ -1071,8 +1070,8 @@ public class TestOptimizations extends TestDb {
         }
 
         rs = stat.executeQuery(
-                "SELECT * FROM my_table " +
-                        "ORDER BY K1 DESC NULLS FIRST");
+            "SELECT * FROM my_table " +
+                "ORDER BY K1 DESC NULLS FIRST");
         rs.next();
         assertNull(rs.getObject(1));
         rs.next();
@@ -1082,8 +1081,8 @@ public class TestOptimizations extends TestDb {
 
         // ===
         rs = stat.executeQuery(
-                "EXPLAIN PLAN FOR SELECT * FROM my_table " +
-                        "ORDER BY K1 ASC NULLS LAST");
+            "EXPLAIN PLAN FOR SELECT * FROM my_table " +
+                "ORDER BY K1 ASC NULLS LAST");
         rs.next();
         result = rs.getString(1);
         if (result.contains("/* index sorted */")) {
@@ -1091,8 +1090,8 @@ public class TestOptimizations extends TestDb {
         }
 
         rs = stat.executeQuery(
-                "SELECT * FROM my_table " +
-                        "ORDER BY K1 ASC NULLS LAST");
+            "SELECT * FROM my_table " +
+                "ORDER BY K1 ASC NULLS LAST");
         rs.next();
         assertEquals(1, rs.getInt(1));
         rs.next();
@@ -1194,7 +1193,7 @@ public class TestOptimizations extends TestDb {
         Connection conn = getConnection("optimizations");
         Statement stat = conn.createStatement();
         StringBuilder b = new StringBuilder("SELECT 1");
-        for (int i = 0; i < 10000; i++) {
+        for (int i=0; i<10000; i++) {
             b.append(" AND 1");
         }
         ResultSet rs = stat.executeQuery(b.toString());

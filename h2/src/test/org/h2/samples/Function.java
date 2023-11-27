@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
-
 import org.h2.tools.SimpleResultSet;
 
 /**
@@ -54,9 +53,9 @@ public class Function {
         PreparedStatement prep;
         prep = conn.prepareStatement(
                 "SELECT * FROM TABLE(X INT=?, O INT=?) J " +
-                        "INNER JOIN TEST T ON J.X=T.ID ORDER BY J.O");
-        prep.setObject(1, new Integer[]{30, 20});
-        prep.setObject(2, new Integer[]{1, 2});
+                "INNER JOIN TEST T ON J.X=T.ID ORDER BY J.O");
+        prep.setObject(1, new Integer[] { 30, 20 });
+        prep.setObject(2, new Integer[] { 1, 2 });
         rs = prep.executeQuery();
         while (rs.next()) {
             System.out.println(rs.getInt(1));
@@ -109,7 +108,7 @@ public class Function {
      * Execute a query.
      *
      * @param conn the connection
-     * @param sql  the SQL statement
+     * @param sql the SQL statement
      * @return the result set
      * @throws SQLException on failure
      */

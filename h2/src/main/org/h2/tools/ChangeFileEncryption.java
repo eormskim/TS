@@ -13,7 +13,6 @@ import java.nio.channels.FileChannel;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
-
 import org.h2.engine.Constants;
 import org.h2.message.DbException;
 import org.h2.mvstore.MVStore;
@@ -26,7 +25,7 @@ import org.h2.util.Tool;
 
 /**
  * Allows changing the database file encryption password or algorithm.
- * <p>
+ *
  * This tool can not be used to change a password of a user.
  * The database must be closed before using this tool.
  */
@@ -114,16 +113,16 @@ public class ChangeFileEncryption extends Tool {
      * char arrays and are cleaned in this method. The database must be closed
      * before calling this method.
      *
-     * @param dir             the directory (. for the current directory)
-     * @param db              the database name (null for all databases)
-     * @param cipher          the cipher (AES)
+     * @param dir the directory (. for the current directory)
+     * @param db the database name (null for all databases)
+     * @param cipher the cipher (AES)
      * @param decryptPassword the decryption password as a char array
      * @param encryptPassword the encryption password as a char array
-     * @param quiet           don't print progress information
+     * @param quiet don't print progress information
      * @throws SQLException on failure
      */
     public static void execute(String dir, String db, String cipher,
-                               char[] decryptPassword, char[] encryptPassword, boolean quiet)
+            char[] decryptPassword, char[] encryptPassword, boolean quiet)
             throws SQLException {
         try {
             new ChangeFileEncryption().process(dir, db, cipher,
@@ -134,7 +133,7 @@ public class ChangeFileEncryption extends Tool {
     }
 
     private void process(String dir, String db, String cipher,
-                         char[] decryptPassword, char[] encryptPassword, boolean quiet)
+            char[] decryptPassword, char[] encryptPassword, boolean quiet)
             throws SQLException {
         dir = FileLister.getDir(dir);
         ChangeFileEncryption change = new ChangeFileEncryption();
@@ -207,7 +206,7 @@ public class ChangeFileEncryption extends Tool {
         }
 
         String temp = directory + "/temp.db";
-        try (FileChannel fileIn = getFileChannel(fileName, "r", decryptKey)) {
+        try (FileChannel fileIn = getFileChannel(fileName, "r", decryptKey)){
             try (InputStream inStream = Channels.newInputStream(fileIn)) {
                 FileUtils.delete(temp);
                 try (OutputStream outStream = Channels.newOutputStream(getFileChannel(temp, "rw", encryptKey))) {
@@ -233,7 +232,7 @@ public class ChangeFileEncryption extends Tool {
     }
 
     private static FileChannel getFileChannel(String fileName, String r,
-                                              byte[] decryptKey) throws IOException {
+            byte[] decryptKey) throws IOException {
         FileChannel fileIn = FilePath.get(fileName).open(r);
         if (decryptKey != null) {
             fileIn = new FileEncrypt(fileName, decryptKey,

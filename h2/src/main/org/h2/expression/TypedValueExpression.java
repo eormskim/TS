@@ -26,8 +26,10 @@ public class TypedValueExpression extends ValueExpression {
     /**
      * Create a new expression with the given value and type.
      *
-     * @param value the value
-     * @param type  the value type
+     * @param value
+     *            the value
+     * @param type
+     *            the value type
      * @return the expression
      */
     public static ValueExpression get(Value value, TypeInfo type) {
@@ -38,8 +40,10 @@ public class TypedValueExpression extends ValueExpression {
      * Create a new typed value expression with the given value and type if
      * value is {@code NULL}, or a plain value expression otherwise.
      *
-     * @param value the value
-     * @param type  the value type
+     * @param value
+     *            the value
+     * @param type
+     *            the value type
      * @return the expression
      */
     public static ValueExpression getTypedIfNull(Value value, TypeInfo type) {
@@ -49,10 +53,10 @@ public class TypedValueExpression extends ValueExpression {
     private static ValueExpression getImpl(Value value, TypeInfo type, boolean preserveStrictType) {
         if (value == ValueNull.INSTANCE) {
             switch (type.getValueType()) {
-                case Value.NULL:
-                    return ValueExpression.NULL;
-                case Value.BOOLEAN:
-                    return UNKNOWN;
+            case Value.NULL:
+                return ValueExpression.NULL;
+            case Value.BOOLEAN:
+                return UNKNOWN;
             }
             return new TypedValueExpression(value, type);
         }

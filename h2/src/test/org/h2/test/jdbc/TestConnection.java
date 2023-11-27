@@ -67,7 +67,7 @@ public class TestConnection extends TestDb {
     /**
      * Test that no exception is thrown if the client info of a connection
      * managed in a connection pool is reset to its initial values.
-     * <p>
+     *
      * This is needed when using h2 in websphere liberty.
      */
     private void testSetInternalPropertyToInitialValue() throws SQLException {
@@ -279,7 +279,7 @@ public class TestConnection extends TestDb {
             ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(*) FROM TEST");
             rs.next();
             int count = rs.getInt(1);
-            assertTrue("Found " + count + " rows", count == 1);
+            assertTrue("Found " +count + " rows",  count == 1);
             rs.close();
         } else {
             prep.execute();
@@ -288,7 +288,7 @@ public class TestConnection extends TestDb {
             ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(*) FROM TEST");
             rs.next();
             int count = rs.getInt(1);
-            assertTrue("Found " + count + " rows", count == 1);
+            assertTrue("Found " + count + " rows",  count == 1);
             rs.close();
         }
 
@@ -335,7 +335,7 @@ public class TestConnection extends TestDb {
     private void testLockTimeout() throws SQLException {
         deleteDb("lockTimeout");
         try (Connection conn1 = getConnection("lockTimeout");
-             Connection conn2 = getConnection("lockTimeout;LOCK_TIMEOUT=6000")) {
+                Connection conn2 = getConnection("lockTimeout;LOCK_TIMEOUT=6000")) {
             conn1.setAutoCommit(false);
             conn2.setAutoCommit(false);
             Statement s1 = conn1.createStatement();
@@ -376,7 +376,7 @@ public class TestConnection extends TestDb {
                     TimeZone.setDefault(TimeZone.getTimeZone(tz2));
                     DateTimeUtils.resetCalendar();
                     try (Connection c2 = getConnection("timeZone");
-                         Connection c3 = getConnection("timeZone;TIME ZONE=" + tz3)) {
+                            Connection c3 = getConnection("timeZone;TIME ZONE=" + tz3)) {
                         checkTimeZone(tz1, c1);
                         checkTimeZone(tz2, c2);
                         checkTimeZone(tz3, c3);

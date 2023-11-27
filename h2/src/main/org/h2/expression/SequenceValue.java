@@ -25,8 +25,10 @@ public final class SequenceValue extends Operation0 {
     /**
      * Creates new instance of NEXT VALUE FOR expression.
      *
-     * @param sequence the sequence
-     * @param prepared the owner command, or {@code null}
+     * @param sequence
+     *            the sequence
+     * @param prepared
+     *            the owner command, or {@code null}
      */
     public SequenceValue(Sequence sequence, Prepared prepared) {
         this.sequence = sequence;
@@ -37,7 +39,8 @@ public final class SequenceValue extends Operation0 {
     /**
      * Creates new instance of CURRENT VALUE FOR expression.
      *
-     * @param sequence the sequence
+     * @param sequence
+     *            the sequence
      */
     public SequenceValue(Sequence sequence) {
         this.sequence = sequence;
@@ -64,20 +67,20 @@ public final class SequenceValue extends Operation0 {
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-            case ExpressionVisitor.DETERMINISTIC:
-            case ExpressionVisitor.INDEPENDENT:
-            case ExpressionVisitor.QUERY_COMPARABLE:
-                return false;
-            case ExpressionVisitor.SET_MAX_DATA_MODIFICATION_ID:
-                visitor.addDataModificationId(sequence.getModificationId());
-                return true;
-            case ExpressionVisitor.GET_DEPENDENCIES:
-                visitor.addDependency(sequence);
-                return true;
-            case ExpressionVisitor.READONLY:
-                return current;
-            default:
-                return true;
+        case ExpressionVisitor.DETERMINISTIC:
+        case ExpressionVisitor.INDEPENDENT:
+        case ExpressionVisitor.QUERY_COMPARABLE:
+            return false;
+        case ExpressionVisitor.SET_MAX_DATA_MODIFICATION_ID:
+            visitor.addDataModificationId(sequence.getModificationId());
+            return true;
+        case ExpressionVisitor.GET_DEPENDENCIES:
+            visitor.addDependency(sequence);
+            return true;
+        case ExpressionVisitor.READONLY:
+            return current;
+        default:
+            return true;
         }
     }
 

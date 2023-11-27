@@ -8,7 +8,6 @@ package org.h2.java;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import org.h2.test.TestBase;
 
 /**

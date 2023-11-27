@@ -262,7 +262,7 @@ public class TestCsv extends TestDb {
         assertEquals("A", rs.getMetaData().getColumnName(1));
         assertEquals("A1", rs.getMetaData().getColumnName(2));
 
-        rs = new Csv().read(new StringReader("1,2"), new String[]{"", null});
+        rs = new Csv().read(new StringReader("1,2"), new String[] { "", null });
         assertEquals("C1", rs.getMetaData().getColumnName(1));
         assertEquals("C2", rs.getMetaData().getColumnName(2));
     }
@@ -280,12 +280,12 @@ public class TestCsv extends TestDb {
         stat.execute("call csvwrite('" + getBaseDir() +
                 "/test.tsv','select * from test',null,' ')");
         ResultSet rs1 = stat.executeQuery("select * from test");
-        assertResultSetOrdered(rs1, new String[][]{
-                new String[]{"1", "2", "3"}, new String[]{"4", null, "5"}});
+        assertResultSetOrdered(rs1, new String[][] {
+                new String[] { "1", "2", "3" }, new String[] { "4", null, "5" } });
         ResultSet rs2 = stat.executeQuery("select * from csvread('" +
                 getBaseDir() + "/test.tsv',null,null,' ')");
-        assertResultSetOrdered(rs2, new String[][]{
-                new String[]{"1", "2", "3"}, new String[]{"4", null, "5"}});
+        assertResultSetOrdered(rs2, new String[][] {
+                new String[] { "1", "2", "3" }, new String[] { "4", null, "5" } });
         conn.close();
         FileUtils.delete(f.getAbsolutePath());
         FileUtils.delete(getBaseDir() + "/test.tsv");
@@ -354,7 +354,7 @@ public class TestCsv extends TestDb {
             String a = randomData(random), b = randomData(random);
             prep.setString(1, a);
             prep.setString(2, b);
-            list.add(new String[]{a, b});
+            list.add(new String[] { a, b });
             prep.execute();
         }
         stat.execute("call csvwrite('" + getBaseDir() +

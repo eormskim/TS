@@ -8,7 +8,6 @@ package org.h2.command;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Set;
-
 import org.h2.api.ErrorCode;
 import org.h2.engine.Constants;
 import org.h2.engine.Database;
@@ -101,11 +100,12 @@ public abstract class Command implements CommandInterface {
      * Execute an updating statement (for example insert, delete, or update), if
      * this is possible.
      *
-     * @param generatedKeysRequest {@code false} if generated keys are not needed, {@code true} if
-     *                             generated keys should be configured automatically, {@code int[]}
-     *                             to specify column indices to return generated keys from, or
-     *                             {@code String[]} to specify column names to return generated keys
-     *                             from
+     * @param generatedKeysRequest
+     *            {@code false} if generated keys are not needed, {@code true} if
+     *            generated keys should be configured automatically, {@code int[]}
+     *            to specify column indices to return generated keys from, or
+     *            {@code String[]} to specify column names to return generated keys
+     *            from
      * @return the update count and generated keys, if any
      * @throws DbException if the command is not an updating statement
      */
@@ -168,7 +168,7 @@ public abstract class Command implements CommandInterface {
      * Execute a query and return the result.
      * This method prepares everything and calls {@link #query(long)} finally.
      *
-     * @param maxrows    the maximum number of rows to return
+     * @param maxrows the maximum number of rows to return
      * @param scrollable if the result set must be scrollable (ignored)
      * @return the result set
      */

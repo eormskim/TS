@@ -99,7 +99,7 @@ public class TestJoin extends TestDb {
         execute("INSERT INTO TWO VALUES(4, NULL)", null);
         random = new Random();
         long startTime = System.nanoTime();
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             paramCount = 0;
             buff = new StringBuilder();
             long time = System.nanoTime();
@@ -204,22 +204,22 @@ public class TestJoin extends TestDb {
         } else {
             if (random.nextInt(5) == 1) {
                 switch (random.nextInt(5)) {
-                    case 0:
-                        buff.append(">");
-                        break;
-                    case 1:
-                        buff.append("<");
-                        break;
-                    case 2:
-                        buff.append("<=");
-                        break;
-                    case 3:
-                        buff.append(">=");
-                        break;
-                    case 4:
-                        buff.append("<>");
-                        break;
-                    default:
+                case 0:
+                    buff.append(">");
+                    break;
+                case 1:
+                    buff.append("<");
+                    break;
+                case 2:
+                    buff.append("<=");
+                    break;
+                case 3:
+                    buff.append(">=");
+                    break;
+                case 4:
+                    buff.append("<>");
+                    break;
+                default:
                 }
             } else {
                 buff.append("=");

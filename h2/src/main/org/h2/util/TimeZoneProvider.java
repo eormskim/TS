@@ -37,7 +37,8 @@ public abstract class TimeZoneProvider {
     /**
      * Returns the time zone provider with the specified offset.
      *
-     * @param offset UTC offset in seconds
+     * @param offset
+     *            UTC offset in seconds
      * @return the time zone provider with the specified offset
      */
     public static TimeZoneProvider ofOffset(int offset) {
@@ -53,9 +54,11 @@ public abstract class TimeZoneProvider {
     /**
      * Returns the time zone provider with the specified name.
      *
-     * @param id the ID of the time zone
+     * @param id
+     *            the ID of the time zone
      * @return the time zone provider with the specified name
-     * @throws RuntimeException if time zone with specified ID isn't known
+     * @throws RuntimeException
+     *             if time zone with specified ID isn't known
      */
     public static TimeZoneProvider ofId(String id) throws RuntimeException {
         int length = id.length();
@@ -176,7 +179,8 @@ public abstract class TimeZoneProvider {
      * Calculates the time zone offset in seconds for the specified EPOCH
      * seconds.
      *
-     * @param epochSeconds seconds since EPOCH
+     * @param epochSeconds
+     *            seconds since EPOCH
      * @return time zone offset in minutes
      */
     public abstract int getTimeZoneOffsetUTC(long epochSeconds);
@@ -185,8 +189,10 @@ public abstract class TimeZoneProvider {
      * Calculates the time zone offset in seconds for the specified date value
      * and nanoseconds since midnight in local time.
      *
-     * @param dateValue date value
-     * @param timeNanos nanoseconds since midnight
+     * @param dateValue
+     *            date value
+     * @param timeNanos
+     *            nanoseconds since midnight
      * @return time zone offset in minutes
      */
     public abstract int getTimeZoneOffsetLocal(long dateValue, long timeNanos);
@@ -194,8 +200,10 @@ public abstract class TimeZoneProvider {
     /**
      * Calculates the epoch seconds from local date and time.
      *
-     * @param dateValue date value
-     * @param timeNanos nanoseconds since midnight
+     * @param dateValue
+     *            date value
+     * @param timeNanos
+     *            nanoseconds since midnight
      * @return the epoch seconds value
      */
     public abstract long getEpochSecondsFromLocal(long dateValue, long timeNanos);
@@ -210,9 +218,10 @@ public abstract class TimeZoneProvider {
     /**
      * Get the standard time name or daylight saving time name of the time zone.
      *
-     * @param epochSeconds seconds since EPOCH
+     * @param epochSeconds
+     *            seconds since EPOCH
      * @return the standard time name or daylight saving time name of the time
-     * zone
+     *         zone
      */
     public abstract String getShortId(long epochSeconds);
 
@@ -221,7 +230,7 @@ public abstract class TimeZoneProvider {
      * from UTC.
      *
      * @return whether this is a simple time zone provider with a fixed offset
-     * from UTC
+     *         from UTC
      */
     public boolean hasFixedOffset() {
         return false;
@@ -405,11 +414,12 @@ public abstract class TimeZoneProvider {
          * given year. Too large and too small years are replaced with years
          * within the range using the 400 years period of the Gregorian
          * calendar.
-         * <p>
+         *
          * Because we need them only to calculate a time zone offset, it's safe
          * to normalize them to such range.
          *
-         * @param year the year
+         * @param year
+         *            the year
          * @return the specified year or the replacement year within the range
          */
         private static int yearForCalendar(int year) {

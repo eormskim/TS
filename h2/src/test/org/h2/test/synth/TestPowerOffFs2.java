@@ -47,7 +47,7 @@ public class TestPowerOffFs2 extends TestDb {
         fs = FilePathDebug.register();
         url = "jdbc:h2:debug:memFS:powerOffFs;FILE_LOCK=NO;" +
                 "TRACE_LEVEL_FILE=0;WRITE_DELAY=0;CACHE_SIZE=32";
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             test(i);
         }
     }
@@ -87,7 +87,7 @@ public class TestPowerOffFs2 extends TestDb {
         connections.clear();
         tables.clear();
         Random random = new Random(x);
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             if (i > 200 && connections.size() > 1 && tables.size() > 1) {
                 fs.setPowerOffCount(100);
             }

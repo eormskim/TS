@@ -40,7 +40,7 @@ public class ConfigProperties {
     /**
      * Returns the string value of specified property.
      *
-     * @param name         property name.
+     * @param name property name.
      * @param defaultValue default value.
      * @return the string property value or {@code defaultValue} if the property is missing.
      */
@@ -70,7 +70,7 @@ public class ConfigProperties {
     /**
      * Returns the integer value of specified property.
      *
-     * @param name         property name.
+     * @param name property name.
      * @param defaultValue default value.
      * @return the integer property value or {@code defaultValue} if the property is missing.
      */
@@ -100,7 +100,7 @@ public class ConfigProperties {
     /**
      * Returns the boolean value of specified property.
      *
-     * @param name         property name.
+     * @param name property name.
      * @param defaultValue default value.
      * @return the boolean property value or {@code defaultValue} if the property is missing.
      */

@@ -18,7 +18,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
-
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
 import org.h2.test.unit.TestDate;

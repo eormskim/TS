@@ -74,16 +74,17 @@ public final class SysInfoFunction extends Operation0 implements NamedExpression
      */
     public static final int TRANSACTION_ID = SESSION_ID + 1;
 
-    private static final int[] TYPES = {Value.BOOLEAN, Value.VARCHAR, Value.VARCHAR, Value.INTEGER, Value.INTEGER,
-            Value.BIGINT, Value.BIGINT, Value.BOOLEAN, Value.INTEGER, Value.VARCHAR};
+    private static final int[] TYPES = { Value.BOOLEAN, Value.VARCHAR, Value.VARCHAR, Value.INTEGER, Value.INTEGER,
+            Value.BIGINT, Value.BIGINT, Value.BOOLEAN, Value.INTEGER, Value.VARCHAR };
 
-    private static final String[] NAMES = {"AUTOCOMMIT", "DATABASE_PATH", "H2VERSION", "LOCK_MODE", "LOCK_TIMEOUT",
-            "MEMORY_FREE", "MEMORY_USED", "READONLY", "SESSION_ID", "TRANSACTION_ID"};
+    private static final String[] NAMES = { "AUTOCOMMIT", "DATABASE_PATH", "H2VERSION", "LOCK_MODE", "LOCK_TIMEOUT",
+            "MEMORY_FREE", "MEMORY_USED", "READONLY", "SESSION_ID", "TRANSACTION_ID" };
 
     /**
      * Get the name for this function id.
      *
-     * @param function the function id
+     * @param function
+     *            the function id
      * @return the name
      */
     public static String getName(int function) {
@@ -103,42 +104,42 @@ public final class SysInfoFunction extends Operation0 implements NamedExpression
     public Value getValue(SessionLocal session) {
         Value result;
         switch (function) {
-            case AUTOCOMMIT:
-                result = ValueBoolean.get(session.getAutoCommit());
-                break;
-            case DATABASE_PATH: {
-                String path = session.getDatabase().getDatabasePath();
-                result = path != null ? ValueVarchar.get(path, session) : ValueNull.INSTANCE;
-                break;
-            }
-            case H2VERSION:
-                result = ValueVarchar.get(Constants.VERSION, session);
-                break;
-            case LOCK_MODE:
-                result = ValueInteger.get(session.getDatabase().getLockMode());
-                break;
-            case LOCK_TIMEOUT:
-                result = ValueInteger.get(session.getLockTimeout());
-                break;
-            case MEMORY_FREE:
-                session.getUser().checkAdmin();
-                result = ValueBigint.get(Utils.getMemoryFree());
-                break;
-            case MEMORY_USED:
-                session.getUser().checkAdmin();
-                result = ValueBigint.get(Utils.getMemoryUsed());
-                break;
-            case READONLY:
-                result = ValueBoolean.get(session.getDatabase().isReadOnly());
-                break;
-            case SESSION_ID:
-                result = ValueInteger.get(session.getId());
-                break;
-            case TRANSACTION_ID:
-                result = session.getTransactionId();
-                break;
-            default:
-                throw DbException.getInternalError("function=" + function);
+        case AUTOCOMMIT:
+            result = ValueBoolean.get(session.getAutoCommit());
+            break;
+        case DATABASE_PATH: {
+            String path = session.getDatabase().getDatabasePath();
+            result = path != null ? ValueVarchar.get(path, session) : ValueNull.INSTANCE;
+            break;
+        }
+        case H2VERSION:
+            result = ValueVarchar.get(Constants.VERSION, session);
+            break;
+        case LOCK_MODE:
+            result = ValueInteger.get(session.getDatabase().getLockMode());
+            break;
+        case LOCK_TIMEOUT:
+            result = ValueInteger.get(session.getLockTimeout());
+            break;
+        case MEMORY_FREE:
+            session.getUser().checkAdmin();
+            result = ValueBigint.get(Utils.getMemoryFree());
+            break;
+        case MEMORY_USED:
+            session.getUser().checkAdmin();
+            result = ValueBigint.get(Utils.getMemoryUsed());
+            break;
+        case READONLY:
+            result = ValueBoolean.get(session.getDatabase().isReadOnly());
+            break;
+        case SESSION_ID:
+            result = ValueInteger.get(session.getId());
+            break;
+        case TRANSACTION_ID:
+            result = session.getTransactionId();
+            break;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         return result;
     }
@@ -151,8 +152,8 @@ public final class SysInfoFunction extends Operation0 implements NamedExpression
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-            case ExpressionVisitor.DETERMINISTIC:
-                return false;
+        case ExpressionVisitor.DETERMINISTIC:
+            return false;
         }
         return true;
     }

@@ -11,7 +11,6 @@ import java.nio.channels.ClosedByInterruptException;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-
 import org.h2.store.fs.FileBase;
 import org.h2.store.fs.FileUtils;
 
@@ -85,7 +84,7 @@ class FileRetryOnInterrupt extends FileBase {
 
     @Override
     public long position() throws IOException {
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             try {
                 return channel.position();
             } catch (IOException e) {
@@ -96,7 +95,7 @@ class FileRetryOnInterrupt extends FileBase {
 
     @Override
     public long size() throws IOException {
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             try {
                 return channel.size();
             } catch (IOException e) {
@@ -108,7 +107,7 @@ class FileRetryOnInterrupt extends FileBase {
     @Override
     public int read(ByteBuffer dst) throws IOException {
         long pos = position();
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             try {
                 return channel.read(dst);
             } catch (IOException e) {
@@ -120,7 +119,7 @@ class FileRetryOnInterrupt extends FileBase {
 
     @Override
     public int read(ByteBuffer dst, long position) throws IOException {
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             try {
                 return channel.read(dst, position);
             } catch (IOException e) {
@@ -131,7 +130,7 @@ class FileRetryOnInterrupt extends FileBase {
 
     @Override
     public FileChannel position(long pos) throws IOException {
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             try {
                 channel.position(pos);
                 return this;
@@ -143,7 +142,7 @@ class FileRetryOnInterrupt extends FileBase {
 
     @Override
     public FileChannel truncate(long newLength) throws IOException {
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             try {
                 channel.truncate(newLength);
                 return this;
@@ -155,7 +154,7 @@ class FileRetryOnInterrupt extends FileBase {
 
     @Override
     public void force(boolean metaData) throws IOException {
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             try {
                 channel.force(metaData);
                 return;
@@ -168,7 +167,7 @@ class FileRetryOnInterrupt extends FileBase {
     @Override
     public int write(ByteBuffer src) throws IOException {
         long pos = position();
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             try {
                 return channel.write(src);
             } catch (IOException e) {
@@ -180,7 +179,7 @@ class FileRetryOnInterrupt extends FileBase {
 
     @Override
     public int write(ByteBuffer src, long position) throws IOException {
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             try {
                 return channel.write(src, position);
             } catch (IOException e) {
@@ -191,7 +190,7 @@ class FileRetryOnInterrupt extends FileBase {
 
     @Override
     public synchronized FileLock tryLock(long position, long size,
-                                         boolean shared) throws IOException {
+            boolean shared) throws IOException {
         FileLock l = channel.tryLock(position, size, shared);
         if (l == null) {
             return null;

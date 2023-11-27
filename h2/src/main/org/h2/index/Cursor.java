@@ -15,6 +15,7 @@ import org.h2.result.SearchRow;
  * that (such as a hash index), only one row is returned.
  * The cursor is initially positioned before the first row, that means
  * next() must be called before accessing data.
+ *
  */
 public interface Cursor {
 

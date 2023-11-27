@@ -334,7 +334,7 @@ public class FileShell extends Tool {
     }
 
     private static void zip(String zipFileName, String base,
-                            ArrayList<String> source) {
+            ArrayList<String> source) {
         FileUtils.delete(zipFileName);
         OutputStream fileOut = null;
         try {
@@ -412,7 +412,7 @@ public class FileShell extends Tool {
     }
 
     private int readFileList(String[] list, int i, ArrayList<String> target,
-                             boolean recursive) throws IOException {
+            boolean recursive) throws IOException {
         while (i < list.length) {
             String c = list[i++];
             if (";".equals(c)) {

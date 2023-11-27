@@ -54,11 +54,11 @@ public final class ToDateParser {
     private int currentYear, currentMonth;
 
     /**
-     * @param session      the database session
+     * @param session the database session
      * @param functionName one of [TO_DATE, TO_TIMESTAMP] (both share the same
-     *                     code)
-     * @param input        the input date with the date-time info
-     * @param format       the format of date-time info
+     *            code)
+     * @param input the input date with the date-time info
+     * @param format the format of date-time info
      */
     private ToDateParser(SessionLocal session, ConfigParam functionName, String input, String format) {
         this.session = session;
@@ -77,7 +77,7 @@ public final class ToDateParser {
     }
 
     private static ToDateParser getTimestampParser(SessionLocal session, ConfigParam param, String input,
-                                                   String format) {
+            String format) {
         ToDateParser result = new ToDateParser(session, param, input, format);
         parse(result);
         return result;
@@ -288,7 +288,7 @@ public final class ToDateParser {
      * Remove a token from a string.
      *
      * @param inputFragmentStr the input fragment
-     * @param formatFragment   the format fragment
+     * @param formatFragment the format fragment
      */
     void remove(String inputFragmentStr, String formatFragment) {
         if (inputFragmentStr != null && inputStr.length() >= inputFragmentStr.length()) {
@@ -320,8 +320,8 @@ public final class ToDateParser {
      * Parse a string as a timestamp with the given format.
      *
      * @param session the database session
-     * @param input   the input
-     * @param format  the format
+     * @param input the input
+     * @param format the format
      * @return the timestamp
      */
     public static ValueTimestamp toTimestamp(SessionLocal session, String input, String format) {
@@ -333,8 +333,8 @@ public final class ToDateParser {
      * Parse a string as a timestamp with the given format.
      *
      * @param session the database session
-     * @param input   the input
-     * @param format  the format
+     * @param input the input
+     * @param format the format
      * @return the timestamp
      */
     public static ValueTimestampTimeZone toTimestampTz(SessionLocal session, String input, String format) {
@@ -346,8 +346,8 @@ public final class ToDateParser {
      * Parse a string as a date with the given format.
      *
      * @param session the database session
-     * @param input   the input
-     * @param format  the format
+     * @param input the input
+     * @param format the format
      * @return the date as a timestamp
      */
     public static ValueTimestamp toDate(SessionLocal session, String input, String format) {
@@ -364,11 +364,9 @@ public final class ToDateParser {
         TO_TIMESTAMP_TZ("DD MON YYYY HH:MI:SS TZR");
 
         private final String defaultFormatStr;
-
         ConfigParam(String defaultFormatStr) {
             this.defaultFormatStr = defaultFormatStr;
         }
-
         String getDefaultFormatStr() {
             return defaultFormatStr;
         }

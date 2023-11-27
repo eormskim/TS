@@ -16,7 +16,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
-
 import org.h2.build.BuildBase;
 import org.h2.engine.SysProperties;
 import org.h2.test.TestBase;

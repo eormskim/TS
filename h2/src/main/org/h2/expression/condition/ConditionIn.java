@@ -6,7 +6,6 @@
 package org.h2.expression.condition;
 
 import java.util.ArrayList;
-
 import org.h2.engine.SessionLocal;
 import org.h2.expression.Expression;
 import org.h2.expression.ExpressionColumn;
@@ -35,10 +34,10 @@ public final class ConditionIn extends Condition {
     /**
      * Create a new IN(..) condition.
      *
-     * @param left        the expression before IN
-     * @param not         whether the result should be negated
+     * @param left the expression before IN
+     * @param not whether the result should be negated
      * @param whenOperand whether this is a when operand
-     * @param values      the value list (at least one element)
+     * @param values the value list (at least one element)
      */
     public ConditionIn(Expression left, boolean not, boolean whenOperand, ArrayList<Expression> values) {
         this.left = left;
@@ -122,7 +121,7 @@ public final class ConditionIn extends Condition {
     }
 
     private Expression optimize2(SessionLocal session, boolean constant, boolean allValuesConstant,
-                                 boolean allValuesNull, ArrayList<Expression> values) {
+            boolean allValuesNull, ArrayList<Expression> values) {
         if (constant && allValuesConstant) {
             return ValueExpression.getBoolean(getValue(session));
         }

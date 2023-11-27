@@ -17,7 +17,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
 import org.h2.store.fs.FileUtils;
 import org.h2.test.TestBase;
 import org.h2.test.bench.Database.Measurement;
@@ -54,7 +53,7 @@ public class TestScalability implements Database.DatabaseTest {
 
     private static void openResults() throws SQLException {
         try (Connection conn = getResultConnection();
-             Statement stat = conn.createStatement()) {
+                Statement stat = conn.createStatement()) {
             stat.execute(
                     "CREATE TABLE IF NOT EXISTS RESULTS(TESTID INT, " +
                             "TEST VARCHAR, UNIT VARCHAR, DBID INT, " +
@@ -120,7 +119,7 @@ public class TestScalability implements Database.DatabaseTest {
             openResults();
             try (PreparedStatement prep = conn.prepareStatement(
                     "INSERT INTO RESULTS(TESTID, " +
-                            "TEST, UNIT, DBID, DB, TCNT, RESULT) VALUES(?, ?, ?, ?, ?, ?, ?)")) {
+                    "TEST, UNIT, DBID, DB, TCNT, RESULT) VALUES(?, ?, ?, ?, ?, ?, ?)")) {
                 for (int i = 0; i < results.size(); i++) {
                     Measurement res = results.get(i);
                     prep.setInt(1, i);
@@ -145,22 +144,22 @@ public class TestScalability implements Database.DatabaseTest {
             }
 
             try (Statement stat = conn.createStatement();
-                 PrintWriter writer = new PrintWriter(new FileWriter(out));
-                 ResultSet rs = stat.executeQuery(
-                         "CALL '<table border=\"1\"><tr><th rowspan=\"2\">Test Case</th>" +
-                                 "<th rowspan=\"2\">Unit</th>' " +
-                                 "|| (SELECT GROUP_CONCAT('<th colspan=\"' || COLSPAN || '\">' || TCNT || '</th>' " +
-                                 "ORDER BY TCNT SEPARATOR '') FROM " +
-                                 "(SELECT TCNT, COUNT(*) COLSPAN FROM (SELECT DISTINCT DB, TCNT FROM RESULTS) GROUP BY TCNT))" +
-                                 "|| '</tr>' || CHAR(10) " +
-                                 "|| '<tr>' || (SELECT GROUP_CONCAT('<th>' || DB || '</th>' ORDER BY TCNT, DB SEPARATOR '')" +
-                                 " FROM (SELECT DISTINCT DB, TCNT FROM RESULTS)) || '</tr>' || CHAR(10) " +
-                                 "|| (SELECT GROUP_CONCAT('<tr><td>' || TEST || '</td><td>' || UNIT || '</td>' || ( " +
-                                 "SELECT GROUP_CONCAT('<td>' || RESULT || '</td>' ORDER BY TCNT,DB SEPARATOR '')" +
-                                 " FROM RESULTS R2 WHERE R2.TESTID = R1.TESTID) || '</tr>' " +
-                                 "ORDER BY TESTID SEPARATOR CHAR(10)) FROM " +
-                                 "(SELECT DISTINCT TESTID, TEST, UNIT FROM RESULTS) R1)" +
-                                 "|| '</table>'")) {
+                    PrintWriter writer = new PrintWriter(new FileWriter(out));
+                    ResultSet rs = stat.executeQuery(
+                        "CALL '<table border=\"1\"><tr><th rowspan=\"2\">Test Case</th>" +
+                        "<th rowspan=\"2\">Unit</th>' " +
+                        "|| (SELECT GROUP_CONCAT('<th colspan=\"' || COLSPAN || '\">' || TCNT || '</th>' " +
+                        "ORDER BY TCNT SEPARATOR '') FROM " +
+                        "(SELECT TCNT, COUNT(*) COLSPAN FROM (SELECT DISTINCT DB, TCNT FROM RESULTS) GROUP BY TCNT))" +
+                        "|| '</tr>' || CHAR(10) " +
+                        "|| '<tr>' || (SELECT GROUP_CONCAT('<th>' || DB || '</th>' ORDER BY TCNT, DB SEPARATOR '')" +
+                        " FROM (SELECT DISTINCT DB, TCNT FROM RESULTS)) || '</tr>' || CHAR(10) " +
+                        "|| (SELECT GROUP_CONCAT('<tr><td>' || TEST || '</td><td>' || UNIT || '</td>' || ( " +
+                        "SELECT GROUP_CONCAT('<td>' || RESULT || '</td>' ORDER BY TCNT,DB SEPARATOR '')" +
+                        " FROM RESULTS R2 WHERE R2.TESTID = R1.TESTID) || '</tr>' " +
+                        "ORDER BY TESTID SEPARATOR CHAR(10)) FROM " +
+                        "(SELECT DISTINCT TESTID, TEST, UNIT FROM RESULTS) R1)" +
+                        "|| '</table>'")) {
                 rs.next();
                 String result = rs.getString(1);
                 writer.println(result);
@@ -250,7 +249,8 @@ public class TestScalability implements Database.DatabaseTest {
         return collect;
     }
 
-    private static final class RunSequence {
+    private static final class RunSequence
+    {
         final Database database;
         final int runCount;
         final List<List<Measurement>> results = new ArrayList<>();

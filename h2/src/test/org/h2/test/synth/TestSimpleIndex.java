@@ -107,35 +107,35 @@ public class TestSimpleIndex extends TestDb {
             buff.append(" AND ");
             buff.append('A' + random.getInt(3));
             switch (random.getInt(10)) {
-                case 0:
-                    buff.append("<");
-                    buff.append(random.getInt(100) - 50);
-                    break;
-                case 1:
-                    buff.append("<=");
-                    buff.append(random.getInt(100) - 50);
-                    break;
-                case 2:
-                    buff.append(">");
-                    buff.append(random.getInt(100) - 50);
-                    break;
-                case 3:
-                    buff.append(">=");
-                    buff.append(random.getInt(100) - 50);
-                    break;
-                case 4:
-                    buff.append("<>");
-                    buff.append(random.getInt(100) - 50);
-                    break;
-                case 5:
-                    buff.append(" IS NULL");
-                    break;
-                case 6:
-                    buff.append(" IS NOT NULL");
-                    break;
-                default:
-                    buff.append("=");
-                    buff.append(random.getInt(100) - 50);
+            case 0:
+                buff.append("<");
+                buff.append(random.getInt(100) - 50);
+                break;
+            case 1:
+                buff.append("<=");
+                buff.append(random.getInt(100) - 50);
+                break;
+            case 2:
+                buff.append(">");
+                buff.append(random.getInt(100) - 50);
+                break;
+            case 3:
+                buff.append(">=");
+                buff.append(random.getInt(100) - 50);
+                break;
+            case 4:
+                buff.append("<>");
+                buff.append(random.getInt(100) - 50);
+                break;
+            case 5:
+                buff.append(" IS NULL");
+                break;
+            case 6:
+                buff.append(" IS NOT NULL");
+                break;
+            default:
+                buff.append("=");
+                buff.append(random.getInt(100) - 50);
             }
         }
         String where = buff.toString();

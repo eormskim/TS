@@ -53,9 +53,7 @@ public class TestAnalyzeTableTx extends TestDb {
         } finally {
             for (Connection connection : connections) {
                 if (connection != null) {
-                    try {
-                        connection.close();
-                    } catch (Throwable ignore) {/**/}
+                    try { connection.close(); } catch (Throwable ignore) {/**/}
                 }
             }
         }

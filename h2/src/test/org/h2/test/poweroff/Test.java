@@ -36,7 +36,7 @@ public class Test {
     }
 
     private Test(String driver, String url, String user, String password,
-                 boolean writeDelay0) {
+            boolean writeDelay0) {
         this.url = url;
         try {
             Class.forName(driver);
@@ -156,8 +156,8 @@ public class Test {
                 new Test("org.h2.Driver",
                         "jdbc:h2:./test5", "sa", "", true),
                 new Test("org.h2.Driver",
-                        "jdbc:h2:./test6", "sa", "", false),};
-        for (int i = 0; ; i++) {
+                        "jdbc:h2:./test6", "sa", "", false), };
+        for (int i = 0;; i++) {
             for (Test t : dbs) {
                 t.insert(i);
             }

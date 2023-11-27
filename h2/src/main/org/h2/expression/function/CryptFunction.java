@@ -40,7 +40,7 @@ public final class CryptFunction extends FunctionN {
     private final int function;
 
     public CryptFunction(Expression arg1, Expression arg2, Expression arg3, int function) {
-        super(new Expression[]{arg1, arg2, arg3});
+        super(new Expression[] { arg1, arg2, arg3 });
         this.function = function;
     }
 
@@ -50,14 +50,14 @@ public final class CryptFunction extends FunctionN {
         cipher.setKey(getPaddedArrayCopy(v2.getBytesNoCopy(), cipher.getKeyLength()));
         byte[] newData = getPaddedArrayCopy(v3.getBytesNoCopy(), BlockCipher.ALIGN);
         switch (function) {
-            case ENCRYPT:
-                cipher.encrypt(newData, 0, newData.length);
-                break;
-            case DECRYPT:
-                cipher.decrypt(newData, 0, newData.length);
-                break;
-            default:
-                throw DbException.getInternalError("function=" + function);
+        case ENCRYPT:
+            cipher.encrypt(newData, 0, newData.length);
+            break;
+        case DECRYPT:
+            cipher.decrypt(newData, 0, newData.length);
+            break;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         return ValueVarbinary.getNoCopy(newData);
     }

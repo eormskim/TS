@@ -33,7 +33,7 @@ public class QueryOrderBy {
     /**
      * Appends the order by expression to the specified builder.
      *
-     * @param builder  the string builder
+     * @param builder the string builder
      * @param sqlFlags formatting flags
      */
     public void getSQL(StringBuilder builder, int sqlFlags) {

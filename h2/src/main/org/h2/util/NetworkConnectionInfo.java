@@ -24,10 +24,14 @@ public final class NetworkConnectionInfo {
     /**
      * Creates new instance of network connection information.
      *
-     * @param server     the protocol and port of the server
-     * @param clientAddr the client address
-     * @param clientPort the client port
-     * @throws UnknownHostException if clientAddr cannot be resolved
+     * @param server
+     *            the protocol and port of the server
+     * @param clientAddr
+     *            the client address
+     * @param clientPort
+     *            the client port
+     * @throws UnknownHostException
+     *             if clientAddr cannot be resolved
      */
     public NetworkConnectionInfo(String server, String clientAddr, int clientPort) throws UnknownHostException {
         this(server, InetAddress.getByName(clientAddr).getAddress(), clientPort, null);
@@ -36,10 +40,14 @@ public final class NetworkConnectionInfo {
     /**
      * Creates new instance of network connection information.
      *
-     * @param server     the protocol and port of the server
-     * @param clientAddr the client address
-     * @param clientPort the client port
-     * @param clientInfo additional client information, or {@code null}
+     * @param server
+     *            the protocol and port of the server
+     * @param clientAddr
+     *            the client address
+     * @param clientPort
+     *            the client port
+     * @param clientInfo
+     *            additional client information, or {@code null}
      */
     public NetworkConnectionInfo(String server, byte[] clientAddr, int clientPort, String clientInfo) {
         this.server = server;

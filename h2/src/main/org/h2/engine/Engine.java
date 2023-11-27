@@ -8,7 +8,6 @@ package org.h2.engine;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
 import org.h2.api.ErrorCode;
 import org.h2.command.CommandInterface;
 import org.h2.command.dml.SetTypes;
@@ -46,7 +45,7 @@ public final class Engine {
     }
 
     private static SessionLocal openSession(ConnectionInfo ci, boolean ifExists, boolean forbidCreation,
-                                            String cipher) {
+            String cipher) {
         String name = ci.getName();
         Database database;
         ci.removeProperty("NO_UPGRADE", false);
@@ -122,7 +121,7 @@ public final class Engine {
         }
         if (user == null) {
             if (database.validateFilePasswordHash(cipher, ci.getFilePasswordHash())) {
-                if (ci.getProperty("AUTHREALM") == null) {
+                if (ci.getProperty("AUTHREALM")== null) {
                     user = database.findUser(ci.getUserName());
                     if (user != null) {
                         if (!user.validateUserPasswordHash(ci.getUserPasswordHash())) {
@@ -131,16 +130,16 @@ public final class Engine {
                     }
                 } else {
                     Authenticator authenticator = database.getAuthenticator();
-                    if (authenticator == null) {
+                    if (authenticator==null) {
                         throw DbException.get(ErrorCode.AUTHENTICATOR_NOT_AVAILABLE, name);
                     } else {
                         try {
-                            AuthenticationInfo authenticationInfo = new AuthenticationInfo(ci);
+                            AuthenticationInfo authenticationInfo=new AuthenticationInfo(ci);
                             user = database.getAuthenticator().authenticate(authenticationInfo, database);
                         } catch (AuthenticationException authenticationError) {
                             database.getTrace(Trace.DATABASE).error(authenticationError,
-                                    "an error occurred during authentication; user: \"" +
-                                            ci.getUserName() + "\"");
+                                "an error occurred during authentication; user: \"" +
+                                ci.getUserName() + "\"");
                         }
                     }
                 }
@@ -219,7 +218,7 @@ public final class Engine {
         String init = ci.removeProperty("INIT", null);
         SessionLocal session;
         long start = System.nanoTime();
-        for (; ; ) {
+        for (;;) {
             session = openSession(ci, ifExists, forbidCreation, cipher);
             if (session != null) {
                 break;
@@ -341,7 +340,7 @@ public final class Engine {
      * is a bit randomized to protect against timing attacks. Also the delay
      * doubles after each unsuccessful logins, to make brute force attacks
      * harder.
-     * <p>
+     *
      * There is only one exception message both for wrong user and for
      * wrong password, to make it harder to get the list of user names. This
      * method must only be called from one place, so it is not possible from the

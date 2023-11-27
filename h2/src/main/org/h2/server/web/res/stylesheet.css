@@ -66,7 +66,7 @@ td {
     background-color: #ffffff;
     padding: 2px;
     text-align: left;
-    vertical-align: top;
+    vertical-align:top;
     border: 1px solid #aca899;
 }
 
@@ -136,7 +136,7 @@ td.nav {
 
 table.login {
     background-color: #ece9d8;
-    border: 1px solid #aca899;
+    border:1px solid #aca899;
 }
 
 tr.login {
@@ -160,26 +160,26 @@ td.login {
 }
 
 .iconLine {
-    border-width: 0px;
-    border-style: solid;
+    border-width:0px;
+    border-style:solid;
 }
 
 .icon {
-    border-top-color: #ece9d8;
-    border-left-color: #ece9d8;
-    border-right-color: #ece9d8;
-    border-bottom-color: #ece9d8;
-    border-width: 1px;
-    border-style: solid;
+    border-top-color:#ece9d8;
+    border-left-color:#ece9d8;
+    border-right-color:#ece9d8;
+    border-bottom-color:#ece9d8;
+    border-width:1px;
+    border-style:solid;
 }
 
 .icon_hover {
-    border-color: #aca899;
+    border-color:#aca899;
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    border-width: 1px;
-    border-style: solid;
+    border-width:1px;
+    border-style:solid;
 }
 
 table.empty {
@@ -232,8 +232,8 @@ input.button:hover {
 }
 
 input.button:active {
-    position: relative;
-    top: 1px;
+    position:relative;
+    top:1px;
 }
 
 .tree {
@@ -242,7 +242,7 @@ input.button:active {
     white-space: nowrap;
 }
 
-.tree img {
+.tree img  {
     height: 18px;
     width: 18px;
     border: 0px;
@@ -268,29 +268,29 @@ table.content {
 }
 
 tr.content {
-    border: 0px;
-    border-left: 1px solid #aca899;
+    border:0px;
+    border-left:1px solid #aca899;
 }
 
 td.content {
-    border: 0px;
-    border-left: 1px solid #aca899;
+    border:0px;
+    border-left:1px solid #aca899;
 }
 
 .contentDiv {
-    margin: 10px;
+    margin:10px;
 }
 
 tr.contentResult {
-    border: 0px;
-    border-top: 1px solid #aca899;
-    border-left: 1px solid #aca899;
+    border:0px;
+    border-top:1px solid #aca899;
+    border-left:1px solid #aca899;
 }
 
 td.contentResult {
-    border: 0px;
-    border-top: 1px solid #aca899;
-    border-left: 1px solid #aca899;
+    border:0px;
+    border-top:1px solid #aca899;
+    border-left:1px solid #aca899;
 }
 
 table.autoComp {
@@ -300,10 +300,10 @@ table.autoComp {
     position: absolute;
     top: 1px;
     left: 1px;
-    z-index: 0;
+    z-index:0;
     padding: 0px;
     margin: 0px;
-    border-spacing: 2px;
+    border-spacing:2px;
 }
 
 td.autoComp0 {

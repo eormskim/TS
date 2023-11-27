@@ -47,7 +47,8 @@ public abstract class TableFunction implements HasSQL, NamedExpression, Expressi
     /**
      * Get a result with.
      *
-     * @param session the session
+     * @param session
+     *            the session
      * @return the result
      */
     public abstract ResultInterface getValue(SessionLocal session);
@@ -55,7 +56,8 @@ public abstract class TableFunction implements HasSQL, NamedExpression, Expressi
     /**
      * Get an empty result with the column names set.
      *
-     * @param session the session
+     * @param session
+     *            the session
      * @return the empty result
      */
     public abstract ResultInterface getValueTemplate(SessionLocal session);
@@ -63,7 +65,8 @@ public abstract class TableFunction implements HasSQL, NamedExpression, Expressi
     /**
      * Try to optimize this table function
      *
-     * @param session the session
+     * @param session
+     *            the session
      */
     public void optimize(SessionLocal session) {
         for (int i = 0, l = args.length; i < l; i++) {

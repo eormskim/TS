@@ -34,7 +34,8 @@ public final class ArrayConstructorByQuery extends Expression {
     /**
      * Creates new instance of array value constructor by query.
      *
-     * @param query the query
+     * @param query
+     *            the query
      */
     public ArrayConstructorByQuery(Query query) {
         this.query = query;

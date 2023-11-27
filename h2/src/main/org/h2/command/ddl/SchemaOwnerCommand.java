@@ -17,8 +17,10 @@ abstract class SchemaOwnerCommand extends SchemaCommand {
     /**
      * Create a new command.
      *
-     * @param session the session
-     * @param schema  the schema
+     * @param session
+     *            the session
+     * @param schema
+     *            the schema
      */
     SchemaOwnerCommand(SessionLocal session, Schema schema) {
         super(session, schema);

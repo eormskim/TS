@@ -195,22 +195,22 @@ public class Tokenizer {
                         }
                     } else {
                         switch (c) {
-                            case 'b':
-                                c = '\b';
-                                break;
-                            case 'f':
-                                c = '\f';
-                                break;
-                            case 'n':
-                                c = '\n';
-                                break;
-                            case 'r':
-                                c = '\r';
-                                break;
-                            case 't':
-                                c = '\t';
-                                break;
-                            default:
+                        case 'b':
+                            c = '\b';
+                            break;
+                        case 'f':
+                            c = '\f';
+                            break;
+                        case 'n':
+                            c = '\n';
+                            break;
+                        case 'r':
+                            c = '\r';
+                            break;
+                        case 't':
+                            c = '\t';
+                            break;
+                        default:
                         }
                         peekChar = read();
                     }

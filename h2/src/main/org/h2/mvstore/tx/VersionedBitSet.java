@@ -16,8 +16,7 @@ final class VersionedBitSet extends BitSet {
 
     private long version;
 
-    public VersionedBitSet() {
-    }
+    public VersionedBitSet() {}
 
     public long getVersion() {
         return version;
@@ -29,6 +28,6 @@ final class VersionedBitSet extends BitSet {
 
     @Override
     public VersionedBitSet clone() {
-        return (VersionedBitSet) super.clone();
+        return (VersionedBitSet)super.clone();
     }
 }

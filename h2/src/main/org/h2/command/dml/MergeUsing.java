@@ -36,7 +36,7 @@ import org.h2.util.Utils;
 /**
  * This class represents the statement syntax
  * MERGE INTO table alias USING...
- * <p>
+ *
  * It does not replace the MERGE INTO... KEYS... form.
  */
 public final class MergeUsing extends DataChangeStatement {
@@ -126,7 +126,7 @@ public final class MergeUsing extends DataChangeStatement {
                     if (!targetRowidsRemembered.add(targetRowId)) {
                         throw DbException.get(ErrorCode.DUPLICATE_KEY_1,
                                 "Merge using ON column expression, " +
-                                        "duplicate _ROWID_ target record already processed:_ROWID_="
+                                "duplicate _ROWID_ target record already processed:_ROWID_="
                                         + targetRowId + ":in:"
                                         + targetTableFilter.getTable());
                     }
@@ -199,14 +199,14 @@ public final class MergeUsing extends DataChangeStatement {
         // Create conditions only for target table
         onCondition.createIndexConditions(session, targetTableFilter);
 
-        TableFilter[] filters = new TableFilter[]{sourceTableFilter, targetTableFilter};
+        TableFilter[] filters = new TableFilter[] { sourceTableFilter, targetTableFilter };
         sourceTableFilter.addJoin(targetTableFilter, true, onCondition);
         PlanItem item = sourceTableFilter.getBestPlanItem(session, filters, 0, new AllColumnsForPlan(filters));
         sourceTableFilter.setPlanItem(item);
         sourceTableFilter.prepare();
 
         boolean hasFinalNotMatched = false, hasFinalMatched = false;
-        for (Iterator<When> i = when.iterator(); i.hasNext(); ) {
+        for (Iterator<When> i = when.iterator(); i.hasNext();) {
             When w = i.next();
             if (!w.prepare(session)) {
                 i.remove();
@@ -316,17 +316,21 @@ public final class MergeUsing extends DataChangeStatement {
         /**
          * Merges rows.
          *
-         * @param session                   the session
-         * @param deltaChangeCollector      target result
-         * @param deltaChangeCollectionMode collection mode
+         * @param session
+         *            the session
+         * @param deltaChangeCollector
+         *            target result
+         * @param deltaChangeCollectionMode
+         *            collection mode
          */
         abstract void merge(SessionLocal session, ResultTarget deltaChangeCollector,
-                            ResultOption deltaChangeCollectionMode);
+                ResultOption deltaChangeCollectionMode);
 
         /**
          * Prepares WHEN command.
          *
-         * @param session the session
+         * @param session
+         *            the session
          * @return {@code false} if this clause may be removed
          */
         boolean prepare(SessionLocal session) {

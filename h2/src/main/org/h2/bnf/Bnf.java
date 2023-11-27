@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
-
 import org.h2.bnf.context.DbContextRule;
 import org.h2.command.dml.Help;
 import org.h2.tools.Csv;
@@ -47,7 +46,7 @@ public class Bnf {
      * @param csv if not specified, the help.csv is used
      * @return a new instance
      * @throws SQLException on failure
-     * @throws IOException  on failure
+     * @throws IOException on failure
      */
     public static Bnf getInstance(Reader csv) throws SQLException, IOException {
         Bnf bnf = new Bnf();
@@ -62,12 +61,12 @@ public class Bnf {
     /**
      * Add an alias for a rule.
      *
-     * @param name        for example "procedure"
+     * @param name for example "procedure"
      * @param replacement for example "@func@"
      */
     public void addAlias(String name, String replacement) {
         RuleHead head = ruleMap.get(replacement);
-        ruleMap.put(name, head);
+        ruleMap.put(name,  head);
     }
 
     private void addFixedRule(String name, int fixedType) {
@@ -140,7 +139,7 @@ public class Bnf {
      * Parse the syntax and let the rule call the visitor.
      *
      * @param visitor the visitor
-     * @param s       the syntax to parse
+     * @param s the syntax to parse
      */
     public void visit(BnfVisitor visitor, String s) {
         this.syntax = s;
@@ -378,7 +377,7 @@ public class Bnf {
      * This is used for autocomplete support.
      *
      * @param topic the topic
-     * @param rule  the database context rule
+     * @param rule the database context rule
      */
     public void updateTopic(String topic, DbContextRule rule) {
         topic = StringUtils.toLowerEnglish(topic);

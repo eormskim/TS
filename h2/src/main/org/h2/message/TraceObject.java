@@ -101,9 +101,9 @@ public abstract class TraceObject {
     private static final int LAST = SQLXML + 1;
     private static final AtomicIntegerArray ID = new AtomicIntegerArray(LAST);
 
-    private static final String[] PREFIX = {"call", "conn", "dbMeta", "prep",
+    private static final String[] PREFIX = { "call", "conn", "dbMeta", "prep",
             "rs", "rsMeta", "sp", "ex", "stat", "blob", "clob", "pMeta", "ds",
-            "xads", "xares", "xid", "ar", "sqlxml"};
+            "xads", "xares", "xid", "ar", "sqlxml" };
 
     private static final SQLException SQL_OOME = DbException.SQL_OOME;
 
@@ -119,8 +119,8 @@ public abstract class TraceObject {
      * Set the options to use when writing trace message.
      *
      * @param trace the trace object
-     * @param type  the trace object type
-     * @param id    the trace object id
+     * @param type the trace object type
+     * @param id the trace object id
      */
     protected void setTrace(Trace trace, int type, int id) {
         this.trace = trace;
@@ -130,7 +130,6 @@ public abstract class TraceObject {
 
     /**
      * INTERNAL
-     *
      * @return id
      */
     public int getTraceId() {
@@ -139,7 +138,6 @@ public abstract class TraceObject {
 
     /**
      * INTERNAL
-     *
      * @return object name
      */
     public String getTraceObjectName() {
@@ -179,9 +177,9 @@ public abstract class TraceObject {
      * className prefixId = objectName.value.
      *
      * @param className the class name of the result
-     * @param newType   the prefix type
-     * @param newId     the trace object id of the created object
-     * @param value     the value to assign this new object to
+     * @param newType the prefix type
+     * @param newId the trace object id of the created object
+     * @param value the value to assign this new object to
      */
     protected final void debugCodeAssign(String className, int newType, int newId, String value) {
         if (trace.isDebugEnabled()) {
@@ -208,7 +206,7 @@ public abstract class TraceObject {
      * value.
      *
      * @param methodName the method name
-     * @param param      one single long parameter
+     * @param param one single long parameter
      */
     protected final void debugCodeCall(String methodName, long param) {
         if (trace.isDebugEnabled()) {
@@ -222,7 +220,7 @@ public abstract class TraceObject {
      * string.
      *
      * @param methodName the method name
-     * @param param      one single string parameter
+     * @param param one single string parameter
      */
     protected final void debugCodeCall(String methodName, String param) {
         if (trace.isDebugEnabled()) {
@@ -375,7 +373,7 @@ public abstract class TraceObject {
                     trace.error(e, "exception");
                 }
             }
-        } catch (Throwable another) {
+        } catch(Throwable another) {
             if (e == null) {
                 try {
                     e = new SQLException("GeneralError", "HY000", ErrorCode.GENERAL_ERROR_1, ex);

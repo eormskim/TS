@@ -29,7 +29,8 @@ public class TestMVTempResult extends TestBase {
      * May be used to run only this test and may be launched by this test in a
      * subprocess.
      *
-     * @param a if empty run this test, if not empty run the subprocess
+     * @param a
+     *            if empty run this test, if not empty run the subprocess
      */
     public static void main(String... a) throws Exception {
         TestMVTempResult test = (TestMVTempResult) TestBase.createCaller().init();

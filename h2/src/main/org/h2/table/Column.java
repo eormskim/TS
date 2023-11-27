@@ -81,9 +81,12 @@ public final class Column implements HasSQL, Typed, ColumnTemplate {
     /**
      * Appends the specified columns to the specified builder.
      *
-     * @param builder  string builder
-     * @param columns  columns
-     * @param sqlFlags formatting flags
+     * @param builder
+     *            string builder
+     * @param columns
+     *            columns
+     * @param sqlFlags
+     *            formatting flags
      * @return the specified string builder
      */
     public static StringBuilder writeColumns(StringBuilder builder, Column[] columns, int sqlFlags) {
@@ -99,15 +102,20 @@ public final class Column implements HasSQL, Typed, ColumnTemplate {
     /**
      * Appends the specified columns to the specified builder.
      *
-     * @param builder   string builder
-     * @param columns   columns
-     * @param separator separator
-     * @param suffix    additional SQL to append after each column
-     * @param sqlFlags  formatting flags
+     * @param builder
+     *            string builder
+     * @param columns
+     *            columns
+     * @param separator
+     *            separator
+     * @param suffix
+     *            additional SQL to append after each column
+     * @param sqlFlags
+     *            formatting flags
      * @return the specified string builder
      */
     public static StringBuilder writeColumns(StringBuilder builder, Column[] columns, String separator,
-                                             String suffix, int sqlFlags) {
+            String suffix, int sqlFlags) {
         for (int i = 0, l = columns.length; i < l; i++) {
             if (i > 0) {
                 builder.append(separator);
@@ -165,7 +173,7 @@ public final class Column implements HasSQL, Typed, ColumnTemplate {
      * Convert a value to this column's type without precision and scale checks.
      *
      * @param provider the cast information provider
-     * @param v        the value
+     * @param v the value
      * @return the value
      */
     public Value convert(CastDataProvider provider, Value v) {
@@ -202,7 +210,7 @@ public final class Column implements HasSQL, Typed, ColumnTemplate {
      * identity column.
      *
      * @return whether this column is a generated column or always generated
-     * identity column
+     *         identity column
      */
     public boolean isGeneratedAlways() {
         return isGeneratedAlways;
@@ -222,7 +230,7 @@ public final class Column implements HasSQL, Typed, ColumnTemplate {
     /**
      * Set the table and column id.
      *
-     * @param table    the table
+     * @param table the table
      * @param columnId the column index
      */
     public void setTable(Table table, int columnId) {
@@ -277,7 +285,7 @@ public final class Column implements HasSQL, Typed, ColumnTemplate {
     /**
      * Appends the table name and column name to the specified builder.
      *
-     * @param builder  the string builder
+     * @param builder the string builder
      * @param sqlFlags formatting flags
      * @return the specified string builder
      */
@@ -340,13 +348,12 @@ public final class Column implements HasSQL, Typed, ColumnTemplate {
      * is set) is returned. Domain constraints are validated as well.
      *
      * @param session the session
-     * @param value   the value or null
-     * @param row     the row
+     * @param value the value or null
+     * @param row the row
      * @return the new or converted value
      */
     Value validateConvertUpdateSequence(SessionLocal session, Value value, Row row) {
-        check:
-        {
+        check: {
             if (value == null) {
                 if (sequence != null) {
                     value = session.getNextValueFor(sequence, null);
@@ -433,11 +440,11 @@ public final class Column implements HasSQL, Typed, ColumnTemplate {
     /**
      * Initialize the sequence for this column.
      *
-     * @param session   the session
-     * @param schema    the schema where the sequence should be generated
-     * @param id        the object id
+     * @param session the session
+     * @param schema the schema where the sequence should be generated
+     * @param id the object id
      * @param temporary true if the sequence is temporary and does not need to
-     *                  be stored
+     *            be stored
      */
     public void initializeSequence(SessionLocal session, Schema schema, int id, boolean temporary) {
         if (identityOptions == null) {
@@ -591,8 +598,10 @@ public final class Column implements HasSQL, Typed, ColumnTemplate {
     /**
      * Set the identity options of this column.
      *
-     * @param identityOptions identity column options
-     * @param generatedAlways whether value should be always generated
+     * @param identityOptions
+     *            identity column options
+     * @param generatedAlways
+     *            whether value should be always generated
      */
     public void setIdentityOptions(SequenceOptions identityOptions, boolean generatedAlways) {
         this.identityOptions = identityOptions;
@@ -636,7 +645,7 @@ public final class Column implements HasSQL, Typed, ColumnTemplate {
     /**
      * Set the sequence to generate the value.
      *
-     * @param sequence        the sequence
+     * @param sequence the sequence
      * @param generatedAlways whether the value of the sequence is always used
      */
     public void setSequence(Sequence sequence, boolean generatedAlways) {
@@ -705,7 +714,7 @@ public final class Column implements HasSQL, Typed, ColumnTemplate {
      *
      * @param visitor the visitor
      * @return true if every visited expression returned true, or if there are
-     * no expressions
+     *         no expressions
      */
     boolean isEverything(ExpressionVisitor visitor) {
         if (visitor.getType() == ExpressionVisitor.GET_DEPENDENCIES) {

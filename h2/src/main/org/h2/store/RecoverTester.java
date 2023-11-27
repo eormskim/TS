@@ -79,7 +79,7 @@ public class RecoverTester implements Recorder {
         try {
             out = new PrintWriter(
                     new OutputStreamWriter(
-                            FileUtils.newOutputStream(fileName + ".log", true)));
+                    FileUtils.newOutputStream(fileName + ".log", true)));
             testDatabase(fileName, out);
         } catch (IOException e) {
             throw DbException.convertIOException(e, null);
@@ -138,7 +138,7 @@ public class RecoverTester implements Recorder {
             IOUtils.copyFiles(fileName, testDatabase + Constants.SUFFIX_MV_FILE);
             // avoid using the Engine class to avoid deadlocks
             ConnectionInfo ci = new ConnectionInfo("jdbc:h2:" +
-                    testDatabase + ";FILE_LOCK=NO", null, null, null);
+                        testDatabase + ";FILE_LOCK=NO", null, null, null);
             Database database = new Database(ci, null);
             // close the database
             database.removeSession(null);

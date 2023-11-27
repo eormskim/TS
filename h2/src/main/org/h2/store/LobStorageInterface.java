@@ -21,7 +21,7 @@ public interface LobStorageInterface {
     /**
      * Create a CLOB object.
      *
-     * @param reader    the reader
+     * @param reader the reader
      * @param maxLength the maximum length (-1 if not known)
      * @return the LOB
      */
@@ -30,7 +30,7 @@ public interface LobStorageInterface {
     /**
      * Create a BLOB object.
      *
-     * @param in        the input stream
+     * @param in the input stream
      * @param maxLength the maximum length (-1 if not known)
      * @return the LOB
      */
@@ -39,7 +39,7 @@ public interface LobStorageInterface {
     /**
      * Copy a lob.
      *
-     * @param old     the old lob
+     * @param old the old lob
      * @param tableId the new table id
      * @return the new lob
      */
@@ -48,7 +48,7 @@ public interface LobStorageInterface {
     /**
      * Get the input stream for the given lob, only called on server side of a TCP connection.
      *
-     * @param lobId     the lob id
+     * @param lobId the lob id
      * @param byteCount the number of bytes to read, or -1 if not known
      * @return the stream
      * @throws IOException on failure
@@ -58,8 +58,8 @@ public interface LobStorageInterface {
     /**
      * Get the input stream for the given lob
      *
-     * @param lobId     the lob id
-     * @param tableId   the able id
+     * @param lobId the lob id
+     * @param tableId the able id
      * @param byteCount the number of bytes to read, or -1 if not known
      * @return the stream
      * @throws IOException on failure

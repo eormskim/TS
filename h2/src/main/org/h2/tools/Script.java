@@ -8,7 +8,6 @@ package org.h2.tools;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.h2.util.JdbcUtils;
 import org.h2.util.StringUtils;
 import org.h2.util.Tool;
@@ -103,8 +102,8 @@ public class Script extends Tool {
     /**
      * Backs up a database to a stream.
      *
-     * @param url      the database URL
-     * @param user     the user name
+     * @param url the database URL
+     * @param user the user name
      * @param password the password
      * @param fileName the target file name
      * @param options1 the options before the file name (may be an empty string)
@@ -112,7 +111,7 @@ public class Script extends Tool {
      * @throws SQLException on failure
      */
     public static void process(String url, String user, String password, String fileName, String options1,
-                               String options2) throws SQLException {
+            String options2) throws SQLException {
         try (Connection conn = JdbcUtils.getConnection(null, url, user, password)) {
             process(conn, fileName, options1, options2);
         }
@@ -122,14 +121,14 @@ public class Script extends Tool {
      * Backs up a database to a stream. The stream is not closed.
      * The connection is not closed.
      *
-     * @param conn     the connection
+     * @param conn the connection
      * @param fileName the target file name
      * @param options1 the options before the file name
      * @param options2 the options after the file name
      * @throws SQLException on failure
      */
     public static void process(Connection conn,
-                               String fileName, String options1, String options2) throws SQLException {
+            String fileName, String options1, String options2) throws SQLException {
 
         try (Statement stat = conn.createStatement()) {
             String sql = "SCRIPT " + options1 + " TO '" + fileName + "' " + options2;

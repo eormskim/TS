@@ -226,103 +226,106 @@ public final class DateTimeFunction extends Function1_2 {
     /**
      * Get date-time field for the specified name.
      *
-     * @param name the name
+     * @param name
+     *            the name
      * @return the date-time field
-     * @throws DbException on unknown field name
+     * @throws DbException
+     *             on unknown field name
      */
     public static int getField(String name) {
         switch (StringUtils.toUpperEnglish(name)) {
-            case "YEAR":
-            case "YY":
-            case "YYYY":
-            case "SQL_TSI_YEAR":
-                return YEAR;
-            case "MONTH":
-            case "M":
-            case "MM":
-            case "SQL_TSI_MONTH":
-                return MONTH;
-            case "DAY":
-            case "D":
-            case "DD":
-            case "SQL_TSI_DAY":
-                return DAY;
-            case "HOUR":
-            case "HH":
-            case "SQL_TSI_HOUR":
-                return HOUR;
-            case "MINUTE":
-            case "MI":
-            case "N":
-            case "SQL_TSI_MINUTE":
-                return MINUTE;
-            case "SECOND":
-            case "S":
-            case "SS":
-            case "SQL_TSI_SECOND":
-                return SECOND;
-            case "TIMEZONE_HOUR":
-                return TIMEZONE_HOUR;
-            case "TIMEZONE_MINUTE":
-                return TIMEZONE_MINUTE;
-            case "TIMEZONE_SECOND":
-                return TIMEZONE_SECOND;
-            case "MILLENNIUM":
-                return MILLENNIUM;
-            case "CENTURY":
-                return CENTURY;
-            case "DECADE":
-                return DECADE;
-            case "QUARTER":
-                return QUARTER;
-            case "MILLISECOND":
-            case "MILLISECONDS":
-            case "MS":
-                return MILLISECOND;
-            case "MICROSECOND":
-            case "MICROSECONDS":
-            case "MCS":
-                return MICROSECOND;
-            case "NANOSECOND":
-            case "NS":
-                return NANOSECOND;
-            case "DAY_OF_YEAR":
-            case "DAYOFYEAR":
-            case "DY":
-            case "DOY":
-                return DAY_OF_YEAR;
-            case "ISO_DAY_OF_WEEK":
-            case "ISODOW":
-                return ISO_DAY_OF_WEEK;
-            case "ISO_WEEK":
-                return ISO_WEEK;
-            case "ISO_WEEK_YEAR":
-            case "ISO_YEAR":
-            case "ISOYEAR":
-                return ISO_WEEK_YEAR;
-            case "DAY_OF_WEEK":
-            case "DAYOFWEEK":
-                return DAY_OF_WEEK;
-            case "WEEK":
-            case "WK":
-            case "WW":
-            case "SQL_TSI_WEEK":
-                return WEEK;
-            case "WEEK_YEAR":
-                return WEEK_YEAR;
-            case "EPOCH":
-                return EPOCH;
-            case "DOW":
-                return DOW;
-            default:
-                throw DbException.getInvalidValueException("date-time field", name);
+        case "YEAR":
+        case "YY":
+        case "YYYY":
+        case "SQL_TSI_YEAR":
+            return YEAR;
+        case "MONTH":
+        case "M":
+        case "MM":
+        case "SQL_TSI_MONTH":
+            return MONTH;
+        case "DAY":
+        case "D":
+        case "DD":
+        case "SQL_TSI_DAY":
+            return DAY;
+        case "HOUR":
+        case "HH":
+        case "SQL_TSI_HOUR":
+            return HOUR;
+        case "MINUTE":
+        case "MI":
+        case "N":
+        case "SQL_TSI_MINUTE":
+            return MINUTE;
+        case "SECOND":
+        case "S":
+        case "SS":
+        case "SQL_TSI_SECOND":
+            return SECOND;
+        case "TIMEZONE_HOUR":
+            return TIMEZONE_HOUR;
+        case "TIMEZONE_MINUTE":
+            return TIMEZONE_MINUTE;
+        case "TIMEZONE_SECOND":
+            return TIMEZONE_SECOND;
+        case "MILLENNIUM":
+            return MILLENNIUM;
+        case "CENTURY":
+            return CENTURY;
+        case "DECADE":
+            return DECADE;
+        case "QUARTER":
+            return QUARTER;
+        case "MILLISECOND":
+        case "MILLISECONDS":
+        case "MS":
+            return MILLISECOND;
+        case "MICROSECOND":
+        case "MICROSECONDS":
+        case "MCS":
+            return MICROSECOND;
+        case "NANOSECOND":
+        case "NS":
+            return NANOSECOND;
+        case "DAY_OF_YEAR":
+        case "DAYOFYEAR":
+        case "DY":
+        case "DOY":
+            return DAY_OF_YEAR;
+        case "ISO_DAY_OF_WEEK":
+        case "ISODOW":
+            return ISO_DAY_OF_WEEK;
+        case "ISO_WEEK":
+            return ISO_WEEK;
+        case "ISO_WEEK_YEAR":
+        case "ISO_YEAR":
+        case "ISOYEAR":
+            return ISO_WEEK_YEAR;
+        case "DAY_OF_WEEK":
+        case "DAYOFWEEK":
+            return DAY_OF_WEEK;
+        case "WEEK":
+        case "WK":
+        case "WW":
+        case "SQL_TSI_WEEK":
+            return WEEK;
+        case "WEEK_YEAR":
+            return WEEK_YEAR;
+        case "EPOCH":
+            return EPOCH;
+        case "DOW":
+            return DOW;
+        default:
+            throw DbException.getInvalidValueException("date-time field", name);
         }
     }
 
     /**
      * Get the name of the specified date-time field.
      *
-     * @param field the date-time field
+     * @param field
+     *            the date-time field
      * @return the name of the specified field
      */
     public static String getFieldName(int field) {
@@ -343,20 +346,20 @@ public final class DateTimeFunction extends Function1_2 {
     @Override
     public Value getValue(SessionLocal session, Value v1, Value v2) {
         switch (function) {
-            case EXTRACT:
-                v1 = field == EPOCH ? extractEpoch(session, v1) : ValueInteger.get(extractInteger(session, v1, field));
-                break;
-            case DATE_TRUNC:
-                v1 = truncateDate(session, field, v1);
-                break;
-            case DATEADD:
-                v1 = dateadd(session, field, v1.getLong(), v2);
-                break;
-            case DATEDIFF:
-                v1 = ValueBigint.get(datediff(session, field, v1, v2));
-                break;
-            default:
-                throw DbException.getInternalError("function=" + function);
+        case EXTRACT:
+            v1 = field == EPOCH ? extractEpoch(session, v1) : ValueInteger.get(extractInteger(session, v1, field));
+            break;
+        case DATE_TRUNC:
+            v1 = truncateDate(session, field, v1);
+            break;
+        case DATEADD:
+            v1 = dateadd(session, field, v1.getLong(), v2);
+            break;
+        case DATEDIFF:
+            v1 = ValueBigint.get(datediff(session, field, v1, v2));
+            break;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         return v1;
     }
@@ -365,9 +368,12 @@ public final class DateTimeFunction extends Function1_2 {
      * Get the specified field of a date, however with years normalized to
      * positive or negative, and month starting with 1.
      *
-     * @param session the session
-     * @param date    the date value
-     * @param field   the field type
+     * @param session
+     *            the session
+     * @param date
+     *            the date value
+     * @param field
+     *            the field type
      * @return the value
      */
     private static int extractInteger(SessionLocal session, Value date, int field) {
@@ -381,36 +387,36 @@ public final class DateTimeFunction extends Function1_2 {
         long leading = interval.getLeading(), remaining = interval.getRemaining();
         long v;
         switch (field) {
-            case YEAR:
-                v = IntervalUtils.yearsFromInterval(qualifier, negative, leading, remaining);
-                break;
-            case MONTH:
-                v = IntervalUtils.monthsFromInterval(qualifier, negative, leading, remaining);
-                break;
-            case DAY:
-            case DAY_OF_YEAR:
-                v = IntervalUtils.daysFromInterval(qualifier, negative, leading, remaining);
-                break;
-            case HOUR:
-                v = IntervalUtils.hoursFromInterval(qualifier, negative, leading, remaining);
-                break;
-            case MINUTE:
-                v = IntervalUtils.minutesFromInterval(qualifier, negative, leading, remaining);
-                break;
-            case SECOND:
-                v = IntervalUtils.nanosFromInterval(qualifier, negative, leading, remaining) / NANOS_PER_SECOND;
-                break;
-            case MILLISECOND:
-                v = IntervalUtils.nanosFromInterval(qualifier, negative, leading, remaining) / 1_000_000 % 1_000;
-                break;
-            case MICROSECOND:
-                v = IntervalUtils.nanosFromInterval(qualifier, negative, leading, remaining) / 1_000 % 1_000_000;
-                break;
-            case NANOSECOND:
-                v = IntervalUtils.nanosFromInterval(qualifier, negative, leading, remaining) % NANOS_PER_SECOND;
-                break;
-            default:
-                throw DbException.getUnsupportedException("getDatePart(" + date + ", " + field + ')');
+        case YEAR:
+            v = IntervalUtils.yearsFromInterval(qualifier, negative, leading, remaining);
+            break;
+        case MONTH:
+            v = IntervalUtils.monthsFromInterval(qualifier, negative, leading, remaining);
+            break;
+        case DAY:
+        case DAY_OF_YEAR:
+            v = IntervalUtils.daysFromInterval(qualifier, negative, leading, remaining);
+            break;
+        case HOUR:
+            v = IntervalUtils.hoursFromInterval(qualifier, negative, leading, remaining);
+            break;
+        case MINUTE:
+            v = IntervalUtils.minutesFromInterval(qualifier, negative, leading, remaining);
+            break;
+        case SECOND:
+            v = IntervalUtils.nanosFromInterval(qualifier, negative, leading, remaining) / NANOS_PER_SECOND;
+            break;
+        case MILLISECOND:
+            v = IntervalUtils.nanosFromInterval(qualifier, negative, leading, remaining) / 1_000_000 % 1_000;
+            break;
+        case MICROSECOND:
+            v = IntervalUtils.nanosFromInterval(qualifier, negative, leading, remaining) / 1_000 % 1_000_000;
+            break;
+        case NANOSECOND:
+            v = IntervalUtils.nanosFromInterval(qualifier, negative, leading, remaining) % NANOS_PER_SECOND;
+            break;
+        default:
+            throw DbException.getUnsupportedException("getDatePart(" + date + ", " + field + ')');
         }
         return (int) v;
     }
@@ -420,84 +426,87 @@ public final class DateTimeFunction extends Function1_2 {
         long dateValue = a[0];
         long timeNanos = a[1];
         switch (field) {
-            case YEAR:
-                return DateTimeUtils.yearFromDateValue(dateValue);
-            case MONTH:
-                return DateTimeUtils.monthFromDateValue(dateValue);
-            case DAY:
-                return DateTimeUtils.dayFromDateValue(dateValue);
-            case HOUR:
-                return (int) (timeNanos / NANOS_PER_HOUR % 24);
-            case MINUTE:
-                return (int) (timeNanos / NANOS_PER_MINUTE % 60);
-            case SECOND:
-                return (int) (timeNanos / NANOS_PER_SECOND % 60);
-            case MILLISECOND:
-                return (int) (timeNanos / 1_000_000 % 1_000);
-            case MICROSECOND:
-                return (int) (timeNanos / 1_000 % 1_000_000);
-            case NANOSECOND:
-                return (int) (timeNanos % NANOS_PER_SECOND);
-            case MILLENNIUM:
-                return millennium(DateTimeUtils.yearFromDateValue(dateValue));
-            case CENTURY:
-                return century(DateTimeUtils.yearFromDateValue(dateValue));
-            case DECADE:
-                return decade(DateTimeUtils.yearFromDateValue(dateValue));
-            case DAY_OF_YEAR:
-                return DateTimeUtils.getDayOfYear(dateValue);
-            case DOW:
-                if (session.getMode().getEnum() == ModeEnum.PostgreSQL) {
-                    return DateTimeUtils.getSundayDayOfWeek(dateValue) - 1;
-                }
-                //$FALL-THROUGH$
-            case DAY_OF_WEEK:
-                return getLocalDayOfWeek(dateValue);
-            case WEEK:
-                return getLocalWeekOfYear(dateValue);
-            case WEEK_YEAR: {
-                WeekFields wf = getWeekFields();
-                return DateTimeUtils.getWeekYear(dateValue, wf.getFirstDayOfWeek().getValue(),
-                        wf.getMinimalDaysInFirstWeek());
+        case YEAR:
+            return DateTimeUtils.yearFromDateValue(dateValue);
+        case MONTH:
+            return DateTimeUtils.monthFromDateValue(dateValue);
+        case DAY:
+            return DateTimeUtils.dayFromDateValue(dateValue);
+        case HOUR:
+            return (int) (timeNanos / NANOS_PER_HOUR % 24);
+        case MINUTE:
+            return (int) (timeNanos / NANOS_PER_MINUTE % 60);
+        case SECOND:
+            return (int) (timeNanos / NANOS_PER_SECOND % 60);
+        case MILLISECOND:
+            return (int) (timeNanos / 1_000_000 % 1_000);
+        case MICROSECOND:
+            return (int) (timeNanos / 1_000 % 1_000_000);
+        case NANOSECOND:
+            return (int) (timeNanos % NANOS_PER_SECOND);
+        case MILLENNIUM:
+            return millennium(DateTimeUtils.yearFromDateValue(dateValue));
+        case CENTURY:
+            return century(DateTimeUtils.yearFromDateValue(dateValue));
+        case DECADE:
+            return decade(DateTimeUtils.yearFromDateValue(dateValue));
+        case DAY_OF_YEAR:
+            return DateTimeUtils.getDayOfYear(dateValue);
+        case DOW:
+            if (session.getMode().getEnum() == ModeEnum.PostgreSQL) {
+                return DateTimeUtils.getSundayDayOfWeek(dateValue) - 1;
             }
-            case QUARTER:
-                return (DateTimeUtils.monthFromDateValue(dateValue) - 1) / 3 + 1;
-            case ISO_WEEK_YEAR:
-                return DateTimeUtils.getIsoWeekYear(dateValue);
-            case ISO_WEEK:
-                return DateTimeUtils.getIsoWeekOfYear(dateValue);
-            case ISO_DAY_OF_WEEK:
-                return DateTimeUtils.getIsoDayOfWeek(dateValue);
-            case TIMEZONE_HOUR:
-            case TIMEZONE_MINUTE:
-            case TIMEZONE_SECOND: {
-                int offsetSeconds;
-                if (date instanceof ValueTimestampTimeZone) {
-                    offsetSeconds = ((ValueTimestampTimeZone) date).getTimeZoneOffsetSeconds();
-                } else if (date instanceof ValueTimeTimeZone) {
-                    offsetSeconds = ((ValueTimeTimeZone) date).getTimeZoneOffsetSeconds();
-                } else {
-                    offsetSeconds = session.currentTimeZone().getTimeZoneOffsetLocal(dateValue, timeNanos);
-                }
-                if (field == TIMEZONE_HOUR) {
-                    return offsetSeconds / 3_600;
-                } else if (field == TIMEZONE_MINUTE) {
-                    return offsetSeconds % 3_600 / 60;
-                } else {
-                    return offsetSeconds % 60;
-                }
+            //$FALL-THROUGH$
+        case DAY_OF_WEEK:
+            return getLocalDayOfWeek(dateValue);
+        case WEEK:
+            return getLocalWeekOfYear(dateValue);
+        case WEEK_YEAR: {
+            WeekFields wf = getWeekFields();
+            return DateTimeUtils.getWeekYear(dateValue, wf.getFirstDayOfWeek().getValue(),
+                    wf.getMinimalDaysInFirstWeek());
+        }
+        case QUARTER:
+            return (DateTimeUtils.monthFromDateValue(dateValue) - 1) / 3 + 1;
+        case ISO_WEEK_YEAR:
+            return DateTimeUtils.getIsoWeekYear(dateValue);
+        case ISO_WEEK:
+            return DateTimeUtils.getIsoWeekOfYear(dateValue);
+        case ISO_DAY_OF_WEEK:
+            return DateTimeUtils.getIsoDayOfWeek(dateValue);
+        case TIMEZONE_HOUR:
+        case TIMEZONE_MINUTE:
+        case TIMEZONE_SECOND: {
+            int offsetSeconds;
+            if (date instanceof ValueTimestampTimeZone) {
+                offsetSeconds = ((ValueTimestampTimeZone) date).getTimeZoneOffsetSeconds();
+            } else if (date instanceof ValueTimeTimeZone) {
+                offsetSeconds = ((ValueTimeTimeZone) date).getTimeZoneOffsetSeconds();
+            } else {
+                offsetSeconds = session.currentTimeZone().getTimeZoneOffsetLocal(dateValue, timeNanos);
             }
-            default:
-                throw DbException.getUnsupportedException("EXTRACT(" + getFieldName(field) + " FROM " + date + ')');
+            if (field == TIMEZONE_HOUR) {
+                return offsetSeconds / 3_600;
+            } else if (field == TIMEZONE_MINUTE) {
+                return offsetSeconds % 3_600 / 60;
+            } else {
+                return offsetSeconds % 60;
+            }
+        }
+        default:
+            throw DbException.getUnsupportedException("EXTRACT(" + getFieldName(field) + " FROM " + date + ')');
         }
     }
 
     /**
      * Truncate the given date-time value to the specified field.
      *
-     * @param session the session
-     * @param field   the date-time field
-     * @param value   the date-time value
+     * @param session
+     *            the session
+     * @param field
+     *            the date-time field
+     * @param value
+     *            the date-time value
      * @return date the truncated value
      */
     private static Value truncateDate(SessionLocal session, int field, Value value) {
@@ -505,90 +514,90 @@ public final class DateTimeFunction extends Function1_2 {
         long dateValue = fieldDateAndTime[0];
         long timeNanos = fieldDateAndTime[1];
         switch (field) {
-            case MICROSECOND:
-                timeNanos = timeNanos / 1_000L * 1_000L;
-                break;
-            case MILLISECOND:
-                timeNanos = timeNanos / 1_000_000L * 1_000_000L;
-                break;
-            case SECOND:
-                timeNanos = timeNanos / NANOS_PER_SECOND * NANOS_PER_SECOND;
-                break;
-            case MINUTE:
-                timeNanos = timeNanos / NANOS_PER_MINUTE * NANOS_PER_MINUTE;
-                break;
-            case HOUR:
-                timeNanos = timeNanos / NANOS_PER_HOUR * NANOS_PER_HOUR;
-                break;
-            case DAY:
-                timeNanos = 0L;
-                break;
-            case ISO_WEEK:
-                dateValue = truncateToWeek(dateValue, 1);
-                timeNanos = 0L;
-                break;
-            case WEEK:
-                dateValue = truncateToWeek(dateValue, getWeekFields().getFirstDayOfWeek().getValue());
-                timeNanos = 0L;
-                break;
-            case ISO_WEEK_YEAR:
-                dateValue = truncateToWeekYear(dateValue, 1, 4);
-                timeNanos = 0L;
-                break;
-            case WEEK_YEAR: {
-                WeekFields weekFields = getWeekFields();
-                dateValue = truncateToWeekYear(dateValue, weekFields.getFirstDayOfWeek().getValue(),
-                        weekFields.getMinimalDaysInFirstWeek());
-                break;
+        case MICROSECOND:
+            timeNanos = timeNanos / 1_000L * 1_000L;
+            break;
+        case MILLISECOND:
+            timeNanos = timeNanos / 1_000_000L * 1_000_000L;
+            break;
+        case SECOND:
+            timeNanos = timeNanos / NANOS_PER_SECOND * NANOS_PER_SECOND;
+            break;
+        case MINUTE:
+            timeNanos = timeNanos / NANOS_PER_MINUTE * NANOS_PER_MINUTE;
+            break;
+        case HOUR:
+            timeNanos = timeNanos / NANOS_PER_HOUR * NANOS_PER_HOUR;
+            break;
+        case DAY:
+            timeNanos = 0L;
+            break;
+        case ISO_WEEK:
+            dateValue = truncateToWeek(dateValue, 1);
+            timeNanos = 0L;
+            break;
+        case WEEK:
+            dateValue = truncateToWeek(dateValue, getWeekFields().getFirstDayOfWeek().getValue());
+            timeNanos = 0L;
+            break;
+        case ISO_WEEK_YEAR:
+            dateValue = truncateToWeekYear(dateValue, 1, 4);
+            timeNanos = 0L;
+            break;
+        case WEEK_YEAR: {
+            WeekFields weekFields = getWeekFields();
+            dateValue = truncateToWeekYear(dateValue, weekFields.getFirstDayOfWeek().getValue(),
+                    weekFields.getMinimalDaysInFirstWeek());
+            break;
+        }
+        case MONTH:
+            dateValue = dateValue & (-1L << DateTimeUtils.SHIFT_MONTH) | 1L;
+            timeNanos = 0L;
+            break;
+        case QUARTER:
+            dateValue = DateTimeUtils.dateValue(DateTimeUtils.yearFromDateValue(dateValue),
+                    ((DateTimeUtils.monthFromDateValue(dateValue) - 1) / 3) * 3 + 1, 1);
+            timeNanos = 0L;
+            break;
+        case YEAR:
+            dateValue = dateValue & (-1L << DateTimeUtils.SHIFT_YEAR) | (1L << DateTimeUtils.SHIFT_MONTH | 1L);
+            timeNanos = 0L;
+            break;
+        case DECADE: {
+            int year = DateTimeUtils.yearFromDateValue(dateValue);
+            if (year >= 0) {
+                year = year / 10 * 10;
+            } else {
+                year = (year - 9) / 10 * 10;
             }
-            case MONTH:
-                dateValue = dateValue & (-1L << DateTimeUtils.SHIFT_MONTH) | 1L;
-                timeNanos = 0L;
-                break;
-            case QUARTER:
-                dateValue = DateTimeUtils.dateValue(DateTimeUtils.yearFromDateValue(dateValue),
-                        ((DateTimeUtils.monthFromDateValue(dateValue) - 1) / 3) * 3 + 1, 1);
-                timeNanos = 0L;
-                break;
-            case YEAR:
-                dateValue = dateValue & (-1L << DateTimeUtils.SHIFT_YEAR) | (1L << DateTimeUtils.SHIFT_MONTH | 1L);
-                timeNanos = 0L;
-                break;
-            case DECADE: {
-                int year = DateTimeUtils.yearFromDateValue(dateValue);
-                if (year >= 0) {
-                    year = year / 10 * 10;
-                } else {
-                    year = (year - 9) / 10 * 10;
-                }
-                dateValue = DateTimeUtils.dateValue(year, 1, 1);
-                timeNanos = 0L;
-                break;
+            dateValue = DateTimeUtils.dateValue(year, 1, 1);
+            timeNanos = 0L;
+            break;
+        }
+        case CENTURY: {
+            int year = DateTimeUtils.yearFromDateValue(dateValue);
+            if (year > 0) {
+                year = (year - 1) / 100 * 100 + 1;
+            } else {
+                year = year / 100 * 100 - 99;
             }
-            case CENTURY: {
-                int year = DateTimeUtils.yearFromDateValue(dateValue);
-                if (year > 0) {
-                    year = (year - 1) / 100 * 100 + 1;
-                } else {
-                    year = year / 100 * 100 - 99;
-                }
-                dateValue = DateTimeUtils.dateValue(year, 1, 1);
-                timeNanos = 0L;
-                break;
+            dateValue = DateTimeUtils.dateValue(year, 1, 1);
+            timeNanos = 0L;
+            break;
+        }
+        case MILLENNIUM: {
+            int year = DateTimeUtils.yearFromDateValue(dateValue);
+            if (year > 0) {
+                year = (year - 1) / 1000 * 1000 + 1;
+            } else {
+                year = year / 1000 * 1000 - 999;
             }
-            case MILLENNIUM: {
-                int year = DateTimeUtils.yearFromDateValue(dateValue);
-                if (year > 0) {
-                    year = (year - 1) / 1000 * 1000 + 1;
-                } else {
-                    year = year / 1000 * 1000 - 999;
-                }
-                dateValue = DateTimeUtils.dateValue(year, 1, 1);
-                timeNanos = 0L;
-                break;
-            }
-            default:
-                throw DbException.getUnsupportedException("DATE_TRUNC " + getFieldName(field));
+            dateValue = DateTimeUtils.dateValue(year, 1, 1);
+            timeNanos = 0L;
+            break;
+        }
+        default:
+            throw DbException.getUnsupportedException("DATE_TRUNC " + getFieldName(field));
         }
         Value result = DateTimeUtils.dateTimeToValue(value, dateValue, timeNanos);
         if (session.getMode().getEnum() == ModeEnum.PostgreSQL && result.getValueType() == Value.DATE) {
@@ -625,10 +634,14 @@ public final class DateTimeFunction extends Function1_2 {
     /**
      * DATEADD function.
      *
-     * @param session the session
-     * @param field   the date-time field
-     * @param count   count to add
-     * @param v       value to add to
+     * @param session
+     *            the session
+     * @param field
+     *            the date-time field
+     * @param count
+     *            count to add
+     * @param v
+     *            value to add to
      * @return result
      */
     public static Value dateadd(SessionLocal session, int field, long count, Value v) {
@@ -641,59 +654,59 @@ public final class DateTimeFunction extends Function1_2 {
         long timeNanos = a[1];
         int type = v.getValueType();
         switch (field) {
-            case MILLENNIUM:
-                return addYearsMonths(field, true, count * 1_000, v, type, dateValue, timeNanos);
-            case CENTURY:
-                return addYearsMonths(field, true, count * 100, v, type, dateValue, timeNanos);
-            case DECADE:
-                return addYearsMonths(field, true, count * 10, v, type, dateValue, timeNanos);
-            case YEAR:
-                return addYearsMonths(field, true, count, v, type, dateValue, timeNanos);
-            case QUARTER:
-                return addYearsMonths(field, false, count *= 3, v, type, dateValue, timeNanos);
-            case MONTH:
-                return addYearsMonths(field, false, count, v, type, dateValue, timeNanos);
-            case WEEK:
-            case ISO_WEEK:
-                count *= 7;
-                //$FALL-THROUGH$
-            case DAY_OF_WEEK:
-            case DOW:
-            case ISO_DAY_OF_WEEK:
-            case DAY:
-            case DAY_OF_YEAR:
-                if (type == Value.TIME || type == Value.TIME_TZ) {
-                    throw DbException.getInvalidValueException("DATEADD time part", getFieldName(field));
-                }
-                dateValue = DateTimeUtils
-                        .dateValueFromAbsoluteDay(DateTimeUtils.absoluteDayFromDateValue(dateValue) + count);
-                return DateTimeUtils.dateTimeToValue(v, dateValue, timeNanos);
-            case HOUR:
-                count *= NANOS_PER_HOUR;
-                break;
-            case MINUTE:
-                count *= NANOS_PER_MINUTE;
-                break;
-            case SECOND:
-            case EPOCH:
-                count *= NANOS_PER_SECOND;
-                break;
-            case MILLISECOND:
-                count *= 1_000_000;
-                break;
-            case MICROSECOND:
-                count *= 1_000;
-                break;
-            case NANOSECOND:
-                break;
-            case TIMEZONE_HOUR:
-                return addToTimeZone(field, count * 3_600, v, type, dateValue, timeNanos);
-            case TIMEZONE_MINUTE:
-                return addToTimeZone(field, count * 60, v, type, dateValue, timeNanos);
-            case TIMEZONE_SECOND:
-                return addToTimeZone(field, count, v, type, dateValue, timeNanos);
-            default:
-                throw DbException.getUnsupportedException("DATEADD " + getFieldName(field));
+        case MILLENNIUM:
+            return addYearsMonths(field, true, count * 1_000, v, type, dateValue, timeNanos);
+        case CENTURY:
+            return addYearsMonths(field, true, count * 100, v, type, dateValue, timeNanos);
+        case DECADE:
+            return addYearsMonths(field, true, count * 10, v, type, dateValue, timeNanos);
+        case YEAR:
+            return addYearsMonths(field, true, count, v, type, dateValue, timeNanos);
+        case QUARTER:
+            return addYearsMonths(field, false, count *= 3, v, type, dateValue, timeNanos);
+        case MONTH:
+            return addYearsMonths(field, false, count, v, type, dateValue, timeNanos);
+        case WEEK:
+        case ISO_WEEK:
+            count *= 7;
+            //$FALL-THROUGH$
+        case DAY_OF_WEEK:
+        case DOW:
+        case ISO_DAY_OF_WEEK:
+        case DAY:
+        case DAY_OF_YEAR:
+            if (type == Value.TIME || type == Value.TIME_TZ) {
+                throw DbException.getInvalidValueException("DATEADD time part", getFieldName(field));
+            }
+            dateValue = DateTimeUtils
+                    .dateValueFromAbsoluteDay(DateTimeUtils.absoluteDayFromDateValue(dateValue) + count);
+            return DateTimeUtils.dateTimeToValue(v, dateValue, timeNanos);
+        case HOUR:
+            count *= NANOS_PER_HOUR;
+            break;
+        case MINUTE:
+            count *= NANOS_PER_MINUTE;
+            break;
+        case SECOND:
+        case EPOCH:
+            count *= NANOS_PER_SECOND;
+            break;
+        case MILLISECOND:
+            count *= 1_000_000;
+            break;
+        case MICROSECOND:
+            count *= 1_000;
+            break;
+        case NANOSECOND:
+            break;
+        case TIMEZONE_HOUR:
+            return addToTimeZone(field, count * 3_600, v, type, dateValue, timeNanos);
+        case TIMEZONE_MINUTE:
+            return addToTimeZone(field, count * 60, v, type, dateValue, timeNanos);
+        case TIMEZONE_SECOND:
+            return addToTimeZone(field, count, v, type, dateValue, timeNanos);
+        default:
+            throw DbException.getUnsupportedException("DATEADD " + getFieldName(field));
         }
         timeNanos += count;
         if (timeNanos >= NANOS_PER_DAY || timeNanos < 0) {
@@ -713,7 +726,7 @@ public final class DateTimeFunction extends Function1_2 {
     }
 
     private static Value addYearsMonths(int field, boolean years, long count, Value v, int type, long dateValue,
-                                        long timeNanos) {
+            long timeNanos) {
         if (type == Value.TIME || type == Value.TIME_TZ) {
             throw DbException.getInvalidValueException("DATEADD time part", getFieldName(field));
         }
@@ -749,10 +762,14 @@ public final class DateTimeFunction extends Function1_2 {
      * DATEDIFF(YEAR, '2004-12-31', '2005-01-01') = 1
      * </pre>
      *
-     * @param session the session
-     * @param field   the date-time field
-     * @param v1      the first date-time value
-     * @param v2      the second date-time value
+     * @param session
+     *            the session
+     * @param field
+     *            the date-time field
+     * @param v1
+     *            the first date-time value
+     * @param v2
+     *            the second date-time value
      * @return the number of crossed boundaries
      */
     private static long datediff(SessionLocal session, int field, Value v1, Value v2) {
@@ -763,91 +780,91 @@ public final class DateTimeFunction extends Function1_2 {
         long dateValue2 = a2[0];
         long absolute2 = DateTimeUtils.absoluteDayFromDateValue(dateValue2);
         switch (field) {
+        case NANOSECOND:
+        case MICROSECOND:
+        case MILLISECOND:
+        case SECOND:
+        case EPOCH:
+        case MINUTE:
+        case HOUR:
+            long timeNanos1 = a1[1];
+            long timeNanos2 = a2[1];
+            switch (field) {
             case NANOSECOND:
+                return (absolute2 - absolute1) * NANOS_PER_DAY + (timeNanos2 - timeNanos1);
             case MICROSECOND:
+                return (absolute2 - absolute1) * (MILLIS_PER_DAY * 1_000) + (timeNanos2 / 1_000 - timeNanos1 / 1_000);
             case MILLISECOND:
+                return (absolute2 - absolute1) * MILLIS_PER_DAY + (timeNanos2 / 1_000_000 - timeNanos1 / 1_000_000);
             case SECOND:
             case EPOCH:
+                return (absolute2 - absolute1) * 86_400
+                        + (timeNanos2 / NANOS_PER_SECOND - timeNanos1 / NANOS_PER_SECOND);
             case MINUTE:
+                return (absolute2 - absolute1) * 1_440
+                        + (timeNanos2 / NANOS_PER_MINUTE - timeNanos1 / NANOS_PER_MINUTE);
             case HOUR:
-                long timeNanos1 = a1[1];
-                long timeNanos2 = a2[1];
-                switch (field) {
-                    case NANOSECOND:
-                        return (absolute2 - absolute1) * NANOS_PER_DAY + (timeNanos2 - timeNanos1);
-                    case MICROSECOND:
-                        return (absolute2 - absolute1) * (MILLIS_PER_DAY * 1_000) + (timeNanos2 / 1_000 - timeNanos1 / 1_000);
-                    case MILLISECOND:
-                        return (absolute2 - absolute1) * MILLIS_PER_DAY + (timeNanos2 / 1_000_000 - timeNanos1 / 1_000_000);
-                    case SECOND:
-                    case EPOCH:
-                        return (absolute2 - absolute1) * 86_400
-                                + (timeNanos2 / NANOS_PER_SECOND - timeNanos1 / NANOS_PER_SECOND);
-                    case MINUTE:
-                        return (absolute2 - absolute1) * 1_440
-                                + (timeNanos2 / NANOS_PER_MINUTE - timeNanos1 / NANOS_PER_MINUTE);
-                    case HOUR:
-                        return (absolute2 - absolute1) * 24 + (timeNanos2 / NANOS_PER_HOUR - timeNanos1 / NANOS_PER_HOUR);
-                }
-                // Fake fall-through
-                // $FALL-THROUGH$
-            case DAY:
-            case DAY_OF_YEAR:
-            case DAY_OF_WEEK:
-            case DOW:
-            case ISO_DAY_OF_WEEK:
-                return absolute2 - absolute1;
-            case WEEK:
-                return weekdiff(absolute1, absolute2, getWeekFields().getFirstDayOfWeek().getValue());
-            case ISO_WEEK:
-                return weekdiff(absolute1, absolute2, 1);
-            case MONTH:
-                return (DateTimeUtils.yearFromDateValue(dateValue2) - DateTimeUtils.yearFromDateValue(dateValue1)) * 12
-                        + DateTimeUtils.monthFromDateValue(dateValue2) - DateTimeUtils.monthFromDateValue(dateValue1);
-            case QUARTER:
-                return (DateTimeUtils.yearFromDateValue(dateValue2) - DateTimeUtils.yearFromDateValue(dateValue1)) * 4
-                        + (DateTimeUtils.monthFromDateValue(dateValue2) - 1) / 3
-                        - (DateTimeUtils.monthFromDateValue(dateValue1) - 1) / 3;
-            case MILLENNIUM:
-                return millennium(DateTimeUtils.yearFromDateValue(dateValue2))
-                        - millennium(DateTimeUtils.yearFromDateValue(dateValue1));
-            case CENTURY:
-                return century(DateTimeUtils.yearFromDateValue(dateValue2))
-                        - century(DateTimeUtils.yearFromDateValue(dateValue1));
-            case DECADE:
-                return decade(DateTimeUtils.yearFromDateValue(dateValue2))
-                        - decade(DateTimeUtils.yearFromDateValue(dateValue1));
-            case YEAR:
-                return DateTimeUtils.yearFromDateValue(dateValue2) - DateTimeUtils.yearFromDateValue(dateValue1);
-            case TIMEZONE_HOUR:
-            case TIMEZONE_MINUTE:
-            case TIMEZONE_SECOND: {
-                int offsetSeconds1;
-                if (v1 instanceof ValueTimestampTimeZone) {
-                    offsetSeconds1 = ((ValueTimestampTimeZone) v1).getTimeZoneOffsetSeconds();
-                } else if (v1 instanceof ValueTimeTimeZone) {
-                    offsetSeconds1 = ((ValueTimeTimeZone) v1).getTimeZoneOffsetSeconds();
-                } else {
-                    offsetSeconds1 = session.currentTimeZone().getTimeZoneOffsetLocal(dateValue1, a1[1]);
-                }
-                int offsetSeconds2;
-                if (v2 instanceof ValueTimestampTimeZone) {
-                    offsetSeconds2 = ((ValueTimestampTimeZone) v2).getTimeZoneOffsetSeconds();
-                } else if (v2 instanceof ValueTimeTimeZone) {
-                    offsetSeconds2 = ((ValueTimeTimeZone) v2).getTimeZoneOffsetSeconds();
-                } else {
-                    offsetSeconds2 = session.currentTimeZone().getTimeZoneOffsetLocal(dateValue2, a2[1]);
-                }
-                if (field == TIMEZONE_HOUR) {
-                    return (offsetSeconds2 / 3_600) - (offsetSeconds1 / 3_600);
-                } else if (field == TIMEZONE_MINUTE) {
-                    return (offsetSeconds2 / 60) - (offsetSeconds1 / 60);
-                } else {
-                    return offsetSeconds2 - offsetSeconds1;
-                }
+                return (absolute2 - absolute1) * 24 + (timeNanos2 / NANOS_PER_HOUR - timeNanos1 / NANOS_PER_HOUR);
             }
-            default:
-                throw DbException.getUnsupportedException("DATEDIFF " + getFieldName(field));
+            // Fake fall-through
+            // $FALL-THROUGH$
+        case DAY:
+        case DAY_OF_YEAR:
+        case DAY_OF_WEEK:
+        case DOW:
+        case ISO_DAY_OF_WEEK:
+            return absolute2 - absolute1;
+        case WEEK:
+            return weekdiff(absolute1, absolute2, getWeekFields().getFirstDayOfWeek().getValue());
+        case ISO_WEEK:
+            return weekdiff(absolute1, absolute2, 1);
+        case MONTH:
+            return (DateTimeUtils.yearFromDateValue(dateValue2) - DateTimeUtils.yearFromDateValue(dateValue1)) * 12
+                    + DateTimeUtils.monthFromDateValue(dateValue2) - DateTimeUtils.monthFromDateValue(dateValue1);
+        case QUARTER:
+            return (DateTimeUtils.yearFromDateValue(dateValue2) - DateTimeUtils.yearFromDateValue(dateValue1)) * 4
+                    + (DateTimeUtils.monthFromDateValue(dateValue2) - 1) / 3
+                    - (DateTimeUtils.monthFromDateValue(dateValue1) - 1) / 3;
+        case MILLENNIUM:
+            return millennium(DateTimeUtils.yearFromDateValue(dateValue2))
+                    - millennium(DateTimeUtils.yearFromDateValue(dateValue1));
+        case CENTURY:
+            return century(DateTimeUtils.yearFromDateValue(dateValue2))
+                    - century(DateTimeUtils.yearFromDateValue(dateValue1));
+        case DECADE:
+            return decade(DateTimeUtils.yearFromDateValue(dateValue2))
+                    - decade(DateTimeUtils.yearFromDateValue(dateValue1));
+        case YEAR:
+            return DateTimeUtils.yearFromDateValue(dateValue2) - DateTimeUtils.yearFromDateValue(dateValue1);
+        case TIMEZONE_HOUR:
+        case TIMEZONE_MINUTE:
+        case TIMEZONE_SECOND: {
+            int offsetSeconds1;
+            if (v1 instanceof ValueTimestampTimeZone) {
+                offsetSeconds1 = ((ValueTimestampTimeZone) v1).getTimeZoneOffsetSeconds();
+            } else if (v1 instanceof ValueTimeTimeZone) {
+                offsetSeconds1 = ((ValueTimeTimeZone) v1).getTimeZoneOffsetSeconds();
+            } else {
+                offsetSeconds1 = session.currentTimeZone().getTimeZoneOffsetLocal(dateValue1, a1[1]);
+            }
+            int offsetSeconds2;
+            if (v2 instanceof ValueTimestampTimeZone) {
+                offsetSeconds2 = ((ValueTimestampTimeZone) v2).getTimeZoneOffsetSeconds();
+            } else if (v2 instanceof ValueTimeTimeZone) {
+                offsetSeconds2 = ((ValueTimeTimeZone) v2).getTimeZoneOffsetSeconds();
+            } else {
+                offsetSeconds2 = session.currentTimeZone().getTimeZoneOffsetLocal(dateValue2, a2[1]);
+            }
+            if (field == TIMEZONE_HOUR) {
+                return (offsetSeconds2 / 3_600) - (offsetSeconds1 / 3_600);
+            } else if (field == TIMEZONE_MINUTE) {
+                return (offsetSeconds2 / 60) - (offsetSeconds1 / 60);
+            } else {
+                return offsetSeconds2 - offsetSeconds1;
+            }
+        }
+        default:
+            throw DbException.getUnsupportedException("DATEDIFF " + getFieldName(field));
         }
     }
 
@@ -946,44 +963,44 @@ public final class DateTimeFunction extends Function1_2 {
             right = right.optimize(session);
         }
         switch (function) {
-            case EXTRACT:
-                type = field == EPOCH ? TypeInfo.getTypeInfo(Value.NUMERIC,
-                        ValueBigint.DECIMAL_PRECISION + ValueTimestamp.MAXIMUM_SCALE, ValueTimestamp.MAXIMUM_SCALE, null)
-                        : TypeInfo.TYPE_INTEGER;
-                break;
-            case DATE_TRUNC: {
-                type = left.getType();
-                int valueType = type.getValueType();
-                // TODO set scale when possible
-                if (!DataType.isDateTimeType(valueType)) {
-                    throw DbException.getInvalidExpressionTypeException("DATE_TRUNC datetime argument", left);
-                } else if (session.getMode().getEnum() == ModeEnum.PostgreSQL && valueType == Value.DATE) {
-                    type = TypeInfo.TYPE_TIMESTAMP_TZ;
-                }
-                break;
+        case EXTRACT:
+            type = field == EPOCH ? TypeInfo.getTypeInfo(Value.NUMERIC,
+                    ValueBigint.DECIMAL_PRECISION + ValueTimestamp.MAXIMUM_SCALE, ValueTimestamp.MAXIMUM_SCALE, null)
+                    : TypeInfo.TYPE_INTEGER;
+            break;
+        case DATE_TRUNC: {
+            type = left.getType();
+            int valueType = type.getValueType();
+            // TODO set scale when possible
+            if (!DataType.isDateTimeType(valueType)) {
+                throw DbException.getInvalidExpressionTypeException("DATE_TRUNC datetime argument", left);
+            } else if (session.getMode().getEnum() == ModeEnum.PostgreSQL && valueType == Value.DATE) {
+                type = TypeInfo.TYPE_TIMESTAMP_TZ;
             }
-            case DATEADD: {
-                int valueType = right.getType().getValueType();
-                if (valueType == Value.DATE) {
-                    switch (field) {
-                        case HOUR:
-                        case MINUTE:
-                        case SECOND:
-                        case MILLISECOND:
-                        case MICROSECOND:
-                        case NANOSECOND:
-                        case EPOCH:
-                            valueType = Value.TIMESTAMP;
-                    }
+            break;
+        }
+        case DATEADD: {
+            int valueType = right.getType().getValueType();
+            if (valueType == Value.DATE) {
+                switch (field) {
+                case HOUR:
+                case MINUTE:
+                case SECOND:
+                case MILLISECOND:
+                case MICROSECOND:
+                case NANOSECOND:
+                case EPOCH:
+                    valueType = Value.TIMESTAMP;
                 }
-                type = TypeInfo.getTypeInfo(valueType);
-                break;
             }
-            case DATEDIFF:
-                type = TypeInfo.TYPE_BIGINT;
-                break;
-            default:
-                throw DbException.getInternalError("function=" + function);
+            type = TypeInfo.getTypeInfo(valueType);
+            break;
+        }
+        case DATEDIFF:
+            type = TypeInfo.TYPE_BIGINT;
+            break;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         if (left.isConstant() && (right == null || right.isConstant())) {
             return TypedValueExpression.getTypedIfNull(getValue(session), type);
@@ -995,19 +1012,19 @@ public final class DateTimeFunction extends Function1_2 {
     public StringBuilder getUnenclosedSQL(StringBuilder builder, int sqlFlags) {
         builder.append(getName()).append('(').append(getFieldName(field));
         switch (function) {
-            case EXTRACT:
-                left.getUnenclosedSQL(builder.append(" FROM "), sqlFlags);
-                break;
-            case DATE_TRUNC:
-                left.getUnenclosedSQL(builder.append(", "), sqlFlags);
-                break;
-            case DATEADD:
-            case DATEDIFF:
-                left.getUnenclosedSQL(builder.append(", "), sqlFlags).append(", ");
-                right.getUnenclosedSQL(builder, sqlFlags);
-                break;
-            default:
-                throw DbException.getInternalError("function=" + function);
+        case EXTRACT:
+            left.getUnenclosedSQL(builder.append(" FROM "), sqlFlags);
+            break;
+        case DATE_TRUNC:
+            left.getUnenclosedSQL(builder.append(", "), sqlFlags);
+            break;
+        case DATEADD:
+        case DATEDIFF:
+            left.getUnenclosedSQL(builder.append(", "), sqlFlags).append(", ");
+            right.getUnenclosedSQL(builder, sqlFlags);
+            break;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         return builder.append(')');
     }

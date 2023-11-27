@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import org.h2.engine.SysProperties;
 import org.h2.mvstore.db.MVTable;
 
@@ -92,7 +91,7 @@ public class ThreadDeadlockDetector {
     }
 
     private static void dumpThreadsAndLocks(String msg, ThreadMXBean threadBean,
-                                            long[] threadIds, PrintStream out) {
+            long[] threadIds, PrintStream out) {
         final StringWriter stringWriter = new StringWriter();
         final PrintWriter print = new PrintWriter(stringWriter);
 
@@ -170,9 +169,9 @@ public class ThreadDeadlockDetector {
     }
 
     private static void printLockInfo(PrintWriter print, LockInfo[] locks,
-                                      String tableWaitingForLock,
-                                      ArrayList<String> tableExclusiveLocks,
-                                      ArrayList<String> tableSharedLocksMap) {
+            String tableWaitingForLock,
+            ArrayList<String> tableExclusiveLocks,
+            ArrayList<String> tableSharedLocksMap) {
         print.println(INDENT + "Locked synchronizers: count = " + locks.length);
         for (LockInfo li : locks) {
             print.println(INDENT + "  - " + li);

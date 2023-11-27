@@ -59,13 +59,9 @@ public class TestScript extends TestDb {
 
     private static boolean CHECK_ORDERING;
 
-    /**
-     * If set to true, the test will exit at the first failure.
-     */
+    /** If set to true, the test will exit at the first failure. */
     private boolean failFast;
-    /**
-     * If set to a value the test will add all executed statements to this list
-     */
+    /** If set to a value the test will add all executed statements to this list */
     private ArrayList<String> statements;
 
     private boolean reconnectOften;
@@ -143,30 +139,30 @@ public class TestScript extends TestDb {
         testScript("altertable-fk.sql");
         testScript("default-and-on_update.sql");
 
-        for (String s : new String[]{"add_months", "compatibility", "group_by", "strict_and_legacy"}) {
+        for (String s : new String[] { "add_months", "compatibility", "group_by", "strict_and_legacy"}) {
             testScript("compatibility/" + s + ".sql");
         }
-        for (String s : new String[]{"array", "bigint", "binary", "blob",
+        for (String s : new String[] { "array", "bigint", "binary", "blob",
                 "boolean", "char", "clob", "date", "decfloat", "double_precision", "enum",
                 "geometry", "identity", "int", "interval", "java_object", "json", "numeric", "real", "row", "smallint",
                 "time-with-time-zone", "time", "timestamp-with-time-zone", "timestamp", "tinyint",
-                "uuid", "varbinary", "varchar", "varchar-ignorecase"}) {
+                "uuid", "varbinary", "varchar", "varchar-ignorecase" }) {
             testScript("datatypes/" + s + ".sql");
         }
-        for (String s : new String[]{"alterDomain", "alterTableAdd", "alterTableAlterColumn", "alterTableDropColumn",
+        for (String s : new String[] { "alterDomain", "alterTableAdd", "alterTableAlterColumn", "alterTableDropColumn",
                 "alterTableDropConstraint",
                 "alterTableRename", "alterTableRenameConstraint",
                 "analyze", "commentOn", "createAlias", "createConstant", "createDomain",
                 "createIndex", "createSchema", "createSequence", "createSynonym",
                 "createTable", "createTrigger", "createView", "dropAllObjects", "dropDomain", "dropIndex",
-                "dropSchema", "dropTable", "grant", "truncateTable"}) {
+                "dropSchema", "dropTable", "grant", "truncateTable" }) {
             testScript("ddl/" + s + ".sql");
         }
-        for (String s : new String[]{"delete", "error_reporting", "execute_immediate", "insert", "insertIgnore",
-                "merge", "mergeUsing", "replace", "script", "show", "update", "with"}) {
+        for (String s : new String[] { "delete", "error_reporting", "execute_immediate", "insert", "insertIgnore",
+                "merge", "mergeUsing", "replace", "script", "show", "update", "with" }) {
             testScript("dml/" + s + ".sql");
         }
-        for (String s : new String[]{"any", "array_agg", "avg", "bit_and_agg", "bit_or_agg", "bit_xor_agg",
+        for (String s : new String[] { "any", "array_agg", "avg", "bit_and_agg", "bit_or_agg", "bit_xor_agg",
                 "corr",
                 "count",
                 "covar_pop", "covar_samp",
@@ -175,22 +171,22 @@ public class TestScript extends TestDb {
                 "listagg", "max", "min", "mode", "percentile", "rank",
                 "regr_avgx", "regr_avgy", "regr_count", "regr_intercept", "regr_r2", "regr_slope",
                 "regr_sxx", "regr_sxy", "regr_syy",
-                "stddev_pop", "stddev_samp", "sum", "var_pop", "var_samp"}) {
+                "stddev_pop", "stddev_samp", "sum", "var_pop", "var_samp" }) {
             testScript("functions/aggregate/" + s + ".sql");
         }
-        for (String s : new String[]{"json_array", "json_object"}) {
+        for (String s : new String[] { "json_array", "json_object" }) {
             testScript("functions/json/" + s + ".sql");
         }
-        for (String s : new String[]{"abs", "acos", "asin", "atan", "atan2",
+        for (String s : new String[] { "abs", "acos", "asin", "atan", "atan2",
                 "bitand", "bitcount", "bitget", "bitnot", "bitor", "bitxor", "ceil", "compress",
                 "cos", "cosh", "cot", "decrypt", "degrees", "encrypt", "exp",
                 "expand", "floor", "hash", "length", "log", "lshift", "mod", "ora-hash", "pi",
                 "power", "radians", "rand", "random-uuid", "rotate", "round",
                 "roundmagic", "rshift", "secure-rand", "sign", "sin", "sinh", "sqrt",
-                "tan", "tanh", "truncate", "zero"}) {
+                "tan", "tanh", "truncate", "zero" }) {
             testScript("functions/numeric/" + s + ".sql");
         }
-        for (String s : new String[]{"array-to-string",
+        for (String s : new String[] { "array-to-string",
                 "ascii", "bit-length", "char", "concat",
                 "concat-ws", "difference", "hextoraw", "insert",
                 "left", "length", "locate", "lower", "lpad", "ltrim",
@@ -199,10 +195,10 @@ public class TestScript extends TestDb {
                 "soundex", "space", "stringdecode", "stringencode",
                 "stringtoutf8", "substring", "to-char", "translate", "trim",
                 "upper", "utf8tostring", "xmlattr", "xmlcdata", "xmlcomment",
-                "xmlnode", "xmlstartdoc", "xmltext"}) {
+                "xmlnode", "xmlstartdoc", "xmltext" }) {
             testScript("functions/string/" + s + ".sql");
         }
-        for (String s : new String[]{"array-cat", "array-contains", "array-get",
+        for (String s : new String[] { "array-cat", "array-contains", "array-get",
                 "array-slice", "autocommit", "cancel-session", "casewhen",
                 "cardinality", "cast", "coalesce", "convert", "csvread", "csvwrite", "current_catalog",
                 "current_schema", "current_user", "currval", "data_type_sql",
@@ -211,31 +207,31 @@ public class TestScript extends TestDb {
                 "ifnull", "last-insert-id", "least", "link-schema", "lock-mode", "lock-timeout",
                 "memory-free", "memory-used", "nextval", "nullif", "nvl2",
                 "readonly", "rownum", "session-id",
-                "table", "transaction-id", "trim_array", "truncate-value", "unnest"}) {
+                "table", "transaction-id", "trim_array", "truncate-value", "unnest" }) {
             testScript("functions/system/" + s + ".sql");
         }
-        for (String s : new String[]{"current_date", "current_timestamp",
+        for (String s : new String[] { "current_date", "current_timestamp",
                 "current-time", "dateadd", "datediff", "dayname",
                 "day-of-month", "day-of-week", "day-of-year", "extract",
                 "formatdatetime", "hour", "minute", "month", "monthname",
-                "parsedatetime", "quarter", "second", "truncate", "week", "year", "date_trunc"}) {
+                "parsedatetime", "quarter", "second", "truncate", "week", "year", "date_trunc" }) {
             testScript("functions/timeanddate/" + s + ".sql");
         }
-        for (String s : new String[]{"lead", "nth_value", "ntile", "ratio_to_report", "row_number"}) {
+        for (String s : new String[] { "lead", "nth_value", "ntile", "ratio_to_report", "row_number" }) {
             testScript("functions/window/" + s + ".sql");
         }
-        for (String s : new String[]{"at-time-zone", "boolean-test", "case", "concatenation", "conditions",
-                "data-change-delta-table", "field-reference", "help", "sequence", "set"}) {
+        for (String s : new String[] { "at-time-zone", "boolean-test", "case", "concatenation", "conditions",
+                "data-change-delta-table", "field-reference", "help", "sequence", "set" }) {
             testScript("other/" + s + ".sql");
         }
-        for (String s : new String[]{"comments", "identifiers"}) {
+        for (String s : new String[] { "comments", "identifiers" }) {
             testScript("parser/" + s + ".sql");
         }
-        for (String s : new String[]{"between", "distinct", "in", "like", "null", "type", "unique"}) {
+        for (String s : new String[] { "between", "distinct", "in", "like", "null", "type", "unique" }) {
             testScript("predicates/" + s + ".sql");
         }
-        for (String s : new String[]{"derived-column-names", "distinct", "joins", "query-optimisations", "select",
-                "table", "values", "window"}) {
+        for (String s : new String[] { "derived-column-names", "distinct", "joins", "query-optimisations", "select",
+                "table", "values", "window" }) {
             testScript("queries/" + s + ".sql");
         }
         testScript("other/two_phase_commit.sql");
@@ -284,8 +280,7 @@ public class TestScript extends TestDb {
                 byte[] separator = System.lineSeparator().getBytes(StandardCharsets.ISO_8859_1);
                 int separatorLength = separator.length;
                 long length = r.length() - (separatorLength * 2);
-                truncate:
-                if (length >= 0) {
+                truncate: if (length >= 0) {
                     r.seek(length);
                     for (int i = 0; i < 2; i++) {
                         for (int j = 0; j < separatorLength; j++) {
@@ -343,7 +338,7 @@ public class TestScript extends TestDb {
         in = new LineNumberReader(new InputStreamReader(is, StandardCharsets.UTF_8));
         StringBuilder buff = new StringBuilder();
         boolean allowReconnect = true;
-        for (String sql; (sql = readLine()) != null; ) {
+        for (String sql; (sql = readLine()) != null;) {
             if (sql.startsWith("--")) {
                 write(sql);
             } else if (sql.startsWith(">")) {
@@ -359,31 +354,31 @@ public class TestScript extends TestDb {
                     addWriteResultError("<command>", sql);
                 } else {
                     switch (sql) {
-                        case "@reconnect":
-                            write(sql);
-                            write("");
-                            if (!config.memory) {
-                                reconnect(conn.getAutoCommit());
-                            }
-                            break;
-                        case "@reconnect on":
-                            write(sql);
-                            write("");
-                            allowReconnect = true;
-                            break;
-                        case "@reconnect off":
-                            write(sql);
-                            write("");
-                            allowReconnect = false;
-                            break;
-                        case "@autocommit on":
-                            conn.setAutoCommit(true);
-                            break;
-                        case "@autocommit off":
-                            conn.setAutoCommit(false);
-                            break;
-                        default:
-                            addWriteResultError("<command>", sql);
+                    case "@reconnect":
+                        write(sql);
+                        write("");
+                        if (!config.memory) {
+                            reconnect(conn.getAutoCommit());
+                        }
+                        break;
+                    case "@reconnect on":
+                        write(sql);
+                        write("");
+                        allowReconnect = true;
+                        break;
+                    case "@reconnect off":
+                        write(sql);
+                        write("");
+                        allowReconnect = false;
+                        break;
+                    case "@autocommit on":
+                        conn.setAutoCommit(true);
+                        break;
+                    case "@autocommit off":
+                        conn.setAutoCommit(false);
+                        break;
+                    default:
+                        addWriteResultError("<command>", sql);
                     }
                 }
             } else {
@@ -396,7 +391,7 @@ public class TestScript extends TestDb {
 
     private boolean containsTempTables() throws SQLException {
         ResultSet rs = conn.getMetaData().getTables(null, null, null,
-                new String[]{"TABLE"});
+                new String[] { "TABLE" });
         while (rs.next()) {
             String sql = rs.getString("SQL");
             if (sql != null) {
@@ -452,7 +447,7 @@ public class TestScript extends TestDb {
 
     private static boolean hasParameters(String sql) {
         int index = 0;
-        for (; ; ) {
+        for (;;) {
             index = sql.indexOf('?', index);
             if (index < 0) {
                 return false;
@@ -606,24 +601,24 @@ public class TestScript extends TestDb {
         putBack(line);
         if (line != null && line.startsWith(">> ")) {
             switch (result.size()) {
-                case 0:
-                    writeResult(sql, "<no result>", null, ">> ");
-                    return;
-                case 1:
-                    String[] row = result.get(0);
-                    if (row.length == 1) {
-                        writeResult(sql, row[0], null, ">> ");
-                    } else {
-                        writeResult(sql, "<row with " + row.length + " values>", null, ">> ");
-                    }
-                    return;
-                default:
-                    writeResult(sql, "<" + result.size() + " rows>", null, ">> ");
-                    return;
+            case 0:
+                writeResult(sql, "<no result>", null, ">> ");
+                return;
+            case 1:
+                String[] row = result.get(0);
+                if (row.length == 1) {
+                    writeResult(sql, row[0], null, ">> ");
+                } else {
+                    writeResult(sql, "<row with " + row.length + " values>", null, ">> ");
+                }
+                return;
+            default:
+                writeResult(sql, "<" + result.size() + " rows>", null, ">> ");
+                return;
             }
         }
         Boolean ordered;
-        for (; ; ) {
+        for (;;) {
             line = readNextLine();
             if (line == null) {
                 addWriteResultError("<row count>", "<eof>");
@@ -699,11 +694,8 @@ public class TestScript extends TestDb {
         return buff.toString();
     }
 
-    /**
-     * Convert the error code to a symbolic name from ErrorCode.
-     */
+    /** Convert the error code to a symbolic name from ErrorCode. */
     private static final Map<Integer, String> ERROR_CODE_TO_NAME = new HashMap<>(256);
-
     static {
         try {
             for (Field field : ErrorCode.class.getDeclaredFields()) {

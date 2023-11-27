@@ -170,8 +170,8 @@ public final class InformationSchemaTable extends MetaTable {
      * Create a new metadata table.
      *
      * @param schema the schema
-     * @param id     the object id
-     * @param type   the meta table type
+     * @param id the object id
+     * @param type the meta table type
      */
     public InformationSchemaTable(Schema schema, int id, int type) {
         super(schema, id, type);
@@ -179,683 +179,683 @@ public final class InformationSchemaTable extends MetaTable {
         String indexColumnName = null;
         boolean isView = true;
         switch (type) {
-            // Standard table
-            case INFORMATION_SCHEMA_CATALOG_NAME:
-                setMetaTableName("INFORMATION_SCHEMA_CATALOG_NAME");
-                isView = false;
-                cols = new Column[]{
-                        column("CATALOG_NAME"), //
-                };
-                break;
-            // Standard views
-            case CHECK_CONSTRAINTS:
-                setMetaTableName("CHECK_CONSTRAINTS");
-                cols = new Column[]{
-                        column("CONSTRAINT_CATALOG"), //
-                        column("CONSTRAINT_SCHEMA"), //
-                        column("CONSTRAINT_NAME"), //
-                        column("CHECK_CLAUSE"), //
-                };
-                indexColumnName = "CONSTRAINT_NAME";
-                break;
-            case COLLATIONS:
-                setMetaTableName("COLLATIONS");
-                cols = new Column[]{
-                        column("COLLATION_CATALOG"), //
-                        column("COLLATION_SCHEMA"), //
-                        column("COLLATION_NAME"), //
-                        column("PAD_ATTRIBUTE"), //
-                        // extensions
-                        column("LANGUAGE_TAG"), //
-                };
-                break;
-            case COLUMNS:
-                setMetaTableName("COLUMNS");
-                cols = new Column[]{
-                        column("TABLE_CATALOG"), //
-                        column("TABLE_SCHEMA"), //
-                        column("TABLE_NAME"), //
-                        column("COLUMN_NAME"), //
-                        column("ORDINAL_POSITION", TypeInfo.TYPE_INTEGER), //
-                        column("COLUMN_DEFAULT"), //
-                        column("IS_NULLABLE"), //
-                        column("DATA_TYPE"), //
-                        column("CHARACTER_MAXIMUM_LENGTH", TypeInfo.TYPE_BIGINT), //
-                        column("CHARACTER_OCTET_LENGTH", TypeInfo.TYPE_BIGINT), //
-                        column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        column("DATETIME_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("INTERVAL_TYPE"), //
-                        column("INTERVAL_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("CHARACTER_SET_CATALOG"), //
-                        column("CHARACTER_SET_SCHEMA"), //
-                        column("CHARACTER_SET_NAME"), //
-                        column("COLLATION_CATALOG"), //
-                        column("COLLATION_SCHEMA"), //
-                        column("COLLATION_NAME"), //
-                        column("DOMAIN_CATALOG"), //
-                        column("DOMAIN_SCHEMA"), //
-                        column("DOMAIN_NAME"), //
-                        column("MAXIMUM_CARDINALITY", TypeInfo.TYPE_INTEGER), //
-                        column("DTD_IDENTIFIER"), //
-                        column("IS_IDENTITY"), //
-                        column("IDENTITY_GENERATION"), //
-                        column("IDENTITY_START", TypeInfo.TYPE_BIGINT), //
-                        column("IDENTITY_INCREMENT", TypeInfo.TYPE_BIGINT), //
-                        column("IDENTITY_MAXIMUM", TypeInfo.TYPE_BIGINT), //
-                        column("IDENTITY_MINIMUM", TypeInfo.TYPE_BIGINT), //
-                        column("IDENTITY_CYCLE"), //
-                        column("IS_GENERATED"), //
-                        column("GENERATION_EXPRESSION"), //
-                        column("DECLARED_DATA_TYPE"), //
-                        column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        // extensions
-                        column("GEOMETRY_TYPE"), //
-                        column("GEOMETRY_SRID", TypeInfo.TYPE_INTEGER), //
-                        column("IDENTITY_BASE", TypeInfo.TYPE_BIGINT), //
-                        column("IDENTITY_CACHE", TypeInfo.TYPE_BIGINT), //
-                        column("COLUMN_ON_UPDATE"), //
-                        column("IS_VISIBLE", TypeInfo.TYPE_BOOLEAN), //
-                        column("DEFAULT_ON_NULL", TypeInfo.TYPE_BOOLEAN), //
-                        column("SELECTIVITY", TypeInfo.TYPE_INTEGER), //
-                        column("REMARKS"), //
-                };
-                indexColumnName = "TABLE_NAME";
-                break;
-            case COLUMN_PRIVILEGES:
-                setMetaTableName("COLUMN_PRIVILEGES");
-                cols = new Column[]{
-                        column("GRANTOR"), //
-                        column("GRANTEE"), //
-                        column("TABLE_CATALOG"), //
-                        column("TABLE_SCHEMA"), //
-                        column("TABLE_NAME"), //
-                        column("COLUMN_NAME"), //
-                        column("PRIVILEGE_TYPE"), //
-                        column("IS_GRANTABLE"), //
-                };
-                indexColumnName = "TABLE_NAME";
-                break;
-            case CONSTRAINT_COLUMN_USAGE:
-                setMetaTableName("CONSTRAINT_COLUMN_USAGE");
-                cols = new Column[]{
-                        column("TABLE_CATALOG"), //
-                        column("TABLE_SCHEMA"), //
-                        column("TABLE_NAME"), //
-                        column("COLUMN_NAME"), //
-                        column("CONSTRAINT_CATALOG"), //
-                        column("CONSTRAINT_SCHEMA"), //
-                        column("CONSTRAINT_NAME"), //
-                };
-                indexColumnName = "TABLE_NAME";
-                break;
-            case DOMAINS:
-                setMetaTableName("DOMAINS");
-                cols = new Column[]{
-                        column("DOMAIN_CATALOG"), //
-                        column("DOMAIN_SCHEMA"), //
-                        column("DOMAIN_NAME"), //
-                        column("DATA_TYPE"), //
-                        column("CHARACTER_MAXIMUM_LENGTH", TypeInfo.TYPE_BIGINT), //
-                        column("CHARACTER_OCTET_LENGTH", TypeInfo.TYPE_BIGINT), //
-                        column("CHARACTER_SET_CATALOG"), //
-                        column("CHARACTER_SET_SCHEMA"), //
-                        column("CHARACTER_SET_NAME"), //
-                        column("COLLATION_CATALOG"), //
-                        column("COLLATION_SCHEMA"), //
-                        column("COLLATION_NAME"), //
-                        column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        column("DATETIME_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("INTERVAL_TYPE"), //
-                        column("INTERVAL_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("DOMAIN_DEFAULT"), //
-                        column("MAXIMUM_CARDINALITY", TypeInfo.TYPE_INTEGER), //
-                        column("DTD_IDENTIFIER"), //
-                        column("DECLARED_DATA_TYPE"), //
-                        column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        // extensions
-                        column("GEOMETRY_TYPE"), //
-                        column("GEOMETRY_SRID", TypeInfo.TYPE_INTEGER), //
-                        column("DOMAIN_ON_UPDATE"), //
-                        column("PARENT_DOMAIN_CATALOG"), //
-                        column("PARENT_DOMAIN_SCHEMA"), //
-                        column("PARENT_DOMAIN_NAME"), //
-                        column("REMARKS"), //
-                };
-                indexColumnName = "DOMAIN_NAME";
-                break;
-            case DOMAIN_CONSTRAINTS:
-                setMetaTableName("DOMAIN_CONSTRAINTS");
-                cols = new Column[]{
-                        column("CONSTRAINT_CATALOG"), //
-                        column("CONSTRAINT_SCHEMA"), //
-                        column("CONSTRAINT_NAME"), //
-                        column("DOMAIN_CATALOG"), //
-                        column("DOMAIN_SCHEMA"), //
-                        column("DOMAIN_NAME"), //
-                        column("IS_DEFERRABLE"), //
-                        column("INITIALLY_DEFERRED"), //
-                        // extensions
-                        column("REMARKS"), //
-                };
-                indexColumnName = "DOMAIN_NAME";
-                break;
-            case ELEMENT_TYPES:
-                setMetaTableName("ELEMENT_TYPES");
-                cols = new Column[]{
-                        column("OBJECT_CATALOG"), //
-                        column("OBJECT_SCHEMA"), //
-                        column("OBJECT_NAME"), //
-                        column("OBJECT_TYPE"), //
-                        column("COLLECTION_TYPE_IDENTIFIER"), //
-                        column("DATA_TYPE"), //
-                        column("CHARACTER_MAXIMUM_LENGTH", TypeInfo.TYPE_BIGINT), //
-                        column("CHARACTER_OCTET_LENGTH", TypeInfo.TYPE_BIGINT), //
-                        column("CHARACTER_SET_CATALOG"), //
-                        column("CHARACTER_SET_SCHEMA"), //
-                        column("CHARACTER_SET_NAME"), //
-                        column("COLLATION_CATALOG"), //
-                        column("COLLATION_SCHEMA"), //
-                        column("COLLATION_NAME"), //
-                        column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        column("DATETIME_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("INTERVAL_TYPE"), //
-                        column("INTERVAL_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("MAXIMUM_CARDINALITY", TypeInfo.TYPE_INTEGER), //
-                        column("DTD_IDENTIFIER"), //
-                        column("DECLARED_DATA_TYPE"), //
-                        column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        // extensions
-                        column("GEOMETRY_TYPE"), //
-                        column("GEOMETRY_SRID", TypeInfo.TYPE_INTEGER), //
-                };
-                break;
-            case FIELDS:
-                setMetaTableName("FIELDS");
-                cols = new Column[]{
-                        column("OBJECT_CATALOG"), //
-                        column("OBJECT_SCHEMA"), //
-                        column("OBJECT_NAME"), //
-                        column("OBJECT_TYPE"), //
-                        column("ROW_IDENTIFIER"), //
-                        column("FIELD_NAME"), //
-                        column("ORDINAL_POSITION", TypeInfo.TYPE_INTEGER), //
-                        column("DATA_TYPE"), //
-                        column("CHARACTER_MAXIMUM_LENGTH", TypeInfo.TYPE_BIGINT), //
-                        column("CHARACTER_OCTET_LENGTH", TypeInfo.TYPE_BIGINT), //
-                        column("CHARACTER_SET_CATALOG"), //
-                        column("CHARACTER_SET_SCHEMA"), //
-                        column("CHARACTER_SET_NAME"), //
-                        column("COLLATION_CATALOG"), //
-                        column("COLLATION_SCHEMA"), //
-                        column("COLLATION_NAME"), //
-                        column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        column("DATETIME_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("INTERVAL_TYPE"), //
-                        column("INTERVAL_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("MAXIMUM_CARDINALITY", TypeInfo.TYPE_INTEGER), //
-                        column("DTD_IDENTIFIER"), //
-                        column("DECLARED_DATA_TYPE"), //
-                        column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        // extensions
-                        column("GEOMETRY_TYPE"), //
-                        column("GEOMETRY_SRID", TypeInfo.TYPE_INTEGER), //
-                };
-                break;
-            case KEY_COLUMN_USAGE:
-                setMetaTableName("KEY_COLUMN_USAGE");
-                cols = new Column[]{
-                        column("CONSTRAINT_CATALOG"), //
-                        column("CONSTRAINT_SCHEMA"), //
-                        column("CONSTRAINT_NAME"), //
-                        column("TABLE_CATALOG"), //
-                        column("TABLE_SCHEMA"), //
-                        column("TABLE_NAME"), //
-                        column("COLUMN_NAME"), //
-                        column("ORDINAL_POSITION", TypeInfo.TYPE_INTEGER), //
-                        column("POSITION_IN_UNIQUE_CONSTRAINT", TypeInfo.TYPE_INTEGER), //
-                };
-                indexColumnName = "TABLE_NAME";
-                break;
-            case PARAMETERS:
-                setMetaTableName("PARAMETERS");
-                cols = new Column[]{
-                        column("SPECIFIC_CATALOG"), //
-                        column("SPECIFIC_SCHEMA"), //
-                        column("SPECIFIC_NAME"), //
-                        column("ORDINAL_POSITION", TypeInfo.TYPE_INTEGER), //
-                        column("PARAMETER_MODE"), //
-                        column("IS_RESULT"), //
-                        column("AS_LOCATOR"), //
-                        column("PARAMETER_NAME"), //
-                        column("DATA_TYPE"), //
-                        column("CHARACTER_MAXIMUM_LENGTH", TypeInfo.TYPE_BIGINT), //
-                        column("CHARACTER_OCTET_LENGTH", TypeInfo.TYPE_BIGINT), //
-                        column("CHARACTER_SET_CATALOG"), //
-                        column("CHARACTER_SET_SCHEMA"), //
-                        column("CHARACTER_SET_NAME"), //
-                        column("COLLATION_CATALOG"), //
-                        column("COLLATION_SCHEMA"), //
-                        column("COLLATION_NAME"), //
-                        column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        column("DATETIME_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("INTERVAL_TYPE"), //
-                        column("INTERVAL_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("MAXIMUM_CARDINALITY", TypeInfo.TYPE_INTEGER), //
-                        column("DTD_IDENTIFIER"), //
-                        column("DECLARED_DATA_TYPE"), //
-                        column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        column("PARAMETER_DEFAULT"), //
-                        // extensions
-                        column("GEOMETRY_TYPE"), //
-                        column("GEOMETRY_SRID", TypeInfo.TYPE_INTEGER), //
-                };
-                break;
-            case REFERENTIAL_CONSTRAINTS:
-                setMetaTableName("REFERENTIAL_CONSTRAINTS");
-                cols = new Column[]{
-                        column("CONSTRAINT_CATALOG"), //
-                        column("CONSTRAINT_SCHEMA"), //
-                        column("CONSTRAINT_NAME"), //
-                        column("UNIQUE_CONSTRAINT_CATALOG"), //
-                        column("UNIQUE_CONSTRAINT_SCHEMA"), //
-                        column("UNIQUE_CONSTRAINT_NAME"), //
-                        column("MATCH_OPTION"), //
-                        column("UPDATE_RULE"), //
-                        column("DELETE_RULE"), //
-                };
-                indexColumnName = "CONSTRAINT_NAME";
-                break;
-            case ROUTINES:
-                setMetaTableName("ROUTINES");
-                cols = new Column[]{
-                        column("SPECIFIC_CATALOG"), //
-                        column("SPECIFIC_SCHEMA"), //
-                        column("SPECIFIC_NAME"), //
-                        column("ROUTINE_CATALOG"), //
-                        column("ROUTINE_SCHEMA"), //
-                        column("ROUTINE_NAME"), //
-                        column("ROUTINE_TYPE"), //
-                        column("DATA_TYPE"), //
-                        column("CHARACTER_MAXIMUM_LENGTH", TypeInfo.TYPE_BIGINT), //
-                        column("CHARACTER_OCTET_LENGTH", TypeInfo.TYPE_BIGINT), //
-                        column("CHARACTER_SET_CATALOG"), //
-                        column("CHARACTER_SET_SCHEMA"), //
-                        column("CHARACTER_SET_NAME"), //
-                        column("COLLATION_CATALOG"), //
-                        column("COLLATION_SCHEMA"), //
-                        column("COLLATION_NAME"), //
-                        column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        column("DATETIME_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("INTERVAL_TYPE"), //
-                        column("INTERVAL_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("MAXIMUM_CARDINALITY", TypeInfo.TYPE_INTEGER), //
-                        column("DTD_IDENTIFIER"), //
-                        column("ROUTINE_BODY"), //
-                        column("ROUTINE_DEFINITION"), //
-                        column("EXTERNAL_NAME"), //
-                        column("EXTERNAL_LANGUAGE"), //
-                        column("PARAMETER_STYLE"), //
-                        column("IS_DETERMINISTIC"), //
-                        column("DECLARED_DATA_TYPE"), //
-                        column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        // extensions
-                        column("GEOMETRY_TYPE"), //
-                        column("GEOMETRY_SRID", TypeInfo.TYPE_INTEGER), //
-                        column("REMARKS"), //
-                };
-                break;
-            case SCHEMATA:
-                setMetaTableName("SCHEMATA");
-                cols = new Column[]{
-                        column("CATALOG_NAME"), //
-                        column("SCHEMA_NAME"), //
-                        column("SCHEMA_OWNER"), //
-                        column("DEFAULT_CHARACTER_SET_CATALOG"), //
-                        column("DEFAULT_CHARACTER_SET_SCHEMA"), //
-                        column("DEFAULT_CHARACTER_SET_NAME"), //
-                        column("SQL_PATH"), //
-                        // extensions
-                        column("DEFAULT_COLLATION_NAME"), // // MySQL
-                        column("REMARKS"), //
-                };
-                break;
-            case SEQUENCES:
-                setMetaTableName("SEQUENCES");
-                cols = new Column[]{
-                        column("SEQUENCE_CATALOG"), //
-                        column("SEQUENCE_SCHEMA"), //
-                        column("SEQUENCE_NAME"), //
-                        column("DATA_TYPE"), //
-                        column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        column("START_VALUE", TypeInfo.TYPE_BIGINT), //
-                        column("MINIMUM_VALUE", TypeInfo.TYPE_BIGINT), //
-                        column("MAXIMUM_VALUE", TypeInfo.TYPE_BIGINT), //
-                        column("INCREMENT", TypeInfo.TYPE_BIGINT), //
-                        column("CYCLE_OPTION"), //
-                        column("DECLARED_DATA_TYPE"), //
-                        column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        // extensions
-                        column("BASE_VALUE", TypeInfo.TYPE_BIGINT), //
-                        column("CACHE", TypeInfo.TYPE_BIGINT), //
-                        column("REMARKS"), //
-                };
-                indexColumnName = "SEQUENCE_NAME";
-                break;
-            case TABLES:
-                setMetaTableName("TABLES");
-                cols = new Column[]{
-                        column("TABLE_CATALOG"), //
-                        column("TABLE_SCHEMA"), //
-                        column("TABLE_NAME"), //
-                        column("TABLE_TYPE"), //
-                        column("IS_INSERTABLE_INTO"), //
-                        column("COMMIT_ACTION"), //
-                        // extensions
-                        column("STORAGE_TYPE"), //
-                        column("REMARKS"), //
-                        column("LAST_MODIFICATION", TypeInfo.TYPE_BIGINT), //
-                        column("TABLE_CLASS"), //
-                        column("ROW_COUNT_ESTIMATE", TypeInfo.TYPE_BIGINT), //
-                };
-                indexColumnName = "TABLE_NAME";
-                break;
-            case TABLE_CONSTRAINTS:
-                setMetaTableName("TABLE_CONSTRAINTS");
-                cols = new Column[]{
-                        column("CONSTRAINT_CATALOG"), //
-                        column("CONSTRAINT_SCHEMA"), //
-                        column("CONSTRAINT_NAME"), //
-                        column("CONSTRAINT_TYPE"), //
-                        column("TABLE_CATALOG"), //
-                        column("TABLE_SCHEMA"), //
-                        column("TABLE_NAME"), //
-                        column("IS_DEFERRABLE"), //
-                        column("INITIALLY_DEFERRED"), //
-                        column("ENFORCED"), //
-                        // extensions
-                        column("INDEX_CATALOG"), //
-                        column("INDEX_SCHEMA"), //
-                        column("INDEX_NAME"), //
-                        column("REMARKS"), //
-                };
-                indexColumnName = "TABLE_NAME";
-                break;
-            case TABLE_PRIVILEGES:
-                setMetaTableName("TABLE_PRIVILEGES");
-                cols = new Column[]{
-                        column("GRANTOR"), //
-                        column("GRANTEE"), //
-                        column("TABLE_CATALOG"), //
-                        column("TABLE_SCHEMA"), //
-                        column("TABLE_NAME"), //
-                        column("PRIVILEGE_TYPE"), //
-                        column("IS_GRANTABLE"), //
-                        column("WITH_HIERARCHY"), //
-                };
-                indexColumnName = "TABLE_NAME";
-                break;
-            case TRIGGERS:
-                setMetaTableName("TRIGGERS");
-                cols = new Column[]{
-                        column("TRIGGER_CATALOG"), //
-                        column("TRIGGER_SCHEMA"), //
-                        column("TRIGGER_NAME"), //
-                        column("EVENT_MANIPULATION"), //
-                        column("EVENT_OBJECT_CATALOG"), //
-                        column("EVENT_OBJECT_SCHEMA"), //
-                        column("EVENT_OBJECT_TABLE"), //
-                        column("ACTION_ORIENTATION"), //
-                        column("ACTION_TIMING"), //
-                        // extensions
-                        column("IS_ROLLBACK", TypeInfo.TYPE_BOOLEAN), //
-                        column("JAVA_CLASS"), //
-                        column("QUEUE_SIZE", TypeInfo.TYPE_INTEGER), //
-                        column("NO_WAIT", TypeInfo.TYPE_BOOLEAN), //
-                        column("REMARKS"), //
-                };
-                indexColumnName = "EVENT_OBJECT_TABLE";
-                break;
-            case VIEWS:
-                setMetaTableName("VIEWS");
-                cols = new Column[]{
-                        column("TABLE_CATALOG"), //
-                        column("TABLE_SCHEMA"), //
-                        column("TABLE_NAME"), //
-                        column("VIEW_DEFINITION"), //
-                        column("CHECK_OPTION"), //
-                        column("IS_UPDATABLE"), //
-                        column("INSERTABLE_INTO"), //
-                        column("IS_TRIGGER_UPDATABLE"), //
-                        column("IS_TRIGGER_DELETABLE"), //
-                        column("IS_TRIGGER_INSERTABLE_INTO"), //
-                        // extensions
-                        column("STATUS"), //
-                        column("REMARKS"), //
-                };
-                indexColumnName = "TABLE_NAME";
-                break;
-            // Extensions
-            case CONSTANTS:
-                setMetaTableName("CONSTANTS");
-                isView = false;
-                cols = new Column[]{
-                        column("CONSTANT_CATALOG"), //
-                        column("CONSTANT_SCHEMA"), //
-                        column("CONSTANT_NAME"), //
-                        column("VALUE_DEFINITION"), //
-                        column("DATA_TYPE"), //
-                        column("CHARACTER_MAXIMUM_LENGTH", TypeInfo.TYPE_BIGINT), //
-                        column("CHARACTER_OCTET_LENGTH", TypeInfo.TYPE_BIGINT), //
-                        column("CHARACTER_SET_CATALOG"), //
-                        column("CHARACTER_SET_SCHEMA"), //
-                        column("CHARACTER_SET_NAME"), //
-                        column("COLLATION_CATALOG"), //
-                        column("COLLATION_SCHEMA"), //
-                        column("COLLATION_NAME"), //
-                        column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
-                        column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        column("DATETIME_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("INTERVAL_TYPE"), //
-                        column("INTERVAL_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("MAXIMUM_CARDINALITY", TypeInfo.TYPE_INTEGER), //
-                        column("DTD_IDENTIFIER"), //
-                        column("DECLARED_DATA_TYPE"), //
-                        column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
-                        column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
-                        column("GEOMETRY_TYPE"), //
-                        column("GEOMETRY_SRID", TypeInfo.TYPE_INTEGER), //
-                        column("REMARKS"), //
-                };
-                indexColumnName = "CONSTANT_NAME";
-                break;
-            case ENUM_VALUES:
-                setMetaTableName("ENUM_VALUES");
-                isView = false;
-                cols = new Column[]{
-                        column("OBJECT_CATALOG"), //
-                        column("OBJECT_SCHEMA"), //
-                        column("OBJECT_NAME"), //
-                        column("OBJECT_TYPE"), //
-                        column("ENUM_IDENTIFIER"), //
-                        column("VALUE_NAME"), //
-                        column("VALUE_ORDINAL"), //
-                };
-                break;
-            case INDEXES:
-                setMetaTableName("INDEXES");
-                isView = false;
-                cols = new Column[]{
-                        column("INDEX_CATALOG"), //
-                        column("INDEX_SCHEMA"), //
-                        column("INDEX_NAME"), //
-                        column("TABLE_CATALOG"), //
-                        column("TABLE_SCHEMA"), //
-                        column("TABLE_NAME"), //
-                        column("INDEX_TYPE_NAME"), //
-                        column("IS_GENERATED", TypeInfo.TYPE_BOOLEAN), //
-                        column("REMARKS"), //
-                        column("INDEX_CLASS"), //
-                };
-                indexColumnName = "TABLE_NAME";
-                break;
-            case INDEX_COLUMNS:
-                setMetaTableName("INDEX_COLUMNS");
-                isView = false;
-                cols = new Column[]{
-                        column("INDEX_CATALOG"), //
-                        column("INDEX_SCHEMA"), //
-                        column("INDEX_NAME"), //
-                        column("TABLE_CATALOG"), //
-                        column("TABLE_SCHEMA"), //
-                        column("TABLE_NAME"), //
-                        column("COLUMN_NAME"), //
-                        column("ORDINAL_POSITION", TypeInfo.TYPE_INTEGER), //
-                        column("ORDERING_SPECIFICATION"), //
-                        column("NULL_ORDERING"), //
-                        column("IS_UNIQUE", TypeInfo.TYPE_BOOLEAN), //
-                };
-                indexColumnName = "TABLE_NAME";
-                break;
-            case IN_DOUBT:
-                setMetaTableName("IN_DOUBT");
-                isView = false;
-                cols = new Column[]{
-                        column("TRANSACTION_NAME"), //
-                        column("TRANSACTION_STATE"), //
-                };
-                break;
-            case LOCKS:
-                setMetaTableName("LOCKS");
-                isView = false;
-                cols = new Column[]{
-                        column("TABLE_SCHEMA"), //
-                        column("TABLE_NAME"), //
-                        column("SESSION_ID", TypeInfo.TYPE_INTEGER), //
-                        column("LOCK_TYPE"), //
-                };
-                break;
-            case QUERY_STATISTICS:
-                setMetaTableName("QUERY_STATISTICS");
-                isView = false;
-                cols = new Column[]{
-                        column("SQL_STATEMENT"), //
-                        column("EXECUTION_COUNT", TypeInfo.TYPE_INTEGER), //
-                        column("MIN_EXECUTION_TIME", TypeInfo.TYPE_DOUBLE), //
-                        column("MAX_EXECUTION_TIME", TypeInfo.TYPE_DOUBLE), //
-                        column("CUMULATIVE_EXECUTION_TIME", TypeInfo.TYPE_DOUBLE), //
-                        column("AVERAGE_EXECUTION_TIME", TypeInfo.TYPE_DOUBLE), //
-                        column("STD_DEV_EXECUTION_TIME", TypeInfo.TYPE_DOUBLE), //
-                        column("MIN_ROW_COUNT", TypeInfo.TYPE_BIGINT), //
-                        column("MAX_ROW_COUNT", TypeInfo.TYPE_BIGINT), //
-                        column("CUMULATIVE_ROW_COUNT", TypeInfo.TYPE_BIGINT), //
-                        column("AVERAGE_ROW_COUNT", TypeInfo.TYPE_DOUBLE), //
-                        column("STD_DEV_ROW_COUNT", TypeInfo.TYPE_DOUBLE), //
-                };
-                break;
-            case RIGHTS:
-                setMetaTableName("RIGHTS");
-                isView = false;
-                cols = new Column[]{
-                        column("GRANTEE"), //
-                        column("GRANTEETYPE"), //
-                        column("GRANTEDROLE"), //
-                        column("RIGHTS"), //
-                        column("TABLE_SCHEMA"), //
-                        column("TABLE_NAME"), //
-                };
-                indexColumnName = "TABLE_NAME";
-                break;
-            case ROLES:
-                setMetaTableName("ROLES");
-                isView = false;
-                cols = new Column[]{
-                        column("ROLE_NAME"), //
-                        column("REMARKS"), //
-                };
-                break;
-            case SESSIONS:
-                setMetaTableName("SESSIONS");
-                isView = false;
-                cols = new Column[]{
-                        column("SESSION_ID", TypeInfo.TYPE_INTEGER), //
-                        column("USER_NAME"), //
-                        column("SERVER"), //
-                        column("CLIENT_ADDR"), //
-                        column("CLIENT_INFO"), //
-                        column("SESSION_START", TypeInfo.TYPE_TIMESTAMP_TZ), //
-                        column("ISOLATION_LEVEL"), //
-                        column("EXECUTING_STATEMENT"), //
-                        column("EXECUTING_STATEMENT_START", TypeInfo.TYPE_TIMESTAMP_TZ), //
-                        column("CONTAINS_UNCOMMITTED", TypeInfo.TYPE_BOOLEAN), //
-                        column("SESSION_STATE"), //
-                        column("BLOCKER_ID", TypeInfo.TYPE_INTEGER), //
-                        column("SLEEP_SINCE", TypeInfo.TYPE_TIMESTAMP_TZ), //
-                };
-                break;
-            case SESSION_STATE:
-                setMetaTableName("SESSION_STATE");
-                isView = false;
-                cols = new Column[]{
-                        column("STATE_KEY"), //
-                        column("STATE_COMMAND"), //
-                };
-                break;
-            case SETTINGS:
-                setMetaTableName("SETTINGS");
-                isView = false;
-                cols = new Column[]{
-                        column("SETTING_NAME"), //
-                        column("SETTING_VALUE"), //
-                };
-                break;
-            case SYNONYMS:
-                setMetaTableName("SYNONYMS");
-                isView = false;
-                cols = new Column[]{
-                        column("SYNONYM_CATALOG"), //
-                        column("SYNONYM_SCHEMA"), //
-                        column("SYNONYM_NAME"), //
-                        column("SYNONYM_FOR"), //
-                        column("SYNONYM_FOR_SCHEMA"), //
-                        column("TYPE_NAME"), //
-                        column("STATUS"), //
-                        column("REMARKS"), //
-                };
-                indexColumnName = "SYNONYM_NAME";
-                break;
-            case USERS:
-                setMetaTableName("USERS");
-                isView = false;
-                cols = new Column[]{
-                        column("USER_NAME"), //
-                        column("IS_ADMIN", TypeInfo.TYPE_BOOLEAN),
-                        column("REMARKS"), //
-                };
-                break;
-            default:
-                throw DbException.getInternalError("type=" + type);
+        // Standard table
+        case INFORMATION_SCHEMA_CATALOG_NAME:
+            setMetaTableName("INFORMATION_SCHEMA_CATALOG_NAME");
+            isView = false;
+            cols = new Column[] {
+                    column("CATALOG_NAME"), //
+            };
+            break;
+        // Standard views
+        case CHECK_CONSTRAINTS:
+            setMetaTableName("CHECK_CONSTRAINTS");
+            cols = new Column[] {
+                    column("CONSTRAINT_CATALOG"), //
+                    column("CONSTRAINT_SCHEMA"), //
+                    column("CONSTRAINT_NAME"), //
+                    column("CHECK_CLAUSE"), //
+            };
+            indexColumnName = "CONSTRAINT_NAME";
+            break;
+        case COLLATIONS:
+            setMetaTableName("COLLATIONS");
+            cols = new Column[] {
+                    column("COLLATION_CATALOG"), //
+                    column("COLLATION_SCHEMA"), //
+                    column("COLLATION_NAME"), //
+                    column("PAD_ATTRIBUTE"), //
+                    // extensions
+                    column("LANGUAGE_TAG"), //
+            };
+            break;
+        case COLUMNS:
+            setMetaTableName("COLUMNS");
+            cols = new Column[] {
+                    column("TABLE_CATALOG"), //
+                    column("TABLE_SCHEMA"), //
+                    column("TABLE_NAME"), //
+                    column("COLUMN_NAME"), //
+                    column("ORDINAL_POSITION", TypeInfo.TYPE_INTEGER), //
+                    column("COLUMN_DEFAULT"), //
+                    column("IS_NULLABLE"), //
+                    column("DATA_TYPE"), //
+                    column("CHARACTER_MAXIMUM_LENGTH", TypeInfo.TYPE_BIGINT), //
+                    column("CHARACTER_OCTET_LENGTH", TypeInfo.TYPE_BIGINT), //
+                    column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    column("DATETIME_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("INTERVAL_TYPE"), //
+                    column("INTERVAL_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("CHARACTER_SET_CATALOG"), //
+                    column("CHARACTER_SET_SCHEMA"), //
+                    column("CHARACTER_SET_NAME"), //
+                    column("COLLATION_CATALOG"), //
+                    column("COLLATION_SCHEMA"), //
+                    column("COLLATION_NAME"), //
+                    column("DOMAIN_CATALOG"), //
+                    column("DOMAIN_SCHEMA"), //
+                    column("DOMAIN_NAME"), //
+                    column("MAXIMUM_CARDINALITY", TypeInfo.TYPE_INTEGER), //
+                    column("DTD_IDENTIFIER"), //
+                    column("IS_IDENTITY"), //
+                    column("IDENTITY_GENERATION"), //
+                    column("IDENTITY_START", TypeInfo.TYPE_BIGINT), //
+                    column("IDENTITY_INCREMENT", TypeInfo.TYPE_BIGINT), //
+                    column("IDENTITY_MAXIMUM", TypeInfo.TYPE_BIGINT), //
+                    column("IDENTITY_MINIMUM", TypeInfo.TYPE_BIGINT), //
+                    column("IDENTITY_CYCLE"), //
+                    column("IS_GENERATED"), //
+                    column("GENERATION_EXPRESSION"), //
+                    column("DECLARED_DATA_TYPE"), //
+                    column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    // extensions
+                    column("GEOMETRY_TYPE"), //
+                    column("GEOMETRY_SRID", TypeInfo.TYPE_INTEGER), //
+                    column("IDENTITY_BASE", TypeInfo.TYPE_BIGINT), //
+                    column("IDENTITY_CACHE", TypeInfo.TYPE_BIGINT), //
+                    column("COLUMN_ON_UPDATE"), //
+                    column("IS_VISIBLE", TypeInfo.TYPE_BOOLEAN), //
+                    column("DEFAULT_ON_NULL", TypeInfo.TYPE_BOOLEAN), //
+                    column("SELECTIVITY", TypeInfo.TYPE_INTEGER), //
+                    column("REMARKS"), //
+            };
+            indexColumnName = "TABLE_NAME";
+            break;
+        case COLUMN_PRIVILEGES:
+            setMetaTableName("COLUMN_PRIVILEGES");
+            cols = new Column[] {
+                    column("GRANTOR"), //
+                    column("GRANTEE"), //
+                    column("TABLE_CATALOG"), //
+                    column("TABLE_SCHEMA"), //
+                    column("TABLE_NAME"), //
+                    column("COLUMN_NAME"), //
+                    column("PRIVILEGE_TYPE"), //
+                    column("IS_GRANTABLE"), //
+            };
+            indexColumnName = "TABLE_NAME";
+            break;
+        case CONSTRAINT_COLUMN_USAGE:
+            setMetaTableName("CONSTRAINT_COLUMN_USAGE");
+            cols = new Column[] {
+                    column("TABLE_CATALOG"), //
+                    column("TABLE_SCHEMA"), //
+                    column("TABLE_NAME"), //
+                    column("COLUMN_NAME"), //
+                    column("CONSTRAINT_CATALOG"), //
+                    column("CONSTRAINT_SCHEMA"), //
+                    column("CONSTRAINT_NAME"), //
+            };
+            indexColumnName = "TABLE_NAME";
+            break;
+        case DOMAINS:
+            setMetaTableName("DOMAINS");
+            cols = new Column[] {
+                    column("DOMAIN_CATALOG"), //
+                    column("DOMAIN_SCHEMA"), //
+                    column("DOMAIN_NAME"), //
+                    column("DATA_TYPE"), //
+                    column("CHARACTER_MAXIMUM_LENGTH", TypeInfo.TYPE_BIGINT), //
+                    column("CHARACTER_OCTET_LENGTH", TypeInfo.TYPE_BIGINT), //
+                    column("CHARACTER_SET_CATALOG"), //
+                    column("CHARACTER_SET_SCHEMA"), //
+                    column("CHARACTER_SET_NAME"), //
+                    column("COLLATION_CATALOG"), //
+                    column("COLLATION_SCHEMA"), //
+                    column("COLLATION_NAME"), //
+                    column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    column("DATETIME_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("INTERVAL_TYPE"), //
+                    column("INTERVAL_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("DOMAIN_DEFAULT"), //
+                    column("MAXIMUM_CARDINALITY", TypeInfo.TYPE_INTEGER), //
+                    column("DTD_IDENTIFIER"), //
+                    column("DECLARED_DATA_TYPE"), //
+                    column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    // extensions
+                    column("GEOMETRY_TYPE"), //
+                    column("GEOMETRY_SRID", TypeInfo.TYPE_INTEGER), //
+                    column("DOMAIN_ON_UPDATE"), //
+                    column("PARENT_DOMAIN_CATALOG"), //
+                    column("PARENT_DOMAIN_SCHEMA"), //
+                    column("PARENT_DOMAIN_NAME"), //
+                    column("REMARKS"), //
+            };
+            indexColumnName = "DOMAIN_NAME";
+            break;
+        case DOMAIN_CONSTRAINTS:
+            setMetaTableName("DOMAIN_CONSTRAINTS");
+            cols = new Column[] {
+                    column("CONSTRAINT_CATALOG"), //
+                    column("CONSTRAINT_SCHEMA"), //
+                    column("CONSTRAINT_NAME"), //
+                    column("DOMAIN_CATALOG"), //
+                    column("DOMAIN_SCHEMA"), //
+                    column("DOMAIN_NAME"), //
+                    column("IS_DEFERRABLE"), //
+                    column("INITIALLY_DEFERRED"), //
+                    // extensions
+                    column("REMARKS"), //
+            };
+            indexColumnName = "DOMAIN_NAME";
+            break;
+        case ELEMENT_TYPES:
+            setMetaTableName("ELEMENT_TYPES");
+            cols = new Column[] {
+                    column("OBJECT_CATALOG"), //
+                    column("OBJECT_SCHEMA"), //
+                    column("OBJECT_NAME"), //
+                    column("OBJECT_TYPE"), //
+                    column("COLLECTION_TYPE_IDENTIFIER"), //
+                    column("DATA_TYPE"), //
+                    column("CHARACTER_MAXIMUM_LENGTH", TypeInfo.TYPE_BIGINT), //
+                    column("CHARACTER_OCTET_LENGTH", TypeInfo.TYPE_BIGINT), //
+                    column("CHARACTER_SET_CATALOG"), //
+                    column("CHARACTER_SET_SCHEMA"), //
+                    column("CHARACTER_SET_NAME"), //
+                    column("COLLATION_CATALOG"), //
+                    column("COLLATION_SCHEMA"), //
+                    column("COLLATION_NAME"), //
+                    column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    column("DATETIME_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("INTERVAL_TYPE"), //
+                    column("INTERVAL_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("MAXIMUM_CARDINALITY", TypeInfo.TYPE_INTEGER), //
+                    column("DTD_IDENTIFIER"), //
+                    column("DECLARED_DATA_TYPE"), //
+                    column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    // extensions
+                    column("GEOMETRY_TYPE"), //
+                    column("GEOMETRY_SRID", TypeInfo.TYPE_INTEGER), //
+            };
+            break;
+        case FIELDS:
+            setMetaTableName("FIELDS");
+            cols = new Column[] {
+                    column("OBJECT_CATALOG"), //
+                    column("OBJECT_SCHEMA"), //
+                    column("OBJECT_NAME"), //
+                    column("OBJECT_TYPE"), //
+                    column("ROW_IDENTIFIER"), //
+                    column("FIELD_NAME"), //
+                    column("ORDINAL_POSITION", TypeInfo.TYPE_INTEGER), //
+                    column("DATA_TYPE"), //
+                    column("CHARACTER_MAXIMUM_LENGTH", TypeInfo.TYPE_BIGINT), //
+                    column("CHARACTER_OCTET_LENGTH", TypeInfo.TYPE_BIGINT), //
+                    column("CHARACTER_SET_CATALOG"), //
+                    column("CHARACTER_SET_SCHEMA"), //
+                    column("CHARACTER_SET_NAME"), //
+                    column("COLLATION_CATALOG"), //
+                    column("COLLATION_SCHEMA"), //
+                    column("COLLATION_NAME"), //
+                    column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    column("DATETIME_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("INTERVAL_TYPE"), //
+                    column("INTERVAL_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("MAXIMUM_CARDINALITY", TypeInfo.TYPE_INTEGER), //
+                    column("DTD_IDENTIFIER"), //
+                    column("DECLARED_DATA_TYPE"), //
+                    column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    // extensions
+                    column("GEOMETRY_TYPE"), //
+                    column("GEOMETRY_SRID", TypeInfo.TYPE_INTEGER), //
+            };
+            break;
+        case KEY_COLUMN_USAGE:
+            setMetaTableName("KEY_COLUMN_USAGE");
+            cols = new Column[] {
+                    column("CONSTRAINT_CATALOG"), //
+                    column("CONSTRAINT_SCHEMA"), //
+                    column("CONSTRAINT_NAME"), //
+                    column("TABLE_CATALOG"), //
+                    column("TABLE_SCHEMA"), //
+                    column("TABLE_NAME"), //
+                    column("COLUMN_NAME"), //
+                    column("ORDINAL_POSITION", TypeInfo.TYPE_INTEGER), //
+                    column("POSITION_IN_UNIQUE_CONSTRAINT", TypeInfo.TYPE_INTEGER), //
+            };
+            indexColumnName = "TABLE_NAME";
+            break;
+        case PARAMETERS:
+            setMetaTableName("PARAMETERS");
+            cols = new Column[] {
+                    column("SPECIFIC_CATALOG"), //
+                    column("SPECIFIC_SCHEMA"), //
+                    column("SPECIFIC_NAME"), //
+                    column("ORDINAL_POSITION", TypeInfo.TYPE_INTEGER), //
+                    column("PARAMETER_MODE"), //
+                    column("IS_RESULT"), //
+                    column("AS_LOCATOR"), //
+                    column("PARAMETER_NAME"), //
+                    column("DATA_TYPE"), //
+                    column("CHARACTER_MAXIMUM_LENGTH", TypeInfo.TYPE_BIGINT), //
+                    column("CHARACTER_OCTET_LENGTH", TypeInfo.TYPE_BIGINT), //
+                    column("CHARACTER_SET_CATALOG"), //
+                    column("CHARACTER_SET_SCHEMA"), //
+                    column("CHARACTER_SET_NAME"), //
+                    column("COLLATION_CATALOG"), //
+                    column("COLLATION_SCHEMA"), //
+                    column("COLLATION_NAME"), //
+                    column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    column("DATETIME_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("INTERVAL_TYPE"), //
+                    column("INTERVAL_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("MAXIMUM_CARDINALITY", TypeInfo.TYPE_INTEGER), //
+                    column("DTD_IDENTIFIER"), //
+                    column("DECLARED_DATA_TYPE"), //
+                    column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    column("PARAMETER_DEFAULT"), //
+                    // extensions
+                    column("GEOMETRY_TYPE"), //
+                    column("GEOMETRY_SRID", TypeInfo.TYPE_INTEGER), //
+            };
+            break;
+        case REFERENTIAL_CONSTRAINTS:
+            setMetaTableName("REFERENTIAL_CONSTRAINTS");
+            cols = new Column[] {
+                    column("CONSTRAINT_CATALOG"), //
+                    column("CONSTRAINT_SCHEMA"), //
+                    column("CONSTRAINT_NAME"), //
+                    column("UNIQUE_CONSTRAINT_CATALOG"), //
+                    column("UNIQUE_CONSTRAINT_SCHEMA"), //
+                    column("UNIQUE_CONSTRAINT_NAME"), //
+                    column("MATCH_OPTION"), //
+                    column("UPDATE_RULE"), //
+                    column("DELETE_RULE"), //
+            };
+            indexColumnName = "CONSTRAINT_NAME";
+            break;
+        case ROUTINES:
+            setMetaTableName("ROUTINES");
+            cols = new Column[] {
+                    column("SPECIFIC_CATALOG"), //
+                    column("SPECIFIC_SCHEMA"), //
+                    column("SPECIFIC_NAME"), //
+                    column("ROUTINE_CATALOG"), //
+                    column("ROUTINE_SCHEMA"), //
+                    column("ROUTINE_NAME"), //
+                    column("ROUTINE_TYPE"), //
+                    column("DATA_TYPE"), //
+                    column("CHARACTER_MAXIMUM_LENGTH", TypeInfo.TYPE_BIGINT), //
+                    column("CHARACTER_OCTET_LENGTH", TypeInfo.TYPE_BIGINT), //
+                    column("CHARACTER_SET_CATALOG"), //
+                    column("CHARACTER_SET_SCHEMA"), //
+                    column("CHARACTER_SET_NAME"), //
+                    column("COLLATION_CATALOG"), //
+                    column("COLLATION_SCHEMA"), //
+                    column("COLLATION_NAME"), //
+                    column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    column("DATETIME_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("INTERVAL_TYPE"), //
+                    column("INTERVAL_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("MAXIMUM_CARDINALITY", TypeInfo.TYPE_INTEGER), //
+                    column("DTD_IDENTIFIER"), //
+                    column("ROUTINE_BODY"), //
+                    column("ROUTINE_DEFINITION"), //
+                    column("EXTERNAL_NAME"), //
+                    column("EXTERNAL_LANGUAGE"), //
+                    column("PARAMETER_STYLE"), //
+                    column("IS_DETERMINISTIC"), //
+                    column("DECLARED_DATA_TYPE"), //
+                    column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    // extensions
+                    column("GEOMETRY_TYPE"), //
+                    column("GEOMETRY_SRID", TypeInfo.TYPE_INTEGER), //
+                    column("REMARKS"), //
+            };
+            break;
+        case SCHEMATA:
+            setMetaTableName("SCHEMATA");
+            cols = new Column[] {
+                    column("CATALOG_NAME"), //
+                    column("SCHEMA_NAME"), //
+                    column("SCHEMA_OWNER"), //
+                    column("DEFAULT_CHARACTER_SET_CATALOG"), //
+                    column("DEFAULT_CHARACTER_SET_SCHEMA"), //
+                    column("DEFAULT_CHARACTER_SET_NAME"), //
+                    column("SQL_PATH"), //
+                    // extensions
+                    column("DEFAULT_COLLATION_NAME"), // // MySQL
+                    column("REMARKS"), //
+            };
+            break;
+        case SEQUENCES:
+            setMetaTableName("SEQUENCES");
+            cols = new Column[] {
+                    column("SEQUENCE_CATALOG"), //
+                    column("SEQUENCE_SCHEMA"), //
+                    column("SEQUENCE_NAME"), //
+                    column("DATA_TYPE"), //
+                    column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    column("START_VALUE", TypeInfo.TYPE_BIGINT), //
+                    column("MINIMUM_VALUE", TypeInfo.TYPE_BIGINT), //
+                    column("MAXIMUM_VALUE", TypeInfo.TYPE_BIGINT), //
+                    column("INCREMENT", TypeInfo.TYPE_BIGINT), //
+                    column("CYCLE_OPTION"), //
+                    column("DECLARED_DATA_TYPE"), //
+                    column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    // extensions
+                    column("BASE_VALUE", TypeInfo.TYPE_BIGINT), //
+                    column("CACHE", TypeInfo.TYPE_BIGINT), //
+                    column("REMARKS"), //
+            };
+            indexColumnName = "SEQUENCE_NAME";
+            break;
+        case TABLES:
+            setMetaTableName("TABLES");
+            cols = new Column[] {
+                    column("TABLE_CATALOG"), //
+                    column("TABLE_SCHEMA"), //
+                    column("TABLE_NAME"), //
+                    column("TABLE_TYPE"), //
+                    column("IS_INSERTABLE_INTO"), //
+                    column("COMMIT_ACTION"), //
+                    // extensions
+                    column("STORAGE_TYPE"), //
+                    column("REMARKS"), //
+                    column("LAST_MODIFICATION", TypeInfo.TYPE_BIGINT), //
+                    column("TABLE_CLASS"), //
+                    column("ROW_COUNT_ESTIMATE", TypeInfo.TYPE_BIGINT), //
+            };
+            indexColumnName = "TABLE_NAME";
+            break;
+        case TABLE_CONSTRAINTS:
+            setMetaTableName("TABLE_CONSTRAINTS");
+            cols = new Column[] {
+                    column("CONSTRAINT_CATALOG"), //
+                    column("CONSTRAINT_SCHEMA"), //
+                    column("CONSTRAINT_NAME"), //
+                    column("CONSTRAINT_TYPE"), //
+                    column("TABLE_CATALOG"), //
+                    column("TABLE_SCHEMA"), //
+                    column("TABLE_NAME"), //
+                    column("IS_DEFERRABLE"), //
+                    column("INITIALLY_DEFERRED"), //
+                    column("ENFORCED"), //
+                    // extensions
+                    column("INDEX_CATALOG"), //
+                    column("INDEX_SCHEMA"), //
+                    column("INDEX_NAME"), //
+                    column("REMARKS"), //
+            };
+            indexColumnName = "TABLE_NAME";
+            break;
+        case TABLE_PRIVILEGES:
+            setMetaTableName("TABLE_PRIVILEGES");
+            cols = new Column[] {
+                    column("GRANTOR"), //
+                    column("GRANTEE"), //
+                    column("TABLE_CATALOG"), //
+                    column("TABLE_SCHEMA"), //
+                    column("TABLE_NAME"), //
+                    column("PRIVILEGE_TYPE"), //
+                    column("IS_GRANTABLE"), //
+                    column("WITH_HIERARCHY"), //
+            };
+            indexColumnName = "TABLE_NAME";
+            break;
+        case TRIGGERS:
+            setMetaTableName("TRIGGERS");
+            cols = new Column[] {
+                    column("TRIGGER_CATALOG"), //
+                    column("TRIGGER_SCHEMA"), //
+                    column("TRIGGER_NAME"), //
+                    column("EVENT_MANIPULATION"), //
+                    column("EVENT_OBJECT_CATALOG"), //
+                    column("EVENT_OBJECT_SCHEMA"), //
+                    column("EVENT_OBJECT_TABLE"), //
+                    column("ACTION_ORIENTATION"), //
+                    column("ACTION_TIMING"), //
+                    // extensions
+                    column("IS_ROLLBACK", TypeInfo.TYPE_BOOLEAN), //
+                    column("JAVA_CLASS"), //
+                    column("QUEUE_SIZE", TypeInfo.TYPE_INTEGER), //
+                    column("NO_WAIT", TypeInfo.TYPE_BOOLEAN), //
+                    column("REMARKS"), //
+            };
+            indexColumnName = "EVENT_OBJECT_TABLE";
+            break;
+        case VIEWS:
+            setMetaTableName("VIEWS");
+            cols = new Column[] {
+                    column("TABLE_CATALOG"), //
+                    column("TABLE_SCHEMA"), //
+                    column("TABLE_NAME"), //
+                    column("VIEW_DEFINITION"), //
+                    column("CHECK_OPTION"), //
+                    column("IS_UPDATABLE"), //
+                    column("INSERTABLE_INTO"), //
+                    column("IS_TRIGGER_UPDATABLE"), //
+                    column("IS_TRIGGER_DELETABLE"), //
+                    column("IS_TRIGGER_INSERTABLE_INTO"), //
+                    // extensions
+                    column("STATUS"), //
+                    column("REMARKS"), //
+            };
+            indexColumnName = "TABLE_NAME";
+            break;
+        // Extensions
+        case CONSTANTS:
+            setMetaTableName("CONSTANTS");
+            isView = false;
+            cols = new Column[] {
+                    column("CONSTANT_CATALOG"), //
+                    column("CONSTANT_SCHEMA"), //
+                    column("CONSTANT_NAME"), //
+                    column("VALUE_DEFINITION"), //
+                    column("DATA_TYPE"), //
+                    column("CHARACTER_MAXIMUM_LENGTH", TypeInfo.TYPE_BIGINT), //
+                    column("CHARACTER_OCTET_LENGTH", TypeInfo.TYPE_BIGINT), //
+                    column("CHARACTER_SET_CATALOG"), //
+                    column("CHARACTER_SET_SCHEMA"), //
+                    column("CHARACTER_SET_NAME"), //
+                    column("COLLATION_CATALOG"), //
+                    column("COLLATION_SCHEMA"), //
+                    column("COLLATION_NAME"), //
+                    column("NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_PRECISION_RADIX", TypeInfo.TYPE_INTEGER), //
+                    column("NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    column("DATETIME_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("INTERVAL_TYPE"), //
+                    column("INTERVAL_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("MAXIMUM_CARDINALITY", TypeInfo.TYPE_INTEGER), //
+                    column("DTD_IDENTIFIER"), //
+                    column("DECLARED_DATA_TYPE"), //
+                    column("DECLARED_NUMERIC_PRECISION", TypeInfo.TYPE_INTEGER), //
+                    column("DECLARED_NUMERIC_SCALE", TypeInfo.TYPE_INTEGER), //
+                    column("GEOMETRY_TYPE"), //
+                    column("GEOMETRY_SRID", TypeInfo.TYPE_INTEGER), //
+                    column("REMARKS"), //
+            };
+            indexColumnName = "CONSTANT_NAME";
+            break;
+        case ENUM_VALUES:
+            setMetaTableName("ENUM_VALUES");
+            isView = false;
+            cols = new Column[] {
+                    column("OBJECT_CATALOG"), //
+                    column("OBJECT_SCHEMA"), //
+                    column("OBJECT_NAME"), //
+                    column("OBJECT_TYPE"), //
+                    column("ENUM_IDENTIFIER"), //
+                    column("VALUE_NAME"), //
+                    column("VALUE_ORDINAL"), //
+            };
+            break;
+        case INDEXES:
+            setMetaTableName("INDEXES");
+            isView = false;
+            cols = new Column[] {
+                    column("INDEX_CATALOG"), //
+                    column("INDEX_SCHEMA"), //
+                    column("INDEX_NAME"), //
+                    column("TABLE_CATALOG"), //
+                    column("TABLE_SCHEMA"), //
+                    column("TABLE_NAME"), //
+                    column("INDEX_TYPE_NAME"), //
+                    column("IS_GENERATED", TypeInfo.TYPE_BOOLEAN), //
+                    column("REMARKS"), //
+                    column("INDEX_CLASS"), //
+            };
+            indexColumnName = "TABLE_NAME";
+            break;
+        case INDEX_COLUMNS:
+            setMetaTableName("INDEX_COLUMNS");
+            isView = false;
+            cols = new Column[] {
+                    column("INDEX_CATALOG"), //
+                    column("INDEX_SCHEMA"), //
+                    column("INDEX_NAME"), //
+                    column("TABLE_CATALOG"), //
+                    column("TABLE_SCHEMA"), //
+                    column("TABLE_NAME"), //
+                    column("COLUMN_NAME"), //
+                    column("ORDINAL_POSITION", TypeInfo.TYPE_INTEGER), //
+                    column("ORDERING_SPECIFICATION"), //
+                    column("NULL_ORDERING"), //
+                    column("IS_UNIQUE", TypeInfo.TYPE_BOOLEAN), //
+            };
+            indexColumnName = "TABLE_NAME";
+            break;
+        case IN_DOUBT:
+            setMetaTableName("IN_DOUBT");
+            isView = false;
+            cols = new Column[] {
+                    column("TRANSACTION_NAME"), //
+                    column("TRANSACTION_STATE"), //
+            };
+            break;
+        case LOCKS:
+            setMetaTableName("LOCKS");
+            isView = false;
+            cols = new Column[] {
+                    column("TABLE_SCHEMA"), //
+                    column("TABLE_NAME"), //
+                    column("SESSION_ID", TypeInfo.TYPE_INTEGER), //
+                    column("LOCK_TYPE"), //
+            };
+            break;
+        case QUERY_STATISTICS:
+            setMetaTableName("QUERY_STATISTICS");
+            isView = false;
+            cols = new Column[] {
+                    column("SQL_STATEMENT"), //
+                    column("EXECUTION_COUNT", TypeInfo.TYPE_INTEGER), //
+                    column("MIN_EXECUTION_TIME", TypeInfo.TYPE_DOUBLE), //
+                    column("MAX_EXECUTION_TIME", TypeInfo.TYPE_DOUBLE), //
+                    column("CUMULATIVE_EXECUTION_TIME", TypeInfo.TYPE_DOUBLE), //
+                    column("AVERAGE_EXECUTION_TIME", TypeInfo.TYPE_DOUBLE), //
+                    column("STD_DEV_EXECUTION_TIME", TypeInfo.TYPE_DOUBLE), //
+                    column("MIN_ROW_COUNT", TypeInfo.TYPE_BIGINT), //
+                    column("MAX_ROW_COUNT", TypeInfo.TYPE_BIGINT), //
+                    column("CUMULATIVE_ROW_COUNT", TypeInfo.TYPE_BIGINT), //
+                    column("AVERAGE_ROW_COUNT", TypeInfo.TYPE_DOUBLE), //
+                    column("STD_DEV_ROW_COUNT", TypeInfo.TYPE_DOUBLE), //
+            };
+            break;
+        case RIGHTS:
+            setMetaTableName("RIGHTS");
+            isView = false;
+            cols = new Column[] {
+                    column("GRANTEE"), //
+                    column("GRANTEETYPE"), //
+                    column("GRANTEDROLE"), //
+                    column("RIGHTS"), //
+                    column("TABLE_SCHEMA"), //
+                    column("TABLE_NAME"), //
+            };
+            indexColumnName = "TABLE_NAME";
+            break;
+        case ROLES:
+            setMetaTableName("ROLES");
+            isView = false;
+            cols = new Column[] {
+                    column("ROLE_NAME"), //
+                    column("REMARKS"), //
+            };
+            break;
+        case SESSIONS:
+            setMetaTableName("SESSIONS");
+            isView = false;
+            cols = new Column[] {
+                    column("SESSION_ID", TypeInfo.TYPE_INTEGER), //
+                    column("USER_NAME"), //
+                    column("SERVER"), //
+                    column("CLIENT_ADDR"), //
+                    column("CLIENT_INFO"), //
+                    column("SESSION_START", TypeInfo.TYPE_TIMESTAMP_TZ), //
+                    column("ISOLATION_LEVEL"), //
+                    column("EXECUTING_STATEMENT"), //
+                    column("EXECUTING_STATEMENT_START", TypeInfo.TYPE_TIMESTAMP_TZ), //
+                    column("CONTAINS_UNCOMMITTED", TypeInfo.TYPE_BOOLEAN), //
+                    column("SESSION_STATE"), //
+                    column("BLOCKER_ID", TypeInfo.TYPE_INTEGER), //
+                    column("SLEEP_SINCE", TypeInfo.TYPE_TIMESTAMP_TZ), //
+            };
+            break;
+        case SESSION_STATE:
+            setMetaTableName("SESSION_STATE");
+            isView = false;
+            cols = new Column[] {
+                    column("STATE_KEY"), //
+                    column("STATE_COMMAND"), //
+            };
+            break;
+        case SETTINGS:
+            setMetaTableName("SETTINGS");
+            isView = false;
+            cols = new Column[] {
+                    column("SETTING_NAME"), //
+                    column("SETTING_VALUE"), //
+            };
+            break;
+        case SYNONYMS:
+            setMetaTableName("SYNONYMS");
+            isView = false;
+            cols = new Column[] {
+                    column("SYNONYM_CATALOG"), //
+                    column("SYNONYM_SCHEMA"), //
+                    column("SYNONYM_NAME"), //
+                    column("SYNONYM_FOR"), //
+                    column("SYNONYM_FOR_SCHEMA"), //
+                    column("TYPE_NAME"), //
+                    column("STATUS"), //
+                    column("REMARKS"), //
+            };
+            indexColumnName = "SYNONYM_NAME";
+            break;
+        case USERS:
+            setMetaTableName("USERS");
+            isView = false;
+            cols = new Column[] {
+                    column("USER_NAME"), //
+                    column("IS_ADMIN", TypeInfo.TYPE_BOOLEAN),
+                    column("REMARKS"), //
+            };
+            break;
+        default:
+            throw DbException.getInternalError("type=" + type);
         }
         setColumns(cols);
 
@@ -864,7 +864,7 @@ public final class InformationSchemaTable extends MetaTable {
             metaIndex = null;
         } else {
             indexColumn = getColumn(database.sysIdentifier(indexColumnName)).getColumnId();
-            IndexColumn[] indexCols = IndexColumn.wrap(new Column[]{cols[indexColumn]});
+            IndexColumn[] indexCols = IndexColumn.wrap(new Column[] { cols[indexColumn] });
             metaIndex = new MetaIndex(this, indexCols, false);
         }
         this.isView = isView;
@@ -884,116 +884,116 @@ public final class InformationSchemaTable extends MetaTable {
         ArrayList<Row> rows = Utils.newSmallArrayList();
         String catalog = database.getShortName();
         switch (type) {
-            // Standard table
-            case INFORMATION_SCHEMA_CATALOG_NAME:
-                informationSchemaCatalogName(session, rows, catalog);
-                break;
-            // Standard views
-            case CHECK_CONSTRAINTS:
-                checkConstraints(session, indexFrom, indexTo, rows, catalog);
-                break;
-            case COLLATIONS:
-                collations(session, rows, catalog);
-                break;
-            case COLUMNS:
-                columns(session, indexFrom, indexTo, rows, catalog);
-                break;
-            case COLUMN_PRIVILEGES:
-                columnPrivileges(session, indexFrom, indexTo, rows, catalog);
-                break;
-            case CONSTRAINT_COLUMN_USAGE:
-                constraintColumnUsage(session, indexFrom, indexTo, rows, catalog);
-                break;
-            case DOMAINS:
-                domains(session, indexFrom, indexTo, rows, catalog);
-                break;
-            case DOMAIN_CONSTRAINTS:
-                domainConstraints(session, indexFrom, indexTo, rows, catalog);
-                break;
-            case ELEMENT_TYPES:
-                elementTypesFields(session, rows, catalog, ELEMENT_TYPES);
-                break;
-            case FIELDS:
-                elementTypesFields(session, rows, catalog, FIELDS);
-                break;
-            case KEY_COLUMN_USAGE:
-                keyColumnUsage(session, indexFrom, indexTo, rows, catalog);
-                break;
-            case PARAMETERS:
-                parameters(session, rows, catalog);
-                break;
-            case REFERENTIAL_CONSTRAINTS:
-                referentialConstraints(session, indexFrom, indexTo, rows, catalog);
-                break;
-            case ROUTINES:
-                routines(session, rows, catalog);
-                break;
-            case SCHEMATA:
-                schemata(session, rows, catalog);
-                break;
-            case SEQUENCES:
-                sequences(session, indexFrom, indexTo, rows, catalog);
-                break;
-            case TABLES:
-                tables(session, indexFrom, indexTo, rows, catalog);
-                break;
-            case TABLE_CONSTRAINTS:
-                tableConstraints(session, indexFrom, indexTo, rows, catalog);
-                break;
-            case TABLE_PRIVILEGES:
-                tablePrivileges(session, indexFrom, indexTo, rows, catalog);
-                break;
-            case TRIGGERS:
-                triggers(session, indexFrom, indexTo, rows, catalog);
-                break;
-            case VIEWS:
-                views(session, indexFrom, indexTo, rows, catalog);
-                break;
-            // Extensions
-            case CONSTANTS:
-                constants(session, indexFrom, indexTo, rows, catalog);
-                break;
-            case ENUM_VALUES:
-                elementTypesFields(session, rows, catalog, ENUM_VALUES);
-                break;
-            case INDEXES:
-                indexes(session, indexFrom, indexTo, rows, catalog, false);
-                break;
-            case INDEX_COLUMNS:
-                indexes(session, indexFrom, indexTo, rows, catalog, true);
-                break;
-            case IN_DOUBT:
-                inDoubt(session, rows);
-                break;
-            case LOCKS:
-                locks(session, rows);
-                break;
-            case QUERY_STATISTICS:
-                queryStatistics(session, rows);
-                break;
-            case RIGHTS:
-                rights(session, indexFrom, indexTo, rows);
-                break;
-            case ROLES:
-                roles(session, rows);
-                break;
-            case SESSIONS:
-                sessions(session, rows);
-                break;
-            case SESSION_STATE:
-                sessionState(session, rows);
-                break;
-            case SETTINGS:
-                settings(session, rows);
-                break;
-            case SYNONYMS:
-                synonyms(session, rows, catalog);
-                break;
-            case USERS:
-                users(session, rows);
-                break;
-            default:
-                throw DbException.getInternalError("type=" + type);
+        // Standard table
+        case INFORMATION_SCHEMA_CATALOG_NAME:
+            informationSchemaCatalogName(session, rows, catalog);
+            break;
+        // Standard views
+        case CHECK_CONSTRAINTS:
+            checkConstraints(session, indexFrom, indexTo, rows, catalog);
+            break;
+        case COLLATIONS:
+            collations(session, rows, catalog);
+            break;
+        case COLUMNS:
+            columns(session, indexFrom, indexTo, rows, catalog);
+            break;
+        case COLUMN_PRIVILEGES:
+            columnPrivileges(session, indexFrom, indexTo, rows, catalog);
+            break;
+        case CONSTRAINT_COLUMN_USAGE:
+            constraintColumnUsage(session, indexFrom, indexTo, rows, catalog);
+            break;
+        case DOMAINS:
+            domains(session, indexFrom, indexTo, rows, catalog);
+            break;
+        case DOMAIN_CONSTRAINTS:
+            domainConstraints(session, indexFrom, indexTo, rows, catalog);
+            break;
+        case ELEMENT_TYPES:
+            elementTypesFields(session, rows, catalog, ELEMENT_TYPES);
+            break;
+        case FIELDS:
+            elementTypesFields(session, rows, catalog, FIELDS);
+            break;
+        case KEY_COLUMN_USAGE:
+            keyColumnUsage(session, indexFrom, indexTo, rows, catalog);
+            break;
+        case PARAMETERS:
+            parameters(session, rows, catalog);
+            break;
+        case REFERENTIAL_CONSTRAINTS:
+            referentialConstraints(session, indexFrom, indexTo, rows, catalog);
+            break;
+        case ROUTINES:
+            routines(session, rows, catalog);
+            break;
+        case SCHEMATA:
+            schemata(session, rows, catalog);
+            break;
+        case SEQUENCES:
+            sequences(session, indexFrom, indexTo, rows, catalog);
+            break;
+        case TABLES:
+            tables(session, indexFrom, indexTo, rows, catalog);
+            break;
+        case TABLE_CONSTRAINTS:
+            tableConstraints(session, indexFrom, indexTo, rows, catalog);
+            break;
+        case TABLE_PRIVILEGES:
+            tablePrivileges(session, indexFrom, indexTo, rows, catalog);
+            break;
+        case TRIGGERS:
+            triggers(session, indexFrom, indexTo, rows, catalog);
+            break;
+        case VIEWS:
+            views(session, indexFrom, indexTo, rows, catalog);
+            break;
+        // Extensions
+        case CONSTANTS:
+            constants(session, indexFrom, indexTo, rows, catalog);
+            break;
+        case ENUM_VALUES:
+            elementTypesFields(session, rows, catalog, ENUM_VALUES);
+            break;
+        case INDEXES:
+            indexes(session, indexFrom, indexTo, rows, catalog, false);
+            break;
+        case INDEX_COLUMNS:
+            indexes(session, indexFrom, indexTo, rows, catalog, true);
+            break;
+        case IN_DOUBT:
+            inDoubt(session, rows);
+            break;
+        case LOCKS:
+            locks(session, rows);
+            break;
+        case QUERY_STATISTICS:
+            queryStatistics(session, rows);
+            break;
+        case RIGHTS:
+            rights(session, indexFrom, indexTo, rows);
+            break;
+        case ROLES:
+            roles(session, rows);
+            break;
+        case SESSIONS:
+            sessions(session, rows);
+            break;
+        case SESSION_STATE:
+            sessionState(session, rows);
+            break;
+        case SETTINGS:
+            settings(session, rows);
+            break;
+        case SYNONYMS:
+            synonyms(session, rows, catalog);
+            break;
+        case USERS:
+            users(session, rows);
+            break;
+        default:
+            throw DbException.getInternalError("type=" + type);
         }
         return rows;
     }
@@ -1005,7 +1005,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void checkConstraints(SessionLocal session, Value indexFrom, Value indexTo, ArrayList<Row> rows,
-                                  String catalog) {
+            String catalog) {
         for (Schema schema : database.getAllSchemas()) {
             for (Constraint constraint : schema.getAllConstraints()) {
                 Type constraintType = constraint.getConstraintType();
@@ -1028,7 +1028,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void checkConstraints(SessionLocal session, ArrayList<Row> rows, String catalog, Constraint constraint,
-                                  String constraintName) {
+            String constraintName) {
         add(session, rows,
                 // CONSTRAINT_CATALOG
                 catalog,
@@ -1050,7 +1050,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void collations(SessionLocal session, ArrayList<Row> rows, String catalog, String mainSchemaName,
-                            String name, String languageTag) {
+            String name, String languageTag) {
         if ("und".equals(languageTag)) {
             languageTag = null;
         }
@@ -1106,18 +1106,18 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void columns(SessionLocal session, ArrayList<Row> rows, String catalog, String mainSchemaName,
-                         String collation, Table table, String tableName) {
+            String collation, Table table, String tableName) {
         if (hideTable(table, session)) {
             return;
         }
         Column[] cols = table.getColumns();
-        for (int i = 0, l = cols.length; i < l; ) {
+        for (int i = 0, l = cols.length; i < l;) {
             columns(session, rows, catalog, mainSchemaName, collation, table, tableName, cols[i], ++i);
         }
     }
 
     private void columns(SessionLocal session, ArrayList<Row> rows, String catalog, String mainSchemaName,
-                         String collation, Table table, String tableName, Column c, int ordinalPosition) {
+            String collation, Table table, String tableName, Column c, int ordinalPosition) {
         TypeInfo typeInfo = c.getType();
         DataTypeInformation dt = DataTypeInformation.valueOf(typeInfo);
         String characterSetCatalog, characterSetSchema, characterSetName, collationName;
@@ -1271,7 +1271,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void columnPrivileges(SessionLocal session, Value indexFrom, Value indexTo, ArrayList<Row> rows,
-                                  String catalog) {
+            String catalog) {
         for (Right r : database.getAllRights()) {
             DbObject object = r.getGrantedObject();
             if (!(object instanceof Table)) {
@@ -1294,7 +1294,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void constraintColumnUsage(SessionLocal session, Value indexFrom, Value indexTo, ArrayList<Row> rows,
-                                       String catalog) {
+            String catalog) {
         for (Schema schema : database.getAllSchemas()) {
             for (Constraint constraint : schema.getAllConstraints()) {
                 constraintColumnUsage(session, indexFrom, indexTo, rows, catalog, constraint);
@@ -1303,38 +1303,38 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void constraintColumnUsage(SessionLocal session, Value indexFrom, Value indexTo, ArrayList<Row> rows,
-                                       String catalog, Constraint constraint) {
+            String catalog, Constraint constraint) {
         switch (constraint.getConstraintType()) {
-            case CHECK:
-            case DOMAIN: {
-                HashSet<Column> columns = new HashSet<>();
-                constraint.getExpression().isEverything(ExpressionVisitor.getColumnsVisitor(columns, null));
-                for (Column column : columns) {
-                    Table table = column.getTable();
-                    if (checkIndex(session, table.getName(), indexFrom, indexTo) && !hideTable(table, session)) {
-                        addConstraintColumnUsage(session, rows, catalog, constraint, column);
-                    }
-                }
-                break;
-            }
-            case REFERENTIAL: {
-                Table table = constraint.getRefTable();
+        case CHECK:
+        case DOMAIN: {
+            HashSet<Column> columns = new HashSet<>();
+            constraint.getExpression().isEverything(ExpressionVisitor.getColumnsVisitor(columns, null));
+            for (Column column : columns) {
+                Table table = column.getTable();
                 if (checkIndex(session, table.getName(), indexFrom, indexTo) && !hideTable(table, session)) {
-                    for (Column column : constraint.getReferencedColumns(table)) {
-                        addConstraintColumnUsage(session, rows, catalog, constraint, column);
-                    }
+                    addConstraintColumnUsage(session, rows, catalog, constraint, column);
                 }
             }
-            //$FALL-THROUGH$
-            case PRIMARY_KEY:
-            case UNIQUE: {
-                Table table = constraint.getTable();
-                if (checkIndex(session, table.getName(), indexFrom, indexTo) && !hideTable(table, session)) {
-                    for (Column column : constraint.getReferencedColumns(table)) {
-                        addConstraintColumnUsage(session, rows, catalog, constraint, column);
-                    }
+            break;
+        }
+        case REFERENTIAL: {
+            Table table = constraint.getRefTable();
+            if (checkIndex(session, table.getName(), indexFrom, indexTo) && !hideTable(table, session)) {
+                for (Column column : constraint.getReferencedColumns(table)) {
+                    addConstraintColumnUsage(session, rows, catalog, constraint, column);
                 }
             }
+        }
+        //$FALL-THROUGH$
+        case PRIMARY_KEY:
+        case UNIQUE: {
+            Table table = constraint.getTable();
+            if (checkIndex(session, table.getName(), indexFrom, indexTo) && !hideTable(table, session)) {
+                for (Column column : constraint.getReferencedColumns(table)) {
+                    addConstraintColumnUsage(session, rows, catalog, constraint, column);
+                }
+            }
+        }
         }
     }
 
@@ -1353,7 +1353,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void domains(SessionLocal session, ArrayList<Row> rows, String catalog, String mainSchemaName,
-                         String collation, Domain domain, String domainName) {
+            String collation, Domain domain, String domainName) {
         Domain parentDomain = domain.getDomain();
         TypeInfo typeInfo = domain.getDataType();
         DataTypeInformation dt = DataTypeInformation.valueOf(typeInfo);
@@ -1434,7 +1434,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void domainConstraints(SessionLocal session, Value indexFrom, Value indexTo, ArrayList<Row> rows,
-                                   String catalog) {
+            String catalog) {
         for (Schema schema : database.getAllSchemas()) {
             for (Constraint constraint : schema.getAllConstraints()) {
                 if (constraint.getConstraintType() != Constraint.Type.DOMAIN) {
@@ -1452,7 +1452,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void domainConstraints(SessionLocal session, ArrayList<Row> rows, String catalog,
-                                   ConstraintDomain constraint, Domain domain, String domainName) {
+            ConstraintDomain constraint, Domain domain, String domainName) {
         add(session, rows,
                 // CONSTRAINT_CATALOG
                 catalog,
@@ -1529,7 +1529,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void elementTypesFieldsForTable(SessionLocal session, ArrayList<Row> rows, String catalog, int type,
-                                            String mainSchemaName, String collation, String schemaName, Table table) {
+            String mainSchemaName, String collation, String schemaName, Table table) {
         if (hideTable(table, session)) {
             return;
         }
@@ -1542,46 +1542,46 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void elementTypesFieldsRow(SessionLocal session, ArrayList<Row> rows, String catalog, int type,
-                                       String mainSchemaName, String collation, String objectSchema, String objectName, String objectType,
-                                       String identifier, TypeInfo typeInfo) {
+            String mainSchemaName, String collation, String objectSchema, String objectName, String objectType,
+            String identifier, TypeInfo typeInfo) {
         switch (typeInfo.getValueType()) {
-            case Value.ENUM:
-                if (type == ENUM_VALUES) {
-                    enumValues(session, rows, catalog, objectSchema, objectName, objectType, identifier, typeInfo);
-                }
-                break;
-            case Value.ARRAY: {
-                typeInfo = (TypeInfo) typeInfo.getExtTypeInfo();
-                String dtdIdentifier = identifier + '_';
-                if (type == ELEMENT_TYPES) {
-                    elementTypes(session, rows, catalog, mainSchemaName, collation, objectSchema, objectName,
-                            objectType, identifier, dtdIdentifier, typeInfo);
+        case Value.ENUM:
+            if (type == ENUM_VALUES) {
+                enumValues(session, rows, catalog, objectSchema, objectName, objectType, identifier, typeInfo);
+            }
+            break;
+        case Value.ARRAY: {
+            typeInfo = (TypeInfo) typeInfo.getExtTypeInfo();
+            String dtdIdentifier = identifier + '_';
+            if (type == ELEMENT_TYPES) {
+                elementTypes(session, rows, catalog, mainSchemaName, collation, objectSchema, objectName,
+                        objectType, identifier, dtdIdentifier, typeInfo);
+            }
+            elementTypesFieldsRow(session, rows, catalog, type, mainSchemaName, collation, objectSchema,
+                    objectName, objectType, dtdIdentifier, typeInfo);
+            break;
+        }
+        case Value.ROW: {
+            ExtTypeInfoRow ext = (ExtTypeInfoRow) typeInfo.getExtTypeInfo();
+            int ordinalPosition = 0;
+            for (Map.Entry<String, TypeInfo> entry : ext.getFields()) {
+                typeInfo = entry.getValue();
+                String fieldName = entry.getKey();
+                String dtdIdentifier = identifier + '_' + ++ordinalPosition;
+                if (type == FIELDS) {
+                    fields(session, rows, catalog, mainSchemaName, collation, objectSchema, objectName,
+                            objectType, identifier, fieldName, ordinalPosition, dtdIdentifier, typeInfo);
                 }
                 elementTypesFieldsRow(session, rows, catalog, type, mainSchemaName, collation, objectSchema,
                         objectName, objectType, dtdIdentifier, typeInfo);
-                break;
             }
-            case Value.ROW: {
-                ExtTypeInfoRow ext = (ExtTypeInfoRow) typeInfo.getExtTypeInfo();
-                int ordinalPosition = 0;
-                for (Map.Entry<String, TypeInfo> entry : ext.getFields()) {
-                    typeInfo = entry.getValue();
-                    String fieldName = entry.getKey();
-                    String dtdIdentifier = identifier + '_' + ++ordinalPosition;
-                    if (type == FIELDS) {
-                        fields(session, rows, catalog, mainSchemaName, collation, objectSchema, objectName,
-                                objectType, identifier, fieldName, ordinalPosition, dtdIdentifier, typeInfo);
-                    }
-                    elementTypesFieldsRow(session, rows, catalog, type, mainSchemaName, collation, objectSchema,
-                            objectName, objectType, dtdIdentifier, typeInfo);
-                }
-            }
+        }
         }
     }
 
     private void elementTypes(SessionLocal session, ArrayList<Row> rows, String catalog, String mainSchemaName,
-                              String collation, String objectSchema, String objectName, String objectType, String collectionIdentifier,
-                              String dtdIdentifier, TypeInfo typeInfo) {
+            String collation, String objectSchema, String objectName, String objectType, String collectionIdentifier,
+            String dtdIdentifier, TypeInfo typeInfo) {
         DataTypeInformation dt = DataTypeInformation.valueOf(typeInfo);
         String characterSetCatalog, characterSetSchema, characterSetName, collationName;
         if (dt.hasCharsetAndCollation) {
@@ -1652,8 +1652,8 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void fields(SessionLocal session, ArrayList<Row> rows, String catalog, String mainSchemaName,
-                        String collation, String objectSchema, String objectName, String objectType, String rowIdentifier,
-                        String fieldName, int ordinalPosition, String dtdIdentifier, TypeInfo typeInfo) {
+            String collation, String objectSchema, String objectName, String objectType, String rowIdentifier,
+            String fieldName, int ordinalPosition, String dtdIdentifier, TypeInfo typeInfo) {
         DataTypeInformation dt = DataTypeInformation.valueOf(typeInfo);
         String characterSetCatalog, characterSetSchema, characterSetName, collationName;
         if (dt.hasCharsetAndCollation) {
@@ -1728,7 +1728,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void keyColumnUsage(SessionLocal session, Value indexFrom, Value indexTo, ArrayList<Row> rows,
-                                String catalog) {
+            String catalog) {
         for (Schema schema : database.getAllSchemas()) {
             for (Constraint constraint : schema.getAllConstraints()) {
                 Constraint.Type constraintType = constraint.getConstraintType();
@@ -1755,7 +1755,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void keyColumnUsage(SessionLocal session, ArrayList<Row> rows, String catalog, Constraint constraint,
-                                Constraint.Type constraintType, IndexColumn[] indexColumns, Table table, String tableName) {
+            Constraint.Type constraintType, IndexColumn[] indexColumns, Table table, String tableName) {
         ConstraintUnique referenced;
         if (constraintType == Constraint.Type.REFERENTIAL) {
             referenced = ((ConstraintReferential) constraint).getReferencedConstraint();
@@ -1827,7 +1827,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void parameters(SessionLocal session, ArrayList<Row> rows, String catalog, String mainSchemaName,
-                            String collation, String schema, String specificName, TypeInfo typeInfo, int pos) {
+            String collation, String schema, String specificName, TypeInfo typeInfo, int pos) {
         DataTypeInformation dt = DataTypeInformation.valueOf(typeInfo);
         String characterSetCatalog, characterSetSchema, characterSetName, collationName;
         if (dt.hasCharsetAndCollation) {
@@ -1906,7 +1906,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void referentialConstraints(SessionLocal session, Value indexFrom, Value indexTo, ArrayList<Row> rows,
-                                        String catalog) {
+            String catalog) {
         for (Schema schema : database.getAllSchemas()) {
             for (Constraint constraint : schema.getAllConstraints()) {
                 if (constraint.getConstraintType() != Constraint.Type.REFERENTIAL) {
@@ -1925,7 +1925,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void referentialConstraints(SessionLocal session, ArrayList<Row> rows, String catalog,
-                                        ConstraintReferential constraint, String constraintName) {
+            ConstraintReferential constraint, String constraintName) {
         ConstraintUnique unique = constraint.getReferencedConstraint();
         add(session, rows,
                 // CONSTRAINT_CATALOG
@@ -1990,8 +1990,8 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void routines(SessionLocal session, ArrayList<Row> rows, String catalog, String mainSchemaName, //
-                          String collation, String schema, String name, String specificName, String routineType, String definition,
-                          String externalName, TypeInfo typeInfo, boolean deterministic, String remarks) {
+            String collation, String schema, String name, String specificName, String routineType, String definition,
+            String externalName, TypeInfo typeInfo, boolean deterministic, String remarks) {
         DataTypeInformation dt = typeInfo != null ? DataTypeInformation.valueOf(typeInfo) : DataTypeInformation.NULL;
         String characterSetCatalog, characterSetSchema, characterSetName, collationName;
         if (dt.hasCharsetAndCollation) {
@@ -2123,7 +2123,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void sequences(SessionLocal session, ArrayList<Row> rows, String catalog, Sequence sequence,
-                           String sequenceName) {
+            String sequenceName) {
         DataTypeInformation dt = DataTypeInformation.valueOf(sequence.getDataType());
         Sequence.Cycle cycle = sequence.getCycle();
         add(session, rows,
@@ -2164,7 +2164,7 @@ public final class InformationSchemaTable extends MetaTable {
                 ValueBigint.get(sequence.getCacheSize()),
                 // REMARKS
                 sequence.getComment()
-        );
+            );
     }
 
     private void tables(SessionLocal session, Value indexFrom, Value indexTo, ArrayList<Row> rows, String catalog) {
@@ -2185,7 +2185,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void tables(SessionLocal session, ArrayList<Row> rows, String catalog, Table table,
-                        String tableName) {
+            String tableName) {
         if (hideTable(table, session)) {
             return;
         }
@@ -2196,15 +2196,15 @@ public final class InformationSchemaTable extends MetaTable {
         } else {
             commitAction = null;
             switch (table.getTableType()) {
-                case TABLE_LINK:
-                    storageType = "TABLE LINK";
-                    break;
-                case EXTERNAL_TABLE_ENGINE:
-                    storageType = "EXTERNAL";
-                    break;
-                default:
-                    storageType = table.isPersistIndexes() ? "CACHED" : "MEMORY";
-                    break;
+            case TABLE_LINK:
+                storageType = "TABLE LINK";
+                break;
+            case EXTERNAL_TABLE_ENGINE:
+                storageType = "EXTERNAL";
+                break;
+            default:
+                storageType = table.isPersistIndexes() ? "CACHED" : "MEMORY";
+                break;
             }
         }
         long lastModification = table.getMaxDataModificationId();
@@ -2236,7 +2236,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void tableConstraints(SessionLocal session, Value indexFrom, Value indexTo, ArrayList<Row> rows,
-                                  String catalog) {
+            String catalog) {
         for (Schema schema : database.getAllSchemas()) {
             for (Constraint constraint : schema.getAllConstraints()) {
                 Constraint.Type constraintType = constraint.getConstraintType();
@@ -2257,7 +2257,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void tableConstraints(SessionLocal session, ArrayList<Row> rows, String catalog, Constraint constraint,
-                                  Constraint.Type constraintType, Table table, String tableName) {
+            Constraint.Type constraintType, Table table, String tableName) {
         Index index = constraint.getIndex();
         boolean enforced;
         if (constraintType != Constraint.Type.REFERENTIAL) {
@@ -2300,7 +2300,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void tablePrivileges(SessionLocal session, Value indexFrom, Value indexTo, ArrayList<Row> rows, //
-                                 String catalog) {
+            String catalog) {
         for (Right r : database.getAllRights()) {
             DbObject object = r.getGrantedObject();
             if (!(object instanceof Table)) {
@@ -2344,7 +2344,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void triggers(SessionLocal session, ArrayList<Row> rows, String catalog, TriggerObject trigger,
-                          String eventManipulation, Table table, String tableName) {
+            String eventManipulation, Table table, String tableName) {
         add(session, rows,
                 // TRIGGER_CATALOG
                 catalog,
@@ -2463,7 +2463,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void constants(SessionLocal session, ArrayList<Row> rows, String catalog, String mainSchemaName,
-                           String collation, Constant constant, String constantName) {
+            String collation, Constant constant, String constantName) {
         ValueExpression expr = constant.getValue();
         TypeInfo typeInfo = expr.getType();
         DataTypeInformation dt = DataTypeInformation.valueOf(typeInfo);
@@ -2531,11 +2531,11 @@ public final class InformationSchemaTable extends MetaTable {
                 dt.geometrySrid,
                 // REMARKS
                 constant.getComment()
-        );
+            );
     }
 
     private void enumValues(SessionLocal session, ArrayList<Row> rows, String catalog, String objectSchema,
-                            String objectName, String objectType, String enumIdentifier, TypeInfo typeInfo) {
+            String objectName, String objectType, String enumIdentifier, TypeInfo typeInfo) {
         ExtTypeInfoEnum ext = (ExtTypeInfoEnum) typeInfo.getExtTypeInfo();
         if (ext == null) {
             return;
@@ -2561,7 +2561,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void indexes(SessionLocal session, Value indexFrom, Value indexTo, ArrayList<Row> rows, String catalog,
-                         boolean columns) {
+            boolean columns) {
         if (indexFrom != null && indexFrom.equals(indexTo)) {
             String tableName = indexFrom.getString();
             if (tableName == null) {
@@ -2596,7 +2596,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void indexes(SessionLocal session, ArrayList<Row> rows, String catalog, boolean columns, Table table,
-                         String tableName) {
+            String tableName) {
         if (hideTable(table, session)) {
             return;
         }
@@ -2617,7 +2617,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void indexes(SessionLocal session, ArrayList<Row> rows, String catalog, Table table, String tableName,
-                         Index index) {
+            Index index) {
         add(session, rows,
                 // INDEX_CATALOG
                 catalog,
@@ -2639,14 +2639,14 @@ public final class InformationSchemaTable extends MetaTable {
                 index.getComment(),
                 // INDEX_CLASS
                 index.getClass().getName()
-        );
+            );
     }
 
     private void indexColumns(SessionLocal session, ArrayList<Row> rows, String catalog, Table table,
-                              String tableName, Index index) {
+            String tableName, Index index) {
         IndexColumn[] cols = index.getIndexColumns();
         int uniqueColumnCount = index.getUniqueColumnCount();
-        for (int i = 0, l = cols.length; i < l; ) {
+        for (int i = 0, l = cols.length; i < l;) {
             IndexColumn idxCol = cols[i];
             int sortType = idxCol.sortType;
             add(session, rows,
@@ -2673,7 +2673,7 @@ public final class InformationSchemaTable extends MetaTable {
                             : (sortType & SortOrder.NULLS_LAST) != 0 ? "LAST" : null,
                     // IS_UNIQUE
                     ValueBoolean.get(i <= uniqueColumnCount)
-            );
+                );
         }
     }
 
@@ -2946,7 +2946,7 @@ public final class InformationSchemaTable extends MetaTable {
                     "java.vendor", "os.name", "os.arch", "os.version",
                     "sun.os.patch.level", "file.separator",
                     "path.separator", "line.separator", "user.country",
-                    "user.language", "user.variant", "file.encoding"};
+                    "user.language", "user.variant", "file.encoding" };
             for (String s : settings) {
                 add(session, rows, "property." + s, Utils.getProperty(s, ""));
             }
@@ -3062,7 +3062,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void addConstraintColumnUsage(SessionLocal session, ArrayList<Row> rows, String catalog,
-                                          Constraint constraint, Column column) {
+            Constraint constraint, Column column) {
         Table table = column.getTable();
         add(session, rows,
                 // TABLE_CATALOG
@@ -3083,7 +3083,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void addPrivileges(SessionLocal session, ArrayList<Row> rows, DbObject grantee, String catalog, //
-                               Table table, String column, int rightMask) {
+            Table table, String column, int rightMask) {
         if ((rightMask & Right.SELECT) != 0) {
             addPrivilege(session, rows, grantee, catalog, table, column, "SELECT");
         }
@@ -3099,7 +3099,7 @@ public final class InformationSchemaTable extends MetaTable {
     }
 
     private void addPrivilege(SessionLocal session, ArrayList<Row> rows, DbObject grantee, String catalog, Table table,
-                              String column, String right) {
+            String column, String right) {
         String isGrantable = "NO";
         if (grantee.getType() == DbObject.USER) {
             User user = (User) grantee;
@@ -3152,13 +3152,13 @@ public final class InformationSchemaTable extends MetaTable {
     @Override
     public long getMaxDataModificationId() {
         switch (type) {
-            case SETTINGS:
-            case SEQUENCES:
-            case IN_DOUBT:
-            case SESSIONS:
-            case LOCKS:
-            case SESSION_STATE:
-                return Long.MAX_VALUE;
+        case SETTINGS:
+        case SEQUENCES:
+        case IN_DOUBT:
+        case SESSIONS:
+        case LOCKS:
+        case SESSION_STATE:
+            return Long.MAX_VALUE;
         }
         return database.getModificationDataId();
     }
@@ -3180,54 +3180,54 @@ public final class InformationSchemaTable extends MetaTable {
 
     private long getRowCount(SessionLocal session, boolean approximation) {
         switch (type) {
-            case INFORMATION_SCHEMA_CATALOG_NAME:
-                return 1L;
-            case COLLATIONS: {
-                Locale[] locales = CompareMode.getCollationLocales(approximation);
-                if (locales != null) {
-                    return locales.length + 1;
-                }
-                break;
+        case INFORMATION_SCHEMA_CATALOG_NAME:
+            return 1L;
+        case COLLATIONS: {
+            Locale[] locales = CompareMode.getCollationLocales(approximation);
+            if (locales != null) {
+                return locales.length + 1;
             }
-            case SCHEMATA:
-                return session.getDatabase().getAllSchemas().size();
-            case IN_DOUBT:
-                if (session.getUser().isAdmin()) {
-                    ArrayList<InDoubtTransaction> inDoubt = session.getDatabase().getInDoubtTransactions();
-                    if (inDoubt != null) {
-                        return inDoubt.size();
+            break;
+        }
+        case SCHEMATA:
+            return session.getDatabase().getAllSchemas().size();
+        case IN_DOUBT:
+            if (session.getUser().isAdmin()) {
+                ArrayList<InDoubtTransaction> inDoubt = session.getDatabase().getInDoubtTransactions();
+                if (inDoubt != null) {
+                    return inDoubt.size();
+                }
+            }
+            return 0L;
+        case ROLES:
+            if (session.getUser().isAdmin()) {
+                long count = 0L;
+                for (RightOwner rightOwner : session.getDatabase().getAllUsersAndRoles()) {
+                    if (rightOwner instanceof Role) {
+                        count++;
                     }
                 }
-                return 0L;
-            case ROLES:
-                if (session.getUser().isAdmin()) {
-                    long count = 0L;
-                    for (RightOwner rightOwner : session.getDatabase().getAllUsersAndRoles()) {
-                        if (rightOwner instanceof Role) {
-                            count++;
-                        }
+                return count;
+            }
+            break;
+        case SESSIONS:
+            if (session.getUser().isAdmin()) {
+                return session.getDatabase().getSessionCount();
+            } else {
+                return 1L;
+            }
+        case USERS:
+            if (session.getUser().isAdmin()) {
+                long count = 0L;
+                for (RightOwner rightOwner : session.getDatabase().getAllUsersAndRoles()) {
+                    if (rightOwner instanceof User) {
+                        count++;
                     }
-                    return count;
                 }
-                break;
-            case SESSIONS:
-                if (session.getUser().isAdmin()) {
-                    return session.getDatabase().getSessionCount();
-                } else {
-                    return 1L;
-                }
-            case USERS:
-                if (session.getUser().isAdmin()) {
-                    long count = 0L;
-                    for (RightOwner rightOwner : session.getDatabase().getAllUsersAndRoles()) {
-                        if (rightOwner instanceof User) {
-                            count++;
-                        }
-                    }
-                    return count;
-                } else {
-                    return 1L;
-                }
+                return count;
+            } else {
+                return 1L;
+            }
         }
         if (approximation) {
             return ROW_COUNT_APPROXIMATION;
@@ -3238,18 +3238,18 @@ public final class InformationSchemaTable extends MetaTable {
     @Override
     public boolean canGetRowCount(SessionLocal session) {
         switch (type) {
-            case INFORMATION_SCHEMA_CATALOG_NAME:
-            case COLLATIONS:
-            case SCHEMATA:
-            case IN_DOUBT:
-            case SESSIONS:
-            case USERS:
+        case INFORMATION_SCHEMA_CATALOG_NAME:
+        case COLLATIONS:
+        case SCHEMATA:
+        case IN_DOUBT:
+        case SESSIONS:
+        case USERS:
+            return true;
+        case ROLES:
+            if (session.getUser().isAdmin()) {
                 return true;
-            case ROLES:
-                if (session.getUser().isAdmin()) {
-                    return true;
-                }
-                break;
+            }
+            break;
         }
         return false;
     }
@@ -3347,105 +3347,105 @@ public final class InformationSchemaTable extends MetaTable {
             String geometryType = null;
             ValueInteger geometrySrid = null;
             switch (type) {
-                case Value.CHAR:
-                case Value.VARCHAR:
-                case Value.CLOB:
-                case Value.VARCHAR_IGNORECASE:
-                    hasCharsetAndCollation = true;
-                    //$FALL-THROUGH$
-                case Value.BINARY:
-                case Value.VARBINARY:
-                case Value.BLOB:
-                case Value.JAVA_OBJECT:
-                case Value.JSON:
-                    characterPrecision = ValueBigint.get(typeInfo.getPrecision());
-                    break;
-                case Value.TINYINT:
-                case Value.SMALLINT:
-                case Value.INTEGER:
-                case Value.BIGINT:
-                    numericPrecision = ValueInteger.get(MathUtils.convertLongToInt(typeInfo.getPrecision()));
-                    numericScale = ValueInteger.get(0);
-                    numericPrecisionRadix = ValueInteger.get(2);
+            case Value.CHAR:
+            case Value.VARCHAR:
+            case Value.CLOB:
+            case Value.VARCHAR_IGNORECASE:
+                hasCharsetAndCollation = true;
+                //$FALL-THROUGH$
+            case Value.BINARY:
+            case Value.VARBINARY:
+            case Value.BLOB:
+            case Value.JAVA_OBJECT:
+            case Value.JSON:
+                characterPrecision = ValueBigint.get(typeInfo.getPrecision());
+                break;
+            case Value.TINYINT:
+            case Value.SMALLINT:
+            case Value.INTEGER:
+            case Value.BIGINT:
+                numericPrecision = ValueInteger.get(MathUtils.convertLongToInt(typeInfo.getPrecision()));
+                numericScale = ValueInteger.get(0);
+                numericPrecisionRadix = ValueInteger.get(2);
+                declaredDataType = dataType;
+                break;
+            case Value.NUMERIC: {
+                numericPrecision = ValueInteger.get(MathUtils.convertLongToInt(typeInfo.getPrecision()));
+                numericScale = ValueInteger.get(typeInfo.getScale());
+                numericPrecisionRadix = ValueInteger.get(10);
+                declaredDataType = typeInfo.getExtTypeInfo() != null ? "DECIMAL" : "NUMERIC";
+                if (typeInfo.getDeclaredPrecision() >= 0L) {
+                    declaredNumericPrecision = numericPrecision;
+                }
+                if (typeInfo.getDeclaredScale() >= 0) {
+                    declaredNumericScale = numericScale;
+                }
+                break;
+            }
+            case Value.REAL:
+            case Value.DOUBLE: {
+                numericPrecision = ValueInteger.get(MathUtils.convertLongToInt(typeInfo.getPrecision()));
+                numericPrecisionRadix = ValueInteger.get(2);
+                long declaredPrecision = typeInfo.getDeclaredPrecision();
+                if (declaredPrecision >= 0) {
+                    declaredDataType = "FLOAT";
+                    if (declaredPrecision > 0) {
+                        declaredNumericPrecision = ValueInteger.get((int) declaredPrecision);
+                    }
+                } else {
                     declaredDataType = dataType;
-                    break;
-                case Value.NUMERIC: {
-                    numericPrecision = ValueInteger.get(MathUtils.convertLongToInt(typeInfo.getPrecision()));
-                    numericScale = ValueInteger.get(typeInfo.getScale());
-                    numericPrecisionRadix = ValueInteger.get(10);
-                    declaredDataType = typeInfo.getExtTypeInfo() != null ? "DECIMAL" : "NUMERIC";
-                    if (typeInfo.getDeclaredPrecision() >= 0L) {
-                        declaredNumericPrecision = numericPrecision;
-                    }
-                    if (typeInfo.getDeclaredScale() >= 0) {
-                        declaredNumericScale = numericScale;
-                    }
-                    break;
                 }
-                case Value.REAL:
-                case Value.DOUBLE: {
-                    numericPrecision = ValueInteger.get(MathUtils.convertLongToInt(typeInfo.getPrecision()));
-                    numericPrecisionRadix = ValueInteger.get(2);
-                    long declaredPrecision = typeInfo.getDeclaredPrecision();
-                    if (declaredPrecision >= 0) {
-                        declaredDataType = "FLOAT";
-                        if (declaredPrecision > 0) {
-                            declaredNumericPrecision = ValueInteger.get((int) declaredPrecision);
-                        }
-                    } else {
-                        declaredDataType = dataType;
-                    }
-                    break;
+                break;
+            }
+            case Value.DECFLOAT:
+                numericPrecision = ValueInteger.get(MathUtils.convertLongToInt(typeInfo.getPrecision()));
+                numericPrecisionRadix = ValueInteger.get(10);
+                declaredDataType = dataType;
+                if (typeInfo.getDeclaredPrecision() >= 0L) {
+                    declaredNumericPrecision = numericPrecision;
                 }
-                case Value.DECFLOAT:
-                    numericPrecision = ValueInteger.get(MathUtils.convertLongToInt(typeInfo.getPrecision()));
-                    numericPrecisionRadix = ValueInteger.get(10);
-                    declaredDataType = dataType;
-                    if (typeInfo.getDeclaredPrecision() >= 0L) {
-                        declaredNumericPrecision = numericPrecision;
+                break;
+            case Value.INTERVAL_YEAR:
+            case Value.INTERVAL_MONTH:
+            case Value.INTERVAL_DAY:
+            case Value.INTERVAL_HOUR:
+            case Value.INTERVAL_MINUTE:
+            case Value.INTERVAL_SECOND:
+            case Value.INTERVAL_YEAR_TO_MONTH:
+            case Value.INTERVAL_DAY_TO_HOUR:
+            case Value.INTERVAL_DAY_TO_MINUTE:
+            case Value.INTERVAL_DAY_TO_SECOND:
+            case Value.INTERVAL_HOUR_TO_MINUTE:
+            case Value.INTERVAL_HOUR_TO_SECOND:
+            case Value.INTERVAL_MINUTE_TO_SECOND:
+                intervalType = IntervalQualifier.valueOf(type - Value.INTERVAL_YEAR).toString();
+                dataType = "INTERVAL";
+                intervalPrecision = ValueInteger.get(MathUtils.convertLongToInt(typeInfo.getPrecision()));
+                //$FALL-THROUGH$
+            case Value.DATE:
+            case Value.TIME:
+            case Value.TIME_TZ:
+            case Value.TIMESTAMP:
+            case Value.TIMESTAMP_TZ:
+                datetimePrecision = ValueInteger.get(typeInfo.getScale());
+                break;
+            case Value.GEOMETRY: {
+                ExtTypeInfoGeometry extTypeInfo = (ExtTypeInfoGeometry) typeInfo.getExtTypeInfo();
+                if (extTypeInfo != null) {
+                    int typeCode = extTypeInfo.getType();
+                    if (typeCode != 0) {
+                        geometryType = EWKTUtils.formatGeometryTypeAndDimensionSystem(new StringBuilder(), typeCode)
+                                .toString();
                     }
-                    break;
-                case Value.INTERVAL_YEAR:
-                case Value.INTERVAL_MONTH:
-                case Value.INTERVAL_DAY:
-                case Value.INTERVAL_HOUR:
-                case Value.INTERVAL_MINUTE:
-                case Value.INTERVAL_SECOND:
-                case Value.INTERVAL_YEAR_TO_MONTH:
-                case Value.INTERVAL_DAY_TO_HOUR:
-                case Value.INTERVAL_DAY_TO_MINUTE:
-                case Value.INTERVAL_DAY_TO_SECOND:
-                case Value.INTERVAL_HOUR_TO_MINUTE:
-                case Value.INTERVAL_HOUR_TO_SECOND:
-                case Value.INTERVAL_MINUTE_TO_SECOND:
-                    intervalType = IntervalQualifier.valueOf(type - Value.INTERVAL_YEAR).toString();
-                    dataType = "INTERVAL";
-                    intervalPrecision = ValueInteger.get(MathUtils.convertLongToInt(typeInfo.getPrecision()));
-                    //$FALL-THROUGH$
-                case Value.DATE:
-                case Value.TIME:
-                case Value.TIME_TZ:
-                case Value.TIMESTAMP:
-                case Value.TIMESTAMP_TZ:
-                    datetimePrecision = ValueInteger.get(typeInfo.getScale());
-                    break;
-                case Value.GEOMETRY: {
-                    ExtTypeInfoGeometry extTypeInfo = (ExtTypeInfoGeometry) typeInfo.getExtTypeInfo();
-                    if (extTypeInfo != null) {
-                        int typeCode = extTypeInfo.getType();
-                        if (typeCode != 0) {
-                            geometryType = EWKTUtils.formatGeometryTypeAndDimensionSystem(new StringBuilder(), typeCode)
-                                    .toString();
-                        }
-                        Integer srid = extTypeInfo.getSrid();
-                        if (srid != null) {
-                            geometrySrid = ValueInteger.get(srid);
-                        }
+                    Integer srid = extTypeInfo.getSrid();
+                    if (srid != null) {
+                        geometrySrid = ValueInteger.get(srid);
                     }
-                    break;
                 }
-                case Value.ARRAY:
-                    maximumCardinality = ValueInteger.get(MathUtils.convertLongToInt(typeInfo.getPrecision()));
+                break;
+            }
+            case Value.ARRAY:
+                maximumCardinality = ValueInteger.get(MathUtils.convertLongToInt(typeInfo.getPrecision()));
             }
             return new DataTypeInformation(dataType, characterPrecision, numericPrecision, numericPrecisionRadix,
                     numericScale, datetimePrecision, intervalPrecision,
@@ -3455,9 +3455,9 @@ public final class InformationSchemaTable extends MetaTable {
         }
 
         private DataTypeInformation(String dataType, Value characterPrecision, Value numericPrecision,
-                                    Value numericPrecisionRadix, Value numericScale, Value datetimePrecision, Value intervalPrecision,
-                                    Value intervalType, Value maximumCardinality, boolean hasCharsetAndCollation, String declaredDataType,
-                                    Value declaredNumericPrecision, Value declaredNumericScale, String geometryType, Value geometrySrid) {
+                Value numericPrecisionRadix, Value numericScale, Value datetimePrecision, Value intervalPrecision,
+                Value intervalType, Value maximumCardinality, boolean hasCharsetAndCollation, String declaredDataType,
+                Value declaredNumericPrecision, Value declaredNumericScale, String geometryType, Value geometrySrid) {
             this.dataType = dataType;
             this.characterPrecision = characterPrecision;
             this.numericPrecision = numericPrecision;

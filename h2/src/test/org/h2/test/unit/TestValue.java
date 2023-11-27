@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.UUID;
-
 import org.h2.api.ErrorCode;
 import org.h2.api.H2Type;
 import org.h2.engine.Database;
@@ -93,19 +92,19 @@ public class TestValue extends TestDb {
             ResultSet rs;
             // Check conversion to byte[]
             prep = conn.prepareStatement("SELECT * FROM TABLE(X BINARY(16)=?)");
-            prep.setObject(1, new Object[]{uuid});
+            prep.setObject(1, new Object[] { uuid });
             rs = prep.executeQuery();
             rs.next();
             assertTrue(Arrays.equals(Bits.uuidToBytes(uuid), (byte[]) rs.getObject(1)));
             // Check conversion to byte[]
             prep = conn.prepareStatement("SELECT * FROM TABLE(X VARBINARY=?)");
-            prep.setObject(1, new Object[]{uuid});
+            prep.setObject(1, new Object[] { uuid });
             rs = prep.executeQuery();
             rs.next();
             assertTrue(Arrays.equals(Bits.uuidToBytes(uuid), (byte[]) rs.getObject(1)));
             // Check that type is not changed
             prep = conn.prepareStatement("SELECT * FROM TABLE(X UUID=?)");
-            prep.setObject(1, new Object[]{uuid});
+            prep.setObject(1, new Object[] { uuid });
             rs = prep.executeQuery();
             rs.next();
             assertEquals(uuid, rs.getObject(1));
@@ -118,7 +117,7 @@ public class TestValue extends TestDb {
         Value v;
         String spaces = new String(new char[100]).replace((char) 0, ' ');
 
-        v = ValueArray.get(new Value[]{ValueVarchar.get("hello"), ValueVarchar.get("world")}, null);
+        v = ValueArray.get(new Value[] { ValueVarchar.get("hello"), ValueVarchar.get("world") }, null);
         TypeInfo typeInfo = TypeInfo.getTypeInfo(Value.ARRAY, 1L, 0, TypeInfo.TYPE_VARCHAR);
         assertEquals(2, v.getType().getPrecision());
         assertEquals(1, v.castTo(typeInfo, null).getType().getPrecision());
@@ -220,9 +219,9 @@ public class TestValue extends TestDb {
             assertEquals(signum[i], v.getSignum());
         }
         for (int i = 0; i < d.length - 1; i++) {
-            assertTrue(values[i].compareTypeSafe(values[i + 1], null, null) < 0);
+            assertTrue(values[i].compareTypeSafe(values[i+1], null, null) < 0);
             assertTrue(values[i + 1].compareTypeSafe(values[i], null, null) > 0);
-            assertFalse(values[i].equals(values[i + 1]));
+            assertFalse(values[i].equals(values[i+1]));
         }
     }
 
@@ -230,12 +229,12 @@ public class TestValue extends TestDb {
         ValueTimestamp valueTs = ValueTimestamp.parse("2000-01-15 10:20:30.333222111", null);
         Timestamp ts = Timestamp.valueOf("2000-01-15 10:20:30.333222111");
         assertEquals(ts.toString(), valueTs.getString());
-        assertEquals(ts, LegacyDateTimeUtils.toTimestamp(null, null, valueTs));
+        assertEquals(ts, LegacyDateTimeUtils.toTimestamp(null,  null, valueTs));
         Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Europe/Berlin"));
         c.set(2018, 02, 25, 1, 59, 00);
         c.set(Calendar.MILLISECOND, 123);
         long expected = c.getTimeInMillis();
-        ts = LegacyDateTimeUtils.toTimestamp(null, null,
+        ts = LegacyDateTimeUtils.toTimestamp(null,  null,
                 ValueTimestamp.parse("2018-03-25 01:59:00.123123123 Europe/Berlin", null));
         assertEquals(expected, ts.getTime());
         assertEquals(123123123, ts.getNanos());
@@ -256,11 +255,11 @@ public class TestValue extends TestDb {
 
     private void testArray() {
         ValueArray src = ValueArray.get(
-                new Value[]{ValueVarchar.get("1"), ValueVarchar.get("22"), ValueVarchar.get("333")}, null);
+                new Value[] {ValueVarchar.get("1"), ValueVarchar.get("22"), ValueVarchar.get("333")}, null);
         assertEquals(3, src.getType().getPrecision());
         assertSame(src, src.castTo(TypeInfo.getTypeInfo(Value.ARRAY, 3L, 0, TypeInfo.TYPE_VARCHAR), null));
         ValueArray exp = ValueArray.get(
-                new Value[]{ValueVarchar.get("1"), ValueVarchar.get("22")}, null);
+                new Value[] {ValueVarchar.get("1"), ValueVarchar.get("22")}, null);
         Value got = src.castTo(TypeInfo.getTypeInfo(Value.ARRAY, 2L, 0, TypeInfo.TYPE_VARCHAR), null);
         assertEquals(exp, got);
         assertEquals(Value.VARCHAR, ((ValueArray) got).getComponentType().getValueType());
@@ -347,7 +346,7 @@ public class TestValue extends TestDb {
     }
 
     private static int testLobComparisonImpl(DataHandler dh, int type, int size1, int size2, int suffix1,
-                                             int suffix2) {
+            int suffix2) {
         byte[] bytes1 = new byte[size1];
         byte[] bytes2 = new byte[size2];
         if (size1 > 0) {
@@ -544,7 +543,7 @@ public class TestValue extends TestDb {
     }
 
     private void testHigherTypeNumeric(long expectedPrecision, int expectedScale, long precision1, int scale1,
-                                       long precision2, int scale2) {
+            long precision2, int scale2) {
         assertEquals(TypeInfo.getTypeInfo(Value.NUMERIC, expectedPrecision, expectedScale, null),
                 TypeInfo.getHigherType(TypeInfo.getTypeInfo(Value.NUMERIC, precision1, scale1, null),
                         TypeInfo.getTypeInfo(Value.NUMERIC, precision2, scale2, null)));

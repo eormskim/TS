@@ -248,7 +248,7 @@ public class FtpClient {
      * Rename a file (RNFR / RNTO).
      *
      * @param fromFileName the old file name
-     * @param toFileName   the new file name
+     * @param toFileName the new file name
      */
     void rename(String fromFileName, String toFileName) throws IOException {
         send("RNFR " + fromFileName);
@@ -272,10 +272,10 @@ public class FtpClient {
     /**
      * Read a file ([REST] RETR).
      *
-     * @param fileName  the file name
-     * @param out       the output stream
+     * @param fileName the file name
+     * @param out the output stream
      * @param restartAt restart at the given position (0 if no restart is
-     *                  required).
+     *            required).
      */
     void retrieve(String fileName, OutputStream out, long restartAt)
             throws IOException {
@@ -336,7 +336,7 @@ public class FtpClient {
      * Store a file (STOR).
      *
      * @param fileName the file name
-     * @param in       the input stream
+     * @param in the input stream
      */
     public void store(String fileName, InputStream in) throws IOException {
         passive();
@@ -404,28 +404,23 @@ public class FtpClient {
         private static final long serialVersionUID = 1L;
         private final boolean dir;
         private final long length;
-
         FtpFile(String name, boolean dir, long length) {
             super(name);
             this.dir = dir;
             this.length = length;
         }
-
         @Override
         public long length() {
             return length;
         }
-
         @Override
         public boolean isFile() {
             return !dir;
         }
-
         @Override
         public boolean isDirectory() {
             return dir;
         }
-
         @Override
         public boolean exists() {
             return true;
@@ -435,11 +430,11 @@ public class FtpClient {
     /**
      * Check if a file exists on the FTP server.
      *
-     * @param dir  the directory
+     * @param dir the directory
      * @param name the directory or file name
      * @return true if it exists
      */
-    public boolean exists(String dir, String name) throws IOException {
+    public boolean exists(String dir, String name) throws IOException  {
         for (File f : listFiles(dir)) {
             if (f.getName().equals(name)) {
                 return true;

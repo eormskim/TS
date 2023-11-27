@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.concurrent.CountDownLatch;
-
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
 
@@ -94,7 +93,7 @@ public class TestMvcc4 extends TestDb {
                     ResultSet resultSet;
                     do {
                         resultSet = stmt.executeQuery();
-                    } while (!resultSet.next());
+                    } while(!resultSet.next());
 
                     c2.commit();
                     c2.close();
@@ -126,7 +125,7 @@ public class TestMvcc4 extends TestDb {
         ps = verify.prepareStatement("SELECT COUNT(*) FROM test");
         ResultSet rs = ps.executeQuery();
         assertTrue(rs.next());
-        assertEquals(2, rs.getInt(1));
+        assertEquals(2,rs.getInt(1));
         verify.commit();
         verify.close();
 

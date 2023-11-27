@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Objects;
-
 import org.h2.message.DbException;
 import org.h2.util.JdbcUtils;
 
@@ -38,7 +37,7 @@ public class TableLinkConnection {
      * How many times the connection is used.
      */
     private int useCounter;
-    private boolean autocommit = true;
+    private boolean autocommit =true;
 
     private TableLinkConnection(
             HashMap<TableLinkConnection, TableLinkConnection> map,
@@ -53,12 +52,12 @@ public class TableLinkConnection {
     /**
      * Open a new connection.
      *
-     * @param map                    the map where the connection should be stored
-     *                               (if shared connections are enabled).
-     * @param driver                 the JDBC driver class name
-     * @param url                    the database URL
-     * @param user                   the user name
-     * @param password               the password
+     * @param map the map where the connection should be stored
+     *      (if shared connections are enabled).
+     * @param driver the JDBC driver class name
+     * @param url the database URL
+     * @param user the user name
+     * @param password the password
      * @param shareLinkedConnections if connections should be shared
      * @return a connection
      */
@@ -129,7 +128,7 @@ public class TableLinkConnection {
      * Closes the connection if this is the last link to it.
      *
      * @param force if the connection needs to be closed even if it is still
-     *              used elsewhere (for example, because the connection is broken)
+     *            used elsewhere (for example, because the connection is broken)
      */
     void close(boolean force) {
         boolean actuallyClose = false;
@@ -150,15 +149,14 @@ public class TableLinkConnection {
      * @param mode to set
      */
     public void setAutoCommit(boolean mode) {
-        this.autocommit = mode;
+        this.autocommit= mode;
     }
 
     /**
      * The autocommit mode
-     *
      * @return true if autocommit is on
      */
-    public boolean getAutocommit() {
+    public boolean getAutocommit(){
         return autocommit;
     }
 

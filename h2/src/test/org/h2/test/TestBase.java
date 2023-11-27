@@ -146,7 +146,7 @@ public abstract class TestBase {
             println("");
         } catch (Throwable e) {
             println("FAIL " + e.toString());
-            logError("FAIL (" + conf + ") " + e.toString(), e);
+            logError("FAIL ("+conf+") " + e.toString(), e);
             if (config.stopOnError) {
                 throw new AssertionError("ERROR");
             }
@@ -209,11 +209,12 @@ public abstract class TestBase {
     }
 
 
+
     /**
      * Get the small or the big value depending on the configuration.
      *
      * @param small the value to return if the current test mode is 'small'
-     * @param big   the value to return if the current test mode is 'big'
+     * @param big the value to return if the current test mode is 'big'
      * @return small or big, depending on the configuration
      */
     protected int getSize(int small, int big) {
@@ -257,7 +258,7 @@ public abstract class TestBase {
      * Print the currently used memory, the message and the given time in
      * milliseconds.
      *
-     * @param s    the message
+     * @param s the message
      * @param time the time in millis
      */
     public void printTimeMemory(String s, long time) {
@@ -409,7 +410,7 @@ public abstract class TestBase {
      * Print a message, prepended with the specified time in milliseconds.
      *
      * @param millis the time in milliseconds
-     * @param s      the message
+     * @param s the message
      */
     static synchronized void printlnWithTime(long millis, String s) {
         StringBuilder builder = new StringBuilder(s.length() + 19);
@@ -433,7 +434,7 @@ public abstract class TestBase {
      * milliseconds.
      *
      * @param builder the string builder to append to
-     * @param millis  the time in milliseconds, non-negative
+     * @param millis the time in milliseconds, non-negative
      * @return the specified string builder
      */
     static StringBuilder formatTime(StringBuilder builder, long millis) {
@@ -480,9 +481,9 @@ public abstract class TestBase {
     /**
      * Check if two values are equal, and if not throw an exception.
      *
-     * @param message  the message to print in case of error
+     * @param message the message to print in case of error
      * @param expected the expected value
-     * @param actual   the actual value
+     * @param actual the actual value
      * @throws AssertionError if the values are not equal
      */
     public void assertEquals(String message, int expected, int actual) {
@@ -495,7 +496,7 @@ public abstract class TestBase {
      * Check if two values are equal, and if not throw an exception.
      *
      * @param expected the expected value
-     * @param actual   the actual value
+     * @param actual the actual value
      * @throws AssertionError if the values are not equal
      */
     public void assertEquals(int expected, int actual) {
@@ -508,7 +509,7 @@ public abstract class TestBase {
      * Check if two values are equal, and if not throw an exception.
      *
      * @param expected the expected value
-     * @param actual   the actual value
+     * @param actual the actual value
      * @throws AssertionError if the values are not equal
      */
     public void assertEquals(byte[] expected, byte[] actual) {
@@ -529,7 +530,7 @@ public abstract class TestBase {
      * Check if two values are equal, and if not throw an exception.
      *
      * @param expected the expected value
-     * @param actual   the actual value
+     * @param actual the actual value
      * @throws AssertionError if the values are not equal
      */
     public void assertEquals(java.util.Date expected, java.util.Date actual) {
@@ -550,7 +551,7 @@ public abstract class TestBase {
      * check is called recursively.
      *
      * @param expected the expected value
-     * @param actual   the actual value
+     * @param actual the actual value
      * @throws AssertionError if the values are not equal
      */
     public void assertEquals(Object[] expected, Object[] actual) {
@@ -576,7 +577,7 @@ public abstract class TestBase {
      * Check if two values are equal, and if not throw an exception.
      *
      * @param expected the expected value
-     * @param actual   the actual value
+     * @param actual the actual value
      * @throws AssertionError if the values are not equal
      */
     public void assertEquals(Object expected, Object actual) {
@@ -589,8 +590,8 @@ public abstract class TestBase {
      * Check if two readers are equal, and if not throw an exception.
      *
      * @param expected the expected value
-     * @param actual   the actual value
-     * @param len      the maximum length, or -1
+     * @param actual the actual value
+     * @param len the maximum length, or -1
      * @throws AssertionError if the values are not equal
      */
     protected void assertEqualReaders(Reader expected, Reader actual, int len)
@@ -611,12 +612,12 @@ public abstract class TestBase {
      * Check if two streams are equal, and if not throw an exception.
      *
      * @param expected the expected value
-     * @param actual   the actual value
-     * @param len      the maximum length, or -1
+     * @param actual the actual value
+     * @param len the maximum length, or -1
      * @throws AssertionError if the values are not equal
      */
     protected void assertEqualStreams(InputStream expected, InputStream actual,
-                                      int len) throws IOException {
+            int len) throws IOException {
         // this doesn't actually read anything - just tests reading 0 bytes
         actual.read(new byte[0]);
         expected.read(new byte[0]);
@@ -645,9 +646,9 @@ public abstract class TestBase {
     /**
      * Check if two values are equal, and if not throw an exception.
      *
-     * @param message  the message to use if the check fails
+     * @param message the message to use if the check fails
      * @param expected the expected value
-     * @param actual   the actual value
+     * @param actual the actual value
      * @throws AssertionError if the values are not equal
      */
     protected void assertEquals(String message, String expected, String actual) {
@@ -683,7 +684,7 @@ public abstract class TestBase {
      * Check if two values are equal, and if not throw an exception.
      *
      * @param expected the expected value
-     * @param actual   the actual value
+     * @param actual the actual value
      * @throws AssertionError if the values are not equal
      */
     protected void assertEquals(String expected, String actual) {
@@ -694,8 +695,8 @@ public abstract class TestBase {
      * Check if two result sets are equal, and if not throw an exception.
      *
      * @param message the message to use if the check fails
-     * @param rs0     the first result set
-     * @param rs1     the second result set
+     * @param rs0 the first result set
+     * @param rs1 the second result set
      * @throws AssertionError if the values are not equal
      */
     protected void assertEquals(String message, ResultSet rs0, ResultSet rs1)
@@ -717,7 +718,7 @@ public abstract class TestBase {
      * Check if two objects are the same, and if not throw an exception.
      *
      * @param expected the expected value
-     * @param actual   the actual value
+     * @param actual the actual value
      * @throws AssertionError if the objects are not the same
      */
     public void assertSame(Object expected, Object actual) {
@@ -743,7 +744,7 @@ public abstract class TestBase {
     /**
      * Check that a result contains the given substring.
      *
-     * @param result   the result value
+     * @param result the result value
      * @param contains the term that should appear in the result
      * @throws AssertionError if the term was not found
      */
@@ -756,10 +757,10 @@ public abstract class TestBase {
     /**
      * Check that a text starts with the expected characters..
      *
-     * @param text          the text
+     * @param text the text
      * @param expectedStart the expected prefix
      * @throws AssertionError if the text does not start with the expected
-     *                        characters
+     *             characters
      */
     protected void assertStartsWith(String text, String expectedStart) {
         if (!text.startsWith(expectedStart)) {
@@ -771,7 +772,7 @@ public abstract class TestBase {
      * Check if two values are equal, and if not throw an exception.
      *
      * @param expected the expected value
-     * @param actual   the actual value
+     * @param actual the actual value
      * @throws AssertionError if the values are not equal
      */
     protected void assertEquals(long expected, long actual) {
@@ -784,7 +785,7 @@ public abstract class TestBase {
      * Check if two values are equal, and if not throw an exception.
      *
      * @param expected the expected value
-     * @param actual   the actual value
+     * @param actual the actual value
      * @throws AssertionError if the values are not equal
      */
     protected void assertEquals(double expected, double actual) {
@@ -801,7 +802,7 @@ public abstract class TestBase {
      * Check if two values are equal, and if not throw an exception.
      *
      * @param expected the expected value
-     * @param actual   the actual value
+     * @param actual the actual value
      * @throws AssertionError if the values are not equal
      */
     protected void assertEquals(float expected, float actual) {
@@ -818,7 +819,7 @@ public abstract class TestBase {
      * Check if two values are equal, and if not throw an exception.
      *
      * @param expected the expected value
-     * @param actual   the actual value
+     * @param actual the actual value
      * @throws AssertionError if the values are not equal
      */
     protected void assertEquals(boolean expected, boolean actual) {
@@ -867,7 +868,7 @@ public abstract class TestBase {
      * Check that the passed object is not null.
      *
      * @param message the message to print if the condition is false
-     * @param obj     the object
+     * @param obj the object
      * @throws AssertionError if the condition is false
      */
     public void assertNotNull(String message, Object obj) {
@@ -879,7 +880,7 @@ public abstract class TestBase {
     /**
      * Check that the passed boolean is true.
      *
-     * @param message   the message to print if the condition is false
+     * @param message the message to print if the condition is false
      * @param condition the condition
      * @throws AssertionError if the condition is false
      */
@@ -905,7 +906,7 @@ public abstract class TestBase {
      * Check that the passed boolean is false.
      *
      * @param message the message to print if the condition is false
-     * @param value   the condition
+     * @param value the condition
      * @throws AssertionError if the condition is true
      */
     protected void assertFalse(String message, boolean value) {
@@ -918,7 +919,7 @@ public abstract class TestBase {
      * Check that the result set row count matches.
      *
      * @param expected the number of expected rows
-     * @param rs       the result set
+     * @param rs the result set
      * @throws AssertionError if a different number of rows have been found
      */
     protected void assertResultRowCount(int expected, ResultSet rs)
@@ -933,8 +934,8 @@ public abstract class TestBase {
     /**
      * Check that the result set of a query is exactly this value.
      *
-     * @param stat     the statement
-     * @param sql      the SQL statement to execute
+     * @param stat the statement
+     * @param sql the SQL statement to execute
      * @param expected the expected result value
      * @throws AssertionError if a different result value was returned
      */
@@ -950,8 +951,8 @@ public abstract class TestBase {
      * Check that the result set of a query is exactly this value.
      *
      * @param expected the expected result value
-     * @param stat     the statement
-     * @param sql      the SQL statement to execute
+     * @param stat the statement
+     * @param sql the SQL statement to execute
      * @throws AssertionError if a different result value was returned
      */
     protected void assertResult(String expected, Statement stat, String sql)
@@ -969,11 +970,11 @@ public abstract class TestBase {
      * Check that executing the specified query results in the specified error.
      *
      * @param expectedErrorCode the expected error code
-     * @param stat              the statement
-     * @param sql               the SQL statement to execute
+     * @param stat the statement
+     * @param sql the SQL statement to execute
      */
     protected void assertThrows(int expectedErrorCode, Statement stat,
-                                String sql) {
+            String sql) {
         try {
             execute(stat, sql);
             fail("Expected error: " + expectedErrorCode);
@@ -995,11 +996,11 @@ public abstract class TestBase {
      * Execute the statement.
      *
      * @param stat the statement
-     * @param sql  the SQL command
+     * @param sql the SQL command
      */
     protected void execute(Statement stat, String sql) throws SQLException {
         boolean query = sql == null ? ((PreparedStatement) stat).execute() :
-                stat.execute(sql);
+            stat.execute(sql);
 
         if (query && config.lazy) {
             try (ResultSet rs = stat.getResultSet()) {
@@ -1013,15 +1014,15 @@ public abstract class TestBase {
     /**
      * Check if the result set meta data is correct.
      *
-     * @param rs          the result set
+     * @param rs the result set
      * @param columnCount the expected column count
-     * @param labels      the expected column labels
-     * @param datatypes   the expected data types
-     * @param precision   the expected precisions
-     * @param scale       the expected scales
+     * @param labels the expected column labels
+     * @param datatypes the expected data types
+     * @param precision the expected precisions
+     * @param scale the expected scales
      */
     protected void assertResultSetMeta(ResultSet rs, int columnCount,
-                                       String[] labels, int[] datatypes, int[] precision, int[] scale)
+            String[] labels, int[] datatypes, int[] precision, int[] scale)
             throws SQLException {
         ResultSetMetaData meta = rs.getMetaData();
         int cc = meta.getColumnCount();
@@ -1044,27 +1045,27 @@ public abstract class TestBase {
                 String typeName = meta.getColumnTypeName(i + 1);
                 String className = meta.getColumnClassName(i + 1);
                 switch (t) {
-                    case Types.INTEGER:
-                        assertEquals("INTEGER", typeName);
-                        assertEquals("java.lang.Integer", className);
-                        break;
-                    case Types.VARCHAR:
-                        assertEquals("CHARACTER VARYING", typeName);
-                        assertEquals("java.lang.String", className);
-                        break;
-                    case Types.SMALLINT:
-                        assertEquals("SMALLINT", typeName);
-                        assertEquals("java.lang.Integer", className);
-                        break;
-                    case Types.TIMESTAMP:
-                        assertEquals("TIMESTAMP", typeName);
-                        assertEquals("java.sql.Timestamp", className);
-                        break;
-                    case Types.NUMERIC:
-                        assertEquals("NUMERIC", typeName);
-                        assertEquals("java.math.BigDecimal", className);
-                        break;
-                    default:
+                case Types.INTEGER:
+                    assertEquals("INTEGER", typeName);
+                    assertEquals("java.lang.Integer", className);
+                    break;
+                case Types.VARCHAR:
+                    assertEquals("CHARACTER VARYING", typeName);
+                    assertEquals("java.lang.String", className);
+                    break;
+                case Types.SMALLINT:
+                    assertEquals("SMALLINT", typeName);
+                    assertEquals("java.lang.Integer", className);
+                    break;
+                case Types.TIMESTAMP:
+                    assertEquals("TIMESTAMP", typeName);
+                    assertEquals("java.sql.Timestamp", className);
+                    break;
+                case Types.NUMERIC:
+                    assertEquals("NUMERIC", typeName);
+                    assertEquals("java.math.BigDecimal", className);
+                    break;
+                default:
                 }
             }
             if (precision != null) {
@@ -1087,8 +1088,8 @@ public abstract class TestBase {
      * Check if a result set contains the expected data.
      * The sort order is significant
      *
-     * @param rs            the result set
-     * @param data          the expected data
+     * @param rs the result set
+     * @param data the expected data
      * @param ignoreColumns columns to ignore, or {@code null}
      * @throws AssertionError if there is a mismatch
      */
@@ -1101,7 +1102,7 @@ public abstract class TestBase {
      * Check if a result set contains the expected data.
      * The sort order is significant
      *
-     * @param rs   the result set
+     * @param rs the result set
      * @param data the expected data
      * @throws AssertionError if there is a mismatch
      */
@@ -1113,9 +1114,9 @@ public abstract class TestBase {
     /**
      * Check if a result set contains the expected data.
      *
-     * @param ordered       if the sort order is significant
-     * @param rs            the result set
-     * @param data          the expected data
+     * @param ordered if the sort order is significant
+     * @param rs the result set
+     * @param data the expected data
      * @param ignoreColumns columns to ignore, or {@code null}
      * @throws AssertionError if there is a mismatch
      */
@@ -1166,8 +1167,7 @@ public abstract class TestBase {
     }
 
     private static boolean testRow(String[] a, String[] b, int len, int[] ignoreColumns) {
-        loop:
-        for (int i = 0; i < len; i++) {
+        loop: for (int i = 0; i < len; i++) {
             if (ignoreColumns != null) {
                 for (int c : ignoreColumns) {
                     if (c == i) {
@@ -1236,7 +1236,7 @@ public abstract class TestBase {
      * To disable the countdown, use 0.
      *
      * @param conn the connection
-     * @param i    the number of operations
+     * @param i the number of operations
      */
     public static void setPowerOffCount(Connection conn, int i) {
         SessionLocal session = (SessionLocal) ((JdbcConnection) conn).getSession();
@@ -1297,7 +1297,7 @@ public abstract class TestBase {
      * exception.
      *
      * @param message the message
-     * @param e       the exception
+     * @param e the exception
      */
     protected void assertKnownException(String message, SQLException e) {
         if (e != null && e.getSQLState().startsWith("HY000")) {
@@ -1309,7 +1309,7 @@ public abstract class TestBase {
      * Check if two values are equal, and if not throw an exception.
      *
      * @param expected the expected value
-     * @param actual   the actual value
+     * @param actual the actual value
      * @throws AssertionError if the values are not equal
      */
     protected void assertEquals(Integer expected, Integer actual) {
@@ -1444,13 +1444,13 @@ public abstract class TestBase {
     /**
      * Verify the next method call on the object will throw an exception.
      *
-     * @param <T>                    the class of the object
+     * @param <T> the class of the object
      * @param expectedExceptionClass the expected exception class to be thrown
-     * @param obj                    the object to wrap
+     * @param obj the object to wrap
      * @return a proxy for the object
      */
     protected <T> T assertThrows(final Class<?> expectedExceptionClass,
-                                 final T obj) {
+            final T obj) {
         return assertThrows((returnValue, t, m, args) -> {
             if (t == null) {
                 throw new AssertionError("Expected an exception of type " +
@@ -1490,9 +1490,9 @@ public abstract class TestBase {
     /**
      * Verify the next method call on the object will throw an exception.
      *
-     * @param <T>               the class of the object
+     * @param <T> the class of the object
      * @param expectedErrorCode the expected error code
-     * @param obj               the object to wrap
+     * @param obj the object to wrap
      * @return a proxy for the object
      */
     protected <T> T assertThrows(int expectedErrorCode, T obj) {
@@ -1505,9 +1505,9 @@ public abstract class TestBase {
     /**
      * Verify the next method call on the object will throw an exception.
      *
-     * @param <T>      the class of the object
+     * @param <T> the class of the object
      * @param verifier the result verifier to call
-     * @param obj      the object to wrap
+     * @param obj the object to wrap
      * @return a proxy for the object
      */
     @SuppressWarnings("unchecked")
@@ -1515,14 +1515,12 @@ public abstract class TestBase {
         Class<?> c = obj.getClass();
         InvocationHandler ih = new InvocationHandler() {
             private Exception called = new Exception("No method called");
-
             @Override
             protected void finalize() {
                 if (called != null) {
                     called.printStackTrace(System.err);
                 }
             }
-
             @Override
             public Object invoke(Object proxy, Method method, Object[] args)
                     throws Exception {
@@ -1581,7 +1579,7 @@ public abstract class TestBase {
      * Assert that the lambda function throws an exception of the expected class.
      *
      * @param expectedExceptionClass expected exception class
-     * @param c                      lambda function
+     * @param c lambda function
      */
     protected void assertThrows(Class<?> expectedExceptionClass, Callable<?> c) {
         try {
@@ -1597,7 +1595,7 @@ public abstract class TestBase {
      * Assert that the lambda function throws an exception of the expected class.
      *
      * @param expectedExceptionClass expected exception class
-     * @param c                      lambda function
+     * @param c lambda function
      */
     protected void assertThrows(Class<?> expectedExceptionClass, VoidCallable c) {
         try {
@@ -1614,7 +1612,7 @@ public abstract class TestBase {
      * expected error code.
      *
      * @param expectedErrorCode SQL error code
-     * @param c                 lambda function
+     * @param c lambda function
      */
     protected void assertThrows(int expectedErrorCode, Callable<?> c) {
         try {
@@ -1631,7 +1629,7 @@ public abstract class TestBase {
      * expected error code.
      *
      * @param expectedErrorCode SQL error code
-     * @param c                 lambda function
+     * @param c lambda function
      */
     protected void assertThrows(int expectedErrorCode, VoidCallable c) {
         try {
@@ -1655,9 +1653,8 @@ public abstract class TestBase {
 
     /**
      * Verify that actual error code is the one expected
-     *
      * @param expectedErrorCode to compare against
-     * @param t                 actual exception to extract error code from
+     * @param t actual exception to extract error code from
      * @throws AssertionError if code is unexpected
      */
     public static void checkErrorCode(int expectedErrorCode, Throwable t) throws AssertionError {

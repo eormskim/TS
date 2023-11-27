@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
-
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
 import org.h2.util.Task;

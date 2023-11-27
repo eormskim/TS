@@ -8,7 +8,6 @@ package org.h2.test.recover;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
 import org.h2.tools.DeleteDbFiles;
@@ -60,11 +59,11 @@ public class RecoverLobTest extends TestDb {
         DeleteDbFiles.execute(getBaseDir(), "recovery", true);
         conn = getConnection(
                 "recovery;init=runscript from '" +
-                        getBaseDir() + "/recovery.h2.sql'");
+                getBaseDir() + "/recovery.h2.sql'");
         stat = conn.createStatement();
 
         ResultSet rs = stat.executeQuery("select * from test");
-        while (rs.next()) {
+        while(rs.next()){
 
             int id = rs.getInt(1);
             String data = rs.getString(2);
@@ -76,6 +75,7 @@ public class RecoverLobTest extends TestDb {
         rs.close();
         conn.close();
     }
+
 
 
 }

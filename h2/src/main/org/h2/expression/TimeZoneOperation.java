@@ -72,7 +72,7 @@ public final class TimeZoneOperation extends Operation1_2 {
     }
 
     private static int parseTimeZone(Value b, long dateValue, long timeNanos, int offsetSeconds,
-                                     boolean allowTimeZoneName) {
+            boolean allowTimeZoneName) {
         if (DataType.isCharacterStringType(b.getValueType())) {
             TimeZoneProvider timeZone;
             try {
@@ -116,25 +116,25 @@ public final class TimeZoneOperation extends Operation1_2 {
         TypeInfo type = left.getType();
         int valueType = Value.TIMESTAMP_TZ, scale = ValueTimestamp.MAXIMUM_SCALE;
         switch (type.getValueType()) {
-            case Value.TIMESTAMP:
-            case Value.TIMESTAMP_TZ:
-                scale = type.getScale();
-                break;
-            case Value.TIME:
-            case Value.TIME_TZ:
-                valueType = Value.TIME_TZ;
-                scale = type.getScale();
-                break;
-            default:
-                StringBuilder builder = left.getSQL(new StringBuilder(), TRACE_SQL_FLAGS, AUTO_PARENTHESES);
-                int offset = builder.length();
-                builder.append(" AT ");
-                if (right != null) {
-                    right.getSQL(builder.append("TIME ZONE "), TRACE_SQL_FLAGS, AUTO_PARENTHESES);
-                } else {
-                    builder.append("LOCAL");
-                }
-                throw DbException.getSyntaxError(builder.toString(), offset, "time, timestamp");
+        case Value.TIMESTAMP:
+        case Value.TIMESTAMP_TZ:
+            scale = type.getScale();
+            break;
+        case Value.TIME:
+        case Value.TIME_TZ:
+            valueType = Value.TIME_TZ;
+            scale = type.getScale();
+            break;
+        default:
+            StringBuilder builder = left.getSQL(new StringBuilder(), TRACE_SQL_FLAGS, AUTO_PARENTHESES);
+            int offset = builder.length();
+            builder.append(" AT ");
+            if (right != null) {
+                right.getSQL(builder.append("TIME ZONE "), TRACE_SQL_FLAGS, AUTO_PARENTHESES);
+            } else {
+                builder.append("LOCAL");
+            }
+            throw DbException.getSyntaxError(builder.toString(), offset, "time, timestamp");
         }
         this.type = TypeInfo.getTypeInfo(valueType, -1, scale, null);
         if (left.isConstant() && (right == null || right.isConstant())) {

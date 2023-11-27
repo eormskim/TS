@@ -15,15 +15,15 @@ import org.h2.security.auth.ConfigProperties;
 
 /**
  * Assign to user a role based on realm name
- * <p>
- * * <p>
+ *
+ *  * <p>
  * Configuration parameters:
  * </p>
  * <ul>
  * <li> roleNameFormat, optional by default is @{realm}</li>
  * </ul>
  */
-public class AssignRealmNameRole implements UserToRolesMapper {
+public class AssignRealmNameRole implements UserToRolesMapper{
 
     private String roleNameFormat;
 
@@ -37,7 +37,7 @@ public class AssignRealmNameRole implements UserToRolesMapper {
 
     @Override
     public void configure(ConfigProperties configProperties) {
-        roleNameFormat = configProperties.getStringValue("roleNameFormat", roleNameFormat);
+        roleNameFormat=configProperties.getStringValue("roleNameFormat",roleNameFormat);
     }
 
     @Override

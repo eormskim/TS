@@ -23,9 +23,11 @@ public interface UserToRolesMapper extends Configurable {
     /**
      * Map user identified by authentication info to a set of granted roles.
      *
-     * @param authenticationInfo authentication information
+     * @param authenticationInfo
+     *            authentication information
      * @return list of roles to be assigned to the user temporary
-     * @throws AuthenticationException on authentication exception
+     * @throws AuthenticationException
+     *             on authentication exception
      */
     Collection<String> mapUserToRoles(AuthenticationInfo authenticationInfo) throws AuthenticationException;
 }

@@ -28,10 +28,9 @@ public interface DataType<T> extends Comparator<T> {
 
     /**
      * Perform binary search for the key within the storage
-     *
-     * @param key          to search for
-     * @param storage      to search within (an array of type T)
-     * @param size         number of data items in the storage
+     * @param key to search for
+     * @param storage to search within (an array of type T)
+     * @param size number of data items in the storage
      * @param initialGuess for key position
      * @return index of the key , if found, - index of the insertion point, if not
      */
@@ -47,7 +46,6 @@ public interface DataType<T> extends Comparator<T> {
 
     /**
      * Whether memory estimation based on previously seen values is allowed/desirable
-     *
      * @return true if memory estimation is allowed
      */
     boolean isMemoryEstimationAllowed();
@@ -56,16 +54,16 @@ public interface DataType<T> extends Comparator<T> {
      * Write an object.
      *
      * @param buff the target buffer
-     * @param obj  the value
+     * @param obj the value
      */
     void write(WriteBuffer buff, T obj);
 
     /**
      * Write a list of objects.
      *
-     * @param buff    the target buffer
+     * @param buff the target buffer
      * @param storage the objects
-     * @param len     the number of objects to write
+     * @param len the number of objects to write
      */
     void write(WriteBuffer buff, Object storage, int len);
 
@@ -80,9 +78,9 @@ public interface DataType<T> extends Comparator<T> {
     /**
      * Read a list of objects.
      *
-     * @param buff    the target buffer
+     * @param buff the target buffer
      * @param storage the objects
-     * @param len     the number of objects to read
+     * @param len the number of objects to read
      */
     void read(ByteBuffer buff, Object storage, int len);
 

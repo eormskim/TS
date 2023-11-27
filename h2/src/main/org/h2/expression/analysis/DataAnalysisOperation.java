@@ -65,9 +65,12 @@ public abstract class DataAnalysisOperation extends Expression {
     /**
      * Create sort order.
      *
-     * @param session database session
-     * @param orderBy array of order by expressions
-     * @param offset  index offset
+     * @param session
+     *            database session
+     * @param orderBy
+     *            array of order by expressions
+     * @param offset
+     *            index offset
      * @return the SortOrder
      */
     protected static SortOrder createOrder(SessionLocal session, ArrayList<QueryOrderBy> orderBy, int offset) {
@@ -89,7 +92,8 @@ public abstract class DataAnalysisOperation extends Expression {
     /**
      * Sets the OVER condition.
      *
-     * @param over OVER condition
+     * @param over
+     *            OVER condition
      */
     public void setOverCondition(Window over) {
         this.over = over;
@@ -99,7 +103,7 @@ public abstract class DataAnalysisOperation extends Expression {
      * Checks whether this expression is an aggregate function.
      *
      * @return true if this is an aggregate function (including aggregates with
-     * OVER clause), false if this is a window function
+     *         OVER clause), false if this is a window function
      */
     public abstract boolean isAggregate();
 
@@ -131,9 +135,12 @@ public abstract class DataAnalysisOperation extends Expression {
     /**
      * Map the columns of the resolver to expression columns.
      *
-     * @param resolver   the column resolver
-     * @param level      the subquery nesting level
-     * @param innerState one of the Expression MAP_IN_* values
+     * @param resolver
+     *            the column resolver
+     * @param level
+     *            the subquery nesting level
+     * @param innerState
+     *            one of the Expression MAP_IN_* values
      */
     protected void mapColumnsAnalysis(ColumnResolver resolver, int level, int innerState) {
         if (over != null) {
@@ -184,21 +191,21 @@ public abstract class DataAnalysisOperation extends Expression {
 
     private void checkOrderBy(WindowFrameUnits units, int orderBySize) {
         switch (units) {
-            case RANGE:
-                if (orderBySize != 1) {
-                    String sql = getTraceSQL();
-                    throw DbException.getSyntaxError(sql, sql.length() - 1,
-                            "exactly one sort key is required for RANGE units");
-                }
-                break;
-            case GROUPS:
-                if (orderBySize < 1) {
-                    String sql = getTraceSQL();
-                    throw DbException.getSyntaxError(sql, sql.length() - 1,
-                            "a sort key is required for GROUPS units");
-                }
-                break;
-            default:
+        case RANGE:
+            if (orderBySize != 1) {
+                String sql = getTraceSQL();
+                throw DbException.getSyntaxError(sql, sql.length() - 1,
+                        "exactly one sort key is required for RANGE units");
+            }
+            break;
+        case GROUPS:
+            if (orderBySize < 1) {
+                String sql = getTraceSQL();
+                throw DbException.getSyntaxError(sql, sql.length() - 1,
+                        "a sort key is required for GROUPS units");
+            }
+            break;
+        default:
         }
     }
 
@@ -247,9 +254,12 @@ public abstract class DataAnalysisOperation extends Expression {
     /**
      * Update a row of an aggregate.
      *
-     * @param session    the database session
-     * @param groupData  data for the aggregate group
-     * @param groupRowId row id of group
+     * @param session
+     *            the database session
+     * @param groupData
+     *            data for the aggregate group
+     * @param groupRowId
+     *            row id of group
      */
     protected abstract void updateAggregate(SessionLocal session, SelectGroups groupData, int groupRowId);
 
@@ -257,8 +267,10 @@ public abstract class DataAnalysisOperation extends Expression {
      * Invoked when processing group stage of grouped window queries to update
      * arguments of this aggregate.
      *
-     * @param session the session
-     * @param stage   select stage
+     * @param session
+     *            the session
+     * @param stage
+     *            select stage
      */
     protected void updateGroupAggregates(SessionLocal session, int stage) {
         if (over != null) {
@@ -285,17 +297,22 @@ public abstract class DataAnalysisOperation extends Expression {
     /**
      * Stores current values of expressions into the specified array.
      *
-     * @param session the session
-     * @param array   array to store values of expressions
+     * @param session
+     *            the session
+     * @param array
+     *            array to store values of expressions
      */
     protected abstract void rememberExpressions(SessionLocal session, Value[] array);
 
     /**
      * Get the aggregate data for a window clause.
      *
-     * @param session    database session
-     * @param groupData  aggregate group data
-     * @param forOrderBy true if this is for ORDER BY
+     * @param session
+     *            database session
+     * @param groupData
+     *            aggregate group data
+     * @param forOrderBy
+     *            true if this is for ORDER BY
      * @return the aggregate data object, specific to each kind of aggregate.
      */
     protected Object getWindowData(SessionLocal session, SelectGroups groupData, boolean forOrderBy) {
@@ -314,9 +331,11 @@ public abstract class DataAnalysisOperation extends Expression {
     /**
      * Get the aggregate group data object from the collector object.
      *
-     * @param groupData the collector object
-     * @param ifExists  if true, return null if object not found, if false, return new
-     *                  object if nothing found
+     * @param groupData
+     *            the collector object
+     * @param ifExists
+     *            if true, return null if object not found, if false, return new
+     *            object if nothing found
      * @return group data object
      */
     protected Object getGroupData(SelectGroups groupData, boolean ifExists) {
@@ -345,14 +364,14 @@ public abstract class DataAnalysisOperation extends Expression {
             return true;
         }
         switch (visitor.getType()) {
-            case ExpressionVisitor.QUERY_COMPARABLE:
-            case ExpressionVisitor.OPTIMIZABLE_AGGREGATE:
-            case ExpressionVisitor.DETERMINISTIC:
-            case ExpressionVisitor.INDEPENDENT:
-            case ExpressionVisitor.DECREMENT_QUERY_LEVEL:
-                return false;
-            default:
-                return true;
+        case ExpressionVisitor.QUERY_COMPARABLE:
+        case ExpressionVisitor.OPTIMIZABLE_AGGREGATE:
+        case ExpressionVisitor.DETERMINISTIC:
+        case ExpressionVisitor.INDEPENDENT:
+        case ExpressionVisitor.DECREMENT_QUERY_LEVEL:
+            return false;
+        default:
+            return true;
         }
     }
 
@@ -370,8 +389,10 @@ public abstract class DataAnalysisOperation extends Expression {
      * Returns result of this window function or window aggregate. This method
      * is not used for plain aggregates.
      *
-     * @param session   the session
-     * @param groupData the group data
+     * @param session
+     *            the session
+     * @param groupData
+     *            the group data
      * @return result of this function
      */
     private Value getWindowResult(SessionLocal session, SelectGroups groupData) {
@@ -418,13 +439,17 @@ public abstract class DataAnalysisOperation extends Expression {
     /**
      * Update a row of an ordered aggregate.
      *
-     * @param session    the database session
-     * @param groupData  data for the aggregate group
-     * @param groupRowId row id of group
-     * @param orderBy    list of order by expressions
+     * @param session
+     *            the database session
+     * @param groupData
+     *            data for the aggregate group
+     * @param groupRowId
+     *            row id of group
+     * @param orderBy
+     *            list of order by expressions
      */
     protected void updateOrderedAggregate(SessionLocal session, SelectGroups groupData, int groupRowId,
-                                          ArrayList<QueryOrderBy> orderBy) {
+            ArrayList<QueryOrderBy> orderBy) {
         int ne = getNumExpressions();
         int size = orderBy != null ? orderBy.size() : 0;
         int frameSize = getNumFrameExpressions();
@@ -453,7 +478,7 @@ public abstract class DataAnalysisOperation extends Expression {
     }
 
     private Value getOrderedResult(SessionLocal session, SelectGroups groupData, PartitionData partition, //
-                                   Object data) {
+            Object data) {
         HashMap<Integer, Value> result = partition.getOrderedResult();
         if (result == null) {
             result = new HashMap<>();
@@ -476,21 +501,28 @@ public abstract class DataAnalysisOperation extends Expression {
      * Returns result of this window function or window aggregate. This method
      * may not be called on window aggregate without window order clause.
      *
-     * @param session     the session
-     * @param result      the map to append result to
-     * @param ordered     ordered data
-     * @param rowIdColumn the index of row id value
+     * @param session
+     *            the session
+     * @param result
+     *            the map to append result to
+     * @param ordered
+     *            ordered data
+     * @param rowIdColumn
+     *            the index of row id value
      */
     protected abstract void getOrderedResultLoop(SessionLocal session, HashMap<Integer, Value> result,
-                                                 ArrayList<Value[]> ordered, int rowIdColumn);
+            ArrayList<Value[]> ordered, int rowIdColumn);
 
     /**
      * Used to create SQL for the OVER and FILTER clauses.
      *
-     * @param builder      string builder
-     * @param sqlFlags     formatting flags
-     * @param forceOrderBy whether synthetic ORDER BY clause should be generated when it
-     *                     is missing
+     * @param builder
+     *            string builder
+     * @param sqlFlags
+     *            formatting flags
+     * @param forceOrderBy
+     *            whether synthetic ORDER BY clause should be generated when it
+     *            is missing
      * @return the builder object
      */
     protected StringBuilder appendTailConditions(StringBuilder builder, int sqlFlags, boolean forceOrderBy) {

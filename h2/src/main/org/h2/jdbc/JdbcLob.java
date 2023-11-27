@@ -119,7 +119,7 @@ public abstract class JdbcLob extends TraceObject {
      * (the LOB must be set completely before read).
      *
      * @throws SQLException on SQL exception
-     * @throws IOException  on I/O exception
+     * @throws IOException on I/O exception
      */
     void checkReadable() throws SQLException, IOException {
         checkClosed();
@@ -130,7 +130,6 @@ public abstract class JdbcLob extends TraceObject {
 
     /**
      * Change the state LOB state (LOB value is set completely and available to read).
-     *
      * @param blob LOB value.
      */
     void completeWrite(Value blob) {

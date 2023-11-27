@@ -245,7 +245,7 @@ public class FileUtils {
      * <code>java.nio.channels.FileChannel.open</code>.
      *
      * @param fileName the file name
-     * @param mode     the access mode. Supported are r, rw, rws, rwd
+     * @param mode the access mode. Supported are r, rw, rws, rwd
      * @return the file object
      * @throws IOException on failure
      */
@@ -273,7 +273,7 @@ public class FileUtils {
      * <code>java.nio.file.Files.newBufferedReader()</code>.
      *
      * @param fileName the file name
-     * @param charset  the charset
+     * @param charset the charset
      * @return the buffered reader
      * @throws IOException on failure
      */
@@ -287,8 +287,8 @@ public class FileUtils {
      * <code>java.nio.file.Files.newOutputStream()</code>.
      *
      * @param fileName the file name
-     * @param append   if true, the file will grow, if false, the file will be
-     *                 truncated first
+     * @param append if true, the file will grow, if false, the file will be
+     *            truncated first
      * @return the output stream
      * @throws IOException on failure
      */
@@ -336,7 +336,7 @@ public class FileUtils {
     /**
      * Delete a directory or file and all subdirectories and files.
      *
-     * @param path    the path
+     * @param path the path
      * @param tryOnly whether errors should  be ignored
      */
     public static void deleteRecursive(String path, boolean tryOnly) {
@@ -392,15 +392,15 @@ public class FileUtils {
     /**
      * Create a new temporary file.
      *
-     * @param prefix    the prefix of the file name (including directory name if
-     *                  required)
-     * @param suffix    the suffix
+     * @param prefix the prefix of the file name (including directory name if
+     *            required)
+     * @param suffix the suffix
      * @param inTempDir if the file should be stored in the temporary directory
      * @return the name of the created file
      * @throws IOException on failure
      */
     public static String createTempFile(String prefix, String suffix,
-                                        boolean inTempDir) throws IOException {
+            boolean inTempDir) throws IOException {
         return FilePath.get(prefix).createTempFile(suffix, inTempDir).toString();
     }
 
@@ -409,7 +409,7 @@ public class FileUtils {
      * or throw an EOFException if not successful.
      *
      * @param channel the file channel
-     * @param dst     the byte buffer
+     * @param dst the byte buffer
      * @throws IOException on failure
      */
     public static void readFully(FileChannel channel, ByteBuffer dst)
@@ -426,7 +426,7 @@ public class FileUtils {
      * Fully write to the file. This will write all remaining bytes.
      *
      * @param channel the file channel
-     * @param src     the byte buffer
+     * @param src the byte buffer
      * @throws IOException on failure
      */
     public static void writeFully(FileChannel channel, ByteBuffer src)
@@ -445,20 +445,20 @@ public class FileUtils {
     public static Set<? extends OpenOption> modeToOptions(String mode) {
         Set<? extends OpenOption> options;
         switch (mode) {
-            case "r":
-                options = R;
-                break;
-            case "rw":
-                options = RW;
-                break;
-            case "rws":
-                options = RWS;
-                break;
-            case "rwd":
-                options = RWD;
-                break;
-            default:
-                throw new IllegalArgumentException(mode);
+        case "r":
+            options = R;
+            break;
+        case "rw":
+            options = RW;
+            break;
+        case "rws":
+            options = RWS;
+            break;
+        case "rwd":
+            options = RWD;
+            break;
+        default:
+            throw new IllegalArgumentException(mode);
         }
         return options;
     }

@@ -6,7 +6,6 @@
 package org.h2.result;
 
 import java.util.Arrays;
-
 import org.h2.engine.Session;
 import org.h2.util.MathUtils;
 import org.h2.value.TypeInfo;
@@ -24,7 +23,8 @@ public class ResultWithPaddedStrings implements ResultInterface {
      * Returns wrapped result if necessary, or original result if it does not
      * contain visible CHAR columns.
      *
-     * @param source source result
+     * @param source
+     *            source result
      * @return wrapped result or original result
      */
     public static ResultInterface get(ResultInterface source) {
@@ -40,7 +40,8 @@ public class ResultWithPaddedStrings implements ResultInterface {
     /**
      * Creates new instance of result.
      *
-     * @param source the source result
+     * @param source
+     *            the source result
      */
     private ResultWithPaddedStrings(ResultInterface source) {
         this.source = source;

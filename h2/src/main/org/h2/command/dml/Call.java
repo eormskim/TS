@@ -52,11 +52,11 @@ public class Call extends Prepared {
         Value v = expression.getValue(session);
         int type = v.getValueType();
         switch (type) {
-            case Value.UNKNOWN:
-            case Value.NULL:
-                return 0;
-            default:
-                return v.getInt();
+        case Value.UNKNOWN:
+        case Value.NULL:
+            return 0;
+        default:
+            return v.getInt();
         }
     }
 
@@ -90,7 +90,7 @@ public class Call extends Prepared {
                 expressions[i] = e;
             }
         } else {
-            expressions = new Expression[]{expression = expression.optimize(session)};
+            expressions = new Expression[] { expression = expression.optimize(session) };
         }
     }
 

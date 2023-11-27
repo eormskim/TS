@@ -17,7 +17,7 @@ public abstract class Row extends SearchRow {
     /**
      * Creates a new row.
      *
-     * @param data   values of columns, or null
+     * @param data values of columns, or null
      * @param memory used memory
      * @return the allocated row
      */
@@ -28,9 +28,9 @@ public abstract class Row extends SearchRow {
     /**
      * Creates a new row with the specified key.
      *
-     * @param data   values of columns, or null
+     * @param data values of columns, or null
      * @param memory used memory
-     * @param key    the key
+     * @param key the key
      * @return the allocated row
      */
     public static Row get(Value[] data, int memory, long key) {
@@ -49,9 +49,10 @@ public abstract class Row extends SearchRow {
     /**
      * Check whether values of this row are equal to values of other row.
      *
-     * @param other the other row
+     * @param other
+     *            the other row
      * @return {@code true} if values are equal,
-     * {@code false} otherwise
+     *         {@code false} otherwise
      */
     public boolean hasSameValues(Row other) {
         return Arrays.equals(getValueList(), other.getValueList());
@@ -64,9 +65,10 @@ public abstract class Row extends SearchRow {
      * are equal. This method may be used only for optimizations and should not
      * perform any slow checks, such as equality checks for all pairs of values.
      *
-     * @param other the other row
+     * @param other
+     *            the other row
      * @return {@code true} if rows share the same underlying data,
-     * {@code false} otherwise or when unknown
+     *         {@code false} otherwise or when unknown
      */
     public boolean hasSharedData(Row other) {
         return false;

@@ -16,7 +16,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.h2.security.AES;
 
 /**
@@ -35,11 +34,9 @@ public class CalculateHashConstant implements Runnable {
     private int[] fromTo = new int[32 * 32];
 
     private final AES aes = new AES();
-
     {
         aes.setKey("Hello Welt Hallo Welt".getBytes());
     }
-
     private final byte[] data = new byte[16];
 
     /**
@@ -93,7 +90,7 @@ public class CalculateHashConstant implements Runnable {
         test = new CalculateHashConstant();
         int best = 0;
         int dist = Integer.MAX_VALUE;
-        for (int i : new int[]{
+        for (int i : new int[] {
                 0x10b5383, 0x10b65f3, 0x1170d8b, 0x118e97b,
                 0x1190d8b, 0x11ab37d, 0x11c65f3, 0x1228357, 0x122a837,
                 0x122a907, 0x12b24f7, 0x12c4d05, 0x131a907, 0x131afa3,
@@ -204,7 +201,7 @@ public class CalculateHashConstant implements Runnable {
                 0xd6afa3, 0xd94e0b, 0xdaf547, 0xdb1a7b, 0xdca907, 0xdd2e85,
                 0xe6da7d, 0xe94e0b, 0xe9a907, 0xeca7d7, 0xf4a837
         }) {
-            // for(int i : candidates) {
+        // for(int i : candidates) {
             test.constant = i;
             System.out.println();
             System.out.println("Constant: 0x" + Integer.toHexString(i));
@@ -255,7 +252,6 @@ public class CalculateHashConstant implements Runnable {
                 oneShift63.subtract(BigInteger.ONE),
                 oneShift64).longValue();
     }
-
     /**
      * Store a random file to be analyzed by the Diehard test.
      */
@@ -384,7 +380,7 @@ public class CalculateHashConstant implements Runnable {
      * @param h      the hash object
      * @param values the values to test with
      * @return the minimum and maximum number of output bits that are changed in
-     * combination with another output bit
+     *         combination with another output bit
      */
     int[] getDependencies(CalculateHashConstant h, int[] values) {
         Arrays.fill(fromTo, 0);
@@ -419,7 +415,7 @@ public class CalculateHashConstant implements Runnable {
                 b = x;
             }
         }
-        return new int[]{a, b};
+        return new int[] {a, b};
     }
 
     /**
@@ -451,7 +447,7 @@ public class CalculateHashConstant implements Runnable {
      *
      * @param h      the hash object
      * @param values the values to test with
-     * @return sum(distance ^ 2)
+     * @return sum(distance^2)
      */
     long getEffectSquare(CalculateHashConstant h, int[] values) {
         Arrays.fill(fromTo, 0);
@@ -482,9 +478,9 @@ public class CalculateHashConstant implements Runnable {
      * Calculate if the all bit changes (that an output bit changes if an input
      * bit is changed) are within a certain range.
      *
-     * @param h     the hash object
+     * @param h the hash object
      * @param count the number of values to test
-     * @param seed  the random seed
+     * @param seed the random seed
      * @return the minimum and maximum value of all input-to-output bit changes
      */
     int[] getEffect(CalculateHashConstant h, int count, int seed) {
@@ -513,7 +509,7 @@ public class CalculateHashConstant implements Runnable {
                 b = x;
             }
         }
-        return new int[]{a, b};
+        return new int[] {a, b};
     }
 
     /**

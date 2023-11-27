@@ -35,7 +35,7 @@ public class DomainColumnResolver implements ColumnResolver {
 
     @Override
     public Column[] getColumns() {
-        return new Column[]{column};
+        return new Column[] { column };
     }
 
     @Override

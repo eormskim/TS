@@ -40,20 +40,21 @@ public final class Format extends Operation1 {
     /**
      * Returns the value with applied format.
      *
-     * @param value the value
+     * @param value
+     *            the value
      * @return the value with applied format
      */
     public Value getValue(Value value) {
         switch (value.getValueType()) {
-            case Value.NULL:
-                return ValueJson.NULL;
-            case Value.VARCHAR:
-            case Value.VARCHAR_IGNORECASE:
-            case Value.CHAR:
-            case Value.CLOB:
-                return ValueJson.fromJson(value.getString());
-            default:
-                return value.convertTo(TypeInfo.TYPE_JSON);
+        case Value.NULL:
+            return ValueJson.NULL;
+        case Value.VARCHAR:
+        case Value.VARCHAR_IGNORECASE:
+        case Value.CHAR:
+        case Value.CLOB:
+            return ValueJson.fromJson(value.getString());
+        default:
+            return value.convertTo(TypeInfo.TYPE_JSON);
         }
     }
 

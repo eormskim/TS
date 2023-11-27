@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Types;
-
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
 
@@ -46,18 +45,18 @@ public class TestRecursiveQueries extends TestDb {
 
         ResultSet rs = stat.executeQuery(
                 "with recursive rec_test(depth, parent, child) as (" +
-                        "select 0, parent, child from test where parent = '/' " +
-                        "union all " +
-                        "select depth+1, r.parent, r.child from test i join rec_test r " +
-                        "on (i.parent = r.child) where depth<9 " +
-                        ") select count(*) from rec_test");
-        rs.next();
-        assertEquals(29524, rs.getInt(1));
-        stat.execute("with recursive rec_test(depth, parent, child) as ( " +
                 "select 0, parent, child from test where parent = '/' " +
                 "union all " +
-                "select depth+1, i.parent, i.child from test i join rec_test r " +
-                "on (r.child = i.parent) where depth<10 " +
+                "select depth+1, r.parent, r.child from test i join rec_test r " +
+                "on (i.parent = r.child) where depth<9 " +
+                ") select count(*) from rec_test");
+        rs.next();
+        assertEquals(29524, rs.getInt(1));
+        stat.execute("with recursive rec_test(depth, parent, child) as ( "+
+                "select 0, parent, child from test where parent = '/' "+
+                "union all "+
+                "select depth+1, i.parent, i.child from test i join rec_test r "+
+                "on (r.child = i.parent) where depth<10 "+
                 ") select * from rec_test");
         conn.close();
         deleteDb("recursiveQueries");
@@ -146,8 +145,8 @@ public class TestRecursiveQueries extends TestDb {
                 + "(select 1, '.', localtimestamp union all"
                 + " select i+1, s||'.', d from t where i<3)"
                 + " select * from t");
-        assertResultSetMeta(rs, 3, new String[]{"I", "S", "D"},
-                new int[]{Types.INTEGER, Types.VARCHAR, Types.TIMESTAMP},
+        assertResultSetMeta(rs, 3, new String[]{ "I", "S", "D" },
+                new int[]{ Types.INTEGER, Types.VARCHAR, Types.TIMESTAMP },
                 null, null);
 
         rs = stat.executeQuery("select x from system_range(1,5) "

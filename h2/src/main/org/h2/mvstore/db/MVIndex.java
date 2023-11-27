@@ -18,10 +18,10 @@ import org.h2.value.VersionedValue;
 /**
  * An index that stores the data in an MVStore.
  */
-public abstract class MVIndex<K, V> extends Index {
+public abstract class MVIndex<K,V> extends Index {
 
     protected MVIndex(Table newTable, int id, String name, IndexColumn[] newIndexColumns, int uniqueColumnCount,
-                      IndexType newIndexType) {
+            IndexType newIndexType) {
         super(newTable, id, name, newIndexColumns, uniqueColumnCount, newIndexType);
     }
 
@@ -29,7 +29,7 @@ public abstract class MVIndex<K, V> extends Index {
      * Add the rows to a temporary storage (not to the index yet). The rows are
      * sorted by the index columns. This is to more quickly build the index.
      *
-     * @param rows       the rows
+     * @param rows the rows
      * @param bufferName the name of the temporary storage
      */
     public abstract void addRowsToBuffer(List<Row> rows, String bufferName);
@@ -42,6 +42,6 @@ public abstract class MVIndex<K, V> extends Index {
      */
     public abstract void addBufferedRows(List<String> bufferNames);
 
-    public abstract MVMap<K, VersionedValue<V>> getMVMap();
+    public abstract MVMap<K,VersionedValue<V>> getMVMap();
 
 }

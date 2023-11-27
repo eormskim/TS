@@ -10,7 +10,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.FileLock;
 import java.nio.channels.NonWritableChannelException;
-
 import org.h2.store.fs.FakeFileChannel;
 import org.h2.store.fs.FileBaseDefault;
 
@@ -60,7 +59,7 @@ class FileNioMem extends FileBaseDefault {
         data.touch(readOnly);
         // offset is 0 because we start writing from src.position()
         long newPosition = data.readWrite(position, src, 0, src.remaining(), true);
-        int len = (int) (newPosition - position);
+        int len = (int)(newPosition - position);
         src.position(src.position() + len);
         return len;
     }
@@ -96,7 +95,7 @@ class FileNioMem extends FileBaseDefault {
 
     @Override
     public FileLock tryLock(long position, long size,
-                            boolean shared) throws IOException {
+            boolean shared) throws IOException {
         if (closed) {
             throw new ClosedChannelException();
         }

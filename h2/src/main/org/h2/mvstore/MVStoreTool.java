@@ -80,7 +80,7 @@ public class MVStoreTool {
      * Read the contents of the file and write them to system out.
      *
      * @param fileName the name of the file
-     * @param details  whether to print details
+     * @param details whether to print details
      */
     public static void dump(String fileName, boolean details) {
         dump(fileName, new PrintWriter(System.out), details);
@@ -100,8 +100,8 @@ public class MVStoreTool {
      * format.
      *
      * @param fileName the name of the file
-     * @param writer   the print writer
-     * @param details  print the page details
+     * @param writer the print writer
+     * @param details print the page details
      */
     public static void dump(String fileName, Writer writer, boolean details) {
         PrintWriter pw = new PrintWriter(writer, true);
@@ -183,8 +183,7 @@ public class MVStoreTool {
                     int pageSize = chunk.getInt();
                     // check value (ignored)
                     chunk.getShort();
-                    /*int pageNo =*/
-                    DataUtils.readVarInt(chunk);
+                    /*int pageNo =*/ DataUtils.readVarInt(chunk);
                     int mapId = DataUtils.readVarInt(chunk);
                     int entries = DataUtils.readVarInt(chunk);
                     int type = chunk.get();
@@ -338,9 +337,9 @@ public class MVStoreTool {
      * Read the summary information of the file and write them to system out.
      *
      * @param fileName the name of the file
-     * @param writer   the print writer
+     * @param writer the print writer
      * @return null if successful (if there was no error), otherwise the error
-     * message
+     *         message
      */
     public static String info(String fileName, Writer writer) {
         PrintWriter pw = new PrintWriter(writer, true);
@@ -382,10 +381,10 @@ public class MVStoreTool {
             pw.printf("Chunk count: %d\n", chunks.size());
             pw.printf("Used space: %d%%\n", getPercent(chunkLength, fileLength));
             pw.printf("Chunk fill rate: %d%%\n", maxLength == 0 ? 100 :
-                    getPercent(maxLengthLive, maxLength));
+                getPercent(maxLengthLive, maxLength));
             pw.printf("Chunk fill rate excluding empty chunks: %d%%\n",
-                    maxLengthNotEmpty == 0 ? 100 :
-                            getPercent(maxLengthLive, maxLengthNotEmpty));
+                maxLengthNotEmpty == 0 ? 100 :
+                getPercent(maxLengthLive, maxLengthNotEmpty));
             for (Entry<Integer, Chunk> e : chunks.entrySet()) {
                 Chunk c = e.getValue();
                 long created = fileCreated + c.time;
@@ -393,7 +392,7 @@ public class MVStoreTool {
                         c.id, formatTimestamp(created, fileCreated),
                         getPercent(c.maxLenLive, c.maxLen),
                         c.len
-                );
+                        );
                 if (c.maxLenLive == 0) {
                     pw.printf(", unused: %s",
                             formatTimestamp(fileCreated + c.unused, fileCreated));
@@ -480,7 +479,7 @@ public class MVStoreTool {
      *
      * @param sourceFileName the name of the source store
      * @param targetFileName the name of the target store
-     * @param compress       whether to compress the data
+     * @param compress whether to compress the data
      */
     public static void compact(String sourceFileName, String targetFileName, boolean compress) {
         try (MVStore source = new MVStore.Builder().
@@ -492,7 +491,7 @@ public class MVStoreTool {
             // @since 2018-09-13 little-pan
             FileUtils.delete(targetFileName);
             MVStore.Builder b = new MVStore.Builder().
-                    fileName(targetFileName);
+                fileName(targetFileName);
             if (compress) {
                 b.compress();
             }
@@ -597,10 +596,10 @@ public class MVStoreTool {
     /**
      * Roll back to a given revision into a file called *.temp.
      *
-     * @param fileName      the file name
+     * @param fileName the file name
      * @param targetVersion the version to roll back to (Long.MAX_VALUE for the
-     *                      latest version)
-     * @param writer        the log writer
+     *            latest version)
+     * @param writer the log writer
      * @return the version rolled back to (-1 if no version)
      */
     public static long rollback(String fileName, long targetVersion, Writer writer) {
@@ -620,7 +619,7 @@ public class MVStoreTool {
             long fileSize = file.size();
             ByteBuffer block = ByteBuffer.allocate(4096);
             Chunk newestChunk = null;
-            for (long pos = 0; pos < fileSize; ) {
+            for (long pos = 0; pos < fileSize;) {
                 block.rewind();
                 DataUtils.readFully(file, pos, block);
                 block.rewind();
@@ -691,9 +690,9 @@ public class MVStoreTool {
         return newestVersion;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    static MVMap.Builder<Object, Object> getGenericMapBuilder() {
-        return (MVMap.Builder) new MVMap.Builder<byte[], byte[]>().
+    @SuppressWarnings({"rawtypes","unchecked"})
+    static MVMap.Builder<Object,Object> getGenericMapBuilder() {
+        return (MVMap.Builder)new MVMap.Builder<byte[],byte[]>().
                 keyType(GenericDataType.INSTANCE).
                 valueType(GenericDataType.INSTANCE);
     }
@@ -705,8 +704,7 @@ public class MVStoreTool {
     private static class GenericDataType extends BasicDataType<byte[]> {
         static GenericDataType INSTANCE = new GenericDataType();
 
-        private GenericDataType() {
-        }
+        private GenericDataType() {}
 
         @Override
         public boolean isMemoryEstimationAllowed() {

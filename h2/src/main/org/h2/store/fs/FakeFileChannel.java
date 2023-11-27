@@ -23,8 +23,7 @@ public class FakeFileChannel extends FileChannel {
      */
     public static final FakeFileChannel INSTANCE = new FakeFileChannel();
 
-    private FakeFileChannel() {
-    }
+    private FakeFileChannel() {}
 
     @Override
     protected void implCloseChannel() throws IOException {

@@ -37,7 +37,7 @@ public class PageParser {
     /**
      * Replace the tags in the HTML page with the given settings.
      *
-     * @param page     the HTML page
+     * @param page the HTML page
      * @param settings the settings
      * @return the converted page
      */
@@ -83,77 +83,77 @@ public class PageParser {
         for (; i < len; i++) {
             char c = p.charAt(i);
             switch (c) {
-                case '<': {
-                    if (p.charAt(i + 3) == ':' && p.charAt(i + 1) == '/') {
-                        // end tag
-                        pos = i;
+            case '<': {
+                if (p.charAt(i + 3) == ':' && p.charAt(i + 1) == '/') {
+                    // end tag
+                    pos = i;
+                    return;
+                } else if (p.charAt(i + 2) == ':') {
+                    pos = i;
+                    if (readIf("<c:forEach")) {
+                        String var = readParam("var");
+                        String items = readParam("items");
+                        read(">");
+                        int start = pos;
+                        List<Object> list = (List<Object>) get(items);
+                        if (list == null) {
+                            result.append("?items?");
+                            list = new ArrayList<>();
+                        }
+                        if (list.isEmpty()) {
+                            parseBlockUntil("</c:forEach>");
+                        }
+                        for (Object o : list) {
+                            settings.put(var, o);
+                            pos = start;
+                            String block = parseBlockUntil("</c:forEach>");
+                            result.append(block);
+                        }
+                    } else if (readIf("<c:if")) {
+                        String test = readParam("test");
+                        int eq = test.indexOf("=='");
+                        if (eq < 0) {
+                            setError(i);
+                            return;
+                        }
+                        String val = test.substring(eq + 3, test.length() - 1);
+                        test = test.substring(0, eq);
+                        String value = (String) get(test);
+                        read(">");
+                        String block = parseBlockUntil("</c:if>");
+                        pos--;
+                        if (value.equals(val)) {
+                            result.append(block);
+                        }
+                    } else {
+                        setError(i);
                         return;
-                    } else if (p.charAt(i + 2) == ':') {
-                        pos = i;
-                        if (readIf("<c:forEach")) {
-                            String var = readParam("var");
-                            String items = readParam("items");
-                            read(">");
-                            int start = pos;
-                            List<Object> list = (List<Object>) get(items);
-                            if (list == null) {
-                                result.append("?items?");
-                                list = new ArrayList<>();
-                            }
-                            if (list.isEmpty()) {
-                                parseBlockUntil("</c:forEach>");
-                            }
-                            for (Object o : list) {
-                                settings.put(var, o);
-                                pos = start;
-                                String block = parseBlockUntil("</c:forEach>");
-                                result.append(block);
-                            }
-                        } else if (readIf("<c:if")) {
-                            String test = readParam("test");
-                            int eq = test.indexOf("=='");
-                            if (eq < 0) {
-                                setError(i);
-                                return;
-                            }
-                            String val = test.substring(eq + 3, test.length() - 1);
-                            test = test.substring(0, eq);
-                            String value = (String) get(test);
-                            read(">");
-                            String block = parseBlockUntil("</c:if>");
-                            pos--;
-                            if (value.equals(val)) {
-                                result.append(block);
-                            }
-                        } else {
-                            setError(i);
-                            return;
-                        }
-                        i = pos;
-                    } else {
-                        buff.append(c);
                     }
-                    break;
-                }
-                case '$':
-                    if (p.length() > i + 1 && p.charAt(i + 1) == '{') {
-                        i += 2;
-                        int j = p.indexOf('}', i);
-                        if (j < 0) {
-                            setError(i);
-                            return;
-                        }
-                        String item = StringUtils.trimSubstring(p, i, j);
-                        i = j;
-                        String s = (String) get(item);
-                        replaceTags(s);
-                    } else {
-                        buff.append(c);
-                    }
-                    break;
-                default:
+                    i = pos;
+                } else {
                     buff.append(c);
-                    break;
+                }
+                break;
+            }
+            case '$':
+                if (p.length() > i + 1 && p.charAt(i + 1) == '{') {
+                    i += 2;
+                    int j = p.indexOf('}', i);
+                    if (j < 0) {
+                        setError(i);
+                        return;
+                    }
+                    String item = StringUtils.trimSubstring(p, i, j);
+                    i = j;
+                    String s = (String) get(item);
+                    replaceTags(s);
+                } else {
+                    buff.append(c);
+                }
+                break;
+            default:
+                buff.append(c);
+                break;
             }
         }
         pos = i;
@@ -248,7 +248,7 @@ public class PageParser {
         }
         StringBuilder builder = new StringBuilder(length);
         boolean convertSpace = true;
-        for (int i = 0; i < length; ) {
+        for (int i = 0; i < length;) {
             int cp = s.codePointAt(i);
             if (cp == ' ' || cp == '\t') {
                 // convert tabs into spaces
@@ -263,39 +263,39 @@ public class PageParser {
             } else {
                 convertSpace = false;
                 switch (cp) {
-                    case '$':
-                        // so that ${ } in the text is interpreted correctly
-                        builder.append("&#36;");
-                        break;
-                    case '<':
-                        builder.append("&lt;");
-                        break;
-                    case '>':
-                        builder.append("&gt;");
-                        break;
-                    case '&':
-                        builder.append("&amp;");
-                        break;
-                    case '"':
-                        builder.append("&quot;");
-                        break;
-                    case '\'':
-                        builder.append("&#39;");
-                        break;
-                    case '\n':
-                        if (convertBreakAndSpace) {
-                            builder.append("<br />");
-                            convertSpace = true;
-                        } else {
-                            builder.append(cp);
-                        }
-                        break;
-                    default:
-                        if (cp >= 128) {
-                            builder.append("&#").append(cp).append(';');
-                        } else {
-                            builder.append((char) cp);
-                        }
+                case '$':
+                    // so that ${ } in the text is interpreted correctly
+                    builder.append("&#36;");
+                    break;
+                case '<':
+                    builder.append("&lt;");
+                    break;
+                case '>':
+                    builder.append("&gt;");
+                    break;
+                case '&':
+                    builder.append("&amp;");
+                    break;
+                case '"':
+                    builder.append("&quot;");
+                    break;
+                case '\'':
+                    builder.append("&#39;");
+                    break;
+                case '\n':
+                    if (convertBreakAndSpace) {
+                        builder.append("<br />");
+                        convertSpace = true;
+                    } else {
+                        builder.append(cp);
+                    }
+                    break;
+                default:
+                    if (cp >= 128) {
+                        builder.append("&#").append(cp).append(';');
+                    } else {
+                        builder.append((char) cp);
+                    }
                 }
             }
             i += Character.charCount(cp);
@@ -321,27 +321,27 @@ public class PageParser {
         for (int i = 0; i < length; i++) {
             char c = s.charAt(i);
             switch (c) {
-                case '"':
-                    buff.append("\\\"");
-                    break;
-                case '\'':
-                    buff.append("\\'");
-                    break;
-                case '\\':
-                    buff.append("\\\\");
-                    break;
-                case '\n':
-                    buff.append("\\n");
-                    break;
-                case '\r':
-                    buff.append("\\r");
-                    break;
-                case '\t':
-                    buff.append("\\t");
-                    break;
-                default:
-                    buff.append(c);
-                    break;
+            case '"':
+                buff.append("\\\"");
+                break;
+            case '\'':
+                buff.append("\\'");
+                break;
+            case '\\':
+                buff.append("\\\\");
+                break;
+            case '\n':
+                buff.append("\\n");
+                break;
+            case '\r':
+                buff.append("\\r");
+                break;
+            case '\t':
+                buff.append("\\t");
+                break;
+            default:
+                buff.append(c);
+                break;
             }
         }
         return buff.toString();

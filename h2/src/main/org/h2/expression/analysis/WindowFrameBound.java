@@ -25,8 +25,10 @@ public class WindowFrameBound {
     /**
      * Creates new instance of window frame bound.
      *
-     * @param type  bound type
-     * @param value bound value, if any
+     * @param type
+     *            bound type
+     * @param value
+     *            bound value, if any
      */
     public WindowFrameBound(WindowFrameBoundType type, Expression value) {
         this.type = type;
@@ -86,7 +88,8 @@ public class WindowFrameBound {
     /**
      * Sets the index of preserved expression.
      *
-     * @param expressionIndex the index to set
+     * @param expressionIndex
+     *            the index to set
      */
     void setExpressionIndex(int expressionIndex) {
         this.expressionIndex = expressionIndex;
@@ -95,9 +98,12 @@ public class WindowFrameBound {
     /**
      * Map the columns of the resolver to expression columns.
      *
-     * @param resolver the column resolver
-     * @param level    the subquery nesting level
-     * @param state    current state for nesting checks
+     * @param resolver
+     *            the column resolver
+     * @param level
+     *            the subquery nesting level
+     * @param state
+     *            current state for nesting checks
      */
     void mapColumns(ColumnResolver resolver, int level, int state) {
         if (value != null) {
@@ -108,7 +114,8 @@ public class WindowFrameBound {
     /**
      * Try to optimize bound expression.
      *
-     * @param session the session
+     * @param session
+     *            the session
      */
     void optimize(SessionLocal session) {
         if (value != null) {
@@ -122,8 +129,10 @@ public class WindowFrameBound {
     /**
      * Update an aggregate value.
      *
-     * @param session the session
-     * @param stage   select stage
+     * @param session
+     *            the session
+     * @param stage
+     *            select stage
      * @see Expression#updateAggregate(SessionLocal, int)
      */
     void updateAggregate(SessionLocal session, int stage) {
@@ -135,10 +144,13 @@ public class WindowFrameBound {
     /**
      * Appends SQL representation to the specified builder.
      *
-     * @param builder   string builder
-     * @param following if false return SQL for starting clause, if true return SQL
-     *                  for following clause
-     * @param sqlFlags  formatting flags
+     * @param builder
+     *            string builder
+     * @param following
+     *            if false return SQL for starting clause, if true return SQL
+     *            for following clause
+     * @param sqlFlags
+     *            formatting flags
      * @return the specified string builder
      * @see Expression#getSQL(StringBuilder, int, int)
      */

@@ -92,7 +92,7 @@ public class Db {
         while (rs.next()) {
             HashMap<String, Object> map = new HashMap<>();
             for (int i = 0; i < columnCount; i++) {
-                map.put(meta.getColumnLabel(i + 1), rs.getObject(i + 1));
+                map.put(meta.getColumnLabel(i+1), rs.getObject(i+1));
             }
             list.add(map);
         }

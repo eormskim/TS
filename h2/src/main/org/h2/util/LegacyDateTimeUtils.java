@@ -47,9 +47,12 @@ public final class LegacyDateTimeUtils {
     /**
      * Get or create a date value for the given date.
      *
-     * @param provider the cast information provider
-     * @param timeZone time zone, or {@code null} for default
-     * @param date     the date
+     * @param provider
+     *            the cast information provider
+     * @param timeZone
+     *            time zone, or {@code null} for default
+     * @param date
+     *            the date
      * @return the value
      */
     public static ValueDate fromDate(CastDataProvider provider, TimeZone timeZone, Date date) {
@@ -61,9 +64,12 @@ public final class LegacyDateTimeUtils {
     /**
      * Get or create a time value for the given time.
      *
-     * @param provider the cast information provider
-     * @param timeZone time zone, or {@code null} for default
-     * @param time     the time
+     * @param provider
+     *            the cast information provider
+     * @param timeZone
+     *            time zone, or {@code null} for default
+     * @param time
+     *            the time
      * @return the value
      */
     public static ValueTime fromTime(CastDataProvider provider, TimeZone timeZone, Time time) {
@@ -75,9 +81,12 @@ public final class LegacyDateTimeUtils {
     /**
      * Get or create a timestamp value for the given timestamp.
      *
-     * @param provider  the cast information provider
-     * @param timeZone  time zone, or {@code null} for default
-     * @param timestamp the timestamp
+     * @param provider
+     *            the cast information provider
+     * @param timeZone
+     *            time zone, or {@code null} for default
+     * @param timestamp
+     *            the timestamp
      * @return the value
      */
     public static ValueTimestamp fromTimestamp(CastDataProvider provider, TimeZone timeZone, Timestamp timestamp) {
@@ -90,9 +99,12 @@ public final class LegacyDateTimeUtils {
     /**
      * Get or create a timestamp value for the given date/time in millis.
      *
-     * @param provider the cast information provider
-     * @param ms       the milliseconds
-     * @param nanos    the nanoseconds
+     * @param provider
+     *            the cast information provider
+     * @param ms
+     *            the milliseconds
+     * @param nanos
+     *            the nanoseconds
      * @return the value
      */
     public static ValueTimestamp fromTimestamp(CastDataProvider provider, long ms, int nanos) {
@@ -108,7 +120,8 @@ public final class LegacyDateTimeUtils {
     /**
      * Convert a local datetime in millis to an encoded date.
      *
-     * @param ms the milliseconds
+     * @param ms
+     *            the milliseconds
      * @return the date value
      */
     public static long dateValueFromLocalMillis(long ms) {
@@ -124,7 +137,8 @@ public final class LegacyDateTimeUtils {
      * Convert a time in milliseconds in local time to the nanoseconds since
      * midnight.
      *
-     * @param ms the milliseconds
+     * @param ms
+     *            the milliseconds
      * @return the nanoseconds
      */
     public static long nanosFromLocalMillis(long ms) {
@@ -140,7 +154,7 @@ public final class LegacyDateTimeUtils {
      *
      * @param provider the cast information provider
      * @param timeZone the target time zone
-     * @param value    the value to convert
+     * @param value the value to convert
      * @return the date
      */
     public static Date toDate(CastDataProvider provider, TimeZone timeZone, Value value) {
@@ -153,19 +167,19 @@ public final class LegacyDateTimeUtils {
      *
      * @param provider the cast information provider
      * @param timeZone the target time zone
-     * @param value    the value to convert
+     * @param value the value to convert
      * @return the time
      */
     public static Time toTime(CastDataProvider provider, TimeZone timeZone, Value value) {
         switch (value.getValueType()) {
-            case Value.NULL:
-                return null;
-            default:
-                value = value.convertTo(TypeInfo.TYPE_TIME, provider);
-                //$FALL-THROUGH$
-            case Value.TIME:
-                return new Time(
-                        getMillis(provider, timeZone, DateTimeUtils.EPOCH_DATE_VALUE, ((ValueTime) value).getNanos()));
+        case Value.NULL:
+            return null;
+        default:
+            value = value.convertTo(TypeInfo.TYPE_TIME, provider);
+            //$FALL-THROUGH$
+        case Value.TIME:
+            return new Time(
+                    getMillis(provider, timeZone, DateTimeUtils.EPOCH_DATE_VALUE, ((ValueTime) value).getNanos()));
         }
     }
 
@@ -174,31 +188,31 @@ public final class LegacyDateTimeUtils {
      *
      * @param provider the cast information provider
      * @param timeZone the target time zone
-     * @param value    the value to convert
+     * @param value the value to convert
      * @return the timestamp
      */
     public static Timestamp toTimestamp(CastDataProvider provider, TimeZone timeZone, Value value) {
         switch (value.getValueType()) {
-            case Value.NULL:
-                return null;
-            default:
-                value = value.convertTo(TypeInfo.TYPE_TIMESTAMP, provider);
-                //$FALL-THROUGH$
-            case Value.TIMESTAMP: {
-                ValueTimestamp v = (ValueTimestamp) value;
-                long timeNanos = v.getTimeNanos();
-                Timestamp ts = new Timestamp(getMillis(provider, timeZone, v.getDateValue(), timeNanos));
-                ts.setNanos((int) (timeNanos % NANOS_PER_SECOND));
-                return ts;
-            }
-            case Value.TIMESTAMP_TZ: {
-                ValueTimestampTimeZone v = (ValueTimestampTimeZone) value;
-                long timeNanos = v.getTimeNanos();
-                Timestamp ts = new Timestamp(DateTimeUtils.absoluteDayFromDateValue(v.getDateValue()) * MILLIS_PER_DAY
-                        + timeNanos / 1_000_000 - v.getTimeZoneOffsetSeconds() * 1_000);
-                ts.setNanos((int) (timeNanos % NANOS_PER_SECOND));
-                return ts;
-            }
+        case Value.NULL:
+            return null;
+        default:
+            value = value.convertTo(TypeInfo.TYPE_TIMESTAMP, provider);
+            //$FALL-THROUGH$
+        case Value.TIMESTAMP: {
+            ValueTimestamp v = (ValueTimestamp) value;
+            long timeNanos = v.getTimeNanos();
+            Timestamp ts = new Timestamp(getMillis(provider, timeZone, v.getDateValue(), timeNanos));
+            ts.setNanos((int) (timeNanos % NANOS_PER_SECOND));
+            return ts;
+        }
+        case Value.TIMESTAMP_TZ: {
+            ValueTimestampTimeZone v = (ValueTimestampTimeZone) value;
+            long timeNanos = v.getTimeNanos();
+            Timestamp ts = new Timestamp(DateTimeUtils.absoluteDayFromDateValue(v.getDateValue()) * MILLIS_PER_DAY
+                    + timeNanos / 1_000_000 - v.getTimeZoneOffsetSeconds() * 1_000);
+            ts.setNanos((int) (timeNanos % NANOS_PER_SECOND));
+            return ts;
+        }
         }
     }
 
@@ -206,9 +220,9 @@ public final class LegacyDateTimeUtils {
      * Calculate the milliseconds since 1970-01-01 (UTC) for the given date and
      * time (in the specified timezone).
      *
-     * @param provider  the cast information provider
-     * @param tz        the timezone of the parameters, or null for the default
-     *                  timezone
+     * @param provider the cast information provider
+     * @param tz the timezone of the parameters, or null for the default
+     *            timezone
      * @param dateValue date value
      * @param timeNanos nanoseconds since midnight
      * @return the number of milliseconds (UTC)
@@ -223,7 +237,7 @@ public final class LegacyDateTimeUtils {
      * Returns local time zone offset for a specified timestamp.
      *
      * @param provider the cast information provider
-     * @param ms       milliseconds since Epoch in UTC
+     * @param ms milliseconds since Epoch in UTC
      * @return local time zone offset
      */
     public static int getTimeZoneOffsetMillis(CastDataProvider provider, long ms) {
@@ -239,8 +253,10 @@ public final class LegacyDateTimeUtils {
     /**
      * Convert a legacy Java object to a value.
      *
-     * @param session the session
-     * @param x       the value
+     * @param session
+     *            the session
+     * @param x
+     *            the value
      * @return the value, or {@code null} if not supported
      */
     public static Value legacyObjectToValue(CastDataProvider session, Object x) {
@@ -264,9 +280,9 @@ public final class LegacyDateTimeUtils {
     /**
      * Converts the specified value to an object of the specified legacy type.
      *
-     * @param <T>      the type
-     * @param type     the class
-     * @param value    the value
+     * @param <T> the type
+     * @param type the class
+     * @param value the value
      * @param provider the cast information provider
      * @return an instance of the specified class, or {@code null} if not supported
      */
@@ -293,7 +309,8 @@ public final class LegacyDateTimeUtils {
     /**
      * Get the type information for the given legacy Java class.
      *
-     * @param clazz the Java class
+     * @param clazz
+     *            the Java class
      * @return the value type, or {@code null} if not supported
      */
     public static TypeInfo legacyClassToType(Class<?> clazz) {
@@ -303,7 +320,7 @@ public final class LegacyDateTimeUtils {
             return TypeInfo.TYPE_TIME;
         } else if (java.util.Date.class.isAssignableFrom(clazz) || Calendar.class.isAssignableFrom(clazz)) {
             return TypeInfo.TYPE_TIMESTAMP;
-        } else {
+        } else{
             return null;
         }
     }

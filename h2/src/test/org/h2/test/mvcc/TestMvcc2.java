@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.h2.api.ErrorCode;
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
@@ -76,7 +75,7 @@ public class TestMvcc2 extends TestDb {
                 } catch (SQLException e) {
                     assertTrue(e.toString(),
                             e.getErrorCode() == ErrorCode.DUPLICATE_KEY_1 ||
-                                    e.getErrorCode() == ErrorCode.CONCURRENT_UPDATE_1);
+                            e.getErrorCode() == ErrorCode.CONCURRENT_UPDATE_1);
                 }
             }
         };

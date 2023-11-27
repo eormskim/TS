@@ -248,22 +248,22 @@ public class TestMvcc1 extends TestDb {
                 c = c2;
             }
             switch (random.nextInt(5)) {
-                case 0:
-                    s.execute("INSERT INTO TEST(NAME) VALUES('Hello')");
-                    break;
-                case 1:
-                    s.execute("UPDATE TEST SET NAME=" + i + " WHERE ID=" + random.nextInt(i));
-                    break;
-                case 2:
-                    s.execute("DELETE FROM TEST WHERE ID=" + random.nextInt(i));
-                    break;
-                case 3:
-                    c.commit();
-                    break;
-                case 4:
-                    c.rollback();
-                    break;
-                default:
+            case 0:
+                s.execute("INSERT INTO TEST(NAME) VALUES('Hello')");
+                break;
+            case 1:
+                s.execute("UPDATE TEST SET NAME=" + i + " WHERE ID=" + random.nextInt(i));
+                break;
+            case 2:
+                s.execute("DELETE FROM TEST WHERE ID=" + random.nextInt(i));
+                break;
+            case 3:
+                c.commit();
+                break;
+            case 4:
+                c.rollback();
+                break;
+            default:
             }
             s1.execute("SELECT * FROM TEST ORDER BY ID");
             s2.execute("SELECT * FROM TEST ORDER BY ID");
@@ -284,26 +284,26 @@ public class TestMvcc1 extends TestDb {
                 c = c2;
             }
             switch (random.nextInt(5)) {
-                case 0:
-                    s.execute("INSERT INTO TEST VALUES(" + i + ", 'Hello')");
-                    break;
-                case 1:
-                    try {
-                        s.execute("UPDATE TEST SET NAME=" + i + " WHERE ID=" + random.nextInt(i));
-                    } catch (SQLException e) {
-                        assertEquals(ErrorCode.CONCURRENT_UPDATE_1, e.getErrorCode());
-                    }
-                    break;
-                case 2:
-                    s.execute("DELETE FROM TEST WHERE ID=" + random.nextInt(i));
-                    break;
-                case 3:
-                    c.commit();
-                    break;
-                case 4:
-                    c.rollback();
-                    break;
-                default:
+            case 0:
+                s.execute("INSERT INTO TEST VALUES(" + i + ", 'Hello')");
+                break;
+            case 1:
+                try {
+                    s.execute("UPDATE TEST SET NAME=" + i + " WHERE ID=" + random.nextInt(i));
+                } catch (SQLException e) {
+                    assertEquals(ErrorCode.CONCURRENT_UPDATE_1, e.getErrorCode());
+                }
+                break;
+            case 2:
+                s.execute("DELETE FROM TEST WHERE ID=" + random.nextInt(i));
+                break;
+            case 3:
+                c.commit();
+                break;
+            case 4:
+                c.rollback();
+                break;
+            default:
             }
             s1.execute("SELECT * FROM TEST ORDER BY ID");
             s2.execute("SELECT * FROM TEST ORDER BY ID");

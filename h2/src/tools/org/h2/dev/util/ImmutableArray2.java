@@ -8,7 +8,6 @@ package org.h2.dev.util;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.h2.mvstore.DataUtils;
 
 /**
@@ -67,7 +66,7 @@ public final class ImmutableArray2<K> implements Iterable<K> {
      * Set the entry at this index.
      *
      * @param index the index
-     * @param obj   the object
+     * @param obj the object
      * @return the new immutable array
      */
     public ImmutableArray2<K> set(int index, K obj) {
@@ -80,7 +79,7 @@ public final class ImmutableArray2<K> implements Iterable<K> {
      * Insert an entry at this index.
      *
      * @param index the index
-     * @param obj   the object
+     * @param obj the object
      * @return the new immutable array
      */
     public ImmutableArray2<K> insert(int index, K obj) {
@@ -131,7 +130,7 @@ public final class ImmutableArray2<K> implements Iterable<K> {
      * Get a sub-array.
      *
      * @param fromIndex the index of the first entry
-     * @param toIndex   the end index, plus one
+     * @param toIndex the end index, plus one
      * @return the new immutable array
      */
     public ImmutableArray2<K> subArray(int fromIndex, int toIndex) {

@@ -32,7 +32,7 @@ import org.h2.value.Value;
 import org.h2.value.ValueToObjectConverter;
 
 /**
- * A trigger is created using the statement
+ *A trigger is created using the statement
  * CREATE TRIGGER
  */
 public final class TriggerObject extends SchemaObject {
@@ -93,7 +93,7 @@ public final class TriggerObject extends SchemaObject {
             // try again later
             triggerCallback = null;
             throw DbException.get(ErrorCode.ERROR_CREATING_TRIGGER_OBJECT_3, e, getName(),
-                    triggerClassName != null ? triggerClassName : "..source..", e.toString());
+                triggerClassName != null ? triggerClassName : "..source..", e.toString());
         }
     }
 
@@ -124,8 +124,8 @@ public final class TriggerObject extends SchemaObject {
      * Set the trigger class name and load the class if possible.
      *
      * @param triggerClassName the name of the trigger class
-     * @param force            whether exceptions (due to missing class or access rights)
-     *                         should be ignored
+     * @param force whether exceptions (due to missing class or access rights)
+     *            should be ignored
      */
     public void setTriggerClassName(String triggerClassName, boolean force) {
         this.setTriggerAction(triggerClassName, null, force);
@@ -135,8 +135,8 @@ public final class TriggerObject extends SchemaObject {
      * Set the trigger source code and compile it if possible.
      *
      * @param source the source code of a method returning a {@link Trigger}
-     * @param force  whether exceptions (due to syntax error)
-     *               should be ignored
+     * @param force whether exceptions (due to syntax error)
+     *            should be ignored
      */
     public void setTriggerSource(String source, boolean force) {
         this.setTriggerAction(null, source, force);
@@ -159,8 +159,8 @@ public final class TriggerObject extends SchemaObject {
      * trigger is not defined for the given action. This method is called before
      * or after any rows have been processed, once for each statement.
      *
-     * @param session      the session
-     * @param type         the trigger type
+     * @param session the session
+     * @param type the trigger type
      * @param beforeAction if this method is called before applying the changes
      */
     public void fire(SessionLocal session, int type, boolean beforeAction) {
@@ -208,17 +208,17 @@ public final class TriggerObject extends SchemaObject {
      * This method is called before or after a row is processed, possibly many
      * times for each statement.
      *
-     * @param session      the session
-     * @param table        the table
-     * @param oldRow       the old row
-     * @param newRow       the new row
+     * @param session the session
+     * @param table the table
+     * @param oldRow the old row
+     * @param newRow the new row
      * @param beforeAction true if this method is called before the operation is
-     *                     applied
-     * @param rollback     when the operation occurred within a rollback
+     *            applied
+     * @param rollback when the operation occurred within a rollback
      * @return true if no further action is required (for 'instead of' triggers)
      */
     public boolean fireRow(SessionLocal session, Table table, Row oldRow, Row newRow,
-                           boolean beforeAction, boolean rollback) {
+            boolean beforeAction, boolean rollback) {
         if (!rowBased || before != beforeAction) {
             return false;
         }
@@ -522,7 +522,6 @@ public final class TriggerObject extends SchemaObject {
 
     /**
      * Close the trigger.
-     *
      * @throws SQLException on failure
      */
     public void close() throws SQLException {

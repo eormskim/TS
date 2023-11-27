@@ -45,14 +45,19 @@ public class DataChangeDeltaTable extends VirtualConstructedTable {
     /**
      * Collects final row for INSERT operations.
      *
-     * @param session                   the session
-     * @param table                     the table
-     * @param deltaChangeCollector      target result
-     * @param deltaChangeCollectionMode collection mode
-     * @param newRow                    the inserted row
+     * @param session
+     *            the session
+     * @param table
+     *            the table
+     * @param deltaChangeCollector
+     *            target result
+     * @param deltaChangeCollectionMode
+     *            collection mode
+     * @param newRow
+     *            the inserted row
      */
     public static void collectInsertedFinalRow(SessionLocal session, Table table, ResultTarget deltaChangeCollector,
-                                               ResultOption deltaChangeCollectionMode, Row newRow) {
+            ResultOption deltaChangeCollectionMode, Row newRow) {
         if (session.getMode().takeInsertedIdentity) {
             Column column = table.getIdentityColumn();
             if (column != null) {
@@ -71,7 +76,7 @@ public class DataChangeDeltaTable extends VirtualConstructedTable {
     private final Expression[] expressions;
 
     public DataChangeDeltaTable(Schema schema, SessionLocal session, DataChangeStatement statement,
-                                ResultOption resultOption) {
+            ResultOption resultOption) {
         super(schema, 0, statement.getStatementName());
         this.statement = statement;
         this.resultOption = resultOption;

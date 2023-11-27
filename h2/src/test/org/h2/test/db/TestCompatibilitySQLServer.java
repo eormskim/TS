@@ -47,10 +47,10 @@ public class TestCompatibilitySQLServer extends TestDb {
 
         stat.execute("create table parent(id int primary key, name varchar(255))");
         stat.execute("create table child(" +
-                "id int primary key, " +
-                "parent_id int, " +
-                "name varchar(255), " +
-                "foreign key (parent_id) references public.parent(id))");
+                            "id int primary key, " +
+                            "parent_id int, " +
+                            "name varchar(255), " +
+                            "foreign key (parent_id) references public.parent(id))");
 
         stat.execute("select * from parent");
         stat.execute("select * from parent with(nolock)");
@@ -58,13 +58,13 @@ public class TestCompatibilitySQLServer extends TestDb {
         stat.execute("select * from parent with(nolock, index(id, name))");
 
         stat.execute("select * from parent p " +
-                "join child ch on ch.parent_id = p.id");
+                            "join child ch on ch.parent_id = p.id");
         stat.execute("select * from parent p with(nolock) " +
-                "join child ch with(nolock) on ch.parent_id = p.id");
+                            "join child ch with(nolock) on ch.parent_id = p.id");
         stat.execute("select * from parent p with(nolock) " +
-                "join child ch with(nolock, index = id) on ch.parent_id = p.id");
+                            "join child ch with(nolock, index = id) on ch.parent_id = p.id");
         stat.execute("select * from parent p with(nolock) " +
-                "join child ch with(nolock, index(id, name)) on ch.parent_id = p.id");
+                            "join child ch with(nolock, index(id, name)) on ch.parent_id = p.id");
     }
 
     private void testPrimaryKeyIdentity(Connection conn) throws SQLException {

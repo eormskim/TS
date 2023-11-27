@@ -120,24 +120,24 @@ public final class BitFunction extends Function1_2 {
     @Override
     public Value getValue(SessionLocal session, Value v1, Value v2) {
         switch (function) {
-            case BITGET:
-                return bitGet(v1, v2);
-            case BITCOUNT:
-                return bitCount(v1);
-            case LSHIFT:
-                return shift(v1, v2.getLong(), false);
-            case RSHIFT: {
-                long offset = v2.getLong();
-                return shift(v1, offset != Long.MIN_VALUE ? -offset : Long.MAX_VALUE, false);
-            }
-            case ULSHIFT:
-                return shift(v1, v2.getLong(), true);
-            case URSHIFT:
-                return shift(v1, -v2.getLong(), true);
-            case ROTATELEFT:
-                return rotate(v1, v2.getLong(), false);
-            case ROTATERIGHT:
-                return rotate(v1, v2.getLong(), true);
+        case BITGET:
+            return bitGet(v1, v2);
+        case BITCOUNT:
+            return bitCount(v1);
+        case LSHIFT:
+            return shift(v1, v2.getLong(), false);
+        case RSHIFT: {
+            long offset = v2.getLong();
+            return shift(v1, offset != Long.MIN_VALUE ? -offset : Long.MAX_VALUE, false);
+        }
+        case ULSHIFT:
+            return shift(v1, v2.getLong(), true);
+        case URSHIFT:
+            return shift(v1, -v2.getLong(), true);
+        case ROTATELEFT:
+            return rotate(v1, v2.getLong(), false);
+        case ROTATERIGHT:
+            return rotate(v1, v2.getLong(), true);
         }
         return getBitwise(function, type, v1, v2);
     }
@@ -147,28 +147,28 @@ public final class BitFunction extends Function1_2 {
         boolean b;
         if (offset >= 0L) {
             switch (v1.getValueType()) {
-                case Value.BINARY:
-                case Value.VARBINARY: {
-                    byte[] bytes = v1.getBytesNoCopy();
-                    int bit = (int) (offset & 0x7);
-                    offset >>>= 3;
-                    b = offset < bytes.length && (bytes[(int) offset] & (1 << bit)) != 0;
-                    break;
-                }
-                case Value.TINYINT:
-                    b = offset < 8 && (v1.getByte() & (1 << offset)) != 0;
-                    break;
-                case Value.SMALLINT:
-                    b = offset < 16 && (v1.getShort() & (1 << offset)) != 0;
-                    break;
-                case Value.INTEGER:
-                    b = offset < 32 && (v1.getInt() & (1 << offset)) != 0;
-                    break;
-                case Value.BIGINT:
-                    b = (v1.getLong() & (1L << offset)) != 0;
-                    break;
-                default:
-                    throw DbException.getInvalidValueException("bit function parameter", v1.getTraceSQL());
+            case Value.BINARY:
+            case Value.VARBINARY: {
+                byte[] bytes = v1.getBytesNoCopy();
+                int bit = (int) (offset & 0x7);
+                offset >>>= 3;
+                b = offset < bytes.length && (bytes[(int) offset] & (1 << bit)) != 0;
+                break;
+            }
+            case Value.TINYINT:
+                b = offset < 8 && (v1.getByte() & (1 << offset)) != 0;
+                break;
+            case Value.SMALLINT:
+                b = offset < 16 && (v1.getShort() & (1 << offset)) != 0;
+                break;
+            case Value.INTEGER:
+                b = offset < 32 && (v1.getInt() & (1 << offset)) != 0;
+                break;
+            case Value.BIGINT:
+                b = (v1.getLong() & (1L << offset)) != 0;
+                break;
+            default:
+                throw DbException.getInvalidValueException("bit function parameter", v1.getTraceSQL());
             }
         } else {
             b = false;
@@ -179,34 +179,34 @@ public final class BitFunction extends Function1_2 {
     private static ValueBigint bitCount(Value v1) {
         long c;
         switch (v1.getValueType()) {
-            case Value.BINARY:
-            case Value.VARBINARY: {
-                byte[] bytes = v1.getBytesNoCopy();
-                int l = bytes.length;
-                c = 0L;
-                int blocks = l >>> 3;
-                for (int i = 0; i < blocks; i++) {
-                    c += Long.bitCount(Bits.readLong(bytes, i));
-                }
-                for (int i = blocks << 3; i < l; i++) {
-                    c += Integer.bitCount(bytes[i] & 0xff);
-                }
-                break;
+        case Value.BINARY:
+        case Value.VARBINARY: {
+            byte[] bytes = v1.getBytesNoCopy();
+            int l = bytes.length;
+            c = 0L;
+            int blocks = l >>> 3;
+            for (int i = 0; i < blocks; i++) {
+                c += Long.bitCount(Bits.readLong(bytes, i));
             }
-            case Value.TINYINT:
-                c = Integer.bitCount(v1.getByte() & 0xff);
-                break;
-            case Value.SMALLINT:
-                c = Integer.bitCount(v1.getShort() & 0xffff);
-                break;
-            case Value.INTEGER:
-                c = Integer.bitCount(v1.getInt());
-                break;
-            case Value.BIGINT:
-                c = Long.bitCount(v1.getLong());
-                break;
-            default:
-                throw DbException.getInvalidValueException("bit function parameter", v1.getTraceSQL());
+            for (int i = blocks << 3; i < l; i++) {
+                c += Integer.bitCount(bytes[i] & 0xff);
+            }
+            break;
+        }
+        case Value.TINYINT:
+            c = Integer.bitCount(v1.getByte() & 0xff);
+            break;
+        case Value.SMALLINT:
+            c = Integer.bitCount(v1.getShort() & 0xffff);
+            break;
+        case Value.INTEGER:
+            c = Integer.bitCount(v1.getInt());
+            break;
+        case Value.BIGINT:
+            c = Long.bitCount(v1.getLong());
+            break;
+        default:
+            throw DbException.getInvalidValueException("bit function parameter", v1.getTraceSQL());
         }
         return ValueBigint.get(c);
     }
@@ -217,233 +217,237 @@ public final class BitFunction extends Function1_2 {
         }
         int vt = v1.getValueType();
         switch (vt) {
-            case Value.BINARY:
-            case Value.VARBINARY: {
-                byte[] bytes = v1.getBytesNoCopy();
-                int length = bytes.length;
-                if (length == 0) {
-                    return v1;
+        case Value.BINARY:
+        case Value.VARBINARY: {
+            byte[] bytes = v1.getBytesNoCopy();
+            int length = bytes.length;
+            if (length == 0) {
+                return v1;
+            }
+            byte[] newBytes = new byte[length];
+            if (offset > -8L * length && offset < 8L * length) {
+                if (offset > 0) {
+                    int nBytes = (int) (offset >> 3);
+                    int nBits = ((int) offset) & 0x7;
+                    if (nBits == 0) {
+                        System.arraycopy(bytes, nBytes, newBytes, 0, length - nBytes);
+                    } else {
+                        int nBits2 = 8 - nBits;
+                        int dstIndex = 0, srcIndex = nBytes;
+                        length--;
+                        while (srcIndex < length) {
+                            newBytes[dstIndex++] = (byte) (bytes[srcIndex++] << nBits
+                                    | (bytes[srcIndex] & 0xff) >>> nBits2);
+                        }
+                        newBytes[dstIndex] = (byte) (bytes[srcIndex] << nBits);
+                    }
+                } else {
+                    offset = -offset;
+                    int nBytes = (int) (offset >> 3);
+                    int nBits = ((int) offset) & 0x7;
+                    if (nBits == 0) {
+                        System.arraycopy(bytes, 0, newBytes, nBytes, length - nBytes);
+                    } else {
+                        int nBits2 = 8 - nBits;
+                        int dstIndex = nBytes, srcIndex = 0;
+                        newBytes[dstIndex++] = (byte) ((bytes[srcIndex] & 0xff) >>> nBits);
+                        while (dstIndex < length) {
+                            newBytes[dstIndex++] = (byte) (bytes[srcIndex++] << nBits2
+                                    | (bytes[srcIndex] & 0xff) >>> nBits);
+                        }
+                    }
                 }
-                byte[] newBytes = new byte[length];
-                if (offset > -8L * length && offset < 8L * length) {
+            }
+            return vt == Value.BINARY ? ValueBinary.getNoCopy(newBytes) : ValueVarbinary.getNoCopy(newBytes);
+        }
+        case Value.TINYINT: {
+            byte v;
+            if (offset < 8) {
+                v = v1.getByte();
+                if (offset > -8) {
                     if (offset > 0) {
-                        int nBytes = (int) (offset >> 3);
-                        int nBits = ((int) offset) & 0x7;
-                        if (nBits == 0) {
-                            System.arraycopy(bytes, nBytes, newBytes, 0, length - nBytes);
-                        } else {
-                            int nBits2 = 8 - nBits;
-                            int dstIndex = 0, srcIndex = nBytes;
-                            length--;
-                            while (srcIndex < length) {
-                                newBytes[dstIndex++] = (byte) (bytes[srcIndex++] << nBits
-                                        | (bytes[srcIndex] & 0xff) >>> nBits2);
-                            }
-                            newBytes[dstIndex] = (byte) (bytes[srcIndex] << nBits);
-                        }
-                    } else {
-                        offset = -offset;
-                        int nBytes = (int) (offset >> 3);
-                        int nBits = ((int) offset) & 0x7;
-                        if (nBits == 0) {
-                            System.arraycopy(bytes, 0, newBytes, nBytes, length - nBytes);
-                        } else {
-                            int nBits2 = 8 - nBits;
-                            int dstIndex = nBytes, srcIndex = 0;
-                            newBytes[dstIndex++] = (byte) ((bytes[srcIndex] & 0xff) >>> nBits);
-                            while (dstIndex < length) {
-                                newBytes[dstIndex++] = (byte) (bytes[srcIndex++] << nBits2
-                                        | (bytes[srcIndex] & 0xff) >>> nBits);
-                            }
-                        }
-                    }
-                }
-                return vt == Value.BINARY ? ValueBinary.getNoCopy(newBytes) : ValueVarbinary.getNoCopy(newBytes);
-            }
-            case Value.TINYINT: {
-                byte v;
-                if (offset < 8) {
-                    v = v1.getByte();
-                    if (offset > -8) {
-                        if (offset > 0) {
-                            v <<= (int) offset;
-                        } else if (unsigned) {
-                            v = (byte) ((v & 0xFF) >>> (int) -offset);
-                        } else {
-                            v >>= (int) -offset;
-                        }
+                        v <<= (int) offset;
                     } else if (unsigned) {
-                        v = 0;
+                        v = (byte) ((v & 0xFF) >>> (int) -offset);
                     } else {
-                        v >>= 7;
+                        v >>= (int) -offset;
                     }
-                } else {
+                } else if (unsigned) {
                     v = 0;
+                } else {
+                    v >>= 7;
                 }
-                return ValueTinyint.get(v);
+            } else {
+                v = 0;
             }
-            case Value.SMALLINT: {
-                short v;
-                if (offset < 16) {
-                    v = v1.getShort();
-                    if (offset > -16) {
-                        if (offset > 0) {
-                            v <<= (int) offset;
-                        } else if (unsigned) {
-                            v = (short) ((v & 0xFFFF) >>> (int) -offset);
-                        } else {
-                            v >>= (int) -offset;
-                        }
+            return ValueTinyint.get(v);
+        }
+        case Value.SMALLINT: {
+            short v;
+            if (offset < 16) {
+                v = v1.getShort();
+                if (offset > -16) {
+                    if (offset > 0) {
+                        v <<= (int) offset;
                     } else if (unsigned) {
-                        v = 0;
+                        v = (short) ((v & 0xFFFF) >>> (int) -offset);
                     } else {
-                        v >>= 15;
+                        v >>= (int) -offset;
                     }
-                } else {
+                } else if (unsigned) {
                     v = 0;
+                } else {
+                    v >>= 15;
                 }
-                return ValueSmallint.get(v);
+            } else {
+                v = 0;
             }
-            case Value.INTEGER: {
-                int v;
-                if (offset < 32) {
-                    v = v1.getInt();
-                    if (offset > -32) {
-                        if (offset > 0) {
-                            v <<= (int) offset;
-                        } else if (unsigned) {
-                            v >>>= (int) -offset;
-                        } else {
-                            v >>= (int) -offset;
-                        }
+            return ValueSmallint.get(v);
+        }
+        case Value.INTEGER: {
+            int v;
+            if (offset < 32) {
+                v = v1.getInt();
+                if (offset > -32) {
+                    if (offset > 0) {
+                        v <<= (int) offset;
                     } else if (unsigned) {
-                        v = 0;
+                        v >>>= (int) -offset;
                     } else {
-                        v >>= 31;
+                        v >>= (int) -offset;
                     }
-                } else {
+                } else if (unsigned) {
                     v = 0;
+                } else {
+                    v >>= 31;
                 }
-                return ValueInteger.get(v);
+            } else {
+                v = 0;
             }
-            case Value.BIGINT: {
-                long v;
-                if (offset < 64) {
-                    v = v1.getLong();
-                    if (offset > -64) {
-                        if (offset > 0) {
-                            v <<= offset;
-                        } else if (unsigned) {
-                            v >>>= -offset;
-                        } else {
-                            v >>= -offset;
-                        }
+            return ValueInteger.get(v);
+        }
+        case Value.BIGINT: {
+            long v;
+            if (offset < 64) {
+                v = v1.getLong();
+                if (offset > -64) {
+                    if (offset > 0) {
+                        v <<= offset;
                     } else if (unsigned) {
-                        v = 0;
+                        v >>>= -offset;
                     } else {
-                        v >>= 63;
+                        v >>= -offset;
                     }
-                } else {
+                } else if (unsigned) {
                     v = 0;
+                } else {
+                    v >>= 63;
                 }
-                return ValueBigint.get(v);
+            } else {
+                v = 0;
             }
-            default:
-                throw DbException.getInvalidValueException("bit function parameter", v1.getTraceSQL());
+            return ValueBigint.get(v);
+        }
+        default:
+            throw DbException.getInvalidValueException("bit function parameter", v1.getTraceSQL());
         }
     }
 
     private static Value rotate(Value v1, long offset, boolean right) {
         int vt = v1.getValueType();
         switch (vt) {
-            case Value.BINARY:
-            case Value.VARBINARY: {
-                byte[] bytes = v1.getBytesNoCopy();
-                int length = bytes.length;
-                if (length == 0) {
-                    return v1;
-                }
-                long bitLength = length << 3L;
-                offset %= bitLength;
-                if (right) {
-                    offset = -offset;
-                }
-                if (offset == 0L) {
-                    return v1;
-                } else if (offset < 0) {
-                    offset += bitLength;
-                }
-                byte[] newBytes = new byte[length];
-                int nBytes = (int) (offset >> 3);
-                int nBits = ((int) offset) & 0x7;
-                if (nBits == 0) {
-                    System.arraycopy(bytes, nBytes, newBytes, 0, length - nBytes);
-                    System.arraycopy(bytes, 0, newBytes, length - nBytes, nBytes);
-                } else {
-                    int nBits2 = 8 - nBits;
-                    for (int dstIndex = 0, srcIndex = nBytes; dstIndex < length; ) {
-                        newBytes[dstIndex++] = (byte) (bytes[srcIndex] << nBits
-                                | (bytes[srcIndex = (srcIndex + 1) % length] & 0xFF) >>> nBits2);
-                    }
-                }
-                return vt == Value.BINARY ? ValueBinary.getNoCopy(newBytes) : ValueVarbinary.getNoCopy(newBytes);
+        case Value.BINARY:
+        case Value.VARBINARY: {
+            byte[] bytes = v1.getBytesNoCopy();
+            int length = bytes.length;
+            if (length == 0) {
+                return v1;
             }
-            case Value.TINYINT: {
-                int o = (int) offset;
-                if (right) {
-                    o = -o;
-                }
-                if ((o &= 0x7) == 0) {
-                    return v1;
-                }
-                int v = v1.getByte() & 0xFF;
-                return ValueTinyint.get((byte) ((v << o) | (v >>> 8 - o)));
+            long bitLength = length << 3L;
+            offset %= bitLength;
+            if (right) {
+                offset = -offset;
             }
-            case Value.SMALLINT: {
-                int o = (int) offset;
-                if (right) {
-                    o = -o;
-                }
-                if ((o &= 0xF) == 0) {
-                    return v1;
-                }
-                int v = v1.getShort() & 0xFFFF;
-                return ValueSmallint.get((short) ((v << o) | (v >>> 16 - o)));
+            if (offset == 0L) {
+                return v1;
+            } else if (offset < 0) {
+                offset += bitLength;
             }
-            case Value.INTEGER: {
-                int o = (int) offset;
-                if (right) {
-                    o = -o;
+            byte[] newBytes = new byte[length];
+            int nBytes = (int) (offset >> 3);
+            int nBits = ((int) offset) & 0x7;
+            if (nBits == 0) {
+                System.arraycopy(bytes, nBytes, newBytes, 0, length - nBytes);
+                System.arraycopy(bytes, 0, newBytes, length - nBytes, nBytes);
+            } else {
+                int nBits2 = 8 - nBits;
+                for (int dstIndex = 0, srcIndex = nBytes; dstIndex < length;) {
+                    newBytes[dstIndex++] = (byte) (bytes[srcIndex] << nBits
+                            | (bytes[srcIndex = (srcIndex + 1) % length] & 0xFF) >>> nBits2);
                 }
-                if ((o &= 0x1F) == 0) {
-                    return v1;
-                }
-                return ValueInteger.get(Integer.rotateLeft(v1.getInt(), o));
             }
-            case Value.BIGINT: {
-                int o = (int) offset;
-                if (right) {
-                    o = -o;
-                }
-                if ((o &= 0x3F) == 0) {
-                    return v1;
-                }
-                return ValueBigint.get(Long.rotateLeft(v1.getLong(), o));
+            return vt == Value.BINARY ? ValueBinary.getNoCopy(newBytes) : ValueVarbinary.getNoCopy(newBytes);
+        }
+        case Value.TINYINT: {
+            int o = (int) offset;
+            if (right) {
+                o = -o;
             }
-            default:
-                throw DbException.getInvalidValueException("bit function parameter", v1.getTraceSQL());
+            if ((o &= 0x7) == 0) {
+                return v1;
+            }
+            int v = v1.getByte() & 0xFF;
+            return ValueTinyint.get((byte) ((v << o) | (v >>> 8 - o)));
+        }
+        case Value.SMALLINT: {
+            int o = (int) offset;
+            if (right) {
+                o = -o;
+            }
+            if ((o &= 0xF) == 0) {
+                return v1;
+            }
+            int v = v1.getShort() & 0xFFFF;
+            return ValueSmallint.get((short) ((v << o) | (v >>> 16 - o)));
+        }
+        case Value.INTEGER: {
+            int o = (int) offset;
+            if (right) {
+                o = -o;
+            }
+            if ((o &= 0x1F) == 0) {
+                return v1;
+            }
+            return ValueInteger.get(Integer.rotateLeft(v1.getInt(), o));
+        }
+        case Value.BIGINT: {
+            int o = (int) offset;
+            if (right) {
+                o = -o;
+            }
+            if ((o &= 0x3F) == 0) {
+                return v1;
+            }
+            return ValueBigint.get(Long.rotateLeft(v1.getLong(), o));
+        }
+        default:
+            throw DbException.getInvalidValueException("bit function parameter", v1.getTraceSQL());
         }
     }
 
     /**
      * Computes the value of bitwise function.
      *
-     * @param function one of {@link #BITAND}, {@link #BITOR}, {@link #BITXOR},
-     *                 {@link #BITNOT}, {@link #BITNAND}, {@link #BITNOR},
-     *                 {@link #BITXNOR}
-     * @param type     the type of result
-     * @param v1       the value of first argument
-     * @param v2       the value of second argument, or {@code null}
+     * @param function
+     *            one of {@link #BITAND}, {@link #BITOR}, {@link #BITXOR},
+     *            {@link #BITNOT}, {@link #BITNAND}, {@link #BITNOR},
+     *            {@link #BITXNOR}
+     * @param type
+     *            the type of result
+     * @param v1
+     *            the value of first argument
+     * @param v2
+     *            the value of second argument, or {@code null}
      * @return the resulting value
      */
     public static Value getBitwise(int function, TypeInfo type, Value v1, Value v2) {
@@ -481,47 +485,47 @@ public final class BitFunction extends Function1_2 {
             bytes = new byte[max];
             int i = 0;
             switch (function) {
-                case BITAND:
-                    for (; i < min; i++) {
-                        bytes[i] = (byte) (bytes1[i] & bytes2[i]);
-                    }
-                    break;
-                case BITOR:
-                    for (; i < min; i++) {
-                        bytes[i] = (byte) (bytes1[i] | bytes2[i]);
-                    }
-                    System.arraycopy(bytes2, i, bytes, i, max - i);
-                    break;
-                case BITXOR:
-                    for (; i < min; i++) {
-                        bytes[i] = (byte) (bytes1[i] ^ bytes2[i]);
-                    }
-                    System.arraycopy(bytes2, i, bytes, i, max - i);
-                    break;
-                case BITNAND:
-                    for (; i < min; i++) {
-                        bytes[i] = (byte) ~(bytes1[i] & bytes2[i]);
-                    }
-                    Arrays.fill(bytes, i, max, (byte) -1);
-                    break;
-                case BITNOR:
-                    for (; i < min; i++) {
-                        bytes[i] = (byte) ~(bytes1[i] | bytes2[i]);
-                    }
-                    for (; i < max; i++) {
-                        bytes[i] = (byte) ~bytes2[i];
-                    }
-                    break;
-                case BITXNOR:
-                    for (; i < min; i++) {
-                        bytes[i] = (byte) ~(bytes1[i] ^ bytes2[i]);
-                    }
-                    for (; i < max; i++) {
-                        bytes[i] = (byte) ~bytes2[i];
-                    }
-                    break;
-                default:
-                    throw DbException.getInternalError("function=" + function);
+            case BITAND:
+                for (; i < min; i++) {
+                    bytes[i] = (byte) (bytes1[i] & bytes2[i]);
+                }
+                break;
+            case BITOR:
+                for (; i < min; i++) {
+                    bytes[i] = (byte) (bytes1[i] | bytes2[i]);
+                }
+                System.arraycopy(bytes2, i, bytes, i, max - i);
+                break;
+            case BITXOR:
+                for (; i < min; i++) {
+                    bytes[i] = (byte) (bytes1[i] ^ bytes2[i]);
+                }
+                System.arraycopy(bytes2, i, bytes, i, max - i);
+                break;
+            case BITNAND:
+                for (; i < min; i++) {
+                    bytes[i] = (byte) ~(bytes1[i] & bytes2[i]);
+                }
+                Arrays.fill(bytes, i, max, (byte) -1);
+                break;
+            case BITNOR:
+                for (; i < min; i++) {
+                    bytes[i] = (byte) ~(bytes1[i] | bytes2[i]);
+                }
+                for (; i < max; i++) {
+                    bytes[i] = (byte) ~bytes2[i];
+                }
+                break;
+            case BITXNOR:
+                for (; i < min; i++) {
+                    bytes[i] = (byte) ~(bytes1[i] ^ bytes2[i]);
+                }
+                for (; i < max; i++) {
+                    bytes[i] = (byte) ~bytes2[i];
+                }
+                break;
+            default:
+                throw DbException.getInternalError("function=" + function);
             }
         }
         return type.getValueType() == Value.BINARY ? ValueBinary.getNoCopy(bytes) : ValueVarbinary.getNoCopy(bytes);
@@ -530,41 +534,41 @@ public final class BitFunction extends Function1_2 {
     private static Value getNumeric(int function, TypeInfo type, Value v1, Value v2) {
         long l1 = v1.getLong();
         switch (function) {
-            case BITAND:
-                l1 &= v2.getLong();
-                break;
-            case BITOR:
-                l1 |= v2.getLong();
-                break;
-            case BITXOR:
-                l1 ^= v2.getLong();
-                break;
-            case BITNOT:
-                l1 = ~l1;
-                break;
-            case BITNAND:
-                l1 = ~(l1 & v2.getLong());
-                break;
-            case BITNOR:
-                l1 = ~(l1 | v2.getLong());
-                break;
-            case BITXNOR:
-                l1 = ~(l1 ^ v2.getLong());
-                break;
-            default:
-                throw DbException.getInternalError("function=" + function);
+        case BITAND:
+            l1 &= v2.getLong();
+            break;
+        case BITOR:
+            l1 |= v2.getLong();
+            break;
+        case BITXOR:
+            l1 ^= v2.getLong();
+            break;
+        case BITNOT:
+            l1 = ~l1;
+            break;
+        case BITNAND:
+            l1 = ~(l1 & v2.getLong());
+            break;
+        case BITNOR:
+            l1 = ~(l1 | v2.getLong());
+            break;
+        case BITXNOR:
+            l1 = ~(l1 ^ v2.getLong());
+            break;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         switch (type.getValueType()) {
-            case Value.TINYINT:
-                return ValueTinyint.get((byte) l1);
-            case Value.SMALLINT:
-                return ValueSmallint.get((short) l1);
-            case Value.INTEGER:
-                return ValueInteger.get((int) l1);
-            case Value.BIGINT:
-                return ValueBigint.get(l1);
-            default:
-                throw DbException.getInternalError();
+        case Value.TINYINT:
+            return ValueTinyint.get((byte) l1);
+        case Value.SMALLINT:
+            return ValueSmallint.get((short) l1);
+        case Value.INTEGER:
+            return ValueInteger.get((int) l1);
+        case Value.BIGINT:
+            return ValueBigint.get(l1);
+        default:
+            throw DbException.getInternalError();
         }
     }
 
@@ -575,25 +579,25 @@ public final class BitFunction extends Function1_2 {
             right = right.optimize(session);
         }
         switch (function) {
-            case BITNOT:
-                return optimizeNot(session);
-            case BITGET:
-                type = TypeInfo.TYPE_BOOLEAN;
-                break;
-            case BITCOUNT:
-                type = TypeInfo.TYPE_BIGINT;
-                break;
-            case LSHIFT:
-            case RSHIFT:
-            case ULSHIFT:
-            case URSHIFT:
-            case ROTATELEFT:
-            case ROTATERIGHT:
-                type = checkArgType(left);
-                break;
-            default:
-                type = getCommonType(left, right);
-                break;
+        case BITNOT:
+            return optimizeNot(session);
+        case BITGET:
+            type = TypeInfo.TYPE_BOOLEAN;
+            break;
+        case BITCOUNT:
+            type = TypeInfo.TYPE_BIGINT;
+            break;
+        case LSHIFT:
+        case RSHIFT:
+        case ULSHIFT:
+        case URSHIFT:
+        case ROTATELEFT:
+        case ROTATERIGHT:
+            type = checkArgType(left);
+            break;
+        default:
+            type = getCommonType(left, right);
+            break;
         }
         if (left.isConstant() && (right == null || right.isConstant())) {
             return TypedValueExpression.getTypedIfNull(getValue(session), type);
@@ -609,48 +613,48 @@ public final class BitFunction extends Function1_2 {
             BitFunction l = (BitFunction) left;
             int f = l.function;
             switch (f) {
-                case BITAND:
-                case BITOR:
-                case BITXOR:
-                    f += BITNAND - BITAND;
-                    break;
-                case BITNOT:
-                    return l.left;
-                case BITNAND:
-                case BITNOR:
-                case BITXNOR:
-                    f -= BITNAND - BITAND;
-                    break;
-                default:
-                    return this;
+            case BITAND:
+            case BITOR:
+            case BITXOR:
+                f += BITNAND - BITAND;
+                break;
+            case BITNOT:
+                return l.left;
+            case BITNAND:
+            case BITNOR:
+            case BITXNOR:
+                f -= BITNAND - BITAND;
+                break;
+            default:
+                return this;
             }
             return new BitFunction(l.left, l.right, f).optimize(session);
         } else if (left instanceof Aggregate) {
             Aggregate l = (Aggregate) left;
             AggregateType t;
             switch (l.getAggregateType()) {
-                case BIT_AND_AGG:
-                    t = AggregateType.BIT_NAND_AGG;
-                    break;
-                case BIT_OR_AGG:
-                    t = AggregateType.BIT_NOR_AGG;
-                    break;
-                case BIT_XOR_AGG:
-                    t = AggregateType.BIT_XNOR_AGG;
-                    break;
-                case BIT_NAND_AGG:
-                    t = AggregateType.BIT_AND_AGG;
-                    break;
-                case BIT_NOR_AGG:
-                    t = AggregateType.BIT_OR_AGG;
-                    break;
-                case BIT_XNOR_AGG:
-                    t = AggregateType.BIT_XOR_AGG;
-                    break;
-                default:
-                    return this;
+            case BIT_AND_AGG:
+                t = AggregateType.BIT_NAND_AGG;
+                break;
+            case BIT_OR_AGG:
+                t = AggregateType.BIT_NOR_AGG;
+                break;
+            case BIT_XOR_AGG:
+                t = AggregateType.BIT_XNOR_AGG;
+                break;
+            case BIT_NAND_AGG:
+                t = AggregateType.BIT_AND_AGG;
+                break;
+            case BIT_NOR_AGG:
+                t = AggregateType.BIT_OR_AGG;
+                break;
+            case BIT_XNOR_AGG:
+                t = AggregateType.BIT_XOR_AGG;
+                break;
+            default:
+                return this;
             }
-            return new Aggregate(t, new Expression[]{l.getSubexpression(0)}, l.getSelect(), l.isDistinct())
+            return new Aggregate(t, new Expression[] { l.getSubexpression(0) }, l.getSelect(), l.isDistinct())
                     .optimize(session);
         }
         return this;
@@ -691,21 +695,23 @@ public final class BitFunction extends Function1_2 {
      * {@link #BITAND}, {@link #BITOR}, {@link #BITXOR}, {@link #BITNOT},
      * {@link #BITNAND}, {@link #BITNOR}, {@link #BITXNOR}).
      *
-     * @param arg the argument
+     * @param arg
+     *            the argument
      * @return the type of the specified argument
-     * @throws DbException if argument type is not supported by bitwise functions
+     * @throws DbException
+     *             if argument type is not supported by bitwise functions
      */
     public static TypeInfo checkArgType(Expression arg) {
         TypeInfo t = arg.getType();
         switch (t.getValueType()) {
-            case Value.NULL:
-            case Value.BINARY:
-            case Value.VARBINARY:
-            case Value.TINYINT:
-            case Value.SMALLINT:
-            case Value.INTEGER:
-            case Value.BIGINT:
-                return t;
+        case Value.NULL:
+        case Value.BINARY:
+        case Value.VARBINARY:
+        case Value.TINYINT:
+        case Value.SMALLINT:
+        case Value.INTEGER:
+        case Value.BIGINT:
+            return t;
         }
         throw DbException.getInvalidExpressionTypeException("bit function argument", arg);
     }

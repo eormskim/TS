@@ -43,15 +43,15 @@ public final class CompressFunction extends Function1_2 {
     @Override
     public Value getValue(SessionLocal session, Value v1, Value v2) {
         switch (function) {
-            case COMPRESS:
-                v1 = ValueVarbinary.getNoCopy(
-                        CompressTool.getInstance().compress(v1.getBytesNoCopy(), v2 != null ? v2.getString() : null));
-                break;
-            case EXPAND:
-                v1 = ValueVarbinary.getNoCopy(CompressTool.getInstance().expand(v1.getBytesNoCopy()));
-                break;
-            default:
-                throw DbException.getInternalError("function=" + function);
+        case COMPRESS:
+            v1 = ValueVarbinary.getNoCopy(
+                    CompressTool.getInstance().compress(v1.getBytesNoCopy(), v2 != null ? v2.getString() : null));
+            break;
+        case EXPAND:
+            v1 = ValueVarbinary.getNoCopy(CompressTool.getInstance().expand(v1.getBytesNoCopy()));
+            break;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         return v1;
     }

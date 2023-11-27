@@ -70,7 +70,8 @@ public class AuthenticationInfo {
      * Method used by authenticators to hold information about authenticated
      * user
      *
-     * @param nestedIdentity = nested identity object
+     * @param nestedIdentity
+     *            = nested identity object
      */
     public void setNestedIdentity(Object nestedIdentity) {
         this.nestedIdentity = nestedIdentity;

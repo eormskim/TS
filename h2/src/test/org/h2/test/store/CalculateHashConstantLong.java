@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.h2.security.AES;
 
 /**
@@ -34,11 +33,9 @@ public class CalculateHashConstantLong implements Runnable {
     private int[] fromTo = new int[64 * 64];
 
     private final AES aes = new AES();
-
     {
         aes.setKey("Hello World Hallo Welt".getBytes());
     }
-
     private final byte[] data = new byte[16];
 
     /**
@@ -62,7 +59,6 @@ public class CalculateHashConstantLong implements Runnable {
             public long hash(long x) {
                 return secureHash(x);
             }
-
             @Override
             public String toString() {
                 return "AES";
@@ -81,7 +77,6 @@ public class CalculateHashConstantLong implements Runnable {
                 x = (x ^ (x >>> 27)) * 0x94d049bb133111ebL;
                 return x ^ (x >>> 31);
             }
-
             @Override
             public String toString() {
                 return "Test";
@@ -256,10 +251,10 @@ public class CalculateHashConstantLong implements Runnable {
      * Calculate how much the bit changes (output bits that change if an input
      * bit is changed) are independent of each other.
      *
-     * @param h      the hash object
+     * @param h the hash object
      * @param values the values to test with
      * @return the minimum and maximum number of output bits that are changed in
-     * combination with another output bit
+     *         combination with another output bit
      */
     int[] getDependencies(CalculateHashConstantLong h, long[] values) {
         Arrays.fill(fromTo, 0);
@@ -294,7 +289,7 @@ public class CalculateHashConstantLong implements Runnable {
                 b = x;
             }
         }
-        return new int[]{a, b};
+        return new int[] {a, b};
     }
 
     /**
@@ -326,7 +321,7 @@ public class CalculateHashConstantLong implements Runnable {
      *
      * @param h      the hash object
      * @param values the values to test with
-     * @return sum(distance ^ 2)
+     * @return sum(distance^2)
      */
     long getEffectSquare(CalculateHashConstantLong h, long[] values) {
         Arrays.fill(fromTo, 0);
@@ -357,9 +352,9 @@ public class CalculateHashConstantLong implements Runnable {
      * Calculate if the bit changes (that an output bit changes if an input
      * bit is changed) are within a certain range.
      *
-     * @param h     the hash object
+     * @param h the hash object
      * @param count the number of values to test
-     * @param seed  the random seed
+     * @param seed the random seed
      * @return the minimum and maximum value of all input-to-output bit changes
      */
     int[] getEffect(CalculateHashConstantLong h, int count, int seed) {
@@ -388,7 +383,7 @@ public class CalculateHashConstantLong implements Runnable {
                 b = x;
             }
         }
-        return new int[]{a, b};
+        return new int[] {a, b};
     }
 
     /**

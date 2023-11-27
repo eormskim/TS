@@ -59,12 +59,12 @@ public final class StringFunction extends FunctionN {
     private final int function;
 
     public StringFunction(Expression arg1, Expression arg2, Expression arg3, int function) {
-        super(arg3 == null ? new Expression[]{arg1, arg2} : new Expression[]{arg1, arg2, arg3});
+        super(arg3 == null ? new Expression[] { arg1, arg2 } : new Expression[] { arg1, arg2, arg3 });
         this.function = function;
     }
 
     public StringFunction(Expression arg1, Expression arg2, Expression arg3, Expression arg4, int function) {
-        super(new Expression[]{arg1, arg2, arg3, arg4});
+        super(new Expression[] { arg1, arg2, arg3, arg4 });
         this.function = function;
     }
 
@@ -77,82 +77,82 @@ public final class StringFunction extends FunctionN {
     public Value getValue(SessionLocal session) {
         Value v1 = args[0].getValue(session), v2 = args[1].getValue(session);
         switch (function) {
-            case LOCATE: {
-                if (v1 == ValueNull.INSTANCE || v2 == ValueNull.INSTANCE) {
-                    return ValueNull.INSTANCE;
-                }
-                Value v3 = args.length >= 3 ? args[2].getValue(session) : null;
-                if (v3 == ValueNull.INSTANCE) {
-                    return ValueNull.INSTANCE;
-                }
-                v1 = ValueInteger.get(locate(v1.getString(), v2.getString(), v3 == null ? 1 : v3.getInt()));
-                break;
+        case LOCATE: {
+            if (v1 == ValueNull.INSTANCE || v2 == ValueNull.INSTANCE) {
+                return ValueNull.INSTANCE;
             }
-            case INSERT: {
-                Value v3 = args[2].getValue(session), v4 = args[3].getValue(session);
-                if (v2 != ValueNull.INSTANCE && v3 != ValueNull.INSTANCE) {
-                    String s = insert(v1.getString(), v2.getInt(), v3.getInt(), v4.getString());
-                    v1 = s != null ? ValueVarchar.get(s, session) : ValueNull.INSTANCE;
-                }
-                break;
+            Value v3 = args.length >= 3 ? args[2].getValue(session) : null;
+            if (v3 == ValueNull.INSTANCE) {
+                return ValueNull.INSTANCE;
             }
-            case REPLACE: {
-                if (v1 == ValueNull.INSTANCE || v2 == ValueNull.INSTANCE) {
+            v1 = ValueInteger.get(locate(v1.getString(), v2.getString(), v3 == null ? 1 : v3.getInt()));
+            break;
+        }
+        case INSERT: {
+            Value v3 = args[2].getValue(session), v4 = args[3].getValue(session);
+            if (v2 != ValueNull.INSTANCE && v3 != ValueNull.INSTANCE) {
+                String s = insert(v1.getString(), v2.getInt(), v3.getInt(), v4.getString());
+                v1 = s != null ? ValueVarchar.get(s, session) : ValueNull.INSTANCE;
+            }
+            break;
+        }
+        case REPLACE: {
+            if (v1 == ValueNull.INSTANCE || v2 == ValueNull.INSTANCE) {
+                return ValueNull.INSTANCE;
+            }
+            String after;
+            if (args.length >= 3) {
+                Value v3 = args[2].getValue(session);
+                if (v3 == ValueNull.INSTANCE && session.getMode().getEnum() != ModeEnum.Oracle) {
                     return ValueNull.INSTANCE;
                 }
-                String after;
-                if (args.length >= 3) {
-                    Value v3 = args[2].getValue(session);
-                    if (v3 == ValueNull.INSTANCE && session.getMode().getEnum() != ModeEnum.Oracle) {
-                        return ValueNull.INSTANCE;
-                    }
-                    after = v3.getString();
-                    if (after == null) {
-                        after = "";
-                    }
-                } else {
+                after = v3.getString();
+                if (after == null) {
                     after = "";
                 }
-                v1 = ValueVarchar.get(StringUtils.replaceAll(v1.getString(), v2.getString(), after), session);
-                break;
+            } else {
+                after = "";
             }
-            case LPAD:
-            case RPAD:
-                if (v1 == ValueNull.INSTANCE || v2 == ValueNull.INSTANCE) {
-                    return ValueNull.INSTANCE;
-                }
-                String padding;
-                if (args.length >= 3) {
-                    Value v3 = args[2].getValue(session);
-                    if (v3 == ValueNull.INSTANCE) {
-                        return ValueNull.INSTANCE;
-                    }
-                    padding = v3.getString();
-                } else {
-                    padding = null;
-                }
-                v1 = ValueVarchar.get(StringUtils.pad(v1.getString(), v2.getInt(), padding, function == RPAD), session);
-                break;
-            case TRANSLATE: {
-                if (v1 == ValueNull.INSTANCE || v2 == ValueNull.INSTANCE) {
-                    return ValueNull.INSTANCE;
-                }
+            v1 = ValueVarchar.get(StringUtils.replaceAll(v1.getString(), v2.getString(), after), session);
+            break;
+        }
+        case LPAD:
+        case RPAD:
+            if (v1 == ValueNull.INSTANCE || v2 == ValueNull.INSTANCE) {
+                return ValueNull.INSTANCE;
+            }
+            String padding;
+            if (args.length >= 3) {
                 Value v3 = args[2].getValue(session);
                 if (v3 == ValueNull.INSTANCE) {
                     return ValueNull.INSTANCE;
                 }
-                String matching = v2.getString();
-                String replacement = v3.getString();
-                if (session.getMode().getEnum() == ModeEnum.DB2) {
-                    String t = matching;
-                    matching = replacement;
-                    replacement = t;
-                }
-                v1 = ValueVarchar.get(translate(v1.getString(), matching, replacement), session);
-                break;
+                padding = v3.getString();
+            } else {
+                padding = null;
             }
-            default:
-                throw DbException.getInternalError("function=" + function);
+            v1 = ValueVarchar.get(StringUtils.pad(v1.getString(), v2.getInt(), padding, function == RPAD), session);
+            break;
+        case TRANSLATE: {
+            if (v1 == ValueNull.INSTANCE || v2 == ValueNull.INSTANCE) {
+                return ValueNull.INSTANCE;
+            }
+            Value v3 = args[2].getValue(session);
+            if (v3 == ValueNull.INSTANCE) {
+                return ValueNull.INSTANCE;
+            }
+            String matching = v2.getString();
+            String replacement = v3.getString();
+            if (session.getMode().getEnum() == ModeEnum.DB2) {
+                String t = matching;
+                matching = replacement;
+                replacement = t;
+            }
+            v1 = ValueVarchar.get(translate(v1.getString(), matching, replacement), session);
+            break;
+        }
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         return v1;
     }
@@ -217,18 +217,18 @@ public final class StringFunction extends FunctionN {
     public Expression optimize(SessionLocal session) {
         boolean allConst = optimizeArguments(session, true);
         switch (function) {
-            case LOCATE:
-                type = TypeInfo.TYPE_INTEGER;
-                break;
-            case INSERT:
-            case REPLACE:
-            case LPAD:
-            case RPAD:
-            case TRANSLATE:
-                type = TypeInfo.TYPE_VARCHAR;
-                break;
-            default:
-                throw DbException.getInternalError("function=" + function);
+        case LOCATE:
+            type = TypeInfo.TYPE_INTEGER;
+            break;
+        case INSERT:
+        case REPLACE:
+        case LPAD:
+        case RPAD:
+        case TRANSLATE:
+            type = TypeInfo.TYPE_VARCHAR;
+            break;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         if (allConst) {
             return TypedValueExpression.getTypedIfNull(getValue(session), type);

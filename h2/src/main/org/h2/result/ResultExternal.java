@@ -6,7 +6,6 @@
 package org.h2.result;
 
 import java.util.Collection;
-
 import org.h2.value.Value;
 
 /**

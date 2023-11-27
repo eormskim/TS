@@ -148,8 +148,8 @@ public class LinkedIndex extends Index {
 
     @Override
     public double getCost(SessionLocal session, int[] masks,
-                          TableFilter[] filters, int filter, SortOrder sortOrder,
-                          AllColumnsForPlan allColumnsSet) {
+            TableFilter[] filters, int filter, SortOrder sortOrder,
+            AllColumnsForPlan allColumnsSet) {
         return 100 + getCostRangeIndex(masks, rowCount +
                 Constants.COST_ROW_OFFSET, filters, filter, sortOrder, false, allColumnsSet);
     }
@@ -209,8 +209,8 @@ public class LinkedIndex extends Index {
      * Update a row using a UPDATE statement. This method is to be called if the
      * emit updates option is enabled.
      *
-     * @param oldRow  the old data
-     * @param newRow  the new data
+     * @param oldRow the old data
+     * @param newRow the new data
      * @param session the session
      */
     public void update(Row oldRow, Row newRow, SessionLocal session) {

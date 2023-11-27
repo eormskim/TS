@@ -19,13 +19,9 @@ import org.h2.test.TestDb;
  * Test subquery performance with lazy query execution mode {@link SetTypes#LAZY_QUERY_EXECUTION}.
  */
 public class TestSubqueryPerformanceOnLazyExecutionMode extends TestDb {
-    /**
-     * Rows count.
-     */
+    /** Rows count. */
     private static final int ROWS = 5000;
-    /**
-     * Test repeats when unexpected failure.
-     */
+    /** Test repeats when unexpected failure. */
     private static final int FAIL_REPEATS = 5;
 
     /**
@@ -62,7 +58,8 @@ public class TestSubqueryPerformanceOnLazyExecutionMode extends TestDb {
                 testJoinTwoSubqueries(stmt);
                 testSubqueryInNestedJoin(stmt);
             }
-        } finally {
+        }
+        finally {
             deleteDb("lazySubq");
         }
     }
@@ -76,7 +73,7 @@ public class TestSubqueryPerformanceOnLazyExecutionMode extends TestDb {
     private void testSubqueryInJoin(Statement stmt) throws Exception {
         String sql =
                 "SELECT COUNT (one.x) FROM one " +
-                        "JOIN (SELECT y AS val FROM one WHERE y < 50) AS subq ON subq.val=one.x";
+                "JOIN (SELECT y AS val FROM one WHERE y < 50) AS subq ON subq.val=one.x";
 
         checkExecutionTime(stmt, sql);
     }
@@ -84,8 +81,8 @@ public class TestSubqueryPerformanceOnLazyExecutionMode extends TestDb {
     private void testSubqueryInJoinFirst(Statement stmt) throws Exception {
         String sql =
                 "SELECT COUNT (one.x) FROM " +
-                        "(SELECT y AS val FROM one WHERE y < 50) AS subq " +
-                        "JOIN one ON subq.val=one.x";
+                "(SELECT y AS val FROM one WHERE y < 50) AS subq " +
+                "JOIN one ON subq.val=one.x";
 
         checkExecutionTime(stmt, sql);
     }
@@ -93,8 +90,8 @@ public class TestSubqueryPerformanceOnLazyExecutionMode extends TestDb {
     private void testJoinTwoSubqueries(Statement stmt) throws Exception {
         String sql =
                 "SELECT COUNT (one_sub.x) FROM " +
-                        "(SELECT y AS val FROM one WHERE y < 50) AS subq " +
-                        "JOIN (SELECT x FROM one) AS one_sub ON subq.val=one_sub.x";
+                "(SELECT y AS val FROM one WHERE y < 50) AS subq " +
+                "JOIN (SELECT x FROM one) AS one_sub ON subq.val=one_sub.x";
 
         checkExecutionTime(stmt, sql);
     }
@@ -102,10 +99,10 @@ public class TestSubqueryPerformanceOnLazyExecutionMode extends TestDb {
     private void testSubqueryInNestedJoin(Statement stmt) throws Exception {
         String sql =
                 "SELECT COUNT (one.x) FROM one " +
-                        "LEFT JOIN (SELECT 1 AS val_1) AS subq0 " +
-                        "JOIN (SELECT y AS val FROM one WHERE y < 30) AS subq1 ON subq0.val_1 < subq1.val " +
-                        "ON one.x = subq1.val " +
-                        "WHERE one.x < 30";
+                "LEFT JOIN (SELECT 1 AS val_1) AS subq0 " +
+                "JOIN (SELECT y AS val FROM one WHERE y < 30) AS subq1 ON subq0.val_1 < subq1.val " +
+                    "ON one.x = subq1.val " +
+                "WHERE one.x < 30";
 
         checkExecutionTime(stmt, sql, 3000);
     }
@@ -154,7 +151,8 @@ public class TestSubqueryPerformanceOnLazyExecutionMode extends TestDb {
     private long executeAndCheckResult(Statement stmt, String sql, boolean lazy, int expected) throws SQLException {
         if (lazy) {
             stmt.execute("SET LAZY_QUERY_EXECUTION 1");
-        } else {
+        }
+        else {
             stmt.execute("SET LAZY_QUERY_EXECUTION 0");
         }
 

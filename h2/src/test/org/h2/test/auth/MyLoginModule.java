@@ -17,27 +17,27 @@ import javax.security.auth.spi.LoginModule;
 /**
  * Dummy login module used for test cases
  */
-public class MyLoginModule implements LoginModule {
+public class MyLoginModule implements LoginModule{
 
     String password;
     CallbackHandler callbackHandler;
 
     @Override
     public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState,
-                           Map<String, ?> options) {
-        this.callbackHandler = callbackHandler;
-        password = "" + options.get("password");
+            Map<String, ?> options) {
+        this.callbackHandler=callbackHandler;
+        password=""+options.get("password");
     }
 
     @Override
     public boolean login() throws LoginException {
-        if (callbackHandler == null) {
+        if (callbackHandler==null) {
             throw new LoginException("no callbackHandler available");
         }
-        NameCallback nameCallback = new NameCallback("user name");
-        PasswordCallback passwordCallback = new PasswordCallback("user name", false);
+        NameCallback nameCallback= new NameCallback("user name");
+        PasswordCallback passwordCallback= new PasswordCallback("user name",false);
         try {
-            callbackHandler.handle(new Callback[]{nameCallback, passwordCallback});
+            callbackHandler.handle(new Callback[] {nameCallback,passwordCallback});
         } catch (Exception exception) {
             throw new LoginException("an exception occurred during inquiry of username and password");
         }

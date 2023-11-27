@@ -88,7 +88,8 @@ class MVSortedTempResult extends MVTempResult {
     /**
      * Creates a shallow copy of the result.
      *
-     * @param parent parent result
+     * @param parent
+     *                   parent result
      */
     private MVSortedTempResult(MVSortedTempResult parent) {
         super(parent);
@@ -102,18 +103,25 @@ class MVSortedTempResult extends MVTempResult {
     /**
      * Creates a new sorted temporary result.
      *
-     * @param database           database
-     * @param expressions        column expressions
-     * @param distinct           whether this result should be distinct
-     * @param distinctIndexes    indexes of distinct columns for DISTINCT ON results
-     * @param visibleColumnCount count of visible columns
-     * @param resultColumnCount  the number of columns including visible columns and additional
-     *                           virtual columns for ORDER BY and DISTINCT ON clauses
-     * @param sort               sort order, or {@code null} if this result does not need any
-     *                           sorting
+     * @param database
+     *            database
+     * @param expressions
+     *            column expressions
+     * @param distinct
+     *            whether this result should be distinct
+     * @param distinctIndexes
+     *            indexes of distinct columns for DISTINCT ON results
+     * @param visibleColumnCount
+     *            count of visible columns
+     * @param resultColumnCount
+     *            the number of columns including visible columns and additional
+     *            virtual columns for ORDER BY and DISTINCT ON clauses
+     * @param sort
+     *            sort order, or {@code null} if this result does not need any
+     *            sorting
      */
     MVSortedTempResult(Database database, Expression[] expressions, boolean distinct, int[] distinctIndexes,
-                       int visibleColumnCount, int resultColumnCount, SortOrder sort) {
+            int visibleColumnCount, int resultColumnCount, SortOrder sort) {
         super(database, expressions, visibleColumnCount, resultColumnCount);
         this.distinct = distinct;
         this.distinctIndexes = distinctIndexes;
@@ -152,8 +160,7 @@ class MVSortedTempResult extends MVTempResult {
              * slightly slows down other methods we check whether columns are really
              * reordered or have the same order.
              */
-            sameOrder:
-            {
+            sameOrder: {
                 for (int i = 0; i < resultColumnCount; i++) {
                     if (indexes[i] != i) {
                         // Columns are reordered
@@ -296,7 +303,8 @@ class MVSortedTempResult extends MVTempResult {
     /**
      * Reorder values if required and convert them into {@link ValueRow}.
      *
-     * @param values values
+     * @param values
+     *                   values
      * @return ValueRow for maps
      */
     private ValueRow getKey(Value[] values) {
@@ -313,7 +321,8 @@ class MVSortedTempResult extends MVTempResult {
     /**
      * Reorder values back if required.
      *
-     * @param key reordered values
+     * @param key
+     *                reordered values
      * @return original values
      */
     private Value[] getValue(Value[] key) {

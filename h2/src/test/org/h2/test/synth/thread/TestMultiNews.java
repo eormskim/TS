@@ -18,7 +18,7 @@ import java.sql.Statement;
 public class TestMultiNews extends TestMultiThread {
 
     private static final String PREFIX_URL =
-            "http://feeds.wizbangblog.com/WizbangFullFeed?m=";
+        "http://feeds.wizbangblog.com/WizbangFullFeed?m=";
 
     private static final int LEN = 10000;
     private Connection conn;
@@ -103,7 +103,7 @@ public class TestMultiNews extends TestMultiThread {
                 "NEWS_STATE_INDEX ON NEWS(STATE)");
         PreparedStatement prep = c.prepareStatement(
                 "INSERT INTO NEWS (FID, COMMENTS, LINK, STATE, VALUE) " +
-                        "VALUES (?, ?, ?, ?, ?) ");
+                "VALUES (?, ?, ?, ?, ?) ");
         PreparedStatement prep2 = c.prepareStatement(
                 "INSERT INTO TEST (NAME) VALUES (?)");
         for (int i = 0; i < LEN; i++) {

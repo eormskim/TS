@@ -28,8 +28,9 @@ public final class ListaggArguments {
     /**
      * Sets the custom LISTAGG separator.
      *
-     * @param separator the LISTAGG separator, {@code null} or empty string means no
-     *                  separator
+     * @param separator
+     *            the LISTAGG separator, {@code null} or empty string means no
+     *            separator
      */
     public void setSeparator(String separator) {
         this.separator = separator != null ? separator : "";
@@ -56,8 +57,9 @@ public final class ListaggArguments {
     /**
      * Sets the LISTAGG overflow behavior.
      *
-     * @param onOverflowTruncate {@code true} for ON OVERFLOW TRUNCATE, {@code false} for ON
-     *                           OVERFLOW ERROR
+     * @param onOverflowTruncate
+     *            {@code true} for ON OVERFLOW TRUNCATE, {@code false} for ON
+     *            OVERFLOW ERROR
      */
     public void setOnOverflowTruncate(boolean onOverflowTruncate) {
         this.onOverflowTruncate = onOverflowTruncate;
@@ -67,7 +69,7 @@ public final class ListaggArguments {
      * Returns the LISTAGG overflow behavior.
      *
      * @return {@code true} for ON OVERFLOW TRUNCATE, {@code false} for ON
-     * OVERFLOW ERROR
+     *         OVERFLOW ERROR
      */
     public boolean getOnOverflowTruncate() {
         return onOverflowTruncate;
@@ -76,8 +78,9 @@ public final class ListaggArguments {
     /**
      * Sets the custom LISTAGG truncation filter.
      *
-     * @param filter the LISTAGG truncation filter, {@code null} or empty string
-     *               means no truncation filter
+     * @param filter
+     *            the LISTAGG truncation filter, {@code null} or empty string
+     *            means no truncation filter
      */
     public void setFilter(String filter) {
         this.filter = filter != null ? filter : "";
@@ -104,7 +107,8 @@ public final class ListaggArguments {
     /**
      * Sets the LISTAGG count indication.
      *
-     * @param withoutCount {@code true} for WITHOUT COUNT, {@code false} for WITH COUNT
+     * @param withoutCount
+     *            {@code true} for WITHOUT COUNT, {@code false} for WITH COUNT
      */
     public void setWithoutCount(boolean withoutCount) {
         this.withoutCount = withoutCount;

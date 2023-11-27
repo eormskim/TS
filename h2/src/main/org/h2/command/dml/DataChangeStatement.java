@@ -20,7 +20,8 @@ public abstract class DataChangeStatement extends Prepared {
     /**
      * Creates new instance of DataChangeStatement.
      *
-     * @param session the session
+     * @param session
+     *            the session
      */
     protected DataChangeStatement(SessionLocal session) {
         super(session);
@@ -63,8 +64,10 @@ public abstract class DataChangeStatement extends Prepared {
     /**
      * Execute the statement with specified delta change collector and collection mode.
      *
-     * @param deltaChangeCollector      target result
-     * @param deltaChangeCollectionMode collection mode
+     * @param deltaChangeCollector
+     *            target result
+     * @param deltaChangeCollectionMode
+     *            collection mode
      * @return the update count
      */
     public abstract long update(ResultTarget deltaChangeCollector, ResultOption deltaChangeCollectionMode);

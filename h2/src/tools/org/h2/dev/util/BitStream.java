@@ -106,7 +106,7 @@ public class BitStream {
          * Write the Golomb code of a value.
          *
          * @param divisor the divisor
-         * @param value   the value
+         * @param value the value
          */
         public void writeGolomb(int divisor, int value) {
             int q = value / divisor;
@@ -130,7 +130,7 @@ public class BitStream {
          * Get the size of the Golomb code for this value.
          *
          * @param divisor the divisor
-         * @param value   the value
+         * @param value the value
          * @return the number of bits
          */
         public static int getGolombSize(int divisor, int value) {
@@ -220,7 +220,7 @@ public class BitStream {
         /**
          * Write a value.
          *
-         * @param out   the output stream
+         * @param out the output stream
          * @param value the value to write
          */
         public void write(BitStream.Out out, int value) {

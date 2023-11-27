@@ -91,18 +91,18 @@ public class TestListener extends TestDb implements DatabaseEventListener {
         lastState = state;
         String stateName;
         switch (state) {
-            case STATE_SCAN_FILE:
-                stateName = "Scan " + name;
-                break;
-            case STATE_CREATE_INDEX:
-                stateName = "Create Index " + name;
-                break;
-            case STATE_RECOVER:
-                stateName = "Recover";
-                break;
-            default:
-                TestBase.logError("unknown state: " + state, null);
-                stateName = "? " + name;
+        case STATE_SCAN_FILE:
+            stateName = "Scan " + name;
+            break;
+        case STATE_CREATE_INDEX:
+            stateName = "Create Index " + name;
+            break;
+        case STATE_RECOVER:
+            stateName = "Recover";
+            break;
+        default:
+            TestBase.logError("unknown state: " + state, null);
+            stateName = "? " + name;
         }
         try {
             Thread.sleep(1);

@@ -19,7 +19,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicReference;
-
 import org.h2.api.ErrorCode;
 import org.h2.api.JavaObjectSerializer;
 import org.h2.command.Command;
@@ -72,7 +71,7 @@ import org.h2.value.lob.LobDataInMemory;
  */
 public final class SessionLocal extends Session implements TransactionStore.RollbackListener {
 
-    public enum State {INIT, RUNNING, BLOCKED, SLEEP, THROTTLED, SUSPENDED, CLOSED}
+    public enum State { INIT, RUNNING, BLOCKED, SLEEP, THROTTLED, SUSPENDED, CLOSED }
 
     private static final class SequenceAndPrepared {
 
@@ -282,8 +281,9 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
      * This method is called before and after parsing of view definition and may
      * be called recursively.
      *
-     * @param parsingView {@code true} if this method is called before parsing of view
-     *                    definition, {@code false} if it is called after it.
+     * @param parsingView
+     *            {@code true} if this method is called before parsing of view
+     *            definition, {@code false} if it is called after it.
      */
     public void setParsingCreateView(boolean parsingView) {
         createViewLevel += parsingView ? 1 : -1;
@@ -313,7 +313,7 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
     /**
      * Set the value of the given variable for this session.
      *
-     * @param name  the name of the variable (may not be null)
+     * @param name the name of the variable (may not be null)
      * @param value the new value (may not be null)
      */
     public void setVariable(String name, Value value) {
@@ -549,7 +549,7 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
 
     @Override
     public synchronized CommandInterface prepareCommand(String sql,
-                                                        int fetchSize) {
+            int fetchSize) {
         return prepareLocal(sql);
     }
 
@@ -567,10 +567,10 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
     /**
      * Parse and prepare the given SQL statement.
      *
-     * @param sql             the SQL statement
-     * @param rightsChecked   true if the rights have already been checked
+     * @param sql the SQL statement
+     * @param rightsChecked true if the rights have already been checked
      * @param literalsChecked true if the sql string has already been checked
-     *                        for literals (only used if ALLOW_LITERALS NONE is set).
+     *            for literals (only used if ALLOW_LITERALS NONE is set).
      * @return the prepared statement
      */
     public Prepared prepare(String sql, boolean rightsChecked, boolean literalsChecked) {
@@ -628,7 +628,6 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
     /**
      * Arranges for the specified database object id to be released
      * at the end of the current transaction.
-     *
      * @param id to be scheduled
      */
     protected void scheduleDatabaseObjectIdForRelease(int id) {
@@ -989,8 +988,10 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
     /**
      * Returns the next value of the sequence in this session.
      *
-     * @param sequence the sequence
-     * @param prepared current prepared command, select, or {@code null}
+     * @param sequence
+     *            the sequence
+     * @param prepared
+     *            current prepared command, select, or {@code null}
      * @return the next value of the sequence in this session
      */
     public Value getNextValueFor(Sequence sequence, Prepared prepared) {
@@ -1031,9 +1032,11 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
     /**
      * Returns the current value of the sequence in this session.
      *
-     * @param sequence the sequence
+     * @param sequence
+     *            the sequence
      * @return the current value of the sequence in this session
-     * @throws DbException if current value is not defined
+     * @throws DbException
+     *             if current value is not defined
      */
     public Value getCurrentValueFor(Sequence sequence) {
         WeakHashMap<Sequence, Value> currentValueFor = this.currentValueFor;
@@ -1107,7 +1110,7 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
      * Checks presence of prepared transaction in this session.
      *
      * @return {@code true} if there is a prepared transaction,
-     * {@code false} otherwise
+     *         {@code false} otherwise
      */
     public boolean hasPreparedTransaction() {
         return currentTransactionName != null;
@@ -1117,7 +1120,7 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
      * Commit or roll back the given transaction.
      *
      * @param transactionName the name of the transaction
-     * @param commit          true for commit, false for rollback
+     * @param commit true for commit, false for rollback
      */
     public void setPreparedTransaction(String transactionName, boolean commit) {
         if (hasPreparedTransaction() && currentTransactionName.equals(transactionName)) {
@@ -1130,7 +1133,7 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
             ArrayList<InDoubtTransaction> list = database.getInDoubtTransactions();
             int state = commit ? InDoubtTransaction.COMMIT : InDoubtTransaction.ROLLBACK;
             boolean found = false;
-            for (InDoubtTransaction p : list) {
+            for (InDoubtTransaction p: list) {
                 if (p.getTransactionName().equals(transactionName)) {
                     p.setState(state);
                     found = true;
@@ -1209,7 +1212,7 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
 
     private State transitionToState(State targetState, boolean checkSuspended) {
         State currentState;
-        while ((currentState = state.get()) != State.CLOSED &&
+        while((currentState = state.get()) != State.CLOSED &&
                 (!checkSuspended || checkSuspended(currentState)) &&
                 !state.compareAndSet(currentState, targetState)) {/**/}
         return currentState;
@@ -1432,24 +1435,24 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
          * duplicates due to concurrent remove().
          */
         switch (array.length) {
-            case 1: {
-                Object table = array[0];
+        case 1: {
+            Object table = array[0];
+            if (table != null) {
+                return Collections.singleton((Table) table);
+            }
+        }
+        //$FALL-THROUGH$
+        case 0:
+            return Collections.emptySet();
+        default: {
+            HashSet<Table> set = new HashSet<>();
+            for (Object table : array) {
                 if (table != null) {
-                    return Collections.singleton((Table) table);
+                    set.add((Table) table);
                 }
             }
-            //$FALL-THROUGH$
-            case 0:
-                return Collections.emptySet();
-            default: {
-                HashSet<Table> set = new HashSet<>();
-                for (Object table : array) {
-                    if (table != null) {
-                        set.add((Table) table);
-                    }
-                }
-                return set;
-            }
+            return set;
+        }
         }
     }
 
@@ -1526,7 +1529,7 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
      * Set the table this session is waiting for, and the thread that is
      * waiting.
      *
-     * @param waitForLock       the table
+     * @param waitForLock the table
      * @param waitForLockThread the current thread (the one that is waiting)
      */
     public void setWaitForLock(Table waitForLock, Thread waitForLockThread) {
@@ -1590,46 +1593,45 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
 
     /**
      * Start a new statement within a transaction.
-     *
      * @param command about to be started
      */
     @SuppressWarnings("incomplete-switch")
     public void startStatementWithinTransaction(Command command) {
         Transaction transaction = getTransaction();
         if (transaction != null) {
-            HashSet<MVMap<Object, VersionedValue<Object>>> maps = new HashSet<>();
+            HashSet<MVMap<Object,VersionedValue<Object>>> maps = new HashSet<>();
             if (command != null) {
                 Set<DbObject> dependencies = command.getDependencies();
                 switch (transaction.getIsolationLevel()) {
-                    case SNAPSHOT:
-                    case SERIALIZABLE:
-                        if (!transaction.hasStatementDependencies()) {
-                            for (Schema schema : database.getAllSchemasNoMeta()) {
-                                for (Table table : schema.getAllTablesAndViews(null)) {
-                                    if (table instanceof MVTable) {
-                                        addTableToDependencies((MVTable) table, maps);
-                                    }
+                case SNAPSHOT:
+                case SERIALIZABLE:
+                    if (!transaction.hasStatementDependencies()) {
+                        for (Schema schema : database.getAllSchemasNoMeta()) {
+                            for (Table table : schema.getAllTablesAndViews(null)) {
+                                if (table instanceof MVTable) {
+                                    addTableToDependencies((MVTable)table, maps);
                                 }
                             }
-                            break;
-                        }
-                        //$FALL-THROUGH$
-                    case READ_COMMITTED:
-                    case READ_UNCOMMITTED:
-                        for (DbObject dependency : dependencies) {
-                            if (dependency instanceof MVTable) {
-                                addTableToDependencies((MVTable) dependency, maps);
-                            }
                         }
                         break;
-                    case REPEATABLE_READ:
-                        HashSet<MVTable> processed = new HashSet<>();
-                        for (DbObject dependency : dependencies) {
-                            if (dependency instanceof MVTable) {
-                                addTableToDependencies((MVTable) dependency, maps, processed);
-                            }
+                    }
+                    //$FALL-THROUGH$
+                case READ_COMMITTED:
+                case READ_UNCOMMITTED:
+                    for (DbObject dependency : dependencies) {
+                        if (dependency instanceof MVTable) {
+                            addTableToDependencies((MVTable)dependency, maps);
                         }
-                        break;
+                    }
+                    break;
+                case REPEATABLE_READ:
+                    HashSet<MVTable> processed = new HashSet<>();
+                    for (DbObject dependency : dependencies) {
+                        if (dependency instanceof MVTable) {
+                            addTableToDependencies((MVTable)dependency, maps, processed);
+                        }
+                    }
+                    break;
                 }
             }
             transaction.markStatementStart(maps);
@@ -1641,7 +1643,7 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private static void addTableToDependencies(MVTable table, HashSet<MVMap<Object, VersionedValue<Object>>> maps) {
+    private static void addTableToDependencies(MVTable table, HashSet<MVMap<Object,VersionedValue<Object>>> maps) {
         for (Index index : table.getIndexes()) {
             if (index instanceof MVIndex) {
                 maps.add(((MVIndex) index).getMVMap());
@@ -1649,8 +1651,8 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
         }
     }
 
-    private static void addTableToDependencies(MVTable table, HashSet<MVMap<Object, VersionedValue<Object>>> maps,
-                                               HashSet<MVTable> processed) {
+    private static void addTableToDependencies(MVTable table, HashSet<MVMap<Object,VersionedValue<Object>>> maps,
+            HashSet<MVTable> processed) {
         if (!processed.add(table)) {
             return;
         }
@@ -1733,8 +1735,8 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
 
     @Override
     public void onRollback(MVMap<Object, VersionedValue<Object>> map, Object key,
-                           VersionedValue<Object> existingValue,
-                           VersionedValue<Object> restoredValue) {
+                            VersionedValue<Object> existingValue,
+                            VersionedValue<Object> restoredValue) {
         // Here we are relying on the fact that map which backs table's primary index
         // has the same name as the table itself
         Store store = database.getStore();
@@ -1926,7 +1928,7 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
      * @param a the first value
      * @param b the second value
      * @return 0 if both values are equal, -1 if the first value is smaller, and
-     * 1 otherwise
+     *         1 otherwise
      */
     public int compare(Value a, Value b) {
         return a.compareTo(b, this, database.getCompareMode());
@@ -1936,12 +1938,12 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
      * Compare two values with the current comparison mode. The values may have
      * different data types including NULL.
      *
-     * @param a           the first value
-     * @param b           the second value
+     * @param a the first value
+     * @param b the second value
      * @param forEquality perform only check for equality (= or &lt;&gt;)
      * @return 0 if both values are equal, -1 if the first value is smaller, 1
-     * if the second value is larger, {@link Integer#MIN_VALUE} if order
-     * is not defined due to NULL comparison
+     *         if the second value is larger, {@link Integer#MIN_VALUE} if order
+     *         is not defined due to NULL comparison
      */
     public int compareWithNull(Value a, Value b, boolean forEquality) {
         return a.compareWithNull(b, forEquality, this, database.getCompareMode());
@@ -1954,7 +1956,7 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
      * @param a the first value
      * @param b the second value
      * @return 0 if both values are equal, -1 if the first value is smaller, and
-     * 1 otherwise
+     *         1 otherwise
      */
     public int compareTypeSafe(Value a, Value b) {
         return a.compareTypeSafe(b, database.getCompareMode(), this);
@@ -1963,8 +1965,9 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
     /**
      * Changes parsing mode of data types with too large length.
      *
-     * @param truncateLargeLength {@code true} to truncate to valid bound, {@code false} to
-     *                            throw an exception
+     * @param truncateLargeLength
+     *            {@code true} to truncate to valid bound, {@code false} to
+     *            throw an exception
      */
     public void setTruncateLargeLength(boolean truncateLargeLength) {
         this.truncateLargeLength = truncateLargeLength;
@@ -1974,7 +1977,7 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
      * Returns parsing mode of data types with too large length.
      *
      * @return {@code true} if large length is truncated, {@code false} if an
-     * exception is thrown
+     *         exception is thrown
      */
     public boolean isTruncateLargeLength() {
         return truncateLargeLength;
@@ -1983,8 +1986,9 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
     /**
      * Changes parsing of a BINARY data type.
      *
-     * @param variableBinary {@code true} to parse BINARY as VARBINARY, {@code false} to
-     *                       parse it as is
+     * @param variableBinary
+     *            {@code true} to parse BINARY as VARBINARY, {@code false} to
+     *            parse it as is
      */
     public void setVariableBinary(boolean variableBinary) {
         this.variableBinary = variableBinary;
@@ -1994,7 +1998,7 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
      * Returns BINARY data type parsing mode.
      *
      * @return {@code true} if BINARY should be parsed as VARBINARY,
-     * {@code false} if it should be parsed as is
+     *         {@code false} if it should be parsed as is
      */
     public boolean isVariableBinary() {
         return variableBinary;
@@ -2003,8 +2007,9 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
     /**
      * Changes INFORMATION_SCHEMA content.
      *
-     * @param oldInformationSchema {@code true} to have old-style tables in INFORMATION_SCHEMA,
-     *                             {@code false} to have modern tables
+     * @param oldInformationSchema
+     *            {@code true} to have old-style tables in INFORMATION_SCHEMA,
+     *            {@code false} to have modern tables
      */
     public void setOldInformationSchema(boolean oldInformationSchema) {
         this.oldInformationSchema = oldInformationSchema;
@@ -2028,7 +2033,8 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
     /**
      * Enables or disables the quirks mode.
      *
-     * @param quirksMode whether quirks mode should be enabled
+     * @param quirksMode
+     *            whether quirks mode should be enabled
      */
     public void setQuirksMode(boolean quirksMode) {
         this.quirksMode = quirksMode;
@@ -2038,7 +2044,7 @@ public final class SessionLocal extends Session implements TransactionStore.Roll
      * Returns whether quirks mode is enabled explicitly or implicitly.
      *
      * @return {@code true} if database is starting or quirks mode was enabled
-     * explicitly, {@code false} otherwise
+     *         explicitly, {@code false} otherwise
      */
     public boolean isQuirksMode() {
         return quirksMode || database.isStarting();

@@ -23,51 +23,51 @@ import java.util.regex.Pattern;
 public class ThreadDumpCleaner {
 
     private static final String[] PATTERN = {
-            "\"Concurrent Mark-Sweep GC Thread\".*\n",
+        "\"Concurrent Mark-Sweep GC Thread\".*\n",
 
-            "\"Exception Catcher Thread\".*\n",
+        "\"Exception Catcher Thread\".*\n",
 
-            "JNI global references:.*\n\n",
+        "JNI global references:.*\n\n",
 
-            "\".*?\".*?\n   java.lang.Thread.State:.*\n\n",
+        "\".*?\".*?\n   java.lang.Thread.State:.*\n\n",
 
-            "\".*?\".*\n\n",
+        "\".*?\".*\n\n",
 
-            "\\$\\$YJP\\$\\$",
+        "\\$\\$YJP\\$\\$",
 
-            "\"(Attach|Service|VM|GC|DestroyJavaVM|Signal|AWT|AppKit|C2 |Low Mem|" +
-                    "process reaper|YJPAgent-).*?\"(?s).*?\n\n",
+        "\"(Attach|Service|VM|GC|DestroyJavaVM|Signal|AWT|AppKit|C2 |Low Mem|" +
+                "process reaper|YJPAgent-).*?\"(?s).*?\n\n",
 
-            "   Locked ownable synchronizers:(?s).*?\n\n",
+        "   Locked ownable synchronizers:(?s).*?\n\n",
 
-            "\".*?\".*?\n   java.lang.Thread.State: (TIMED_)?WAITING(?s).*?\n\n",
+        "\".*?\".*?\n   java.lang.Thread.State: (TIMED_)?WAITING(?s).*?\n\n",
 
-            "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
-                    "at sun.nio.ch.KQueueArrayWrapper.kevent0(?s).*?\n\n",
+        "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
+                "at sun.nio.ch.KQueueArrayWrapper.kevent0(?s).*?\n\n",
 
-            "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
-                    "at java.io.FileInputStream.readBytes(?s).*?\n\n",
+        "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
+                "at java.io.FileInputStream.readBytes(?s).*?\n\n",
 
-            "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
-                    "at sun.nio.ch.ServerSocketChannelImpl.accept(?s).*?\n\n",
+        "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
+                "at sun.nio.ch.ServerSocketChannelImpl.accept(?s).*?\n\n",
 
-            "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
-                    "at java.net.DualStackPlainSocketImpl.accept0(?s).*\n\n",
+        "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
+                "at java.net.DualStackPlainSocketImpl.accept0(?s).*\n\n",
 
-            "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
-                    "at sun.nio.ch.EPollArrayWrapper.epollWait(?s).*?\n\n",
+        "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
+                "at sun.nio.ch.EPollArrayWrapper.epollWait(?s).*?\n\n",
 
-            "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
-                    "at java.lang.Object.wait(?s).*?\n\n",
+        "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
+                "at java.lang.Object.wait(?s).*?\n\n",
 
-            "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
-                    "at java.net.PlainSocketImpl.socketAccept(?s).*?\n\n",
+        "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
+                "at java.net.PlainSocketImpl.socketAccept(?s).*?\n\n",
 
-            "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
-                    "at java.net.SocketInputStream.socketRead0(?s).*?\n\n",
+        "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
+                "at java.net.SocketInputStream.socketRead0(?s).*?\n\n",
 
-            "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
-                    "at sun.nio.ch.WindowsSelectorImpl\\$SubSelector.poll0(?s).*?\n\n",
+        "\".*?\".*?\n   java.lang.Thread.State:.*\n\t" +
+                "at sun.nio.ch.WindowsSelectorImpl\\$SubSelector.poll0(?s).*?\n\n",
 
     };
 

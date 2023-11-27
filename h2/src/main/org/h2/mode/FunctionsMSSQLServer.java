@@ -56,7 +56,8 @@ public final class FunctionsMSSQLServer extends ModeFunction {
     /**
      * Returns mode-specific function for a given name, or {@code null}.
      *
-     * @param upperName the upper-case name of a function
+     * @param upperName
+     *            the upper-case name of a function
      * @return the function with specified name or {@code null}
      */
     public static FunctionsMSSQLServer getFunction(String upperName) {
@@ -75,12 +76,12 @@ public final class FunctionsMSSQLServer extends ModeFunction {
     protected void checkParameterCount(int len) {
         int min, max;
         switch (info.type) {
-            case CHARINDEX:
-                min = 2;
-                max = 3;
-                break;
-            default:
-                throw DbException.getInternalError("type=" + info.type);
+        case CHARINDEX:
+            min = 2;
+            max = 3;
+            break;
+        default:
+            throw DbException.getInternalError("type=" + info.type);
         }
         if (len < min || len > max) {
             throw DbException.get(ErrorCode.INVALID_PARAMETER_COUNT_2, info.name, min + ".." + max);
@@ -95,46 +96,46 @@ public final class FunctionsMSSQLServer extends ModeFunction {
         }
         Value v0 = getNullOrValue(session, args, values, 0);
         switch (info.type) {
-            case LEN: {
-                long len;
-                if (v0.getValueType() == Value.CHAR) {
-                    String s = v0.getString();
-                    int l = s.length();
-                    while (l > 0 && s.charAt(l - 1) == ' ') {
-                        l--;
-                    }
-                    len = l;
-                } else {
-                    len = v0.charLength();
+        case LEN: {
+            long len;
+            if (v0.getValueType() == Value.CHAR) {
+                String s = v0.getString();
+                int l = s.length();
+                while (l > 0 && s.charAt(l - 1) == ' ') {
+                    l--;
                 }
-                return ValueBigint.get(len);
+                len = l;
+            } else {
+                len = v0.charLength();
             }
-            case SCOPE_IDENTITY:
-                return session.getLastIdentity().convertTo(type);
-            default:
-                throw DbException.getInternalError("type=" + info.type);
+            return ValueBigint.get(len);
+        }
+        case SCOPE_IDENTITY:
+            return session.getLastIdentity().convertTo(type);
+        default:
+            throw DbException.getInternalError("type=" + info.type);
         }
     }
 
     @Override
     public Expression optimize(SessionLocal session) {
         switch (info.type) {
-            case CHARINDEX:
-                return new StringFunction(args, StringFunction.LOCATE).optimize(session);
-            case GETDATE:
-                return new CurrentDateTimeValueFunction(CurrentDateTimeValueFunction.LOCALTIMESTAMP, 3).optimize(session);
-            case ISNULL:
-                return new CoalesceFunction(CoalesceFunction.COALESCE, args).optimize(session);
-            case NEWID:
-                return new RandFunction(null, RandFunction.RANDOM_UUID).optimize(session);
-            case SCOPE_IDENTITY:
-                type = SCOPE_IDENTITY_TYPE;
-                break;
-            default:
-                type = TypeInfo.getTypeInfo(info.returnDataType);
-                if (optimizeArguments(session)) {
-                    return TypedValueExpression.getTypedIfNull(getValue(session), type);
-                }
+        case CHARINDEX:
+            return new StringFunction(args, StringFunction.LOCATE).optimize(session);
+        case GETDATE:
+            return new CurrentDateTimeValueFunction(CurrentDateTimeValueFunction.LOCALTIMESTAMP, 3).optimize(session);
+        case ISNULL:
+            return new CoalesceFunction(CoalesceFunction.COALESCE, args).optimize(session);
+        case NEWID:
+            return new RandFunction(null, RandFunction.RANDOM_UUID).optimize(session);
+        case SCOPE_IDENTITY:
+            type = SCOPE_IDENTITY_TYPE;
+            break;
+        default:
+            type = TypeInfo.getTypeInfo(info.returnDataType);
+            if (optimizeArguments(session)) {
+                return TypedValueExpression.getTypedIfNull(getValue(session), type);
+            }
         }
         return this;
     }

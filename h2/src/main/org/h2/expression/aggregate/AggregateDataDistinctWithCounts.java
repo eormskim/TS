@@ -6,7 +6,6 @@
 package org.h2.expression.aggregate;
 
 import java.util.TreeMap;
-
 import org.h2.engine.SessionLocal;
 import org.h2.value.Value;
 import org.h2.value.ValueNull;
@@ -27,8 +26,10 @@ final class AggregateDataDistinctWithCounts extends AggregateData {
      * Creates new instance of data for aggregate that needs distinct values
      * with their counts.
      *
-     * @param ignoreNulls      whether NULL values should be ignored
-     * @param maxDistinctCount maximum count of distinct values to collect
+     * @param ignoreNulls
+     *            whether NULL values should be ignored
+     * @param maxDistinctCount
+     *            maximum count of distinct values to collect
      */
     AggregateDataDistinctWithCounts(boolean ignoreNulls, int maxDistinctCount) {
         this.ignoreNulls = ignoreNulls;

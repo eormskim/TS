@@ -112,7 +112,7 @@ public class DbSchema {
     /**
      * Read all tables for this schema from the database meta data.
      *
-     * @param meta       the database meta data
+     * @param meta the database meta data
      * @param tableTypes the table types to read
      * @throws SQLException on failure
      */

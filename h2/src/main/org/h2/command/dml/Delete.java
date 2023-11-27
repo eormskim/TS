@@ -88,7 +88,7 @@ public final class Delete extends FilteredDataChangeStatement {
                 table.removeRow(session, row);
             }
             if (table.fireRow()) {
-                for (rows.reset(); rows.next(); ) {
+                for (rows.reset(); rows.next();) {
                     table.fireAfterRow(session, rows.currentRowForTable(), null, false);
                 }
             }
@@ -114,7 +114,7 @@ public final class Delete extends FilteredDataChangeStatement {
                 condition.createIndexConditions(session, targetTableFilter);
             }
         }
-        TableFilter[] filters = new TableFilter[]{targetTableFilter};
+        TableFilter[] filters = new TableFilter[] { targetTableFilter };
         PlanItem item = targetTableFilter.getBestPlanItem(session, filters, 0, new AllColumnsForPlan(filters));
         targetTableFilter.setPlanItem(item);
         targetTableFilter.prepare();

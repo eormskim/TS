@@ -78,7 +78,7 @@ public class CreateLinkedTable extends SchemaCommand {
      * @param mode to set
      */
     public void setAutoCommit(boolean mode) {
-        this.autocommit = mode;
+        this.autocommit= mode;
     }
 
     @Override

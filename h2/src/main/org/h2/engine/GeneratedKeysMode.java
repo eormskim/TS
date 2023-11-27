@@ -35,11 +35,12 @@ public final class GeneratedKeysMode {
     /**
      * Determines mode of generated keys' gathering.
      *
-     * @param generatedKeysRequest {@code null} or {@code false} if generated keys are not
-     *                             needed, {@code true} if generated keys should be configured
-     *                             automatically, {@code int[]} to specify column indices to
-     *                             return generated keys from, or {@code String[]} to specify
-     *                             column names to return generated keys from
+     * @param generatedKeysRequest
+     *            {@code null} or {@code false} if generated keys are not
+     *            needed, {@code true} if generated keys should be configured
+     *            automatically, {@code int[]} to specify column indices to
+     *            return generated keys from, or {@code String[]} to specify
+     *            column names to return generated keys from
      * @return mode for the specified generated keys request
      */
     public static int valueOf(Object generatedKeysRequest) {

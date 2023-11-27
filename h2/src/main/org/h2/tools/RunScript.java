@@ -147,7 +147,7 @@ public class RunScript extends Tool {
     /**
      * Executes the SQL commands read from the reader against a database.
      *
-     * @param conn   the connection to a database
+     * @param conn the connection to a database
      * @param reader the reader
      * @return the last result set
      * @throws SQLException on failure
@@ -179,7 +179,7 @@ public class RunScript extends Tool {
     }
 
     private void process(Connection conn, String fileName,
-                         boolean continueOnError, Charset charset) throws SQLException,
+            boolean continueOnError, Charset charset) throws SQLException,
             IOException {
         BufferedReader reader = FileUtils.newBufferedReader(fileName, charset);
         try {
@@ -190,7 +190,7 @@ public class RunScript extends Tool {
     }
 
     private void process(Connection conn, boolean continueOnError, String path,
-                         Reader reader, Charset charset) throws SQLException, IOException {
+            Reader reader, Charset charset) throws SQLException, IOException {
         Statement stat = conn.createStatement();
         ScriptReader r = new ScriptReader(reader);
         while (true) {
@@ -246,7 +246,7 @@ public class RunScript extends Tool {
                                     result = StringUtils.replaceAll(result, " ", "+");
                                     throw new SQLException(
                                             "Unexpected output for:\n" + sql.trim() +
-                                                    "\nGot:\n" + result + "\nExpected:\n" + expected);
+                                            "\nGot:\n" + result + "\nExpected:\n" + expected);
                                 }
                             }
 
@@ -268,7 +268,7 @@ public class RunScript extends Tool {
     private static void processRunscript(String url, String user, String password, String fileName, String options)
             throws SQLException {
         try (Connection conn = JdbcUtils.getConnection(null, url, user, password);
-             Statement stat = conn.createStatement()) {
+            Statement stat = conn.createStatement()) {
             String sql = "RUNSCRIPT FROM '" + fileName + "' " + options;
             stat.execute(sql);
         }
@@ -277,17 +277,17 @@ public class RunScript extends Tool {
     /**
      * Executes the SQL commands in a script file against a database.
      *
-     * @param url             the database URL
-     * @param user            the user name
-     * @param password        the password
-     * @param fileName        the script file
-     * @param charset         the character set or null for UTF-8
+     * @param url the database URL
+     * @param user the user name
+     * @param password the password
+     * @param fileName the script file
+     * @param charset the character set or null for UTF-8
      * @param continueOnError if execution should be continued if an error
-     *                        occurs
+     *            occurs
      * @throws SQLException on failure
      */
     public static void execute(String url, String user, String password,
-                               String fileName, Charset charset, boolean continueOnError)
+            String fileName, Charset charset, boolean continueOnError)
             throws SQLException {
         new RunScript().process(url, user, password, fileName, charset,
                 continueOnError);
@@ -296,13 +296,13 @@ public class RunScript extends Tool {
     /**
      * Executes the SQL commands in a script file against a database.
      *
-     * @param url             the database URL
-     * @param user            the user name
-     * @param password        the password
-     * @param fileName        the script file
-     * @param charset         the character set or null for UTF-8
+     * @param url the database URL
+     * @param user the user name
+     * @param password the password
+     * @param fileName the script file
+     * @param charset the character set or null for UTF-8
      * @param continueOnError if execution should be continued if an error
-     *                        occurs
+     *            occurs
      */
     void process(String url, String user, String password, String fileName, Charset charset, boolean continueOnError)
             throws SQLException {

@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.h2.mvstore.DataUtils;
 import org.h2.mvstore.MVMap;
 import org.h2.mvstore.MVStore;
@@ -322,7 +321,7 @@ public class TestStreamStore extends TestBase {
         assertEquals(10, map.size());
         assertEquals(10, tests.get());
         for (int i = 0; i < 10; i++) {
-            map.containsKey((long) i);
+            map.containsKey((long)i);
         }
         assertEquals(20, tests.get());
         store = new StreamStore(map);
@@ -337,7 +336,7 @@ public class TestStreamStore extends TestBase {
         assertEquals(15, store.getNextKey());
         assertEquals(15, map.size());
         for (int i = 0; i < 15; i++) {
-            map.containsKey((long) i);
+            map.containsKey((long)i);
         }
     }
 
@@ -387,7 +386,7 @@ public class TestStreamStore extends TestBase {
     }
 
     private void test(StreamStore store, int minBlockSize, int maxBlockSize,
-                      int length) throws IOException {
+            int length) throws IOException {
         store.setMinBlockSize(minBlockSize);
         assertEquals(minBlockSize, store.getMinBlockSize());
         store.setMaxBlockSize(maxBlockSize);

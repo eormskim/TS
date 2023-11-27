@@ -25,8 +25,10 @@ public final class PgCatalogSchema extends MetaSchema {
     /**
      * Creates new instance of {@code pg_catalog} schema.
      *
-     * @param database the database
-     * @param owner    the owner of the schema (system user)
+     * @param database
+     *            the database
+     * @param owner
+     *            the owner of the schema (system user)
      */
     public PgCatalogSchema(Database database, User owner) {
         super(database, Constants.PG_CATALOG_SCHEMA_ID, database.sysIdentifier(Constants.SCHEMA_PG_CATALOG), owner);

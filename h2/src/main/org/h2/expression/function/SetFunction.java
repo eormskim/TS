@@ -52,12 +52,12 @@ public final class SetFunction extends Function2 {
             return false;
         }
         switch (visitor.getType()) {
-            case ExpressionVisitor.DETERMINISTIC:
-            case ExpressionVisitor.QUERY_COMPARABLE:
-            case ExpressionVisitor.READONLY:
-                return false;
-            default:
-                return true;
+        case ExpressionVisitor.DETERMINISTIC:
+        case ExpressionVisitor.QUERY_COMPARABLE:
+        case ExpressionVisitor.READONLY:
+            return false;
+        default:
+            return true;
         }
     }
 

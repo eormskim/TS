@@ -41,12 +41,12 @@ public class TestMVStoreCachePerformance extends TestBase {
 
     private void testCache(int threadCount, String fileNamePrefix) {
         String fileName = getBaseDir() + "/" + getTestName();
-        fileName = fileNamePrefix + fileName;
+        fileName = fileNamePrefix  + fileName;
         FileUtils.delete(fileName);
         MVStore store = new MVStore.Builder().
                 fileName(fileName).
                 // cacheSize(1024).
-                        open();
+                open();
         final MVMap<Integer, byte[]> map = store.openMap("test");
         final AtomicInteger counter = new AtomicInteger();
         byte[] data = new byte[8 * 1024];

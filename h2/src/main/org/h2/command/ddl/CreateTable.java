@@ -7,7 +7,6 @@ package org.h2.command.ddl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-
 import org.h2.api.ErrorCode;
 import org.h2.command.CommandInterface;
 import org.h2.command.dml.Insert;
@@ -143,10 +142,10 @@ public class CreateTable extends CommandWithColumns {
                             throw DbException.get(
                                     ErrorCode.FEATURE_NOT_SUPPORTED_1,
                                     "Table depends on another table " +
-                                            "with a higher ID: " + t +
-                                            ", this is currently not supported, " +
-                                            "as it would prevent the database from " +
-                                            "being re-opened");
+                                    "with a higher ID: " + t +
+                                    ", this is currently not supported, " +
+                                    "as it would prevent the database from " +
+                                    "being re-opened");
                         }
                     }
                 }

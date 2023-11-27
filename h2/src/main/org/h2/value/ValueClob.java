@@ -38,7 +38,8 @@ public final class ValueClob extends ValueLob {
     /**
      * Creates a small CLOB value that can be stored in the row directly.
      *
-     * @param data the data in UTF-8 encoding
+     * @param data
+     *            the data in UTF-8 encoding
      * @return the CLOB
      */
     public static ValueClob createSmall(byte[] data) {
@@ -49,9 +50,11 @@ public final class ValueClob extends ValueLob {
     /**
      * Creates a small CLOB value that can be stored in the row directly.
      *
-     * @param data       the data in UTF-8 encoding
-     * @param charLength the count of characters, must be exactly the same as count of
-     *                   characters in the data
+     * @param data
+     *            the data in UTF-8 encoding
+     * @param charLength
+     *            the count of characters, must be exactly the same as count of
+     *            characters in the data
      * @return the CLOB
      */
     public static ValueClob createSmall(byte[] data, long charLength) {
@@ -61,7 +64,8 @@ public final class ValueClob extends ValueLob {
     /**
      * Creates a small CLOB value that can be stored in the row directly.
      *
-     * @param string the string with value
+     * @param string
+     *            the string with value
      * @return the CLOB
      */
     public static ValueClob createSmall(String string) {
@@ -72,9 +76,12 @@ public final class ValueClob extends ValueLob {
     /**
      * Create a temporary CLOB value from a stream.
      *
-     * @param in      the reader
-     * @param length  the number of characters to read, or -1 for no limit
-     * @param handler the data handler
+     * @param in
+     *            the reader
+     * @param length
+     *            the number of characters to read, or -1 for no limit
+     * @param handler
+     *            the data handler
      * @return the lob value
      */
     public static ValueClob createTempClob(Reader in, long length, DataHandler handler) {
@@ -228,8 +235,10 @@ public final class ValueClob extends ValueLob {
     /**
      * Compares two CLOB values directly.
      *
-     * @param v1 first CLOB value
-     * @param v2 second CLOB value
+     * @param v1
+     *            first CLOB value
+     * @param v2
+     *            second CLOB value
      * @return result of comparison
      */
     private static int compare(ValueClob v1, ValueClob v2) {
@@ -247,7 +256,7 @@ public final class ValueClob extends ValueLob {
                     return cmp;
                 }
             }
-            for (; ; ) {
+            for (;;) {
                 int c1 = reader1.read(), c2 = reader2.read();
                 if (c1 < 0) {
                     return c2 < 0 ? 0 : -1;
@@ -286,7 +295,8 @@ public final class ValueClob extends ValueLob {
     /**
      * Convert the precision to the requested value.
      *
-     * @param precision the new precision
+     * @param precision
+     *            the new precision
      * @return the truncated or this value
      */
     ValueClob convertPrecision(long precision) {
@@ -340,7 +350,7 @@ public final class ValueClob extends ValueLob {
             } else {
                 try (InputStream is = getInputStream()) {
                     p = 0L;
-                    for (; ; ) {
+                    for (;;) {
                         p += is.skip(Long.MAX_VALUE);
                         if (is.read() < 0) {
                             break;

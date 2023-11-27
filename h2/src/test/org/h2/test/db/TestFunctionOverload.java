@@ -155,7 +155,7 @@ public class TestFunctionOverload extends TestDb {
      * This method is called via reflection from the database.
      *
      * @param conn the connection
-     * @param one  the value
+     * @param one the value
      * @return the value
      */
     public static int overload1or2WithConn(Connection conn, int one)

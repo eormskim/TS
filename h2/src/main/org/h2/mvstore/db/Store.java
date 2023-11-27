@@ -150,20 +150,20 @@ public final class Store {
      */
     DbException convertMVStoreException(MVStoreException e) {
         switch (e.getErrorCode()) {
-            case DataUtils.ERROR_CLOSED:
-                throw DbException.get(ErrorCode.DATABASE_IS_CLOSED, e, fileName);
-            case DataUtils.ERROR_FILE_CORRUPT:
-                if (encrypted) {
-                    throw DbException.get(ErrorCode.FILE_ENCRYPTION_ERROR_1, e, fileName);
-                }
-                throw DbException.get(ErrorCode.FILE_CORRUPTED_1, e, fileName);
-            case DataUtils.ERROR_FILE_LOCKED:
-                throw DbException.get(ErrorCode.DATABASE_ALREADY_OPEN_1, e, fileName);
-            case DataUtils.ERROR_READING_FAILED:
-            case DataUtils.ERROR_WRITING_FAILED:
-                throw DbException.get(ErrorCode.IO_EXCEPTION_1, e, fileName);
-            default:
-                throw DbException.get(ErrorCode.GENERAL_ERROR_1, e, e.getMessage());
+        case DataUtils.ERROR_CLOSED:
+            throw DbException.get(ErrorCode.DATABASE_IS_CLOSED, e, fileName);
+        case DataUtils.ERROR_FILE_CORRUPT:
+            if (encrypted) {
+                throw DbException.get(ErrorCode.FILE_ENCRYPTION_ERROR_1, e, fileName);
+            }
+            throw DbException.get(ErrorCode.FILE_CORRUPTED_1, e, fileName);
+        case DataUtils.ERROR_FILE_LOCKED:
+            throw DbException.get(ErrorCode.DATABASE_ALREADY_OPEN_1, e, fileName);
+        case DataUtils.ERROR_READING_FAILED:
+        case DataUtils.ERROR_WRITING_FAILED:
+            throw DbException.get(ErrorCode.IO_EXCEPTION_1, e, fileName);
+        default:
+            throw DbException.get(ErrorCode.GENERAL_ERROR_1, e, e.getMessage());
         }
     }
 
@@ -266,7 +266,7 @@ public final class Store {
     /**
      * Prepare a transaction.
      *
-     * @param session         the session
+     * @param session the session
      * @param transactionName the transaction name (may be null)
      */
     public void prepareCommit(SessionLocal session, String transactionName) {

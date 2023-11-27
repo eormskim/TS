@@ -291,7 +291,7 @@ public final class DataUtils {
      * Write a variable size int.
      *
      * @param out the output stream
-     * @param x   the value
+     * @param x the value
      * @throws IOException if some data could not be written
      */
     public static void writeVarInt(OutputStream out, int x) throws IOException {
@@ -306,7 +306,7 @@ public final class DataUtils {
      * Write a variable size int.
      *
      * @param buff the source buffer
-     * @param x    the value
+     * @param x the value
      */
     public static void writeVarInt(ByteBuffer buff, int x) {
         while ((x & ~0x7f) != 0) {
@@ -320,11 +320,11 @@ public final class DataUtils {
      * Write characters from a string (without the length).
      *
      * @param buff the target buffer (must be large enough)
-     * @param s    the string
-     * @param len  the number of characters
+     * @param s the string
+     * @param len the number of characters
      */
     public static void writeStringData(ByteBuffer buff,
-                                       String s, int len) {
+            String s, int len) {
         for (int i = 0; i < len; i++) {
             int c = s.charAt(i);
             if (c < 0x80) {
@@ -354,7 +354,7 @@ public final class DataUtils {
      * Read a string.
      *
      * @param buff the source buffer
-     * @param len  the number of characters
+     * @param len the number of characters
      * @return the value
      */
     public static String readString(ByteBuffer buff, int len) {
@@ -377,7 +377,7 @@ public final class DataUtils {
      * Write a variable size long.
      *
      * @param buff the target buffer
-     * @param x    the value
+     * @param x the value
      */
     public static void writeVarLong(ByteBuffer buff, long x) {
         while ((x & ~0x7f) != 0) {
@@ -391,7 +391,7 @@ public final class DataUtils {
      * Write a variable size long.
      *
      * @param out the output stream
-     * @param x   the value
+     * @param x the value
      * @throws IOException if some data could not be written
      */
     public static void writeVarLong(OutputStream out, long x)
@@ -406,13 +406,13 @@ public final class DataUtils {
     /**
      * Copy the elements of an array, with a gap.
      *
-     * @param src      the source array
-     * @param dst      the target array
-     * @param oldSize  the size of the old array
+     * @param src the source array
+     * @param dst the target array
+     * @param oldSize the size of the old array
      * @param gapIndex the index of the gap
      */
     public static void copyWithGap(Object src, Object dst, int oldSize,
-                                   int gapIndex) {
+            int gapIndex) {
         if (gapIndex > 0) {
             System.arraycopy(src, 0, dst, 0, gapIndex);
         }
@@ -425,13 +425,13 @@ public final class DataUtils {
     /**
      * Copy the elements of an array, and remove one element.
      *
-     * @param src         the source array
-     * @param dst         the target array
-     * @param oldSize     the size of the old array
+     * @param src the source array
+     * @param dst the target array
+     * @param oldSize the size of the old array
      * @param removeIndex the index of the entry to remove
      */
     public static void copyExcept(Object src, Object dst, int oldSize,
-                                  int removeIndex) {
+            int removeIndex) {
         if (removeIndex > 0 && oldSize > 0) {
             System.arraycopy(src, 0, dst, 0, removeIndex);
         }
@@ -446,8 +446,8 @@ public final class DataUtils {
      * The buffer is rewind after reading.
      *
      * @param file the file channel
-     * @param pos  the absolute position within the file
-     * @param dst  the byte buffer
+     * @param pos the absolute position within the file
+     * @param dst the byte buffer
      * @throws MVStoreException if some data could not be read
      */
     public static void readFully(FileChannel file, long pos, ByteBuffer dst) {
@@ -470,7 +470,7 @@ public final class DataUtils {
             throw newMVStoreException(
                     ERROR_READING_FAILED,
                     "Reading from file {0} failed at {1} (length {2}), " +
-                            "read {3}, remaining {4}",
+                    "read {3}, remaining {4}",
                     file, pos, size, dst.position(), dst.remaining(), e);
         }
     }
@@ -479,8 +479,8 @@ public final class DataUtils {
      * Write to a file channel.
      *
      * @param file the file channel
-     * @param pos  the absolute position within the file
-     * @param src  the source buffer
+     * @param pos the absolute position within the file
+     * @param src the source buffer
      */
     public static void writeFully(FileChannel file, long pos, ByteBuffer src) {
         try {
@@ -597,7 +597,6 @@ public final class DataUtils {
 
     /**
      * Determines whether specified file position corresponds to a leaf page
-     *
      * @param pos the position
      * @return true if it is a leaf, false otherwise
      */
@@ -620,7 +619,7 @@ public final class DataUtils {
      *
      * @param pos the position
      * @return true if page has been removed (no longer accessible from the
-     * current root of the tree)
+     *         current root of the tree)
      */
     static boolean isPageRemoved(long pos) {
         return pos == 1L;
@@ -632,9 +631,9 @@ public final class DataUtils {
      * (node or leaf).
      *
      * @param chunkId the chunk id
-     * @param offset  the offset
-     * @param length  the length
-     * @param type    the page type (1 for node, 0 for leaf)
+     * @param offset the offset
+     * @param length the length
+     * @param type the page type (1 for node, 0 for leaf)
      * @return the position
      */
     public static long getPagePos(int chunkId, int offset, int length, int type) {
@@ -648,7 +647,7 @@ public final class DataUtils {
     /**
      * Convert tocElement into pagePos by replacing mapId with chunkId.
      *
-     * @param chunkId    the chunk id
+     * @param chunkId the chunk id
      * @param tocElement the element
      * @return the page position
      */
@@ -661,10 +660,10 @@ public final class DataUtils {
      * the map id, the page offset, the maximum length, and the type
      * (node or leaf).
      *
-     * @param mapId  the chunk id
+     * @param mapId the chunk id
      * @param offset the offset
      * @param length the length
-     * @param type   the page type (1 for node, 0 for leaf)
+     * @param type the page type (1 for node, 0 for leaf)
      * @return the position
      */
     public static long getTocElement(int mapId, int offset, int length, int type) {
@@ -691,7 +690,7 @@ public final class DataUtils {
      * Append a map to the string builder, sorted by key.
      *
      * @param buff the target buffer
-     * @param map  the map
+     * @param map the map
      * @return the string builder
      */
     public static StringBuilder appendMap(StringBuilder buff, HashMap<String, ?> map) {
@@ -723,8 +722,8 @@ public final class DataUtils {
      * colon. Values that contain a comma or a double quote are enclosed in
      * double quotes, with special characters escaped using a backslash.
      *
-     * @param buff  the target buffer
-     * @param key   the key
+     * @param buff the target buffer
+     * @param key the key
      * @param value the value
      */
     public static void appendMap(StringBuilder buff, String key, String value) {
@@ -748,8 +747,8 @@ public final class DataUtils {
      * Append a key-value pair to the string builder. Keys may not contain a
      * colon.
      *
-     * @param buff  the target buffer
-     * @param key   the key
+     * @param buff the target buffer
+     * @param key the key
      * @param value the value
      */
     public static void appendMap(StringBuilder buff, String key, long value) {
@@ -760,8 +759,8 @@ public final class DataUtils {
      * Append a key-value pair to the string builder. Keys may not contain a
      * colon.
      *
-     * @param buff  the target buffer
-     * @param key   the key
+     * @param buff the target buffer
+     * @param key the key
      * @param value the value
      */
     public static void appendMap(StringBuilder buff, String key, int value) {
@@ -770,8 +769,8 @@ public final class DataUtils {
 
     /**
      * @param buff output buffer, should be empty
-     * @param s    parsed string
-     * @param i    offset to parse from
+     * @param s parsed string
+     * @param i offset to parse from
      * @param size stop offset (exclusive)
      * @return new offset
      */
@@ -810,7 +809,7 @@ public final class DataUtils {
     public static HashMap<String, String> parseMap(String s) {
         HashMap<String, String> map = new HashMap<>();
         StringBuilder buff = new StringBuilder();
-        for (int i = 0, size = s.length(); i < size; ) {
+        for (int i = 0, size = s.length(); i < size;) {
             int startKey = i;
             i = s.indexOf(':', i);
             if (i < 0) {
@@ -829,7 +828,7 @@ public final class DataUtils {
      *
      * @param bytes encoded map
      * @return the map without mapping for {@code "fletcher"}, or {@code null} if checksum is wrong
-     * or parameter do not represent a properly formatted map serialization
+     *              or parameter do not represent a properly formatted map serialization
      */
     static HashMap<String, String> parseChecksummedMap(byte[] bytes) {
         int start = 0, end = bytes.length;
@@ -842,7 +841,7 @@ public final class DataUtils {
         String s = new String(bytes, start, end - start, StandardCharsets.ISO_8859_1);
         HashMap<String, String> map = new HashMap<>();
         StringBuilder buff = new StringBuilder();
-        for (int i = 0, size = s.length(); i < size; ) {
+        for (int i = 0, size = s.length(); i < size;) {
             int startKey = i;
             i = s.indexOf(':', i);
             if (i < 0) {
@@ -881,14 +880,14 @@ public final class DataUtils {
     /**
      * Parse a specified pair from key-value pair list.
      *
-     * @param s   the list
+     * @param s the list
      * @param key the name of the key
      * @return value of the specified item, or {@code null}
      * @throws MVStoreException if parsing failed
      */
     public static String getFromMap(String s, String key) {
         int keyLength = key.length();
-        for (int i = 0, size = s.length(); i < size; ) {
+        for (int i = 0, size = s.length(); i < size;) {
             int startKey = i;
             i = s.indexOf(':', i);
             if (i < 0) {
@@ -924,7 +923,7 @@ public final class DataUtils {
     /**
      * Calculate the Fletcher32 checksum.
      *
-     * @param bytes  the bytes
+     * @param bytes the bytes
      * @param offset initial offset
      * @param length the message length (if odd, 0 is appended)
      * @return the checksum
@@ -934,7 +933,7 @@ public final class DataUtils {
         int i = offset, len = offset + (length & ~1);
         while (i < len) {
             // reduce after 360 words (each word is two bytes)
-            for (int end = Math.min(i + 720, len); i < end; ) {
+            for (int end = Math.min(i + 720, len); i < end;) {
                 int x = ((bytes[i++] & 0xff) << 8) | (bytes[i++] & 0xff);
                 s2 += s1 += x;
             }
@@ -954,13 +953,13 @@ public final class DataUtils {
     /**
      * Throw an IllegalArgumentException if the argument is invalid.
      *
-     * @param test      true if the argument is valid
-     * @param message   the message
+     * @param test true if the argument is valid
+     * @param message the message
      * @param arguments the arguments
      * @throws IllegalArgumentException if the argument is invalid
      */
     public static void checkArgument(boolean test, String message,
-                                     Object... arguments) {
+            Object... arguments) {
         if (!test) {
             throw newIllegalArgumentException(message, arguments);
         }
@@ -969,14 +968,14 @@ public final class DataUtils {
     /**
      * Create a new IllegalArgumentException.
      *
-     * @param message   the message
+     * @param message the message
      * @param arguments the arguments
      * @return the exception
      */
     public static IllegalArgumentException newIllegalArgumentException(
             String message, Object... arguments) {
         return initCause(new IllegalArgumentException(
-                        formatMessage(0, message, arguments)),
+                formatMessage(0, message, arguments)),
                 arguments);
     }
 
@@ -987,7 +986,7 @@ public final class DataUtils {
      * @return the exception
      */
     public static UnsupportedOperationException
-    newUnsupportedOperationException(String message) {
+            newUnsupportedOperationException(String message) {
         return new UnsupportedOperationException(formatMessage(0, message));
     }
 
@@ -995,14 +994,14 @@ public final class DataUtils {
      * Create a new MVStoreException.
      *
      * @param errorCode the error code
-     * @param message   the message
+     * @param message the message
      * @param arguments the arguments
      * @return the exception
      */
     public static MVStoreException newMVStoreException(
             int errorCode, String message, Object... arguments) {
         return initCause(new MVStoreException(errorCode,
-                        formatMessage(errorCode, message, arguments)),
+                formatMessage(errorCode, message, arguments)),
                 arguments);
     }
 
@@ -1021,12 +1020,12 @@ public final class DataUtils {
      * Format an error message.
      *
      * @param errorCode the error code
-     * @param message   the message
+     * @param message the message
      * @param arguments the arguments
      * @return the formatted message
      */
     public static String formatMessage(int errorCode, String message,
-                                       Object... arguments) {
+            Object... arguments) {
         // convert arguments to strings, to avoid locale specific formatting
         arguments = arguments.clone();
         for (int i = 0; i < arguments.length; i++) {
@@ -1048,8 +1047,8 @@ public final class DataUtils {
     /**
      * Read a hex long value from a map.
      *
-     * @param map          the map
-     * @param key          the key
+     * @param map the map
+     * @param key the key
      * @param defaultValue if the value is null
      * @return the parsed value
      * @throws MVStoreException if parsing fails
@@ -1112,8 +1111,8 @@ public final class DataUtils {
     /**
      * Read a hex int value from a map.
      *
-     * @param map          the map
-     * @param key          the key
+     * @param map the map
+     * @param key the key
      * @param defaultValue if the value is null
      * @return the parsed value
      * @throws MVStoreException if parsing fails
@@ -1146,14 +1145,14 @@ public final class DataUtils {
         if (v == null) {
             return null;
         }
-        return StringUtils.convertHexToBytes((String) v);
+        return StringUtils.convertHexToBytes((String)v);
     }
 
     /**
      * Get the configuration parameter value, or default.
      *
-     * @param config       the configuration
-     * @param key          the key
+     * @param config the configuration
+     * @param key the key
      * @param defaultValue the default
      * @return the configured value or default
      */

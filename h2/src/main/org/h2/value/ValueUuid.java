@@ -75,7 +75,7 @@ public final class ValueUuid extends Value {
      * Get or create a UUID for the given high and low order values.
      *
      * @param high the most significant bits
-     * @param low  the least significant bits
+     * @param low the least significant bits
      * @return the UUID
      */
     public static ValueUuid get(long high, long low) {

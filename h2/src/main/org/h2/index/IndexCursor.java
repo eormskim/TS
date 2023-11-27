@@ -66,7 +66,7 @@ public class IndexCursor implements Cursor {
     /**
      * Prepare this index cursor to make a lookup in index.
      *
-     * @param s               Session.
+     * @param s Session.
      * @param indexConditions Index conditions.
      */
     public void prepare(SessionLocal s, ArrayList<IndexCondition> indexConditions) {
@@ -146,7 +146,7 @@ public class IndexCursor implements Cursor {
     /**
      * Re-evaluate the start and end values of the index search for rows.
      *
-     * @param s               the session
+     * @param s the session
      * @param indexConditions the index conditions
      */
     public void find(SessionLocal s, ArrayList<IndexCondition> indexConditions) {

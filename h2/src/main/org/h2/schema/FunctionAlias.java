@@ -61,11 +61,11 @@ public final class FunctionAlias extends UserDefinedFunction {
     /**
      * Create a new alias based on a method name.
      *
-     * @param schema          the schema
-     * @param id              the id
-     * @param name            the name
+     * @param schema the schema
+     * @param id the id
+     * @param name the name
      * @param javaClassMethod the class and method name
-     * @param force           create the object even if the class or method does not exist
+     * @param force create the object even if the class or method does not exist
      * @return the database object
      */
     public static FunctionAlias newInstance(
@@ -88,10 +88,10 @@ public final class FunctionAlias extends UserDefinedFunction {
      * Create a new alias based on source code.
      *
      * @param schema the schema
-     * @param id     the id
-     * @param name   the name
+     * @param id the id
+     * @param name the name
      * @param source the source code
-     * @param force  create the object even if the class or method does not exist
+     * @param force create the object even if the class or method does not exist
      * @return the database object
      */
     public static FunctionAlias newInstanceFromSource(
@@ -133,7 +133,7 @@ public final class FunctionAlias extends UserDefinedFunction {
             try {
                 Method m = compiler.getMethod(fullClassName);
                 JavaMethod method = new JavaMethod(m, 0);
-                javaMethods = new JavaMethod[]{
+                javaMethods = new JavaMethod[] {
                         method
                 };
             } catch (DbException e) {
@@ -159,7 +159,7 @@ public final class FunctionAlias extends UserDefinedFunction {
                 for (JavaMethod old : list) {
                     if (old.getParameterCount() == javaMethod.getParameterCount()) {
                         throw DbException.get(ErrorCode.
-                                        METHODS_MUST_HAVE_DIFFERENT_PARAMETER_COUNTS_2,
+                                METHODS_MUST_HAVE_DIFFERENT_PARAMETER_COUNTS_2,
                                 old.toString(), javaMethod.toString());
                     }
                 }
@@ -335,10 +335,10 @@ public final class FunctionAlias extends UserDefinedFunction {
         /**
          * Call the user-defined function and return the value.
          *
-         * @param session    the session
-         * @param args       the argument list
+         * @param session the session
+         * @param args the argument list
          * @param columnList true if the function should only return the column
-         *                   list
+         *            list
          * @return the value
          */
         public Value getValue(SessionLocal session, Expression[] args, boolean columnList) {
@@ -353,10 +353,10 @@ public final class FunctionAlias extends UserDefinedFunction {
         /**
          * Call the table user-defined function and return the value.
          *
-         * @param session    the session
-         * @param args       the argument list
+         * @param session the session
+         * @param args the argument list
          * @param columnList true if the function should only return the column
-         *                   list
+         *            list
          * @return the value
          */
         public ResultInterface getTableValue(SessionLocal session, Expression[] args, boolean columnList) {
@@ -374,9 +374,9 @@ public final class FunctionAlias extends UserDefinedFunction {
          * Create a result for the given result set.
          *
          * @param session the session
-         * @param rs      the result set
+         * @param rs the result set
          * @param maxrows the maximum number of rows to read (0 to just read the
-         *                meta data)
+         *            meta data)
          * @return the value
          */
         public static ResultInterface resultSetToResult(SessionLocal session, ResultSet rs, int maxrows) {
@@ -528,7 +528,7 @@ public final class FunctionAlias extends UserDefinedFunction {
          * for table value functions.
          *
          * @return data type information for regular functions or {@code null}
-         * for table value functions
+         *         for table value functions
          */
         public TypeInfo getDataType() {
             return dataType;

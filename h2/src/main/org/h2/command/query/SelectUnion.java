@@ -153,62 +153,62 @@ public class SelectUnion extends Query {
             result.setDistinct();
         }
         switch (unionType) {
-            case UNION:
-            case EXCEPT:
-                left.setDistinctIfPossible();
-                right.setDistinctIfPossible();
-                result.setDistinct();
-                break;
-            case UNION_ALL:
-                break;
-            case INTERSECT:
-                left.setDistinctIfPossible();
-                right.setDistinctIfPossible();
-                break;
-            default:
-                throw DbException.getInternalError("type=" + unionType);
+        case UNION:
+        case EXCEPT:
+            left.setDistinctIfPossible();
+            right.setDistinctIfPossible();
+            result.setDistinct();
+            break;
+        case UNION_ALL:
+            break;
+        case INTERSECT:
+            left.setDistinctIfPossible();
+            right.setDistinctIfPossible();
+            break;
+        default:
+            throw DbException.getInternalError("type=" + unionType);
         }
         ResultInterface l = left.query(0);
         ResultInterface r = right.query(0);
         l.reset();
         r.reset();
         switch (unionType) {
-            case UNION_ALL:
-            case UNION: {
-                while (l.next()) {
-                    result.addRow(convert(l.currentRow(), columnCount));
-                }
-                while (r.next()) {
-                    result.addRow(convert(r.currentRow(), columnCount));
-                }
-                break;
+        case UNION_ALL:
+        case UNION: {
+            while (l.next()) {
+                result.addRow(convert(l.currentRow(), columnCount));
             }
-            case EXCEPT: {
-                while (l.next()) {
-                    result.addRow(convert(l.currentRow(), columnCount));
-                }
-                while (r.next()) {
-                    result.removeDistinct(convert(r.currentRow(), columnCount));
-                }
-                break;
+            while (r.next()) {
+                result.addRow(convert(r.currentRow(), columnCount));
             }
-            case INTERSECT: {
-                LocalResult temp = createLocalResult(columnCount);
-                temp.setDistinct();
-                while (l.next()) {
-                    temp.addRow(convert(l.currentRow(), columnCount));
-                }
-                while (r.next()) {
-                    Value[] values = convert(r.currentRow(), columnCount);
-                    if (temp.containsDistinct(values)) {
-                        result.addRow(values);
-                    }
-                }
-                temp.close();
-                break;
+            break;
+        }
+        case EXCEPT: {
+            while (l.next()) {
+                result.addRow(convert(l.currentRow(), columnCount));
             }
-            default:
-                throw DbException.getInternalError("type=" + unionType);
+            while (r.next()) {
+                result.removeDistinct(convert(r.currentRow(), columnCount));
+            }
+            break;
+        }
+        case INTERSECT: {
+            LocalResult temp = createLocalResult(columnCount);
+            temp.setDistinct();
+            while (l.next()) {
+                temp.addRow(convert(l.currentRow(), columnCount));
+            }
+            while (r.next()) {
+                Value[] values = convert(r.currentRow(), columnCount);
+                if (temp.containsDistinct(values)) {
+                    result.addRow(values);
+                }
+            }
+            temp.close();
+            break;
+        }
+        default:
+            throw DbException.getInternalError("type=" + unionType);
         }
         l.close();
         r.close();
@@ -312,22 +312,22 @@ public class SelectUnion extends Query {
 
     @Override
     public void addGlobalCondition(Parameter param, int columnId,
-                                   int comparisonType) {
+            int comparisonType) {
         addParameter(param);
         switch (unionType) {
-            case UNION_ALL:
-            case UNION:
-            case INTERSECT: {
-                left.addGlobalCondition(param, columnId, comparisonType);
-                right.addGlobalCondition(param, columnId, comparisonType);
-                break;
-            }
-            case EXCEPT: {
-                left.addGlobalCondition(param, columnId, comparisonType);
-                break;
-            }
-            default:
-                throw DbException.getInternalError("type=" + unionType);
+        case UNION_ALL:
+        case UNION:
+        case INTERSECT: {
+            left.addGlobalCondition(param, columnId, comparisonType);
+            right.addGlobalCondition(param, columnId, comparisonType);
+            break;
+        }
+        case EXCEPT: {
+            left.addGlobalCondition(param, columnId, comparisonType);
+            break;
+        }
+        default:
+            throw DbException.getInternalError("type=" + unionType);
         }
     }
 
@@ -336,20 +336,20 @@ public class SelectUnion extends Query {
         StringBuilder buff = new StringBuilder();
         buff.append('(').append(left.getPlanSQL(sqlFlags)).append(')');
         switch (unionType) {
-            case UNION_ALL:
-                buff.append("\nUNION ALL\n");
-                break;
-            case UNION:
-                buff.append("\nUNION\n");
-                break;
-            case INTERSECT:
-                buff.append("\nINTERSECT\n");
-                break;
-            case EXCEPT:
-                buff.append("\nEXCEPT\n");
-                break;
-            default:
-                throw DbException.getInternalError("type=" + unionType);
+        case UNION_ALL:
+            buff.append("\nUNION ALL\n");
+            break;
+        case UNION:
+            buff.append("\nUNION\n");
+            break;
+        case INTERSECT:
+            buff.append("\nINTERSECT\n");
+            break;
+        case EXCEPT:
+            buff.append("\nEXCEPT\n");
+            break;
+        default:
+            throw DbException.getInternalError("type=" + unionType);
         }
         buff.append('(').append(right.getPlanSQL(sqlFlags)).append(')');
         appendEndOfQueryToSQL(buff, sqlFlags, expressions.toArray(new Expression[0]));

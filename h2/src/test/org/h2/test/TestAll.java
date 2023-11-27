@@ -14,7 +14,6 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
-
 import org.h2.Driver;
 import org.h2.engine.Constants;
 import org.h2.store.fs.FileUtils;
@@ -399,9 +398,7 @@ java org.h2.test.TestAll timer
      */
     String cacheType;
 
-    /**
-     * If not null the database should be opened with the collation parameter
-     */
+    /** If not null the database should be opened with the collation parameter */
     public String collation;
 
 
@@ -1056,7 +1053,7 @@ kill -9 `jps -l | grep "org.h2.test." | cut -d " " -f 1`
         DeleteDbFiles.execute(TestBase.BASE_TEST_DIR, null, true);
         FileUtils.deleteRecursive("trace.db", false);
         if (networked) {
-            String[] args = ssl ? new String[]{"-ifNotExists", "-tcpSSL"} : new String[]{"-ifNotExists"};
+            String[] args = ssl ? new String[] { "-ifNotExists", "-tcpSSL" } : new String[] { "-ifNotExists" };
             server = Server.createTcpServer(args);
             try {
                 server.start();
@@ -1091,22 +1088,22 @@ kill -9 `jps -l | grep "org.h2.test." | cut -d " " -f 1`
                 " @ " + new java.sql.Timestamp(System.currentTimeMillis()).toString());
         System.out.println("Java " +
                 prop.getProperty("java.runtime.version") + ", " +
-                prop.getProperty("java.vm.name") + ", " +
+                prop.getProperty("java.vm.name")+", " +
                 prop.getProperty("java.vendor") + ", " +
                 prop.getProperty("sun.arch.data.model"));
         System.out.println(
                 prop.getProperty("os.name") + ", " +
-                        prop.getProperty("os.arch") + ", " +
-                        prop.getProperty("os.version") + ", " +
-                        prop.getProperty("sun.os.patch.level") + ", " +
-                        prop.getProperty("file.separator") + " " +
-                        prop.getProperty("path.separator") + " " +
-                        StringUtils.javaEncode(prop.getProperty("line.separator")) + " " +
-                        prop.getProperty("user.country") + " " +
-                        prop.getProperty("user.language") + " " +
-                        prop.getProperty("user.timezone") + " " +
-                        prop.getProperty("user.variant") + " " +
-                        prop.getProperty("file.encoding"));
+                prop.getProperty("os.arch")+", "+
+                prop.getProperty("os.version")+", "+
+                prop.getProperty("sun.os.patch.level")+", "+
+                prop.getProperty("file.separator")+" "+
+                prop.getProperty("path.separator")+" "+
+                StringUtils.javaEncode(prop.getProperty("line.separator")) + " " +
+                prop.getProperty("user.country") + " " +
+                prop.getProperty("user.language") + " " +
+                prop.getProperty("user.timezone") + " " +
+                prop.getProperty("user.variant")+" "+
+                prop.getProperty("file.encoding"));
     }
 
     @Override

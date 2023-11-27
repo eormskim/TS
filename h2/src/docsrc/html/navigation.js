@@ -18,7 +18,7 @@ function loadFrameset() {
     var a = location.search.split('&');
     var page = decodeURIComponent(a[0].substr(1));
     var frame = a[1];
-    if (page && frame) {
+    if(page && frame){
         var s = "top." + frame + ".location.replace('" + page + "')";
         eval(s);
     }
@@ -26,19 +26,19 @@ function loadFrameset() {
 }
 
 function frameMe(frame) {
-    if (location.host.indexOf('h2database') < 0) {
+    if(location.host.indexOf('h2database') < 0) {
         // allow translation
         return;
     }
     var frameset = "frame.html"; // name of the frameset page
-    if (frame == null) {
+    if(frame == null) {
         frame = 'main';
     }
     page = new String(self.document.location);
     var pos = page.lastIndexOf("/") + 1;
     var file = page.substr(pos);
     file = encodeURIComponent(file);
-    if (window.name != frame) {
+    if(window.name != frame) {
         var s = frameset + "?" + file + "&" + frame;
         top.location.replace(s);
     } else {
@@ -48,18 +48,18 @@ function frameMe(frame) {
 }
 
 function addHighlight(page, word, count) {
-    if (count > 0) {
-        if (top.main.document.location.href.indexOf(page) > 0 && top.main.document.body && top.main.document.body.innerHTML) {
+    if(count > 0) {
+        if(top.main.document.location.href.indexOf(page) > 0 && top.main.document.body && top.main.document.body.innerHTML) {
             highlight();
         } else {
-            window.setTimeout('addHighlight("' + page + '","' + word + '",' + (count - 1) + ')', 10);
+            window.setTimeout('addHighlight("'+page+'","'+word+'",'+(count-1)+')', 10);
         }
     }
 }
 
 function highlightFrame() {
     var url = new String(top.main.location.href);
-    if (url.indexOf('?highlight=') < 0) {
+    if(url.indexOf('?highlight=') < 0) {
         return;
     } else {
         var page = url.split('?highlight=');
@@ -72,7 +72,7 @@ function highlightFrame() {
 
 function highlight() {
     var url = new String(document.location.href);
-    if (url.indexOf('?highlight=') < 0) {
+    if(url.indexOf('?highlight=') < 0) {
         return;
     } else {
         var page = url.split('highlight=')[1].split('&')[0];
@@ -87,42 +87,42 @@ function highlight() {
 
 function goFirstFound() {
     top.main.location = '#firstFound';
-    /*
-        var page = new String(parent.main.location);
-        alert('first: ' + page);
-        page = page.split('#')[0];
-        paramSplit = page.split('?');
-        page = paramSplit[0];
-        page += '#firstFound';
-        if(paramSplit.length > 0) {
-            page += '?' + paramSplit[1];
-        }
-        top.main.location = page;
-    */
+/*
+    var page = new String(parent.main.location);
+    alert('first: ' + page);
+    page = page.split('#')[0];
+    paramSplit = page.split('?');
+    page = paramSplit[0];
+    page += '#firstFound';
+    if(paramSplit.length > 0) {
+        page += '?' + paramSplit[1];
+    }
+    top.main.location = page;
+*/
 }
 
 function highlightSearchTerms(body, searchText) {
     matchColor = "ffff00,00ffff,00ff00,ff8080,ff0080".split(',');
     highlightEndTag = "</span>";
     searchArray = searchText.split(",");
-    if (!body || typeof (body.innerHTML) == "undefined") {
+    if (!body || typeof(body.innerHTML) == "undefined") {
         return false;
     }
     var bodyText = body.innerHTML;
     for (var i = 0; i < searchArray.length; i++) {
         var color = matchColor[i % matchColor.length];
         highlightStartTag = "<span ";
-        if (i == 0) {
+        if(i==0) {
             highlightStartTag += "id=firstFound ";
         }
-        highlightStartTag += "style='color:#000000; background-color:#" + color + ";'>";
+        highlightStartTag += "style='color:#000000; background-color:#"+color+";'>";
         bodyText = doHighlight(bodyText, searchArray[i], highlightStartTag, highlightEndTag);
     }
     return bodyText;
 }
 
 function doHighlight(bodyText, searchTerm, highlightStartTag, highlightEndTag) {
-    if (searchTerm == undefined || searchTerm == "" || searchTerm.length < 3) {
+    if(searchTerm == undefined || searchTerm=="" || searchTerm.length < 3) {
         return bodyText;
     }
     var newText = "";
@@ -130,7 +130,7 @@ function doHighlight(bodyText, searchTerm, highlightStartTag, highlightEndTag) {
     var lcSearchTerm = searchTerm.toLowerCase();
     var lcBodyText = bodyText.toLowerCase();
     while (bodyText.length > 0) {
-        i = lcBodyText.indexOf(lcSearchTerm, i + 1);
+        i = lcBodyText.indexOf(lcSearchTerm, i+1);
         if (i < 0) {
             newText += bodyText;
             bodyText = "";
@@ -172,7 +172,7 @@ function mouseMove(e) {
         var x = e.clientX || e.pageX;
         dragSize += x - dragStart;
         dragStart = x;
-        document.getElementById('searchMenu').style.width = dragSize + 'px';
+        document.getElementById('searchMenu').style.width=dragSize + 'px';
         return false;
     }
     return true;

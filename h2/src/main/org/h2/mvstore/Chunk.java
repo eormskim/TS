@@ -203,7 +203,7 @@ public final class Chunk {
 
     Chunk(int id) {
         this.id = id;
-        if (id <= 0) {
+        if (id <=  0) {
             throw DataUtils.newMVStoreException(
                     DataUtils.ERROR_FILE_CORRUPT, "Invalid chunk id {0}", id);
         }
@@ -212,7 +212,7 @@ public final class Chunk {
     /**
      * Read the header from the byte buffer.
      *
-     * @param buff  the source buffer
+     * @param buff the source buffer
      * @param start the start of the chunk in the file
      * @return the chunk
      */
@@ -243,7 +243,7 @@ public final class Chunk {
     /**
      * Write the chunk header.
      *
-     * @param buff      the target buffer
+     * @param buff the target buffer
      * @param minLength the minimum length
      */
     void writeChunkHeader(WriteBuffer buff, int minLength) {
@@ -387,8 +387,8 @@ public final class Chunk {
      * Read a page of data into a ByteBuffer.
      *
      * @param fileStore to use
-     * @param offset    of the page data
-     * @param pos       page pos
+     * @param offset of the page data
+     * @param pos page pos
      * @return ByteBuffer containing page data.
      */
     ByteBuffer readBufferForPage(FileStore fileStore, int offset, long pos) {
@@ -456,11 +456,12 @@ public final class Chunk {
     /**
      * Modifies internal state to reflect the fact that one more page is stored
      * within this chunk.
-     *
-     * @param pageLengthOnDisk size of the page
-     * @param singleWriter     indicates whether page belongs to append mode capable map
-     *                         (single writer map). Such pages are "pinned" to the chunk,
-     *                         they can't be evacuated (moved to a different chunk) while
+     *  @param pageLengthOnDisk
+     *            size of the page
+     * @param singleWriter
+     *            indicates whether page belongs to append mode capable map
+     *            (single writer map). Such pages are "pinned" to the chunk,
+     *            they can't be evacuated (moved to a different chunk) while
      */
     void accountForWrittenPage(int pageLengthOnDisk, boolean singleWriter) {
         maxLen += pageLengthOnDisk;
@@ -478,21 +479,26 @@ public final class Chunk {
      * Modifies internal state to reflect the fact that one the pages within
      * this chunk was removed from the map.
      *
-     * @param pageNo     sequential page number within the chunk
-     * @param pageLength on disk of the removed page
-     * @param pinned     whether removed page was pinned
-     * @param now        is a moment in time (since creation of the store), when
-     *                   removal is recorded, and retention period starts
-     * @param version    at which page was removed
+     * @param pageNo
+     *            sequential page number within the chunk
+     * @param pageLength
+     *            on disk of the removed page
+     * @param pinned
+     *            whether removed page was pinned
+     * @param now
+     *            is a moment in time (since creation of the store), when
+     *            removal is recorded, and retention period starts
+     * @param version
+     *            at which page was removed
      * @return true if all of the pages, this chunk contains, were already
-     * removed, and false otherwise
+     *         removed, and false otherwise
      */
     boolean accountForRemovedPage(int pageNo, int pageLength, boolean pinned, long now, long version) {
         assert isSaved() : this;
         // legacy chunks do not have a table of content,
         // therefore pageNo is not valid, skip
         if (tocPos > 0) {
-            assert pageNo >= 0 && pageNo < pageCount : pageNo + " // " + pageCount;
+            assert pageNo >= 0 && pageNo < pageCount : pageNo + " // " +  pageCount;
             assert !occupancy.get(pageNo) : pageNo + " " + this + " " + occupancy;
             assert pageCount - pageCountLive == occupancy.cardinality()
                     : pageCount + " - " + pageCountLive + " <> " + occupancy.cardinality() + " : " + occupancy;
@@ -531,8 +537,7 @@ public final class Chunk {
     public static final class PositionComparator implements Comparator<Chunk> {
         public static final Comparator<Chunk> INSTANCE = new PositionComparator();
 
-        private PositionComparator() {
-        }
+        private PositionComparator() {}
 
         @Override
         public int compare(Chunk one, Chunk two) {

@@ -34,9 +34,9 @@ class XTS {
     /**
      * Encrypt the data.
      *
-     * @param id     the (sector) id
-     * @param len    the number of bytes
-     * @param data   the data
+     * @param id the (sector) id
+     * @param len the number of bytes
+     * @param data the data
      * @param offset the offset within the data
      */
     void encrypt(long id, int len, byte[] data, int offset) {
@@ -62,9 +62,9 @@ class XTS {
     /**
      * Decrypt the data.
      *
-     * @param id     the (sector) id
-     * @param len    the number of bytes
-     * @param data   the data
+     * @param id the (sector) id
+     * @param len the number of bytes
+     * @param data the data
      * @param offset the offset within the data
      */
     void decrypt(long id, int len, byte[] data, int offset) {
@@ -85,7 +85,7 @@ class XTS {
         }
         if (i < len) {
             swap(data, i, i - CIPHER_BLOCK_SIZE + offset, len - i + offset);
-            xorTweak(data, i - CIPHER_BLOCK_SIZE + offset, tweakEnd);
+            xorTweak(data, i - CIPHER_BLOCK_SIZE  + offset, tweakEnd);
             cipher.decrypt(data, i - CIPHER_BLOCK_SIZE + offset, CIPHER_BLOCK_SIZE);
             xorTweak(data, i - CIPHER_BLOCK_SIZE + offset, tweakEnd);
         }

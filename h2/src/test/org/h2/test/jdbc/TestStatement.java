@@ -66,7 +66,7 @@ public class TestStatement extends TestDb {
         assertTrue(stat == stat.unwrap(Statement.class));
         assertTrue(stat == stat.unwrap(stat.getClass()));
         assertThrows(ErrorCode.INVALID_VALUE_2, stat).
-                unwrap(Integer.class);
+        unwrap(Integer.class);
     }
 
     private void testUnsupportedOperations() throws Exception {
@@ -75,7 +75,7 @@ public class TestStatement extends TestDb {
         conn.setTypeMap(map);
         map.put("x", Object.class);
         assertThrows(ErrorCode.FEATURE_NOT_SUPPORTED_1, conn).
-                setTypeMap(map);
+            setTypeMap(map);
     }
 
     private void testTraceError() throws Exception {
@@ -383,7 +383,7 @@ public class TestStatement extends TestDb {
         stat.execute("drop table test1, test2");
     }
 
-    private void testPreparedStatement() throws SQLException {
+    private void testPreparedStatement() throws SQLException{
         Statement stat = conn.createStatement();
         stat.execute("create table test(id int primary key, name varchar(255))");
         stat.execute("insert into test values(1, 'Hello')");
@@ -420,14 +420,14 @@ public class TestStatement extends TestDb {
         ps.setInt(1, 4);
         ps.setString(2, "v4");
         ps.addBatch();
-        assertTrue(Arrays.equals(new int[]{1, 1}, ps.executeBatch()));
+        assertTrue(Arrays.equals(new int[] {1, 1}, ps.executeBatch()));
         ps.setInt(1, 5);
         ps.setString(2, "v5");
         ps.addBatch();
         ps.setInt(1, 6);
         ps.setString(2, "v6");
         ps.addBatch();
-        assertTrue(Arrays.equals(new long[]{1, 1}, ps.executeLargeBatch()));
+        assertTrue(Arrays.equals(new long[] {1, 1}, ps.executeLargeBatch()));
         ps.setInt(1, 7);
         ps.setString(2, "v7");
         assertEquals(1, ps.executeUpdate());

@@ -69,8 +69,10 @@ public abstract class RightOwner extends DbObject {
      * every each table in the related schema. The ALTER ANY SCHEMA right gives
      * all rights to all tables.
      *
-     * @param table     the table to check
-     * @param rightMask the right mask to check
+     * @param table
+     *            the table to check
+     * @param rightMask
+     *            the right mask to check
      * @return true if the right was already granted
      */
     final boolean isTableRightGrantedRecursive(Table table, int rightMask) {
@@ -107,8 +109,9 @@ public abstract class RightOwner extends DbObject {
      * objects that were granted to this object. The ALTER ANY SCHEMA right
      * gives rights to all schemas.
      *
-     * @param schema the schema to check, or {@code null} to check for ALTER ANY
-     *               SCHEMA right only
+     * @param schema
+     *            the schema to check, or {@code null} to check for ALTER ANY
+     *            SCHEMA right only
      * @return true if the right was already granted
      */
     final boolean isSchemaRightGrantedRecursive(Schema schema) {
@@ -136,7 +139,7 @@ public abstract class RightOwner extends DbObject {
      * supported.
      *
      * @param object the object (table or schema)
-     * @param right  the right
+     * @param right the right
      */
     public void grantRight(DbObject object, Right right) {
         if (grantedRights == null) {
@@ -163,7 +166,7 @@ public abstract class RightOwner extends DbObject {
     /**
      * Grant a role to this object.
      *
-     * @param role  the role
+     * @param role the role
      * @param right the right to grant
      */
     public void grantRole(Role role, Right right) {
@@ -199,9 +202,9 @@ public abstract class RightOwner extends DbObject {
         if (grantedRoles == null) {
             return;
         }
-        List<Role> rolesToRemove = new ArrayList<>();
-        for (Entry<Role, Right> currentEntry : grantedRoles.entrySet()) {
-            if (currentEntry.getValue().isTemporary() || !currentEntry.getValue().isValid()) {
+        List<Role> rolesToRemove= new ArrayList<>();
+        for (Entry<Role,Right> currentEntry : grantedRoles.entrySet()) {
+            if ( currentEntry.getValue().isTemporary() || !currentEntry.getValue().isValid()) {
                 rolesToRemove.add(currentEntry.getKey());
             }
         }
@@ -209,6 +212,7 @@ public abstract class RightOwner extends DbObject {
             revokeRole(currentRoleToRemove);
         }
     }
+
 
 
     /**
@@ -241,7 +245,8 @@ public abstract class RightOwner extends DbObject {
      * Check that this right owner does not own any schema. An exception is
      * thrown if it owns one or more schemas.
      *
-     * @throws DbException if this right owner owns a schema
+     * @throws DbException
+     *             if this right owner owns a schema
      */
     public final void checkOwnsNoSchemas() {
         for (Schema s : database.getAllSchemas()) {

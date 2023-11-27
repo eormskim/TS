@@ -12,7 +12,7 @@ import org.h2.util.StringUtils;
 
 /**
  * Base implementation of the ENUM data type.
- * <p>
+ *
  * This base implementation is only used in 2.0.* clients when they work with
  * 1.4.* servers.
  */
@@ -46,13 +46,13 @@ public class ValueEnumBase extends Value {
     @Override
     public boolean equals(final Object other) {
         return other instanceof ValueEnumBase &&
-                getInt() == ((ValueEnumBase) other).getInt();
+            getInt() == ((ValueEnumBase) other).getInt();
     }
 
     /**
      * Get or create an enum value with the given label and ordinal.
      *
-     * @param label   the label
+     * @param label the label
      * @param ordinal the ordinal
      * @return the value
      */

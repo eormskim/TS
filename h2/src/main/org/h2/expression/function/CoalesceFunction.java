@@ -52,40 +52,40 @@ public final class CoalesceFunction extends FunctionN {
     public Value getValue(SessionLocal session) {
         Value v = ValueNull.INSTANCE;
         switch (function) {
-            case COALESCE: {
-                for (int i = 0, l = args.length; i < l; i++) {
-                    Value v2 = args[i].getValue(session);
-                    if (v2 != ValueNull.INSTANCE) {
-                        v = v2.convertTo(type, session);
-                        break;
-                    }
+        case COALESCE: {
+            for (int i = 0, l = args.length; i < l; i++) {
+                Value v2 = args[i].getValue(session);
+                if (v2 != ValueNull.INSTANCE) {
+                    v = v2.convertTo(type, session);
+                    break;
                 }
-                break;
             }
-            case GREATEST:
-            case LEAST: {
-                for (int i = 0, l = args.length; i < l; i++) {
-                    Value v2 = args[i].getValue(session);
-                    if (v2 != ValueNull.INSTANCE) {
-                        v2 = v2.convertTo(type, session);
-                        if (v == ValueNull.INSTANCE) {
-                            v = v2;
-                        } else {
-                            int comp = session.compareTypeSafe(v, v2);
-                            if (function == GREATEST) {
-                                if (comp < 0) {
-                                    v = v2;
-                                }
-                            } else if (comp > 0) {
+            break;
+        }
+        case GREATEST:
+        case LEAST: {
+            for (int i = 0, l = args.length; i < l; i++) {
+                Value v2 = args[i].getValue(session);
+                if (v2 != ValueNull.INSTANCE) {
+                    v2 = v2.convertTo(type, session);
+                    if (v == ValueNull.INSTANCE) {
+                        v = v2;
+                    } else {
+                        int comp = session.compareTypeSafe(v, v2);
+                        if (function == GREATEST) {
+                            if (comp < 0) {
                                 v = v2;
                             }
+                        } else if (comp > 0) {
+                            v = v2;
                         }
                     }
                 }
-                break;
             }
-            default:
-                throw DbException.getInternalError("function=" + function);
+            break;
+        }
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         return v;
     }

@@ -47,7 +47,7 @@ public class RealmConfig implements HasConfigProperties {
     /**
      * Sets validator class name.
      *
-     * @param validatorClass validator class name.
+     * @param  validatorClass validator class name.
      */
     public void setValidatorClass(String validatorClass) {
         this.validatorClass = validatorClass;

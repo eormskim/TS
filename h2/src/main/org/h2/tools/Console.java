@@ -7,7 +7,6 @@ package org.h2.tools;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
 import org.h2.server.ShutdownHandler;
 import org.h2.util.JdbcUtils;
 import org.h2.util.MathUtils;
@@ -30,7 +29,7 @@ public class Console extends Tool implements ShutdownHandler {
 
     /**
      * When running without options, -tcp, -web, -browser and -pg are started.
-     * <p>
+     *
      * Options are case sensitive.
      * <table>
      * <caption>Supported options</caption>
@@ -219,7 +218,7 @@ public class Console extends Tool implements ShutdownHandler {
             }
         }
 
-        if (toolStart && webRunning) {
+        if (toolStart && webRunning){
             show();
         }
 

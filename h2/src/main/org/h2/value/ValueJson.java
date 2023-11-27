@@ -47,7 +47,7 @@ public final class ValueJson extends ValueBytesBase {
     /**
      * {@code 0} JSON value.
      */
-    public static final ValueJson ZERO = new ValueJson(new byte[]{'0'});
+    public static final ValueJson ZERO = new ValueJson(new byte[] { '0' });
 
     private ValueJson(byte[] value) {
         super(value);
@@ -86,21 +86,23 @@ public final class ValueJson extends ValueBytesBase {
      */
     public JSONItemType getItemType() {
         switch (value[0]) {
-            case '[':
-                return JSONItemType.ARRAY;
-            case '{':
-                return JSONItemType.OBJECT;
-            default:
-                return JSONItemType.SCALAR;
+        case '[':
+            return JSONItemType.ARRAY;
+        case '{':
+            return JSONItemType.OBJECT;
+        default:
+            return JSONItemType.SCALAR;
         }
     }
 
     /**
      * Returns JSON value with the specified content.
      *
-     * @param s JSON representation, will be normalized
+     * @param s
+     *            JSON representation, will be normalized
      * @return JSON value
-     * @throws DbException on invalid JSON
+     * @throws DbException
+     *             on invalid JSON
      */
     public static ValueJson fromJson(String s) {
         byte[] bytes;
@@ -118,9 +120,11 @@ public final class ValueJson extends ValueBytesBase {
     /**
      * Returns JSON value with the specified content.
      *
-     * @param bytes JSON representation, will be normalized
+     * @param bytes
+     *            JSON representation, will be normalized
      * @return JSON value
-     * @throws DbException on invalid JSON
+     * @throws DbException
+     *             on invalid JSON
      */
     public static ValueJson fromJson(byte[] bytes) {
         try {
@@ -140,7 +144,8 @@ public final class ValueJson extends ValueBytesBase {
     /**
      * Returns JSON value with the specified boolean content.
      *
-     * @param bool boolean value
+     * @param bool
+     *            boolean value
      * @return JSON value
      */
     public static ValueJson get(boolean bool) {
@@ -150,7 +155,8 @@ public final class ValueJson extends ValueBytesBase {
     /**
      * Returns JSON value with the specified numeric content.
      *
-     * @param number integer value
+     * @param number
+     *            integer value
      * @return JSON value
      */
     public static ValueJson get(int number) {
@@ -160,7 +166,8 @@ public final class ValueJson extends ValueBytesBase {
     /**
      * Returns JSON value with the specified numeric content.
      *
-     * @param number long value
+     * @param number
+     *            long value
      * @return JSON value
      */
     public static ValueJson get(long number) {
@@ -170,7 +177,8 @@ public final class ValueJson extends ValueBytesBase {
     /**
      * Returns JSON value with the specified numeric content.
      *
-     * @param number big decimal value
+     * @param number
+     *            big decimal value
      * @return JSON value
      */
     public static ValueJson get(BigDecimal number) {
@@ -189,7 +197,8 @@ public final class ValueJson extends ValueBytesBase {
     /**
      * Returns JSON value with the specified string content.
      *
-     * @param string string value
+     * @param string
+     *            string value
      * @return JSON value
      */
     public static ValueJson get(String string) {
@@ -200,28 +209,29 @@ public final class ValueJson extends ValueBytesBase {
     /**
      * Returns JSON value with the specified content.
      *
-     * @param bytes normalized JSON representation
+     * @param bytes
+     *            normalized JSON representation
      * @return JSON value
      */
     public static ValueJson getInternal(byte[] bytes) {
         int l = bytes.length;
         switch (l) {
-            case 1:
-                if (bytes[0] == '0') {
-                    return ZERO;
-                }
-                break;
-            case 4:
-                if (Arrays.equals(TRUE_BYTES, bytes)) {
-                    return TRUE;
-                } else if (Arrays.equals(NULL_BYTES, bytes)) {
-                    return NULL;
-                }
-                break;
-            case 5:
-                if (Arrays.equals(FALSE_BYTES, bytes)) {
-                    return FALSE;
-                }
+        case 1:
+            if (bytes[0] == '0') {
+                return ZERO;
+            }
+            break;
+        case 4:
+            if (Arrays.equals(TRUE_BYTES, bytes)) {
+                return TRUE;
+            } else if (Arrays.equals(NULL_BYTES, bytes)) {
+                return NULL;
+            }
+            break;
+        case 5:
+            if (Arrays.equals(FALSE_BYTES, bytes)) {
+                return FALSE;
+            }
         }
         return new ValueJson(bytes);
     }

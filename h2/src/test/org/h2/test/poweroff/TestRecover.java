@@ -81,7 +81,7 @@ public class TestRecover {
     }
 
     private static File backup(String sourcePath, String targetPath,
-                               String basePath, int max, String node) throws IOException {
+            String basePath, int max, String node) throws IOException {
         File root = new File(targetPath);
         if (!root.exists()) {
             root.mkdirs();
@@ -183,7 +183,7 @@ public class TestRecover {
         Statement stat = conn.createStatement();
         try {
             stat.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, " +
-                    "D INT, NAME VARCHAR(" + MAX_STRING_LENGTH + "))");
+                    "D INT, NAME VARCHAR("+MAX_STRING_LENGTH+"))");
             stat.execute("CREATE INDEX IDX_TEST_D ON TEST(D)");
         } catch (SQLException e) {
             // ignore
@@ -218,7 +218,7 @@ public class TestRecover {
         PreparedStatement prepInsert = null;
         PreparedStatement prepDelete = null;
         conn.setAutoCommit(false);
-        for (int id = 0; ; id++) {
+        for (int id = 0;; id++) {
             boolean rollback = random.nextInt(10) == 1;
             int len;
             if (random.nextInt(10) == 1) {
@@ -267,16 +267,16 @@ public class TestRecover {
                 StringBuilder buff = new StringBuilder();
                 buff.append(len);
                 switch (random.nextInt(10)) {
-                    case 0:
-                        len = random.nextInt(MAX_STRING_LENGTH);
-                        break;
-                    case 1:
-                    case 2:
-                    case 3:
-                        len = random.nextInt(MAX_STRING_LENGTH / 20);
-                        break;
-                    default:
-                        len = 0;
+                case 0:
+                    len = random.nextInt(MAX_STRING_LENGTH);
+                    break;
+                case 1:
+                case 2:
+                case 3:
+                    len = random.nextInt(MAX_STRING_LENGTH / 20);
+                    break;
+                default:
+                    len = 0;
                 }
                 len -= 10;
                 while (len > 0) {

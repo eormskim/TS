@@ -47,23 +47,24 @@ public enum IsolationLevel {
      * Returns the isolation level from LOCK_MODE equivalent for PageStore and
      * old versions of H2.
      *
-     * @param level the LOCK_MODE value
+     * @param level
+     *            the LOCK_MODE value
      * @return the isolation level
      */
     public static IsolationLevel fromJdbc(int level) {
         switch (level) {
-            case Connection.TRANSACTION_READ_UNCOMMITTED:
-                return IsolationLevel.READ_UNCOMMITTED;
-            case Connection.TRANSACTION_READ_COMMITTED:
-                return IsolationLevel.READ_COMMITTED;
-            case Connection.TRANSACTION_REPEATABLE_READ:
-                return IsolationLevel.REPEATABLE_READ;
-            case Constants.TRANSACTION_SNAPSHOT:
-                return IsolationLevel.SNAPSHOT;
-            case Connection.TRANSACTION_SERIALIZABLE:
-                return IsolationLevel.SERIALIZABLE;
-            default:
-                throw DbException.getInvalidValueException("isolation level", level);
+        case Connection.TRANSACTION_READ_UNCOMMITTED:
+            return IsolationLevel.READ_UNCOMMITTED;
+        case Connection.TRANSACTION_READ_COMMITTED:
+            return IsolationLevel.READ_COMMITTED;
+        case Connection.TRANSACTION_REPEATABLE_READ:
+            return IsolationLevel.REPEATABLE_READ;
+        case Constants.TRANSACTION_SNAPSHOT:
+            return IsolationLevel.SNAPSHOT;
+        case Connection.TRANSACTION_SERIALIZABLE:
+            return IsolationLevel.SERIALIZABLE;
+        default:
+            throw DbException.getInvalidValueException("isolation level", level);
         }
     }
 
@@ -71,42 +72,44 @@ public enum IsolationLevel {
      * Returns the isolation level from LOCK_MODE equivalent for PageStore and
      * old versions of H2.
      *
-     * @param lockMode the LOCK_MODE value
+     * @param lockMode
+     *            the LOCK_MODE value
      * @return the isolation level
      */
     public static IsolationLevel fromLockMode(int lockMode) {
         switch (lockMode) {
-            case Constants.LOCK_MODE_OFF:
-                return IsolationLevel.READ_UNCOMMITTED;
-            case Constants.LOCK_MODE_READ_COMMITTED:
-            default:
-                return IsolationLevel.READ_COMMITTED;
-            case Constants.LOCK_MODE_TABLE:
-            case Constants.LOCK_MODE_TABLE_GC:
-                return IsolationLevel.SERIALIZABLE;
+        case Constants.LOCK_MODE_OFF:
+            return IsolationLevel.READ_UNCOMMITTED;
+        case Constants.LOCK_MODE_READ_COMMITTED:
+        default:
+            return IsolationLevel.READ_COMMITTED;
+        case Constants.LOCK_MODE_TABLE:
+        case Constants.LOCK_MODE_TABLE_GC:
+            return IsolationLevel.SERIALIZABLE;
         }
     }
 
     /**
      * Returns the isolation level from its SQL name.
      *
-     * @param sql the SQL name
+     * @param sql
+     *            the SQL name
      * @return the isolation level from its SQL name
      */
     public static IsolationLevel fromSql(String sql) {
         switch (sql) {
-            case "READ UNCOMMITTED":
-                return READ_UNCOMMITTED;
-            case "READ COMMITTED":
-                return READ_COMMITTED;
-            case "REPEATABLE READ":
-                return REPEATABLE_READ;
-            case "SNAPSHOT":
-                return SNAPSHOT;
-            case "SERIALIZABLE":
-                return SERIALIZABLE;
-            default:
-                throw DbException.getInvalidValueException("isolation level", sql);
+        case "READ UNCOMMITTED":
+            return READ_UNCOMMITTED;
+        case "READ COMMITTED":
+            return READ_COMMITTED;
+        case "REPEATABLE READ":
+            return REPEATABLE_READ;
+        case "SNAPSHOT":
+            return SNAPSHOT;
+        case "SERIALIZABLE":
+            return SERIALIZABLE;
+        default:
+            throw DbException.getInvalidValueException("isolation level", sql);
         }
     }
 

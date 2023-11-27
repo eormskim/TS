@@ -80,8 +80,10 @@ public final class EWKTUtils {
         /**
          * Creates a new EWKT output target.
          *
-         * @param output          output stream
-         * @param dimensionSystem dimension system to use
+         * @param output
+         *            output stream
+         * @param dimensionSystem
+         *            dimension system to use
          */
         public EWKTTarget(StringBuilder output, int dimensionSystem) {
             this.output = output;
@@ -146,14 +148,14 @@ public final class EWKTUtils {
             }
             output.append(TYPES[type - 1]);
             switch (dimensionSystem) {
-                case DIMENSION_SYSTEM_XYZ:
-                    output.append(" Z");
-                    break;
-                case DIMENSION_SYSTEM_XYM:
-                    output.append(" M");
-                    break;
-                case DIMENSION_SYSTEM_XYZM:
-                    output.append(" ZM");
+            case DIMENSION_SYSTEM_XYZ:
+                output.append(" Z");
+                break;
+            case DIMENSION_SYSTEM_XYM:
+                output.append(" M");
+                break;
+            case DIMENSION_SYSTEM_XYZM:
+                output.append(" ZM");
             }
             output.append(' ');
         }
@@ -178,10 +180,10 @@ public final class EWKTUtils {
         @Override
         protected void endObject(int type) {
             switch (type) {
-                case MULTI_POINT:
-                case MULTI_LINE_STRING:
-                case MULTI_POLYGON:
-                    inMulti = false;
+            case MULTI_POINT:
+            case MULTI_LINE_STRING:
+            case MULTI_POLYGON:
+                inMulti = false;
             }
         }
 
@@ -282,33 +284,33 @@ public final class EWKTUtils {
             int result = 0;
             char ch = ewkt.charAt(offset);
             switch (ch) {
-                case 'P':
-                case 'p':
-                    result = match("POINT", POINT);
+            case 'P':
+            case 'p':
+                result = match("POINT", POINT);
+                if (result == 0) {
+                    result = match("POLYGON", POLYGON);
+                }
+                break;
+            case 'L':
+            case 'l':
+                result = match("LINESTRING", LINE_STRING);
+                break;
+            case 'M':
+            case 'm':
+                if (match("MULTI", 1) != 0) {
+                    result = match("POINT", MULTI_POINT);
                     if (result == 0) {
-                        result = match("POLYGON", POLYGON);
-                    }
-                    break;
-                case 'L':
-                case 'l':
-                    result = match("LINESTRING", LINE_STRING);
-                    break;
-                case 'M':
-                case 'm':
-                    if (match("MULTI", 1) != 0) {
-                        result = match("POINT", MULTI_POINT);
+                        result = match("POLYGON", MULTI_POLYGON);
                         if (result == 0) {
-                            result = match("POLYGON", MULTI_POLYGON);
-                            if (result == 0) {
-                                result = match("LINESTRING", MULTI_LINE_STRING);
-                            }
+                            result = match("LINESTRING", MULTI_LINE_STRING);
                         }
                     }
-                    break;
-                case 'G':
-                case 'g':
-                    result = match("GEOMETRYCOLLECTION", GEOMETRY_COLLECTION);
-                    break;
+                }
+                break;
+            case 'G':
+            case 'g':
+                result = match("GEOMETRYCOLLECTION", GEOMETRY_COLLECTION);
+                break;
             }
             if (result == 0) {
                 throw new IllegalArgumentException();
@@ -326,32 +328,32 @@ public final class EWKTUtils {
             int result;
             char ch = ewkt.charAt(offset);
             switch (ch) {
-                case 'M':
-                case 'm':
-                    result = DIMENSION_SYSTEM_XYM;
-                    offset++;
-                    break;
-                case 'Z':
-                case 'z':
-                    offset++;
-                    if (offset >= len) {
-                        result = DIMENSION_SYSTEM_XYZ;
+            case 'M':
+            case 'm':
+                result = DIMENSION_SYSTEM_XYM;
+                offset++;
+                break;
+            case 'Z':
+            case 'z':
+                offset++;
+                if (offset >= len) {
+                    result = DIMENSION_SYSTEM_XYZ;
+                } else {
+                    ch = ewkt.charAt(offset);
+                    if (ch == 'M' || ch == 'm') {
+                        offset++;
+                        result = DIMENSION_SYSTEM_XYZM;
                     } else {
-                        ch = ewkt.charAt(offset);
-                        if (ch == 'M' || ch == 'm') {
-                            offset++;
-                            result = DIMENSION_SYSTEM_XYZM;
-                        } else {
-                            result = DIMENSION_SYSTEM_XYZ;
-                        }
+                        result = DIMENSION_SYSTEM_XYZ;
                     }
-                    break;
-                default:
-                    result = DIMENSION_SYSTEM_XY;
-                    if (o != offset) {
-                        // Token is already terminated by a whitespace
-                        return result;
-                    }
+                }
+                break;
+            default:
+                result = DIMENSION_SYSTEM_XY;
+                if (o != offset) {
+                    // Token is already terminated by a whitespace
+                    return result;
+                }
             }
             checkStringEnd(len);
             return result;
@@ -429,12 +431,12 @@ public final class EWKTUtils {
                 return true;
             }
             switch (ch) {
-                case '+':
-                case '-':
-                case '.':
-                    return true;
-                default:
-                    return false;
+            case '+':
+            case '-':
+            case '.':
+                return true;
+            default:
+                return false;
             }
         }
 
@@ -443,14 +445,14 @@ public final class EWKTUtils {
                 return true;
             }
             switch (ch) {
-                case '+':
-                case '-':
-                case '.':
-                case 'E':
-                case 'e':
-                    return true;
-                default:
-                    return false;
+            case '+':
+            case '-':
+            case '.':
+            case 'E':
+            case 'e':
+                return true;
+            default:
+                return false;
             }
         }
 
@@ -460,14 +462,14 @@ public final class EWKTUtils {
                 throw new IllegalArgumentException();
             }
             switch (ewkt.charAt(offset)) {
-                case ',':
-                    offset++;
-                    return true;
-                case ')':
-                    offset++;
-                    return false;
-                default:
-                    throw new IllegalArgumentException();
+            case ',':
+                offset++;
+                return true;
+            case ')':
+                offset++;
+                return false;
+            default:
+                throw new IllegalArgumentException();
             }
         }
 
@@ -481,18 +483,18 @@ public final class EWKTUtils {
             int offset = this.offset, level = 0, len = ewkt.length();
             while (offset < len) {
                 switch (ewkt.charAt(offset++)) {
-                    case ',':
-                        if (level == 0) {
-                            result++;
-                        }
-                        break;
-                    case '(':
-                        level++;
-                        break;
-                    case ')':
-                        if (--level < 0) {
-                            return result;
-                        }
+                case ',':
+                    if (level == 0) {
+                        result++;
+                    }
+                    break;
+                case '(':
+                    level++;
+                    break;
+                case ')':
+                    if (--level < 0) {
+                        return result;
+                    }
                 }
             }
             throw new IllegalArgumentException();
@@ -514,7 +516,8 @@ public final class EWKTUtils {
     /**
      * Converts EWKB to EWKT.
      *
-     * @param ewkb source EWKB
+     * @param ewkb
+     *            source EWKB
      * @return EWKT representation
      */
     public static String ewkb2ewkt(byte[] ewkb) {
@@ -524,8 +527,10 @@ public final class EWKTUtils {
     /**
      * Converts EWKB to EWKT.
      *
-     * @param ewkb            source EWKB
-     * @param dimensionSystem dimension system
+     * @param ewkb
+     *            source EWKB
+     * @param dimensionSystem
+     *            dimension system
      * @return EWKT representation
      */
     public static String ewkb2ewkt(byte[] ewkb, int dimensionSystem) {
@@ -537,7 +542,8 @@ public final class EWKTUtils {
     /**
      * Converts EWKT to EWKB.
      *
-     * @param ewkt source EWKT
+     * @param ewkt
+     *            source EWKT
      * @return EWKB representation
      */
     public static byte[] ewkt2ewkb(String ewkt) {
@@ -547,8 +553,10 @@ public final class EWKTUtils {
     /**
      * Converts EWKT to EWKB.
      *
-     * @param ewkt            source EWKT
-     * @param dimensionSystem dimension system
+     * @param ewkt
+     *            source EWKT
+     * @param dimensionSystem
+     *            dimension system
      * @return EWKB representation
      */
     public static byte[] ewkt2ewkb(String ewkt, int dimensionSystem) {
@@ -561,8 +569,10 @@ public final class EWKTUtils {
     /**
      * Parses a EWKT.
      *
-     * @param ewkt   source EWKT
-     * @param target output target
+     * @param ewkt
+     *            source EWKT
+     * @param target
+     *            output target
      */
     public static void parseEWKT(String ewkt, Target target) {
         parseEWKT(new EWKTSource(ewkt), target, 0, 0);
@@ -571,10 +581,12 @@ public final class EWKTUtils {
     /**
      * Parses geometry type and dimension system from the given string.
      *
-     * @param s string to parse
+     * @param s
+     *            string to parse
      * @return geometry type and dimension system in OGC geometry code format
-     * (type + dimensionSystem * 1000)
-     * @throws IllegalArgumentException if input is not valid
+     *         (type + dimensionSystem * 1000)
+     * @throws IllegalArgumentException
+     *             if input is not valid
      */
     public static int parseGeometryType(String s) {
         EWKTSource source = new EWKTSource(s);
@@ -592,12 +604,14 @@ public final class EWKTUtils {
     /**
      * Parses a dimension system from the given string.
      *
-     * @param s string to parse
+     * @param s
+     *            string to parse
      * @return dimension system, one of XYZ, XYM, or XYZM
-     * @throws IllegalArgumentException if input is not valid
      * @see GeometryUtils#DIMENSION_SYSTEM_XYZ
      * @see GeometryUtils#DIMENSION_SYSTEM_XYM
      * @see GeometryUtils#DIMENSION_SYSTEM_XYZM
+     * @throws IllegalArgumentException
+     *             if input is not valid
      */
     public static int parseDimensionSystem(String s) {
         EWKTSource source = new EWKTSource(s);
@@ -611,10 +625,13 @@ public final class EWKTUtils {
     /**
      * Formats type and dimension system as a string.
      *
-     * @param builder string builder
-     * @param type    OGC geometry code format (type + dimensionSystem * 1000)
+     * @param builder
+     *            string builder
+     * @param type
+     *            OGC geometry code format (type + dimensionSystem * 1000)
      * @return the specified string builder
-     * @throws IllegalArgumentException if type is not valid
+     * @throws IllegalArgumentException
+     *             if type is not valid
      */
     public static StringBuilder formatGeometryTypeAndDimensionSystem(StringBuilder builder, int type) {
         int t = type % 1_000, d = type / 1_000;
@@ -631,10 +648,14 @@ public final class EWKTUtils {
     /**
      * Parses a EWKB.
      *
-     * @param source          EWKT source
-     * @param target          output target
-     * @param parentType      type of parent geometry collection, or 0 for the root geometry
-     * @param dimensionSystem dimension system of parent geometry
+     * @param source
+     *            EWKT source
+     * @param target
+     *            output target
+     * @param parentType
+     *            type of parent geometry collection, or 0 for the root geometry
+     * @param dimensionSystem
+     *            dimension system of parent geometry
      */
     private static void parseEWKT(EWKTSource source, Target target, int parentType, int dimensionSystem) {
         if (parentType == 0) {
@@ -642,111 +663,111 @@ public final class EWKTUtils {
         }
         int type;
         switch (parentType) {
-            default: {
-                type = source.readType();
-                dimensionSystem = source.readDimensionSystem();
-                break;
-            }
-            case MULTI_POINT:
-                type = POINT;
-                break;
-            case MULTI_LINE_STRING:
-                type = LINE_STRING;
-                break;
-            case MULTI_POLYGON:
-                type = POLYGON;
-                break;
+        default: {
+            type = source.readType();
+            dimensionSystem = source.readDimensionSystem();
+            break;
+        }
+        case MULTI_POINT:
+            type = POINT;
+            break;
+        case MULTI_LINE_STRING:
+            type = LINE_STRING;
+            break;
+        case MULTI_POLYGON:
+            type = POLYGON;
+            break;
         }
         target.dimensionSystem(dimensionSystem);
         switch (type) {
-            case POINT: {
-                if (parentType != 0 && parentType != MULTI_POINT && parentType != GEOMETRY_COLLECTION) {
-                    throw new IllegalArgumentException();
-                }
-                boolean empty = source.readEmpty();
-                target.startPoint();
-                if (empty) {
-                    target.addCoordinate(Double.NaN, Double.NaN, Double.NaN, Double.NaN, 0, 1);
-                } else {
-                    addCoordinate(source, target, dimensionSystem, 0, 1);
-                    source.read(')');
-                }
-                break;
-            }
-            case LINE_STRING: {
-                if (parentType != 0 && parentType != MULTI_LINE_STRING && parentType != GEOMETRY_COLLECTION) {
-                    throw new IllegalArgumentException();
-                }
-                boolean empty = source.readEmpty();
-                if (empty) {
-                    target.startLineString(0);
-                } else {
-                    ArrayList<double[]> coordinates = new ArrayList<>();
-                    do {
-                        coordinates.add(readCoordinate(source, dimensionSystem));
-                    } while (source.hasMoreCoordinates());
-                    int numPoints = coordinates.size();
-                    if (numPoints < 0 || numPoints == 1) {
-                        throw new IllegalArgumentException();
-                    }
-                    target.startLineString(numPoints);
-                    for (int i = 0; i < numPoints; i++) {
-                        double[] c = coordinates.get(i);
-                        target.addCoordinate(c[X], c[Y], c[Z], c[M], i, numPoints);
-                    }
-                }
-                break;
-            }
-            case POLYGON: {
-                if (parentType != 0 && parentType != MULTI_POLYGON && parentType != GEOMETRY_COLLECTION) {
-                    throw new IllegalArgumentException();
-                }
-                boolean empty = source.readEmpty();
-                if (empty) {
-                    target.startPolygon(0, 0);
-                } else {
-                    ArrayList<double[]> outer = readRing(source, dimensionSystem);
-                    ArrayList<ArrayList<double[]>> inner = new ArrayList<>();
-                    while (source.hasMoreCoordinates()) {
-                        inner.add(readRing(source, dimensionSystem));
-                    }
-                    int numInner = inner.size();
-                    int size = outer.size();
-                    // Size may be 0 (EMPTY) or 4+
-                    if (size >= 1 && size <= 3) {
-                        throw new IllegalArgumentException();
-                    }
-                    if (size == 0 && numInner > 0) {
-                        throw new IllegalArgumentException();
-                    }
-                    target.startPolygon(numInner, size);
-                    if (size > 0) {
-                        addRing(outer, target);
-                        for (int i = 0; i < numInner; i++) {
-                            ArrayList<double[]> ring = inner.get(i);
-                            size = ring.size();
-                            // Size may be 0 (EMPTY) or 4+
-                            if (size >= 1 && size <= 3) {
-                                throw new IllegalArgumentException();
-                            }
-                            target.startPolygonInner(size);
-                            addRing(ring, target);
-                        }
-                        target.endNonEmptyPolygon();
-                    }
-                }
-                break;
-            }
-            case MULTI_POINT:
-            case MULTI_LINE_STRING:
-            case MULTI_POLYGON:
-                parseCollection(source, target, type, parentType, dimensionSystem);
-                break;
-            case GEOMETRY_COLLECTION:
-                parseCollection(source, target, GEOMETRY_COLLECTION, parentType, 0);
-                break;
-            default:
+        case POINT: {
+            if (parentType != 0 && parentType != MULTI_POINT && parentType != GEOMETRY_COLLECTION) {
                 throw new IllegalArgumentException();
+            }
+            boolean empty = source.readEmpty();
+            target.startPoint();
+            if (empty) {
+                target.addCoordinate(Double.NaN, Double.NaN, Double.NaN, Double.NaN, 0, 1);
+            } else {
+                addCoordinate(source, target, dimensionSystem, 0, 1);
+                source.read(')');
+            }
+            break;
+        }
+        case LINE_STRING: {
+            if (parentType != 0 && parentType != MULTI_LINE_STRING && parentType != GEOMETRY_COLLECTION) {
+                throw new IllegalArgumentException();
+            }
+            boolean empty = source.readEmpty();
+            if (empty) {
+                target.startLineString(0);
+            } else {
+                ArrayList<double[]> coordinates = new ArrayList<>();
+                do {
+                    coordinates.add(readCoordinate(source, dimensionSystem));
+                } while (source.hasMoreCoordinates());
+                int numPoints = coordinates.size();
+                if (numPoints < 0 || numPoints == 1) {
+                    throw new IllegalArgumentException();
+                }
+                target.startLineString(numPoints);
+                for (int i = 0; i < numPoints; i++) {
+                    double[] c = coordinates.get(i);
+                    target.addCoordinate(c[X], c[Y], c[Z], c[M], i, numPoints);
+                }
+            }
+            break;
+        }
+        case POLYGON: {
+            if (parentType != 0 && parentType != MULTI_POLYGON && parentType != GEOMETRY_COLLECTION) {
+                throw new IllegalArgumentException();
+            }
+            boolean empty = source.readEmpty();
+            if (empty) {
+                target.startPolygon(0, 0);
+            } else {
+                ArrayList<double[]> outer = readRing(source, dimensionSystem);
+                ArrayList<ArrayList<double[]>> inner = new ArrayList<>();
+                while (source.hasMoreCoordinates()) {
+                    inner.add(readRing(source, dimensionSystem));
+                }
+                int numInner = inner.size();
+                int size = outer.size();
+                // Size may be 0 (EMPTY) or 4+
+                if (size >= 1 && size <= 3) {
+                    throw new IllegalArgumentException();
+                }
+                if (size == 0 && numInner > 0) {
+                    throw new IllegalArgumentException();
+                }
+                target.startPolygon(numInner, size);
+                if (size > 0) {
+                    addRing(outer, target);
+                    for (int i = 0; i < numInner; i++) {
+                        ArrayList<double[]> ring = inner.get(i);
+                        size = ring.size();
+                        // Size may be 0 (EMPTY) or 4+
+                        if (size >= 1 && size <= 3) {
+                            throw new IllegalArgumentException();
+                        }
+                        target.startPolygonInner(size);
+                        addRing(ring, target);
+                    }
+                    target.endNonEmptyPolygon();
+                }
+            }
+            break;
+        }
+        case MULTI_POINT:
+        case MULTI_LINE_STRING:
+        case MULTI_POLYGON:
+            parseCollection(source, target, type, parentType, dimensionSystem);
+            break;
+        case GEOMETRY_COLLECTION:
+            parseCollection(source, target, GEOMETRY_COLLECTION, parentType, 0);
+            break;
+        default:
+            throw new IllegalArgumentException();
         }
         target.endObject(type);
         if (parentType == 0 && source.hasData()) {
@@ -755,7 +776,7 @@ public final class EWKTUtils {
     }
 
     private static void parseCollection(EWKTSource source, Target target, int type, int parentType,
-                                        int dimensionSystem) {
+            int dimensionSystem) {
         if (parentType != 0 && parentType != GEOMETRY_COLLECTION) {
             throw new IllegalArgumentException();
         }
@@ -844,13 +865,14 @@ public final class EWKTUtils {
         double y = source.readCoordinate();
         double z = (dimensionSystem & DIMENSION_SYSTEM_XYZ) != 0 ? source.readCoordinate() : Double.NaN;
         double m = (dimensionSystem & DIMENSION_SYSTEM_XYM) != 0 ? source.readCoordinate() : Double.NaN;
-        return new double[]{x, y, z, m};
+        return new double[] { x, y, z, m };
     }
 
     /**
      * Reads the dimension system from EWKT.
      *
-     * @param ewkt EWKT source
+     * @param ewkt
+     *            EWKT source
      * @return the dimension system
      */
     public static int getDimensionSystem(String ewkt) {

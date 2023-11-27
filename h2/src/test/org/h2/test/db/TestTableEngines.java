@@ -82,11 +82,11 @@ public class TestTableEngines extends TestDb {
                 EndlessTableEngine.createTableData.tableEngineParams.get(1));
         stat.execute("CREATE TABLE t2(id int, name varchar) WITH \"param1\", \"param2\"");
         assertEquals(2,
-                EndlessTableEngine.createTableData.tableEngineParams.size());
+            EndlessTableEngine.createTableData.tableEngineParams.size());
         assertEquals("param1",
-                EndlessTableEngine.createTableData.tableEngineParams.get(0));
+            EndlessTableEngine.createTableData.tableEngineParams.get(0));
         assertEquals("param2",
-                EndlessTableEngine.createTableData.tableEngineParams.get(1));
+            EndlessTableEngine.createTableData.tableEngineParams.get(1));
         conn.close();
         if (!config.memory) {
             // Test serialization of table parameters
@@ -114,11 +114,11 @@ public class TestTableEngines extends TestDb {
         stat.execute("CREATE TABLE s1.t1(id int, name varchar) ENGINE \"" +
                 EndlessTableEngine.class.getName() + '\"');
         assertEquals(2,
-                EndlessTableEngine.createTableData.tableEngineParams.size());
+            EndlessTableEngine.createTableData.tableEngineParams.size());
         assertEquals("param1",
-                EndlessTableEngine.createTableData.tableEngineParams.get(0));
+            EndlessTableEngine.createTableData.tableEngineParams.get(0));
         assertEquals("param2",
-                EndlessTableEngine.createTableData.tableEngineParams.get(1));
+            EndlessTableEngine.createTableData.tableEngineParams.get(1));
         conn.close();
         // Prevent memory leak
         EndlessTableEngine.createTableData = null;
@@ -274,11 +274,11 @@ public class TestTableEngines extends TestDb {
 
         checkResults(4, dataSet, stat,
                 "select * from t where a > 0", new RowFilter() {
-                    @Override
-                    protected boolean accept(List<Object> row) {
-                        return getInt(row, 0) > 0;
-                    }
-                }, null);
+            @Override
+            protected boolean accept(List<Object> row) {
+                return getInt(row, 0) > 0;
+            }
+        }, null);
         checkResults(3, dataSet, stat, "select * from t where b = '0'", new RowFilter() {
             @Override
             protected boolean accept(List<Object> row) {
@@ -402,7 +402,7 @@ public class TestTableEngines extends TestDb {
         stat.execute("create table test_plan(id int primary key, name varchar)");
         stat.execute("create index MY_NAME_INDEX on test_plan(name)");
         checkPlan(stat, "select * from (select (select id from test_plan "
-                        + "where name = 'z') from dual)",
+                + "where name = 'z') from dual)",
                 "MY_NAME_INDEX");
         conn.close();
         deleteDb("testSubQueryInfo");
@@ -412,7 +412,7 @@ public class TestTableEngines extends TestDb {
      * A static assertion method.
      *
      * @param condition the condition
-     * @param message   the error message
+     * @param message the error message
      */
     static void assert0(boolean condition, String message) {
         if (!condition) {
@@ -441,14 +441,14 @@ public class TestTableEngines extends TestDb {
     }
 
     private void checkResults(int size, List<List<Object>> dataSet,
-                              Statement stat, String query, RowFilter filter, RowComparator sort)
+            Statement stat, String query, RowFilter filter, RowComparator sort)
             throws SQLException {
         List<List<Object>> res1 = query(stat, query);
         List<List<Object>> res2 = query(dataSet, filter, sort);
 
         assertTrue("Wrong size: " + size + " \n" + res1 + "\n" + res2,
                 res1.size() == size && res2.size() == size);
-        assertTrue(filter != null || sort != null);
+        assertTrue(filter != null || sort  != null);
 
         for (int i = 0; i < res1.size(); i++) {
             List<Object> row1 = res1.get(i);
@@ -456,13 +456,13 @@ public class TestTableEngines extends TestDb {
 
             assertTrue("Filter failed on row " + i + " of \n" + res1 + "\n" + res2,
                     filter == null || filter.accept(row1));
-            assertTrue("Sort failed on row " + i + " of \n" + res1 + "\n" + res2,
+            assertTrue("Sort failed on row "  + i + " of \n" + res1 + "\n" + res2,
                     sort == null || sort.compare(row1, row2) == 0);
         }
     }
 
     private static List<List<Object>> query(List<List<Object>> dataSet,
-                                            RowFilter filter, RowComparator sort) {
+            RowFilter filter, RowComparator sort) {
         List<List<Object>> res = new ArrayList<>();
         if (filter == null) {
             res.addAll(dataSet);
@@ -558,8 +558,8 @@ public class TestTableEngines extends TestDb {
 
                 @Override
                 public double getCost(SessionLocal session, int[] masks,
-                                      TableFilter[] filters, int filter, SortOrder sortOrder,
-                                      AllColumnsForPlan allColumnsSet) {
+                        TableFilter[] filters, int filter, SortOrder sortOrder,
+                        AllColumnsForPlan allColumnsSet) {
                     return 0;
                 }
 
@@ -600,7 +600,7 @@ public class TestTableEngines extends TestDb {
 
             @Override
             public Index addIndex(SessionLocal session, String indexName, int indexId, IndexColumn[] cols,
-                                  int uniqueColumnCount, IndexType indexType, boolean create, String indexComment) {
+                    int uniqueColumnCount, IndexType indexType, boolean create, String indexComment) {
                 return null;
             }
 
@@ -705,7 +705,7 @@ public class TestTableEngines extends TestDb {
 
             EndlessTable(CreateTableData data) {
                 super(data);
-                row = Row.get(new Value[]{ValueInteger.get(1), ValueNull.INSTANCE}, 0);
+                row = Row.get(new Value[] { ValueInteger.get(1), ValueNull.INSTANCE }, 0);
                 scanIndex = new Auto(this);
             }
 
@@ -766,8 +766,8 @@ public class TestTableEngines extends TestDb {
                 IndexColumn.wrap(getColumns()), IndexType.createScan(false)) {
             @Override
             public double getCost(SessionLocal session, int[] masks,
-                                  TableFilter[] filters, int filter, SortOrder sortOrder,
-                                  AllColumnsForPlan allColumnsSet) {
+                    TableFilter[] filters, int filter, SortOrder sortOrder,
+                    AllColumnsForPlan allColumnsSet) {
                 return getCostRangeIndex(masks, getRowCount(session), filters,
                         filter, sortOrder, true, allColumnsSet);
             }
@@ -817,7 +817,7 @@ public class TestTableEngines extends TestDb {
 
         @Override
         public Index addIndex(SessionLocal session, String indexName, int indexId, IndexColumn[] cols,
-                              int uniqueColumnCount, IndexType indexType, boolean create, String indexComment) {
+                int uniqueColumnCount, IndexType indexType, boolean create, String indexComment) {
             if (indexes == null) {
                 indexes = new ArrayList<>(2);
                 // Scan must be always at 0.
@@ -952,7 +952,7 @@ public class TestTableEngines extends TestDb {
                     subSet = set;
                 } else if (first != null) {
                     if (last != null) {
-                        subSet = set.subSet(first, true, last, true);
+                        subSet = set.subSet(first,  true, last, true);
                     } else {
                         subSet = set.tailSet(first, true);
                     }
@@ -967,8 +967,8 @@ public class TestTableEngines extends TestDb {
 
         @Override
         public double getCost(SessionLocal session, int[] masks,
-                              TableFilter[] filters, int filter, SortOrder sortOrder,
-                              AllColumnsForPlan allColumnsSet) {
+                TableFilter[] filters, int filter, SortOrder sortOrder,
+                AllColumnsForPlan allColumnsSet) {
             return getCostRangeIndex(masks, set.size(), filters, filter,
                     sortOrder, false, allColumnsSet);
         }
@@ -1012,7 +1012,6 @@ public class TestTableEngines extends TestDb {
     }
 
     /**
-     *
      */
     private static class IteratorCursor implements Cursor {
         Iterator<SearchRow> it;

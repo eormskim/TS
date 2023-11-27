@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.h2.api.ErrorCode;
 import org.h2.engine.SessionLocal;
 import org.h2.jdbc.JdbcConnection;
@@ -124,15 +123,15 @@ public class TestView extends TestDb {
         ResultSet rs;
         rs = stat.executeQuery(
                 "select nr from (select rownum() as nr, " +
-                        "a.id as id from (select id from test order by name) as a) as b " +
-                        "where b.id = 1;");
+                "a.id as id from (select id from test order by name) as a) as b " +
+                "where b.id = 1;");
         assertTrue(rs.next());
         assertEquals(2, rs.getInt(1));
         assertFalse(rs.next());
         rs = stat.executeQuery(
                 "select nr from (select row_number() over() as nr, " +
-                        "a.id as id from (select id from test order by name) as a) as b " +
-                        "where b.id = 1;");
+                "a.id as id from (select id from test order by name) as a) as b " +
+                "where b.id = 1;");
         assertTrue(rs.next());
         assertEquals(2, rs.getInt(1));
         assertFalse(rs.next());
@@ -145,14 +144,14 @@ public class TestView extends TestDb {
         Statement stat = conn.createStatement();
         ResultSet rs = stat.executeQuery(
                 "select x from (select x from (" +
-                        "select x from system_range(1, 5)) " +
-                        "where x > 2 and x < 4) where x = 3");
+                "select x from system_range(1, 5)) " +
+                "where x > 2 and x < 4) where x = 3");
         assertTrue(rs.next());
         assertFalse(rs.next());
         rs = stat.executeQuery(
                 "select x from (select x from (" +
-                        "select x from system_range(1, 5)) " +
-                        "where x = 3) where x > 2 and x < 4");
+                "select x from system_range(1, 5)) " +
+                "where x = 3) where x > 2 and x < 4");
         assertTrue(rs.next());
         assertFalse(rs.next());
         conn.close();
@@ -259,7 +258,7 @@ public class TestView extends TestDb {
         stat.execute("create table test(id int primary key) as select 1");
         PreparedStatement prep = conn.prepareStatement(
                 "select * from test t where t.id in " +
-                        "(select t2.id from test t2 where t2.id in (?, ?))");
+                "(select t2.id from test t2 where t2.id in (?, ?))");
         prep.setInt(1, 1);
         prep.setInt(2, 2);
         prep.execute();
@@ -319,7 +318,7 @@ public class TestView extends TestDb {
         s.execute("create view t1 as select * from t0");
         assertThrows(ErrorCode.FEATURE_NOT_SUPPORTED_1, s).execute(
                 "create table t2(id int primary key, " +
-                        "col1 int not null, foreign key (col1) references t1(id))");
+                "col1 int not null, foreign key (col1) references t1(id))");
         conn.close();
         deleteDb("view");
     }

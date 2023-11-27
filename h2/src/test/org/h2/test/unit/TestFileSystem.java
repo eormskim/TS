@@ -24,7 +24,6 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
 import org.h2.dev.fs.FilePathZip2;
 import org.h2.message.DbException;
 import org.h2.mvstore.DataUtils;
@@ -137,66 +136,66 @@ public class TestFileSystem extends TestBase {
             for (int i = 0; i < 100; i++) {
                 trace("op " + i);
                 switch (r.nextInt(5)) {
-                    case 0: {
-                        int p = r.nextInt(data.length);
-                        trace("seek " + p);
-                        buff.append("seek " + p + "\n");
-                        fc.position(p);
-                        pos = p;
-                        break;
-                    }
-                    case 1: {
-                        int len = r.nextInt(1000);
-                        int offset = r.nextInt(100);
-                        int arrayLen = len + offset;
-                        len = Math.min(len, data.length - pos);
-                        byte[] b1 = new byte[arrayLen];
-                        byte[] b2 = new byte[arrayLen];
-                        trace("readFully " + len);
-                        buff.append("readFully " + len + "\n");
-                        System.arraycopy(data, pos, b1, offset, len);
-                        ByteBuffer byteBuff = createSlicedBuffer(b2, offset, len);
-                        FileUtils.readFully(fc, byteBuff);
-                        assertEquals(b1, b2);
-                        pos += len;
-                        break;
-                    }
-                    case 2: {
-                        int len = r.nextInt(1000);
-                        int offset = r.nextInt(100);
-                        int arrayLen = len + offset;
-                        int p = r.nextInt(data.length);
-                        len = Math.min(len, data.length - p);
-                        byte[] b1 = new byte[arrayLen];
-                        byte[] b2 = new byte[arrayLen];
-                        trace("readFully " + p + " " + len);
-                        buff.append("readFully " + p + " " + len + "\n");
-                        System.arraycopy(data, p, b1, offset, len);
-                        ByteBuffer byteBuff = createSlicedBuffer(b2, offset, len);
-                        DataUtils.readFully(fc, p, byteBuff);
-                        assertEquals(b1, b2);
-                        break;
-                    }
-                    case 3: {
-                        trace("getFilePointer");
-                        buff.append("getFilePointer\n");
-                        assertEquals(pos, fc.position());
-                        break;
-                    }
-                    case 4: {
-                        trace("length " + data.length);
-                        buff.append("length " + data.length + "\n");
-                        assertEquals(data.length, fc.size());
-                        break;
-                    }
-                    default:
+                case 0: {
+                    int p = r.nextInt(data.length);
+                    trace("seek " + p);
+                    buff.append("seek " + p + "\n");
+                    fc.position(p);
+                    pos = p;
+                    break;
+                }
+                case 1: {
+                    int len = r.nextInt(1000);
+                    int offset = r.nextInt(100);
+                    int arrayLen = len + offset;
+                    len = Math.min(len, data.length - pos);
+                    byte[] b1 = new byte[arrayLen];
+                    byte[] b2 = new byte[arrayLen];
+                    trace("readFully " + len);
+                    buff.append("readFully " + len + "\n");
+                    System.arraycopy(data, pos, b1, offset, len);
+                    ByteBuffer byteBuff = createSlicedBuffer(b2, offset, len);
+                    FileUtils.readFully(fc, byteBuff);
+                    assertEquals(b1, b2);
+                    pos += len;
+                    break;
+                }
+                case 2: {
+                    int len = r.nextInt(1000);
+                    int offset = r.nextInt(100);
+                    int arrayLen = len + offset;
+                    int p = r.nextInt(data.length);
+                    len = Math.min(len, data.length - p);
+                    byte[] b1 = new byte[arrayLen];
+                    byte[] b2 = new byte[arrayLen];
+                    trace("readFully " + p + " " + len);
+                    buff.append("readFully " + p + " " + len + "\n");
+                    System.arraycopy(data, p, b1, offset, len);
+                    ByteBuffer byteBuff = createSlicedBuffer(b2, offset, len);
+                    DataUtils.readFully(fc, p, byteBuff);
+                    assertEquals(b1, b2);
+                    break;
+                }
+                case 3: {
+                    trace("getFilePointer");
+                    buff.append("getFilePointer\n");
+                    assertEquals(pos, fc.position());
+                    break;
+                }
+                case 4: {
+                    trace("length " + data.length);
+                    buff.append("length " + data.length + "\n");
+                    assertEquals(data.length, fc.size());
+                    break;
+                }
+                default:
                 }
             }
             fc.close();
             file.delete();
         } catch (Throwable e) {
             e.printStackTrace();
-            fail("Exception: " + e + "\n" + buff.toString());
+            fail("Exception: " + e + "\n"+ buff.toString());
         }
     }
 
@@ -251,17 +250,17 @@ public class TestFileSystem extends TestBase {
         FileUtils.deleteRecursive(dir, false);
         Connection conn;
         Statement stat;
-        conn = DriverManager.getConnection("jdbc:h2:split:18:" + dir + "/test");
+        conn = DriverManager.getConnection("jdbc:h2:split:18:"+dir+"/test");
         stat = conn.createStatement();
         stat.execute(
                 "create table test(id int primary key, name varchar) " +
-                        "as select x, space(10000) from system_range(1, 100)");
+                "as select x, space(10000) from system_range(1, 100)");
         // stat.execute("shutdown defrag");
         conn.close();
         Backup.execute(dir + "/test.zip", dir, "", true);
         DeleteDbFiles.execute("split:" + dir, "test", true);
         conn = DriverManager.getConnection(
-                "jdbc:h2:split:zip:" + dir + "/test.zip!/test");
+                "jdbc:h2:split:zip:"+dir+"/test.zip!/test");
         conn.createStatement().execute("select * from test where id=1");
         conn.close();
         FileUtils.deleteRecursive(dir, false);
@@ -527,7 +526,7 @@ public class TestFileSystem extends TestBase {
         assertTrue(FileUtils.tryDelete(fsBase + "/test2"));
         FileUtils.delete(fsBase + "/test");
         if (fsBase.indexOf("memFS:") < 0 && fsBase.indexOf("memLZF:") < 0
-                && fsBase.indexOf("nioMemFS:") < 0 && fsBase.indexOf("nioMemLZF:") < 0) {
+            && fsBase.indexOf("nioMemFS:") < 0 && fsBase.indexOf("nioMemLZF:") < 0) {
             FileUtils.createDirectories(fsBase + "/testDir");
             assertTrue(FileUtils.isDirectory(fsBase + "/testDir"));
             if (!fsBase.startsWith("jdbc:")) {
@@ -595,83 +594,83 @@ public class TestFileSystem extends TestBase {
                 trace("op " + i);
                 int pos = random.nextInt(10000);
                 switch (random.nextInt(7)) {
-                    case 0: {
-                        pos = (int) Math.min(pos, ra.length());
-                        trace("seek " + pos);
-                        buff.append("seek " + pos + "\n");
-                        f.position(pos);
-                        ra.seek(pos);
-                        break;
+                case 0: {
+                    pos = (int) Math.min(pos, ra.length());
+                    trace("seek " + pos);
+                    buff.append("seek " + pos + "\n");
+                    f.position(pos);
+                    ra.seek(pos);
+                    break;
+                }
+                case 1: {
+                    int arrayLen = random.nextInt(1000);
+                    int offset = arrayLen / 10;
+                    offset = offset == 0 ? 0 : random.nextInt(offset);
+                    int len = arrayLen == 0 ? 0 : random.nextInt(arrayLen - offset);
+                    byte[] buffer = new byte[arrayLen];
+                    ByteBuffer byteBuff = createSlicedBuffer(buffer, offset, len);
+                    random.nextBytes(buffer);
+                    trace("write " + offset + " len " + len);
+                    buff.append("write " + offset + " " + len + "\n");
+                    f.write(byteBuff);
+                    ra.write(buffer, offset, len);
+                    break;
+                }
+                case 2: {
+                    trace("truncate " + pos);
+                    buff.append("truncate " + pos + "\n");
+                    f.truncate(pos);
+                    if (pos < ra.length()) {
+                        // truncate is supposed to have no effect if the
+                        // position is larger than the current size
+                        ra.setLength(pos);
                     }
-                    case 1: {
-                        int arrayLen = random.nextInt(1000);
-                        int offset = arrayLen / 10;
-                        offset = offset == 0 ? 0 : random.nextInt(offset);
-                        int len = arrayLen == 0 ? 0 : random.nextInt(arrayLen - offset);
-                        byte[] buffer = new byte[arrayLen];
-                        ByteBuffer byteBuff = createSlicedBuffer(buffer, offset, len);
-                        random.nextBytes(buffer);
-                        trace("write " + offset + " len " + len);
-                        buff.append("write " + offset + " " + len + "\n");
-                        f.write(byteBuff);
-                        ra.write(buffer, offset, len);
-                        break;
-                    }
-                    case 2: {
-                        trace("truncate " + pos);
-                        buff.append("truncate " + pos + "\n");
-                        f.truncate(pos);
-                        if (pos < ra.length()) {
-                            // truncate is supposed to have no effect if the
-                            // position is larger than the current size
-                            ra.setLength(pos);
-                        }
-                        assertEquals(ra.getFilePointer(), f.position());
-                        break;
-                    }
-                    case 3: {
-                        int len = random.nextInt(1000);
-                        int offset = random.nextInt(100);
-                        int arrayLen = len + offset;
-                        len = (int) Math.min(len, ra.length() - ra.getFilePointer());
-                        byte[] b1 = new byte[arrayLen];
-                        byte[] b2 = new byte[arrayLen];
-                        trace("readFully " + len);
-                        buff.append("readFully " + len + "\n");
-                        ra.readFully(b1, offset, len);
-                        ByteBuffer byteBuff = createSlicedBuffer(b2, offset, len);
-                        FileUtils.readFully(f, byteBuff);
-                        assertEquals(b1, b2);
-                        break;
-                    }
-                    case 4: {
-                        trace("getFilePointer");
-                        buff.append("getFilePointer\n");
-                        assertEquals(ra.getFilePointer(), f.position());
-                        break;
-                    }
-                    case 5: {
-                        trace("length " + ra.length());
-                        buff.append("length " + ra.length() + "\n");
-                        assertEquals(ra.length(), f.size());
-                        break;
-                    }
-                    case 6: {
-                        trace("reopen");
-                        buff.append("reopen\n");
-                        f.close();
-                        ra.close();
-                        ra = new RandomAccessFile(file, "rw");
-                        f = FileUtils.open(s, "rw");
-                        assertEquals(ra.length(), f.size());
-                        break;
-                    }
-                    default:
+                    assertEquals(ra.getFilePointer(), f.position());
+                    break;
+                }
+                case 3: {
+                    int len = random.nextInt(1000);
+                    int offset = random.nextInt(100);
+                    int arrayLen = len + offset;
+                    len = (int) Math.min(len, ra.length() - ra.getFilePointer());
+                    byte[] b1 = new byte[arrayLen];
+                    byte[] b2 = new byte[arrayLen];
+                    trace("readFully " + len);
+                    buff.append("readFully " + len + "\n");
+                    ra.readFully(b1, offset, len);
+                    ByteBuffer byteBuff = createSlicedBuffer(b2, offset, len);
+                    FileUtils.readFully(f, byteBuff);
+                    assertEquals(b1, b2);
+                    break;
+                }
+                case 4: {
+                    trace("getFilePointer");
+                    buff.append("getFilePointer\n");
+                    assertEquals(ra.getFilePointer(), f.position());
+                    break;
+                }
+                case 5: {
+                    trace("length " + ra.length());
+                    buff.append("length " + ra.length() + "\n");
+                    assertEquals(ra.length(), f.size());
+                    break;
+                }
+                case 6: {
+                    trace("reopen");
+                    buff.append("reopen\n");
+                    f.close();
+                    ra.close();
+                    ra = new RandomAccessFile(file, "rw");
+                    f = FileUtils.open(s, "rw");
+                    assertEquals(ra.length(), f.size());
+                    break;
+                }
+                default:
                 }
             }
         } catch (Throwable e) {
             e.printStackTrace();
-            fail("Exception: " + e + "\n" + buff.toString());
+            fail("Exception: " + e + "\n"+ buff.toString());
         } finally {
             f.close();
             ra.close();
@@ -681,7 +680,7 @@ public class TestFileSystem extends TestBase {
     }
 
     private static ByteBuffer createSlicedBuffer(byte[] buffer, int offset,
-                                                 int len) {
+            int len) {
         ByteBuffer byteBuff = ByteBuffer.wrap(buffer);
         byteBuff.position(offset);
         // force the arrayOffset to be non-0
@@ -720,7 +719,7 @@ public class TestFileSystem extends TestBase {
         FileUtils.delete(s);
         final FileChannel f = FileUtils.open(s, "rw");
         final int size = getSize(10, 50);
-        f.write(ByteBuffer.allocate(size * 64 * 1024));
+        f.write(ByteBuffer.allocate(size * 64 *  1024));
         AtomicIntegerArray locks = new AtomicIntegerArray(size);
         AtomicIntegerArray expected = new AtomicIntegerArray(size);
         Random random = new Random(1);

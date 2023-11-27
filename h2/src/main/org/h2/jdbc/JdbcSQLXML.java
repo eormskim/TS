@@ -55,7 +55,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public final class JdbcSQLXML extends JdbcLob implements SQLXML {
 
-    private static final Map<String, Boolean> secureFeatureMap = new HashMap<>();
+    private static final Map<String,Boolean> secureFeatureMap = new HashMap<>();
     private static final EntityResolver NOOP_ENTITY_RESOLVER = (pubId, sysId) -> new InputSource(new StringReader(""));
     private static final URIResolver NOOP_URI_RESOLVER = (href, base) -> new StreamSource(new StringReader(""));
 
@@ -76,11 +76,10 @@ public final class JdbcSQLXML extends JdbcLob implements SQLXML {
 
     /**
      * INTERNAL
-     *
-     * @param conn  to use
+     * @param conn to use
      * @param value for this JdbcSQLXML
      * @param state of the LOB
-     * @param id    of the trace object
+     * @param id of the trace object
      */
     public JdbcSQLXML(JdbcConnection conn, Value value, State state, int id) {
         super(conn, value, state, TraceObject.SQLXML, id);
@@ -136,7 +135,7 @@ public final class JdbcSQLXML extends JdbcLob implements SQLXML {
             // see https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html
             if (sourceClass == null || sourceClass == DOMSource.class) {
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                for (Map.Entry<String, Boolean> entry : secureFeatureMap.entrySet()) {
+                for (Map.Entry<String,Boolean> entry : secureFeatureMap.entrySet()) {
                     try {
                         dbf.setFeature(entry.getKey(), entry.getValue());
                     } catch (Exception ignore) {/**/}
@@ -149,7 +148,7 @@ public final class JdbcSQLXML extends JdbcLob implements SQLXML {
                 return (T) new DOMSource(db.parse(new InputSource(value.getInputStream())));
             } else if (sourceClass == SAXSource.class) {
                 SAXParserFactory spf = SAXParserFactory.newInstance();
-                for (Map.Entry<String, Boolean> entry : secureFeatureMap.entrySet()) {
+                for (Map.Entry<String,Boolean> entry : secureFeatureMap.entrySet()) {
                     try {
                         spf.setFeature(entry.getKey(), entry.getValue());
                     } catch (Exception ignore) {/**/}
@@ -169,7 +168,7 @@ public final class JdbcSQLXML extends JdbcLob implements SQLXML {
                 tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
                 tf.setURIResolver(NOOP_URI_RESOLVER);
                 tf.newTransformer().transform(new StreamSource(value.getInputStream()),
-                        new SAXResult(new DefaultHandler()));
+                                                new SAXResult(new DefaultHandler()));
                 return (T) new StreamSource(value.getInputStream());
             }
             throw unsupported(sourceClass.getName());

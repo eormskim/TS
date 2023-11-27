@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.h2.api.ErrorCode;
 import org.h2.engine.Constants;
 import org.h2.test.TestBase;
@@ -76,7 +75,7 @@ public class TestSynonymForTable extends TestDb {
         conn.close();
     }
 
-    private void testDropTable() throws SQLException {
+    private void testDropTable() throws SQLException  {
         Connection conn = getConnection("synonym");
         createTableWithSynonym(conn);
         Statement stat = conn.createStatement();
@@ -214,7 +213,7 @@ public class TestSynonymForTable extends TestDb {
      * Make sure, that the schema changes are persisted when reopening the database
      */
     private void testReopenDatabase() throws SQLException {
-        if (!config.memory) {
+        if(!config.memory) {
             deleteDb("synonym");
             Connection conn = getConnection("synonym");
             createTableWithSynonym(conn);

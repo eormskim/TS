@@ -86,7 +86,7 @@ public class TestPgServer extends TestDb {
     private Server createPgServer(String... args) throws SQLException {
         Server server = Server.createPgServer(args);
         int failures = 0;
-        for (; ; ) {
+        for (;;) {
             try {
                 server.start();
                 return server;
@@ -227,7 +227,7 @@ public class TestPgServer extends TestDb {
         assertFalse(rs.next());
         prep = conn.prepareStatement(
                 "select * from test " +
-                        "where id = ? and name = ?");
+                "where id = ? and name = ?");
         prep.setInt(1, 1);
         prep.setString(2, "Hello");
         rs = prep.executeQuery();
@@ -332,18 +332,18 @@ public class TestPgServer extends TestDb {
         rs.next();
         assertNull(rs.getString(1));
 
-        rs = stat.executeQuery("select pg_get_indexdef(" + indexId + ", 0, false)");
+        rs = stat.executeQuery("select pg_get_indexdef("+indexId+", 0, false)");
         rs.next();
         assertEquals("CREATE INDEX \"public\".\"idx_test_name\" ON \"public\".\"test\""
-                        + "(\"name\" NULLS LAST, \"id\" NULLS LAST)",
+                + "(\"name\" NULLS LAST, \"id\" NULLS LAST)",
                 rs.getString(1));
-        rs = stat.executeQuery("select pg_get_indexdef(" + indexId + ", null, false)");
+        rs = stat.executeQuery("select pg_get_indexdef("+indexId+", null, false)");
         rs.next();
         assertNull(rs.getString(1));
-        rs = stat.executeQuery("select pg_get_indexdef(" + indexId + ", 1, false)");
+        rs = stat.executeQuery("select pg_get_indexdef("+indexId+", 1, false)");
         rs.next();
         assertEquals("name", rs.getString(1));
-        rs = stat.executeQuery("select pg_get_indexdef(" + indexId + ", 2, false)");
+        rs = stat.executeQuery("select pg_get_indexdef("+indexId+", 2, false)");
         rs.next();
         assertEquals("id", rs.getString(1));
 
@@ -409,7 +409,7 @@ public class TestPgServer extends TestDb {
             stat.execute("create table test(id int primary key, name varchar)");
             ResultSet rs = stat.executeQuery(
                     "select storage_type from information_schema.tables " +
-                            "where table_name = 'test'");
+                    "where table_name = 'test'");
             assertTrue(rs.next());
             assertEquals("MEMORY", rs.getString(1));
 
@@ -470,10 +470,10 @@ public class TestPgServer extends TestDb {
 
             stat.execute(
                     "create table test(x1 varchar, x2 int, " +
-                            "x3 smallint, x4 bigint, x5 double precision, x6 float, " +
-                            "x7 real, x8 boolean, x9 char(3), x10 bytea, " +
-                            "x11 date, x12 time, x13 timestamp, x14 numeric(25, 5)," +
-                            "x15 time with time zone, x16 timestamp with time zone)");
+                    "x3 smallint, x4 bigint, x5 double precision, x6 float, " +
+                    "x7 real, x8 boolean, x9 char(3), x10 bytea, " +
+                    "x11 date, x12 time, x13 timestamp, x14 numeric(25, 5)," +
+                    "x15 time with time zone, x16 timestamp with time zone)");
 
             PreparedStatement ps = conn.prepareStatement(
                     "insert into test values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -486,7 +486,7 @@ public class TestPgServer extends TestDb {
             ps.setFloat(7, 123.456f);
             ps.setBoolean(8, true);
             ps.setByte(9, (byte) 0xfe);
-            ps.setBytes(10, new byte[]{'a', (byte) 0xfe, '\127', 0, 127, '\\'});
+            ps.setBytes(10, new byte[] { 'a', (byte) 0xfe, '\127', 0, 127, '\\' });
             ps.setDate(11, Date.valueOf("2015-01-31"));
             ps.setTime(12, Time.valueOf("20:11:15"));
             ps.setTimestamp(13, Timestamp.valueOf("2001-10-30 14:16:10.111"));
@@ -510,7 +510,7 @@ public class TestPgServer extends TestDb {
             assertEquals(123.456f, rs.getFloat(7));
             assertEquals(true, rs.getBoolean(8));
             assertEquals((byte) 0xfe, rs.getByte(9));
-            assertEquals(new byte[]{'a', (byte) 0xfe, '\127', 0, 127, '\\'},
+            assertEquals(new byte[] { 'a', (byte) 0xfe, '\127', 0, 127, '\\' },
                     rs.getBytes(10));
             assertEquals(Date.valueOf("2015-01-31"), rs.getDate(11));
             assertEquals(Time.valueOf("20:11:15"), rs.getTime(12));
@@ -607,15 +607,15 @@ public class TestPgServer extends TestDb {
                 stat.execute(
                         "create table test(x1 date, x2 time, x3 timestamp)");
 
-                Date[] dates = {null, Date.valueOf("2017-02-20"),
+                Date[] dates = { null, Date.valueOf("2017-02-20"),
                         Date.valueOf("1970-01-01"), Date.valueOf("1969-12-31"),
                         Date.valueOf("1940-01-10"), Date.valueOf("1950-11-10"),
                         Date.valueOf("1500-01-01")};
-                Time[] times = {null, Time.valueOf("14:15:16"),
+                Time[] times = { null, Time.valueOf("14:15:16"),
                         Time.valueOf("00:00:00"), Time.valueOf("23:59:59"),
                         Time.valueOf("00:10:59"), Time.valueOf("08:30:42"),
                         Time.valueOf("10:00:00")};
-                Timestamp[] timestamps = {null, Timestamp.valueOf("2017-02-20 14:15:16.763"),
+                Timestamp[] timestamps = { null, Timestamp.valueOf("2017-02-20 14:15:16.763"),
                         Timestamp.valueOf("1970-01-01 00:00:00"), Timestamp.valueOf("1969-12-31 23:59:59"),
                         Timestamp.valueOf("1940-01-10 00:10:59"), Timestamp.valueOf("1950-11-10 08:30:42.12"),
                         Timestamp.valueOf("1500-01-01 10:00:10")};
@@ -623,7 +623,7 @@ public class TestPgServer extends TestDb {
 
                 PreparedStatement ps = conn.prepareStatement(
                         "insert into test values (?,?,?)");
-                for (int i = 0; i < count; i++) {
+                    for (int i = 0; i < count; i++) {
                     ps.setDate(1, dates[i]);
                     ps.setTime(2, times[i]);
                     ps.setTimestamp(3, timestamps[i]);
@@ -895,13 +895,13 @@ public class TestPgServer extends TestDb {
             }
             try (ResultSet rs = stat.executeQuery(
                     "SELECT data_type FROM information_schema.columns WHERE table_schema = 'pg_catalog' " +
-                            "AND table_name = 'pg_database' AND column_name = 'datacl'")) {
+                    "AND table_name = 'pg_database' AND column_name = 'datacl'")) {
                 assertTrue(rs.next());
                 assertEquals("array", rs.getString(1));
             }
             try (ResultSet rs = stat.executeQuery(
                     "SELECT data_type FROM information_schema.columns WHERE table_schema = 'pg_catalog' " +
-                            "AND table_name = 'pg_tablespace' AND column_name = 'spcacl'")) {
+                    "AND table_name = 'pg_tablespace' AND column_name = 'spcacl'")) {
                 assertTrue(rs.next());
                 assertEquals("array", rs.getString(1));
             }

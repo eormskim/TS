@@ -53,7 +53,7 @@ public final class ValueRow extends ValueCollectionBase {
      * Do not clone the data.
      *
      * @param extTypeInfo the extended data type information
-     * @param list        the value array
+     * @param list the value array
      * @return the value
      */
     public static ValueRow get(ExtTypeInfoRow extTypeInfo, Value[] list) {
@@ -65,7 +65,7 @@ public final class ValueRow extends ValueCollectionBase {
      * Do not clone the data.
      *
      * @param typeInfo the data type information
-     * @param list     the value array
+     * @param list the value array
      * @return the value
      */
     public static ValueRow get(TypeInfo typeInfo, Value[] list) {
@@ -100,7 +100,7 @@ public final class ValueRow extends ValueCollectionBase {
 
     public SimpleResult getResult() {
         SimpleResult result = new SimpleResult();
-        for (int i = 0, l = values.length; i < l; ) {
+        for (int i = 0, l = values.length; i < l;) {
             Value v = values[i++];
             result.addColumn("C" + i, v.getType());
         }

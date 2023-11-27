@@ -22,6 +22,7 @@ import org.h2.security.auth.ConfigProperties;
  * <ul>
  *   <li>roles role list separated by comma</li>
  * </ul>
+ *
  */
 public class StaticRolesMapper implements UserToRolesMapper {
 
@@ -31,13 +32,13 @@ public class StaticRolesMapper implements UserToRolesMapper {
     }
 
     public StaticRolesMapper(String... roles) {
-        this.roles = Arrays.asList(roles);
+        this.roles=Arrays.asList(roles);
     }
 
     @Override
     public void configure(ConfigProperties configProperties) {
-        String rolesString = configProperties.getStringValue("roles", "");
-        if (rolesString != null) {
+        String rolesString=configProperties.getStringValue("roles", "");
+        if (rolesString!=null) {
             roles = new HashSet<>(Arrays.asList(rolesString.split(",")));
         }
     }

@@ -175,11 +175,11 @@ public class TestWeb extends TestDb {
             assertTrue(FileUtils.exists(getBaseDir() + "/backup.zip"));
             result = client.get(url,
                     "tools.do?tool=DeleteDbFiles&args=-dir," +
-                            getBaseDir() + ",-db," + getTestName());
+                    getBaseDir() + ",-db," + getTestName());
             String fn = getBaseDir() + "/" + getTestName() + Constants.SUFFIX_MV_FILE;
             assertFalse(FileUtils.exists(fn));
             result = client.get(url, "tools.do?tool=Restore&args=-dir," +
-                    getBaseDir() + ",-db," + getTestName() + ",-file," + getBaseDir() +
+                    getBaseDir() + ",-db," + getTestName() +",-file," + getBaseDir() +
                     "/backup.zip");
             assertTrue(FileUtils.exists(fn));
             FileUtils.delete(getBaseDir() + "/web.h2.sql");

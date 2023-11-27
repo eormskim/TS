@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
 
@@ -49,13 +48,11 @@ public class TestLargeBlob extends TestDb {
         prep.setBinaryStream(1, new InputStream() {
             long remaining = testLength;
             int p;
-            byte[] oneByte = {0};
-
+            byte[] oneByte = { 0 };
             @Override
             public void close() {
                 // ignore
             }
-
             @Override
             public int read(byte[] buff, int off, int len) {
                 len = (int) Math.min(remaining, len);
@@ -65,7 +62,6 @@ public class TestLargeBlob extends TestDb {
                 }
                 return len == 0 ? -1 : len;
             }
-
             @Override
             public int read() {
                 return read(oneByte, 0, 1) < 0 ? -1 : oneByte[0];

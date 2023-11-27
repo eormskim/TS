@@ -10,7 +10,7 @@ var ignored = '';
 var firstLink = null;
 var firstLinkWord = null;
 
-String.prototype.endsWith = function (suffix) {
+String.prototype.endsWith = function(suffix) {
     var startPos = this.length - suffix.length;
     if (startPos < 0) {
         return false;

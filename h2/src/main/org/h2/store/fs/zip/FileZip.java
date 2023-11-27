@@ -13,7 +13,6 @@ import java.nio.channels.FileLock;
 import java.nio.channels.NonWritableChannelException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
 import org.h2.store.fs.FakeFileChannel;
 import org.h2.store.fs.FileBase;
 import org.h2.util.IOUtils;
@@ -119,7 +118,7 @@ class FileZip extends FileBase {
 
     @Override
     public synchronized FileLock tryLock(long position, long size,
-                                         boolean shared) throws IOException {
+            boolean shared) throws IOException {
         if (shared) {
             return new FileLock(FakeFileChannel.INSTANCE, position, size, shared) {
 
@@ -131,8 +130,7 @@ class FileZip extends FileBase {
                 @Override
                 public void release() throws IOException {
                     // ignore
-                }
-            };
+                }};
         }
         return null;
     }

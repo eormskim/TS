@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.h2.api.DatabaseEventListener;
 import org.h2.api.ErrorCode;
 import org.h2.command.ddl.DefineCommand;
@@ -85,7 +84,7 @@ public class CommandContainer extends Command {
     /**
      * Clears CTE views for a specified statement.
      *
-     * @param session  the session
+     * @param session the session
      * @param prepared prepared statement
      */
     static void clearCTE(SessionLocal session, Prepared prepared) {
@@ -99,7 +98,7 @@ public class CommandContainer extends Command {
      * Clears CTE views.
      *
      * @param session the session
-     * @param views   list of view
+     * @param views list of view
      */
     static void clearCTE(SessionLocal session, List<TableView> views) {
         for (TableView view : views) {
@@ -180,7 +179,7 @@ public class CommandContainer extends Command {
     }
 
     private ResultWithGeneratedKeys executeUpdateWithGeneratedKeys(DataChangeStatement statement,
-                                                                   Object generatedKeysRequest) {
+            Object generatedKeysRequest) {
         Database db = session.getDatabase();
         Table table = statement.getTable();
         ArrayList<ExpressionColumn> expressionColumns;
@@ -219,8 +218,7 @@ public class CommandContainer extends Command {
                     } else if (settings.databaseToLower) {
                         column = table.findColumn(StringUtils.toLowerEnglish(name));
                     }
-                    search:
-                    if (column == null) {
+                    search: if (column == null) {
                         for (Column c : table.getColumns()) {
                             if (c.getName().equalsIgnoreCase(name)) {
                                 column = c;

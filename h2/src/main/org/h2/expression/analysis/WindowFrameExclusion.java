@@ -43,7 +43,7 @@ public enum WindowFrameExclusion {
      * group.
      *
      * @return true if this exclusion clause is {@link #EXCLUDE_GROUP} or
-     * {@link #EXCLUDE_NO_OTHERS}
+     *         {@link #EXCLUDE_NO_OTHERS}
      */
     public boolean isGroupOrNoOthers() {
         return this == WindowFrameExclusion.EXCLUDE_GROUP || this == EXCLUDE_NO_OTHERS;

@@ -13,7 +13,6 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.Random;
-
 import org.h2.store.fs.FileBaseDefault;
 import org.h2.store.fs.FilePath;
 import org.h2.store.fs.FilePathWrapper;
@@ -55,8 +54,8 @@ public class FilePathReorderWrites extends FilePathWrapper {
      * the random seed (for partial writes).
      *
      * @param count the number of write operations (0 to never fail,
-     *              Integer.MAX_VALUE to count the operations)
-     * @param seed  the new seed
+     *            Integer.MAX_VALUE to count the operations)
+     * @param seed the new seed
      */
     public void setPowerOffCountdown(int count, int seed) {
         powerFailureCountdown = count;
@@ -262,7 +261,7 @@ class FileReorderWrites extends FileBaseDefault {
             int x = addOperation(new FileWriteOperation(id++, position, buf1));
             x += addOperation(
                     new FileWriteOperation(id++, position + len1, buf2));
-            src.position(src.position() + x);
+            src.position( src.position() + x );
             return x;
         }
         return addOperation(new FileWriteOperation(id++, position, src));
@@ -277,7 +276,7 @@ class FileReorderWrites extends FileBaseDefault {
 
     @Override
     public synchronized FileLock tryLock(long position, long size,
-                                         boolean shared) throws IOException {
+            boolean shared) throws IOException {
         return readBase.tryLock(position, size, shared);
     }
 

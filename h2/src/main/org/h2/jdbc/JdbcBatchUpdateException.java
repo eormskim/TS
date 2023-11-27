@@ -19,8 +19,7 @@ public final class JdbcBatchUpdateException extends BatchUpdateException {
 
     /**
      * INTERNAL
-     *
-     * @param next         exception
+     * @param next exception
      * @param updateCounts affected record counts
      */
     JdbcBatchUpdateException(SQLException next, int[] updateCounts) {
@@ -30,8 +29,7 @@ public final class JdbcBatchUpdateException extends BatchUpdateException {
 
     /**
      * INTERNAL
-     *
-     * @param next         exception
+     * @param next exception
      * @param updateCounts affected record counts
      */
     JdbcBatchUpdateException(SQLException next, long[] updateCounts) {

@@ -51,10 +51,10 @@ public class CreateUser extends DefineCommand {
     /**
      * Set the salt and hash for the given user.
      *
-     * @param user    the user
+     * @param user the user
      * @param session the session
-     * @param salt    the salt
-     * @param hash    the hash
+     * @param salt the salt
+     * @param hash the hash
      */
     static void setSaltAndHash(User user, SessionLocal session, Expression salt, Expression hash) {
         user.setSaltAndHash(getByteArray(session, salt), getByteArray(session, hash));
@@ -73,8 +73,8 @@ public class CreateUser extends DefineCommand {
     /**
      * Set the password for the given user.
      *
-     * @param user     the user
-     * @param session  the session
+     * @param user the user
+     * @param session the session
      * @param password the password
      */
     static void setPassword(User user, SessionLocal session, Expression password) {

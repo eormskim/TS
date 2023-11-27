@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-
 import org.h2.api.DatabaseEventListener;
 import org.h2.api.ErrorCode;
 import org.h2.command.ddl.CreateTableData;
@@ -67,7 +66,7 @@ public class MVTable extends TableBase {
     /**
      * The type of trace lock events
      */
-    private enum TraceLockEvent {
+    private enum TraceLockEvent{
 
         TRACE_LOCK_OK("ok"),
         TRACE_LOCK_WAITING_FOR("waiting for"),
@@ -87,7 +86,6 @@ public class MVTable extends TableBase {
             return eventText;
         }
     }
-
     private static final String NO_EXTRA_INFO = "";
 
     static {
@@ -247,29 +245,29 @@ public class MVTable extends TableBase {
 
     private boolean doLock2(SessionLocal session, int lockType) {
         switch (lockType) {
-            case Table.EXCLUSIVE_LOCK:
-                int size = lockSharedSessions.size();
-                if (size == 0) {
-                    traceLock(session, lockType, TraceLockEvent.TRACE_LOCK_ADDED_FOR, NO_EXTRA_INFO);
-                    session.registerTableAsLocked(this);
-                } else if (size == 1 && lockSharedSessions.containsKey(session)) {
-                    traceLock(session, lockType, TraceLockEvent.TRACE_LOCK_ADD_UPGRADED_FOR, NO_EXTRA_INFO);
-                } else {
-                    return false;
-                }
-                lockExclusiveSession = session;
+        case Table.EXCLUSIVE_LOCK:
+            int size = lockSharedSessions.size();
+            if (size == 0) {
+                traceLock(session, lockType, TraceLockEvent.TRACE_LOCK_ADDED_FOR, NO_EXTRA_INFO);
+                session.registerTableAsLocked(this);
+            } else if (size == 1 && lockSharedSessions.containsKey(session)) {
+                traceLock(session, lockType, TraceLockEvent.TRACE_LOCK_ADD_UPGRADED_FOR, NO_EXTRA_INFO);
+            } else {
+                return false;
+            }
+            lockExclusiveSession = session;
+            if (SysProperties.THREAD_DEADLOCK_DETECTOR) {
+                addLockToDebugList(EXCLUSIVE_LOCKS);
+            }
+            break;
+        case Table.WRITE_LOCK:
+            if (lockSharedSessions.putIfAbsent(session, session) == null) {
+                traceLock(session, lockType, TraceLockEvent.TRACE_LOCK_OK, NO_EXTRA_INFO);
+                session.registerTableAsLocked(this);
                 if (SysProperties.THREAD_DEADLOCK_DETECTOR) {
-                    addLockToDebugList(EXCLUSIVE_LOCKS);
+                    addLockToDebugList(SHARED_LOCKS);
                 }
-                break;
-            case Table.WRITE_LOCK:
-                if (lockSharedSessions.putIfAbsent(session, session) == null) {
-                    traceLock(session, lockType, TraceLockEvent.TRACE_LOCK_OK, NO_EXTRA_INFO);
-                    session.registerTableAsLocked(this);
-                    if (SysProperties.THREAD_DEADLOCK_DETECTOR) {
-                        addLockToDebugList(SHARED_LOCKS);
-                    }
-                }
+            }
         }
         return true;
     }
@@ -335,13 +333,13 @@ public class MVTable extends TableBase {
 
     @Override
     public Index addIndex(SessionLocal session, String indexName, int indexId, IndexColumn[] cols,
-                          int uniqueColumnCount, IndexType indexType, boolean create, String indexComment) {
+            int uniqueColumnCount, IndexType indexType, boolean create, String indexComment) {
         cols = prepareColumns(database, cols, indexType);
         boolean isSessionTemporary = isTemporary() && !isGlobalTemporary();
         if (!isSessionTemporary) {
             database.lockMeta(session);
         }
-        MVIndex<?, ?> index;
+        MVIndex<?,?> index;
         int mainIndexColumn = primaryIndex.getMainIndexColumn() != SearchRow.ROWID_INDEX
                 ? SearchRow.ROWID_INDEX : getMainIndexColumn(indexType, cols);
         if (database.isStarting()) {
@@ -382,7 +380,7 @@ public class MVTable extends TableBase {
         return index;
     }
 
-    private void rebuildIndex(SessionLocal session, MVIndex<?, ?> index, String indexName) {
+    private void rebuildIndex(SessionLocal session, MVIndex<?,?> index, String indexName) {
         try {
             if (!session.getDatabase().isPersistent() || index instanceof MVSpatialIndex) {
                 // in-memory
@@ -405,7 +403,7 @@ public class MVTable extends TableBase {
         }
     }
 
-    private void rebuildIndexBlockMerge(SessionLocal session, MVIndex<?, ?> index) {
+    private void rebuildIndexBlockMerge(SessionLocal session, MVIndex<?,?> index) {
         // Read entries in memory, sort them, write to a new map (in sorted
         // order); repeat (using a new map for every block of 1 MB) until all
         // record are read. Merge all maps to the target (using merge sort;
@@ -698,9 +696,12 @@ public class MVTable extends TableBase {
     /**
      * Appends the specified rows to the specified index.
      *
-     * @param session the session
-     * @param list    the rows, list is cleared on completion
-     * @param index   the index to append to
+     * @param session
+     *            the session
+     * @param list
+     *            the rows, list is cleared on completion
+     * @param index
+     *            the index to append to
      */
     private static void addRowsToIndex(SessionLocal session, ArrayList<Row> list, Index index) {
         sortRows(list, index);
@@ -713,8 +714,10 @@ public class MVTable extends TableBase {
     /**
      * Formats details of a deadlock.
      *
-     * @param sessions the list of sessions
-     * @param lockType the type of lock
+     * @param sessions
+     *            the list of sessions
+     * @param lockType
+     *            the type of lock
      * @return formatted details of a deadlock
      */
     private static String getDeadlockDetails(ArrayList<SessionLocal> sessions, int lockType) {
@@ -755,8 +758,10 @@ public class MVTable extends TableBase {
     /**
      * Sorts the specified list of rows for a specified index.
      *
-     * @param list  the list of rows
-     * @param index the index to sort for
+     * @param list
+     *            the list of rows
+     * @param index
+     *            the index to sort for
      */
     private static void sortRows(ArrayList<? extends SearchRow> list, final Index index) {
         list.sort(index::compareRows);
@@ -900,8 +905,8 @@ public class MVTable extends TableBase {
     /**
      * Prepares columns of an index.
      *
-     * @param database  the database
-     * @param cols      the index columns
+     * @param database the database
+     * @param cols the index columns
      * @param indexType the type of an index
      * @return the prepared columns with flags set
      */

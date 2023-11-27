@@ -251,7 +251,7 @@ public class TestPerfectHash extends TestBase {
          * The hash code (using a universal hash function).
          *
          * @param index the hash function index
-         * @param seed  the random seed
+         * @param seed the random seed
          * @return the hash code
          */
         public int hashCode(int index, int seed) {

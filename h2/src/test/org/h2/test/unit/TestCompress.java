@@ -215,26 +215,26 @@ public class TestCompress extends TestDb {
         for (int pattern = 0; pattern < 4; pattern++) {
             byte[] b = new byte[len];
             switch (pattern) {
-                case 0:
-                    // leave empty
-                    break;
-                case 1: {
-                    r.nextBytes(b);
-                    break;
+            case 0:
+                // leave empty
+                break;
+            case 1: {
+                r.nextBytes(b);
+                break;
+            }
+            case 2: {
+                for (int x = 0; x < len; x++) {
+                    b[x] = (byte) (x & 10);
                 }
-                case 2: {
-                    for (int x = 0; x < len; x++) {
-                        b[x] = (byte) (x & 10);
-                    }
-                    break;
+                break;
+            }
+            case 3: {
+                for (int x = 0; x < len; x++) {
+                    b[x] = (byte) (x / 10);
                 }
-                case 3: {
-                    for (int x = 0; x < len; x++) {
-                        b[x] = (byte) (x / 10);
-                    }
-                    break;
-                }
-                default:
+                break;
+            }
+            default:
             }
             if (r.nextInt(2) < 1) {
                 for (int x = 0; x < len; x++) {
@@ -245,8 +245,8 @@ public class TestCompress extends TestDb {
             }
             CompressTool utils = CompressTool.getInstance();
             // level 9 is highest, strategy 2 is huffman only
-            for (String a : new String[]{"LZF", "No",
-                    "Deflate", "Deflate level 9 strategy 2"}) {
+            for (String a : new String[] { "LZF", "No",
+                    "Deflate", "Deflate level 9 strategy 2" }) {
                 long time = System.nanoTime();
                 byte[] out = utils.compress(b, a);
                 byte[] test = utils.expand(out);
@@ -265,7 +265,7 @@ public class TestCompress extends TestDb {
                 CompressTool.expand(out, test, 0);
                 assertEquals(b, test);
             }
-            for (String a : new String[]{null, "LZF", "DEFLATE", "ZIP", "GZIP"}) {
+            for (String a : new String[] { null, "LZF", "DEFLATE", "ZIP", "GZIP" }) {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 OutputStream out2 = CompressTool.wrapOutputStream(out, a, "test");
                 IOUtils.copy(new ByteArrayInputStream(b), out2);
@@ -288,26 +288,26 @@ public class TestCompress extends TestDb {
         for (int pattern = 0; pattern < 4; pattern++) {
             byte[] b = new byte[len];
             switch (pattern) {
-                case 0:
-                    // leave empty
-                    break;
-                case 1: {
-                    r.nextBytes(b);
-                    break;
+            case 0:
+                // leave empty
+                break;
+            case 1: {
+                r.nextBytes(b);
+                break;
+            }
+            case 2: {
+                for (int x = 0; x < len; x++) {
+                    b[x] = (byte) (x & 10);
                 }
-                case 2: {
-                    for (int x = 0; x < len; x++) {
-                        b[x] = (byte) (x & 10);
-                    }
-                    break;
+                break;
+            }
+            case 3: {
+                for (int x = 0; x < len; x++) {
+                    b[x] = (byte) (x / 10);
                 }
-                case 3: {
-                    for (int x = 0; x < len; x++) {
-                        b[x] = (byte) (x / 10);
-                    }
-                    break;
-                }
-                default:
+                break;
+            }
+            default:
             }
             if (r.nextInt(2) < 1) {
                 for (int x = 0; x < len; x++) {

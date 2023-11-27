@@ -89,7 +89,7 @@ public final class User extends RightOwner {
      * Get the CREATE SQL statement for this object.
      *
      * @param password true if the password (actually the salt and hash) should
-     *                 be returned
+     *            be returned
      * @return the SQL statement
      */
     public String getCreateSQL(boolean password) {
@@ -102,9 +102,9 @@ public final class User extends RightOwner {
         if (password) {
             buff.append(" SALT '");
             StringUtils.convertBytesToHex(buff, salt).
-                    append("' HASH '");
+                append("' HASH '");
             StringUtils.convertBytesToHex(buff, passwordHash).
-                    append('\'');
+                append('\'');
         } else {
             buff.append(" PASSWORD ''");
         }
@@ -188,7 +188,7 @@ public final class User extends RightOwner {
     /**
      * Checks that this user has the given rights for the specified table.
      *
-     * @param table     the table
+     * @param table the table
      * @param rightMask the rights required
      * @throws DbException if this user does not have the required rights
      */
@@ -201,7 +201,7 @@ public final class User extends RightOwner {
     /**
      * See if this user has the given rights for this database object.
      *
-     * @param table     the database object, or null for schema-only check
+     * @param table the database object, or null for schema-only check
      * @param rightMask the rights required
      * @return true if the user has the rights
      */

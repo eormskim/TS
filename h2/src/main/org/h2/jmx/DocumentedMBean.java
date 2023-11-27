@@ -13,7 +13,6 @@ import javax.management.MBeanInfo;
 import javax.management.MBeanOperationInfo;
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
-
 import org.h2.util.Utils;
 
 /**

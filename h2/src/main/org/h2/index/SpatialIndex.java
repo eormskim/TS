@@ -18,11 +18,11 @@ public interface SpatialIndex {
      * Find a row or a list of rows and create a cursor to iterate over the
      * result.
      *
-     * @param session      the session
-     * @param first        the lower bound
-     * @param last         the upper bound
+     * @param session the session
+     * @param first the lower bound
+     * @param last the upper bound
      * @param intersection the geometry which values should intersect with, or
-     *                     null for anything
+     *            null for anything
      * @return the cursor to iterate over the results
      */
     Cursor findByGeometry(SessionLocal session, SearchRow first, SearchRow last, SearchRow intersection);

@@ -97,18 +97,18 @@ public final class JavaFunction extends Expression implements NamedExpression {
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-            case ExpressionVisitor.DETERMINISTIC:
-            case ExpressionVisitor.READONLY:
-            case ExpressionVisitor.QUERY_COMPARABLE:
-                if (!functionAlias.isDeterministic()) {
-                    return false;
-                }
-                // only if all parameters are deterministic as well
-                break;
-            case ExpressionVisitor.GET_DEPENDENCIES:
-                visitor.addDependency(functionAlias);
-                break;
-            default:
+        case ExpressionVisitor.DETERMINISTIC:
+        case ExpressionVisitor.READONLY:
+        case ExpressionVisitor.QUERY_COMPARABLE:
+            if (!functionAlias.isDeterministic()) {
+                return false;
+            }
+            // only if all parameters are deterministic as well
+            break;
+        case ExpressionVisitor.GET_DEPENDENCIES:
+            visitor.addDependency(functionAlias);
+            break;
+        default:
         }
         for (Expression e : args) {
             if (e != null && !e.isEverything(visitor)) {

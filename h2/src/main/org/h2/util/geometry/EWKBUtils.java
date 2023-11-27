@@ -60,8 +60,10 @@ public final class EWKBUtils {
         /**
          * Creates a new EWKB output target.
          *
-         * @param output          output stream
-         * @param dimensionSystem dimension system to use
+         * @param output
+         *            output stream
+         * @param dimensionSystem
+         *            dimension system to use
          */
         public EWKBTarget(ByteArrayOutputStream output, int dimensionSystem) {
             this.output = output;
@@ -114,14 +116,14 @@ public final class EWKBUtils {
         private void writeHeader(int type) {
             this.type = type;
             switch (dimensionSystem) {
-                case DIMENSION_SYSTEM_XYZ:
-                    type |= EWKB_Z;
-                    break;
-                case DIMENSION_SYSTEM_XYZM:
-                    type |= EWKB_Z;
-                    //$FALL-THROUGH$
-                case DIMENSION_SYSTEM_XYM:
-                    type |= EWKB_M;
+            case DIMENSION_SYSTEM_XYZ:
+                type |= EWKB_Z;
+                break;
+            case DIMENSION_SYSTEM_XYZM:
+                type |= EWKB_Z;
+                //$FALL-THROUGH$
+            case DIMENSION_SYSTEM_XYM:
+                type |= EWKB_M;
             }
             if (srid != 0) {
                 type |= EWKB_SRID;
@@ -191,7 +193,8 @@ public final class EWKBUtils {
         /**
          * Creates new instance of EWKB source.
          *
-         * @param ewkb EWKB
+         * @param ewkb
+         *            EWKB
          */
         EWKBSource(byte[] ewkb) {
             this.ewkb = ewkb;
@@ -258,7 +261,8 @@ public final class EWKBUtils {
      * class. Reduces dimension system to minimal possible and uses EWKB flags
      * for dimension system indication. May also perform other changes.
      *
-     * @param ewkb source EWKB
+     * @param ewkb
+     *            source EWKB
      * @return canonical EWKB, may be the same as the source
      */
     public static byte[] ewkb2ewkb(byte[] ewkb) {
@@ -270,8 +274,10 @@ public final class EWKBUtils {
      * class. Reduces dimension system to minimal possible and uses EWKB flags
      * for dimension system indication. May also perform other changes.
      *
-     * @param ewkb            source EWKB
-     * @param dimensionSystem dimension system
+     * @param ewkb
+     *            source EWKB
+     * @param dimensionSystem
+     *            dimension system
      * @return canonical EWKB, may be the same as the source
      */
     public static byte[] ewkb2ewkb(byte[] ewkb, int dimensionSystem) {
@@ -284,8 +290,10 @@ public final class EWKBUtils {
     /**
      * Parses a EWKB.
      *
-     * @param ewkb   EWKB representation
-     * @param target output target
+     * @param ewkb
+     *            EWKB representation
+     * @param target
+     *            output target
      */
     public static void parseEWKB(byte[] ewkb, Target target) {
         try {
@@ -298,7 +306,8 @@ public final class EWKBUtils {
     /**
      * Converts geometry type with flags to a dimension system.
      *
-     * @param type geometry type with flags
+     * @param type
+     *            geometry type with flags
      * @return dimension system
      */
     public static int type2dimensionSystem(int type) {
@@ -308,14 +317,14 @@ public final class EWKBUtils {
         // OGC 06-103r4
         type &= 0xffff;
         switch (type / 1_000) {
-            case DIMENSION_SYSTEM_XYZ:
-                useZ = true;
-                break;
-            case DIMENSION_SYSTEM_XYZM:
-                useZ = true;
-                //$FALL-THROUGH$
-            case DIMENSION_SYSTEM_XYM:
-                useM = true;
+        case DIMENSION_SYSTEM_XYZ:
+            useZ = true;
+            break;
+        case DIMENSION_SYSTEM_XYZM:
+            useZ = true;
+            //$FALL-THROUGH$
+        case DIMENSION_SYSTEM_XYM:
+            useM = true;
         }
         return (useZ ? DIMENSION_SYSTEM_XYZ : 0) | (useM ? DIMENSION_SYSTEM_XYM : 0);
     }
@@ -323,21 +332,24 @@ public final class EWKBUtils {
     /**
      * Parses a EWKB.
      *
-     * @param source     EWKB source
-     * @param target     output target
-     * @param parentType type of parent geometry collection, or 0 for the root geometry
+     * @param source
+     *            EWKB source
+     * @param target
+     *            output target
+     * @param parentType
+     *            type of parent geometry collection, or 0 for the root geometry
      */
     private static void parseEWKB(EWKBSource source, Target target, int parentType) {
         // Read byte order of a next geometry
         switch (source.readByte()) {
-            case 0:
-                source.bigEndian = true;
-                break;
-            case 1:
-                source.bigEndian = false;
-                break;
-            default:
-                throw new IllegalArgumentException();
+        case 0:
+            source.bigEndian = true;
+            break;
+        case 1:
+            source.bigEndian = false;
+            break;
+        default:
+            throw new IllegalArgumentException();
         }
         // Type contains type of a geometry and additional flags
         int type = source.readInt();
@@ -352,96 +364,96 @@ public final class EWKBUtils {
         // OGC 06-103r4
         type &= 0xffff;
         switch (type / 1_000) {
-            case DIMENSION_SYSTEM_XYZ:
-                useZ = true;
-                break;
-            case DIMENSION_SYSTEM_XYZM:
-                useZ = true;
-                //$FALL-THROUGH$
-            case DIMENSION_SYSTEM_XYM:
-                useM = true;
+        case DIMENSION_SYSTEM_XYZ:
+            useZ = true;
+            break;
+        case DIMENSION_SYSTEM_XYZM:
+            useZ = true;
+            //$FALL-THROUGH$
+        case DIMENSION_SYSTEM_XYM:
+            useM = true;
         }
         target.dimensionSystem((useZ ? DIMENSION_SYSTEM_XYZ : 0) | (useM ? DIMENSION_SYSTEM_XYM : 0));
         type %= 1_000;
         switch (type) {
-            case POINT:
-                if (parentType != 0 && parentType != MULTI_POINT && parentType != GEOMETRY_COLLECTION) {
-                    throw new IllegalArgumentException();
-                }
-                target.startPoint();
-                addCoordinate(source, target, useZ, useM, 0, 1);
-                break;
-            case LINE_STRING: {
-                if (parentType != 0 && parentType != MULTI_LINE_STRING && parentType != GEOMETRY_COLLECTION) {
-                    throw new IllegalArgumentException();
-                }
-                int numPoints = source.readInt();
-                if (numPoints < 0 || numPoints == 1) {
-                    throw new IllegalArgumentException();
-                }
-                target.startLineString(numPoints);
-                for (int i = 0; i < numPoints; i++) {
-                    addCoordinate(source, target, useZ, useM, i, numPoints);
-                }
-                break;
-            }
-            case POLYGON: {
-                if (parentType != 0 && parentType != MULTI_POLYGON && parentType != GEOMETRY_COLLECTION) {
-                    throw new IllegalArgumentException();
-                }
-                int numRings = source.readInt();
-                if (numRings == 0) {
-                    target.startPolygon(0, 0);
-                    break;
-                } else if (numRings < 0) {
-                    throw new IllegalArgumentException();
-                }
-                numRings--;
-                int size = source.readInt();
-                // Size may be 0 (EMPTY) or 4+
-                if (size < 0 || size >= 1 && size <= 3) {
-                    throw new IllegalArgumentException();
-                }
-                if (size == 0 && numRings > 0) {
-                    throw new IllegalArgumentException();
-                }
-                target.startPolygon(numRings, size);
-                if (size > 0) {
-                    addRing(source, target, useZ, useM, size);
-                    for (int i = 0; i < numRings; i++) {
-                        size = source.readInt();
-                        // Size may be 0 (EMPTY) or 4+
-                        if (size < 0 || size >= 1 && size <= 3) {
-                            throw new IllegalArgumentException();
-                        }
-                        target.startPolygonInner(size);
-                        addRing(source, target, useZ, useM, size);
-                    }
-                    target.endNonEmptyPolygon();
-                }
-                break;
-            }
-            case MULTI_POINT:
-            case MULTI_LINE_STRING:
-            case MULTI_POLYGON:
-            case GEOMETRY_COLLECTION: {
-                if (parentType != 0 && parentType != GEOMETRY_COLLECTION) {
-                    throw new IllegalArgumentException();
-                }
-                int numItems = source.readInt();
-                if (numItems < 0) {
-                    throw new IllegalArgumentException();
-                }
-                target.startCollection(type, numItems);
-                for (int i = 0; i < numItems; i++) {
-                    Target innerTarget = target.startCollectionItem(i, numItems);
-                    parseEWKB(source, innerTarget, type);
-                    target.endCollectionItem(innerTarget, type, i, numItems);
-                }
-                break;
-            }
-            default:
+        case POINT:
+            if (parentType != 0 && parentType != MULTI_POINT && parentType != GEOMETRY_COLLECTION) {
                 throw new IllegalArgumentException();
+            }
+            target.startPoint();
+            addCoordinate(source, target, useZ, useM, 0, 1);
+            break;
+        case LINE_STRING: {
+            if (parentType != 0 && parentType != MULTI_LINE_STRING && parentType != GEOMETRY_COLLECTION) {
+                throw new IllegalArgumentException();
+            }
+            int numPoints = source.readInt();
+            if (numPoints < 0 || numPoints == 1) {
+                throw new IllegalArgumentException();
+            }
+            target.startLineString(numPoints);
+            for (int i = 0; i < numPoints; i++) {
+                addCoordinate(source, target, useZ, useM, i, numPoints);
+            }
+            break;
+        }
+        case POLYGON: {
+            if (parentType != 0 && parentType != MULTI_POLYGON && parentType != GEOMETRY_COLLECTION) {
+                throw new IllegalArgumentException();
+            }
+            int numRings = source.readInt();
+            if (numRings == 0) {
+                target.startPolygon(0, 0);
+                break;
+            } else if (numRings < 0) {
+                throw new IllegalArgumentException();
+            }
+            numRings--;
+            int size = source.readInt();
+            // Size may be 0 (EMPTY) or 4+
+            if (size < 0 || size >= 1 && size <= 3) {
+                throw new IllegalArgumentException();
+            }
+            if (size == 0 && numRings > 0) {
+                throw new IllegalArgumentException();
+            }
+            target.startPolygon(numRings, size);
+            if (size > 0) {
+                addRing(source, target, useZ, useM, size);
+                for (int i = 0; i < numRings; i++) {
+                    size = source.readInt();
+                    // Size may be 0 (EMPTY) or 4+
+                    if (size < 0 || size >= 1 && size <= 3) {
+                        throw new IllegalArgumentException();
+                    }
+                    target.startPolygonInner(size);
+                    addRing(source, target, useZ, useM, size);
+                }
+                target.endNonEmptyPolygon();
+            }
+            break;
+        }
+        case MULTI_POINT:
+        case MULTI_LINE_STRING:
+        case MULTI_POLYGON:
+        case GEOMETRY_COLLECTION: {
+            if (parentType != 0 && parentType != GEOMETRY_COLLECTION) {
+                throw new IllegalArgumentException();
+            }
+            int numItems = source.readInt();
+            if (numItems < 0) {
+                throw new IllegalArgumentException();
+            }
+            target.startCollection(type, numItems);
+            for (int i = 0; i < numItems; i++) {
+                Target innerTarget = target.startCollectionItem(i, numItems);
+                parseEWKB(source, innerTarget, type);
+                target.endCollectionItem(innerTarget, type, i, numItems);
+            }
+            break;
+        }
+        default:
+            throw new IllegalArgumentException();
         }
         target.endObject(type);
     }
@@ -471,7 +483,7 @@ public final class EWKBUtils {
     }
 
     private static void addCoordinate(EWKBSource source, Target target, boolean useZ, boolean useM, int index,
-                                      int total) {
+            int total) {
         target.addCoordinate(source.readCoordinate(), source.readCoordinate(),
                 useZ ? source.readCoordinate() : Double.NaN, useM ? source.readCoordinate() : Double.NaN, //
                 index, total);
@@ -480,21 +492,22 @@ public final class EWKBUtils {
     /**
      * Reads the dimension system from EWKB.
      *
-     * @param ewkb EWKB
+     * @param ewkb
+     *            EWKB
      * @return the dimension system
      */
     public static int getDimensionSystem(byte[] ewkb) {
         EWKBSource source = new EWKBSource(ewkb);
         // Read byte order of a next geometry
         switch (source.readByte()) {
-            case 0:
-                source.bigEndian = true;
-                break;
-            case 1:
-                source.bigEndian = false;
-                break;
-            default:
-                throw new IllegalArgumentException();
+        case 0:
+            source.bigEndian = true;
+            break;
+        case 1:
+            source.bigEndian = false;
+            break;
+        default:
+            throw new IllegalArgumentException();
         }
         return type2dimensionSystem(source.readInt());
     }
@@ -502,7 +515,8 @@ public final class EWKBUtils {
     /**
      * Converts an envelope to a WKB.
      *
-     * @param envelope envelope, or null
+     * @param envelope
+     *            envelope, or null
      * @return WKB, or null
      */
     public static byte[] envelope2wkb(double[] envelope) {

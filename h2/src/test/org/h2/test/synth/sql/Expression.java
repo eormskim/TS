@@ -26,13 +26,13 @@ public class Expression {
     /**
      * Create a random select list.
      *
-     * @param config  the configuration
+     * @param config the configuration
      * @param command the command
      * @return the select list
      */
     static String[] getRandomSelectList(TestSynth config, Command command) {
         if (config.random().getBoolean(30)) {
-            return new String[]{"*"};
+            return new String[] { "*" };
         }
         ArrayList<String> exp = new ArrayList<>();
         String sql = "";
@@ -52,7 +52,7 @@ public class Expression {
     /**
      * Generate a random condition.
      *
-     * @param config  the configuration
+     * @param config the configuration
      * @param command the command
      * @return the random condition expression
      */
@@ -65,7 +65,7 @@ public class Expression {
     }
 
     private static Expression getRandomExpression(TestSynth config,
-                                                  Command command) {
+            Command command) {
         Expression expression = new Expression(config, command);
         String alias = command.getRandomTableAlias();
         Column column = command.getTable(alias).getRandomConditionColumn();
@@ -85,13 +85,13 @@ public class Expression {
     /**
      * Generate a random join condition.
      *
-     * @param config  the configuration
+     * @param config the configuration
      * @param command the command
-     * @param alias   the alias name
+     * @param alias the alias name
      * @return the join condition
      */
     static Expression getRandomJoinOn(TestSynth config, Command command,
-                                      String alias) {
+            String alias) {
         Expression expression = new Expression(config, command);
         expression.createJoinComparison(alias);
         return expression;
@@ -100,7 +100,7 @@ public class Expression {
     /**
      * Generate a random sort order list.
      *
-     * @param config  the configuration
+     * @param config the configuration
      * @param command the command
      * @return the ORDER BY list
      */
@@ -190,7 +190,7 @@ public class Expression {
     private void create() {
         createComparison();
         while (is(50)) {
-            oneOf(new String[]{"AND", "OR"});
+            oneOf(new String[] { "AND", "OR" });
             createComparison();
         }
     }
@@ -246,9 +246,9 @@ public class Expression {
             sql += v.getSQL();
         }
         if (is(10)) {
-            oneOf(new String[]{"IS NULL", "IS NOT NULL"});
+            oneOf(new String[] { "IS NULL", "IS NOT NULL" });
         } else if (is(10)) {
-            oneOf(new String[]{"BETWEEN", "NOT BETWEEN"});
+            oneOf(new String[] { "BETWEEN", "NOT BETWEEN" });
             Value v = column.getRandomValue();
             sql += v.getSQL();
             sql += " AND ";
@@ -268,11 +268,11 @@ public class Expression {
             // sql += ")";
         } else {
             if (column.getType() == Types.VARCHAR) {
-                oneOf(new String[]{"=", "=", "=", "<", ">",
-                        "<=", ">=", "<>", "LIKE", "NOT LIKE"});
+                oneOf(new String[] { "=", "=", "=", "<", ">",
+                        "<=", ">=", "<>", "LIKE", "NOT LIKE" });
             } else {
-                oneOf(new String[]{"=", "=", "=", "<", ">",
-                        "<=", ">=", "<>"});
+                oneOf(new String[] { "=", "=", "=", "<", ">",
+                        "<=", ">=", "<>" });
             }
             if (columnFirst) {
                 Value v = column.getRandomValue();
@@ -292,27 +292,27 @@ public class Expression {
         createTerm(alias, type, true);
         if (op) {
             switch (type.getType()) {
-                case Types.INTEGER:
-                    if (config.is(TestSynth.POSTGRESQL)) {
-                        oneOf(new String[]{"+", "-", "/"});
-                    } else {
-                        oneOf(new String[]{"+", "-", "*", "/"});
-                    }
-                    createTerm(alias, type, allowNull);
-                    break;
-                case Types.DECIMAL:
-                    oneOf(new String[]{"+", "-", "*"});
-                    createTerm(alias, type, allowNull);
-                    break;
-                case Types.VARCHAR:
-                    sql += " || ";
-                    createTerm(alias, type, allowNull);
-                    break;
-                case Types.BLOB:
-                case Types.CLOB:
-                case Types.DATE:
-                    break;
-                default:
+            case Types.INTEGER:
+                if (config.is(TestSynth.POSTGRESQL)) {
+                    oneOf(new String[] { "+", "-", "/" });
+                } else {
+                    oneOf(new String[] { "+", "-", "*", "/" });
+                }
+                createTerm(alias, type, allowNull);
+                break;
+            case Types.DECIMAL:
+                oneOf(new String[] { "+", "-", "*" });
+                createTerm(alias, type, allowNull);
+                break;
+            case Types.VARCHAR:
+                sql += " || ";
+                createTerm(alias, type, allowNull);
+                break;
+            case Types.BLOB:
+            case Types.CLOB:
+            case Types.DATE:
+                break;
+            default:
             }
         }
     }
@@ -341,20 +341,20 @@ public class Expression {
             // return;
             // }
             switch (dt) {
-                // case Types.INTEGER:
-                // String function = oneOf(new String[] { "LENGTH" /*, "MOD" */ });
-                // sql += "(";
-                // createTerm(alias, type, allowNull);
-                // sql += ")";
-                // break;
-                case Types.VARCHAR:
-                    oneOf(new String[]{"LOWER", "UPPER"});
-                    sql += "(";
-                    createTerm(alias, type, allowNull);
-                    sql += ")";
-                    break;
-                default:
-                    createTerm(alias, type, allowNull);
+            // case Types.INTEGER:
+            // String function = oneOf(new String[] { "LENGTH" /*, "MOD" */ });
+            // sql += "(";
+            // createTerm(alias, type, allowNull);
+            // sql += ")";
+            // break;
+            case Types.VARCHAR:
+                oneOf(new String[] { "LOWER", "UPPER" });
+                sql += "(";
+                createTerm(alias, type, allowNull);
+                sql += ")";
+                break;
+            default:
+                createTerm(alias, type, allowNull);
             }
             return;
         }

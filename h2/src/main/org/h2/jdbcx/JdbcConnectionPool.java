@@ -40,7 +40,7 @@ import org.h2.message.DbException;
  * A simple standalone JDBC connection pool.
  * It is based on the
  * <a href="http://www.source-code.biz/snippets/java/8.htm">
- * MiniConnectionPoolManager written by Christian d'Heureuse (Java 1.5)
+ *  MiniConnectionPoolManager written by Christian d'Heureuse (Java 1.5)
  * </a>. It is used as follows:
  * <pre>
  * import java.sql.*;
@@ -60,7 +60,7 @@ import org.h2.message.DbException;
  * </pre>
  *
  * @author Christian d'Heureuse
- * (<a href="http://www.source-code.biz">www.source-code.biz</a>)
+ *      (<a href="http://www.source-code.biz">www.source-code.biz</a>)
  * @author Thomas Mueller
  */
 public final class JdbcConnectionPool
@@ -101,13 +101,13 @@ public final class JdbcConnectionPool
     /**
      * Constructs a new connection pool for H2 databases.
      *
-     * @param url      the database URL of the H2 connection
-     * @param user     the user name
+     * @param url the database URL of the H2 connection
+     * @param user the user name
      * @param password the password
      * @return the connection pool
      */
     public static JdbcConnectionPool create(String url, String user,
-                                            String password) {
+            String password) {
         JdbcDataSource ds = new JdbcDataSource();
         ds.setURL(url);
         ds.setUser(user);
@@ -186,7 +186,7 @@ public final class JdbcConnectionPool
      *
      * @return a new Connection object.
      * @throws SQLException when a new connection could not be established,
-     *                      or a timeout occurred
+     *      or a timeout occurred
      */
     @Override
     public Connection getConnection() throws SQLException {

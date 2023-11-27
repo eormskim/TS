@@ -22,7 +22,6 @@ import java.sql.Statement;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.h2.api.ErrorCode;
 import org.h2.engine.Constants;
 import org.h2.engine.Database;
@@ -451,7 +450,7 @@ public class TestMVTableEngine extends TestDb {
             assertThrows(ErrorCode.IO_EXCEPTION_1, prep).
                     setBinaryStream(1, createFailingStream(new IllegalStateException()));
         }
-        try (MVStore s = MVStore.open(getBaseDir() + "/" + getTestName() + ".mv.db")) {
+        try (MVStore s = MVStore.open(getBaseDir()+ "/" + getTestName() + ".mv.db")) {
             assertTrue(s.hasMap("lobData"));
             MVMap<Long, byte[]> lobData = s.openMap("lobData");
             assertEquals(0, lobData.sizeAsLong());
@@ -673,7 +672,7 @@ public class TestMVTableEngine extends TestDb {
             }
             ResultSet rs = stat.executeQuery(
                     "select setting_value from information_schema.settings " +
-                            "where setting_name='RETENTION_TIME'");
+                    "where setting_name='RETENTION_TIME'");
             assertTrue(rs.next());
             assertEquals(retentionTime, rs.getInt(1));
             stat.execute("create table test(id int primary key, data varchar)");
@@ -767,7 +766,7 @@ public class TestMVTableEngine extends TestDb {
         deleteDb(getTestName());
         conn = getConnection(url);
         stat = conn.createStatement();
-        stat.execute("runscript from '" + getBaseDir() + "/" + getTestName() + ".h2.sql'");
+        stat.execute("runscript from '" + getBaseDir() + "/" + getTestName()+ ".h2.sql'");
         ResultSet rs;
         rs = stat.executeQuery("select * from test");
         assertTrue(rs.next());
@@ -875,7 +874,7 @@ public class TestMVTableEngine extends TestDb {
         stat.execute("delete from test where id > 5");
         stat.execute("backup to '" + getBaseDir() + "/" + getTestName() + ".zip'");
         conn.rollback();
-        Restore.execute(getBaseDir() + "/" + getTestName() + ".zip",
+        Restore.execute(getBaseDir() + "/" +getTestName() + ".zip",
                 getBaseDir(), getTestName() + "2");
         Connection conn2;
         conn2 = getConnection(url2);
@@ -899,7 +898,7 @@ public class TestMVTableEngine extends TestDb {
 
         stat.execute("create table parent(id int, name varchar)");
         stat.execute("create table child(id int, parentid int, " +
-                "foreign key(parentid) references parent(id))");
+        "foreign key(parentid) references parent(id))");
         stat.execute("insert into parent values(1, 'mary'), (2, 'john')");
         stat.execute("insert into child values(10, 1), (11, 1), (20, 2), (21, 2)");
         stat.execute("update parent set name = 'marc' where id = 1");
@@ -1032,7 +1031,7 @@ public class TestMVTableEngine extends TestDb {
         stat.execute("create table test(id int, name blob)");
         PreparedStatement prep = conn.prepareStatement(
                 "insert into test values(1, ?)");
-        prep.setBinaryStream(1, new ByteArrayInputStream(new byte[129]));
+        prep.setBinaryStream(1,  new ByteArrayInputStream(new byte[129]));
         prep.execute();
         conn.close();
         conn = getConnection(dbName);
@@ -1132,7 +1131,7 @@ public class TestMVTableEngine extends TestDb {
                 "sm smallint," +
                 "bi bigint," +
                 "de decimal(5, 2)," +
-                "re real," +
+                "re real,"+
                 "do double," +
                 "ti time," +
                 "da date," +
@@ -1255,7 +1254,7 @@ public class TestMVTableEngine extends TestDb {
         prep.setObject(4, new Object[0]);
         prep.setObject(5, new Object[]{
                 new BigDecimal(new String(
-                        new char[1000]).replace((char) 0, '1'))});
+                new char[1000]).replace((char) 0, '1'))});
         prep.setObject(6, "test");
         prep.execute();
         if (!config.memory) {

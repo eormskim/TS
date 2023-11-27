@@ -116,27 +116,27 @@ public class TestFreeSpace extends TestBase {
             long pos = r.nextInt(1024);
             int length = 1 + r.nextInt(8 * 128);
             switch (r.nextInt(3)) {
-                case 0: {
-                    log.append("allocate(" + length + ");\n");
-                    long a = f1.allocate(length);
-                    long b = f2.allocate(length);
-                    assertEquals(a, b);
-                    break;
+            case 0: {
+                log.append("allocate(" + length + ");\n");
+                long a = f1.allocate(length);
+                long b = f2.allocate(length);
+                assertEquals(a, b);
+                break;
+            }
+            case 1:
+                if (f1.isUsed(pos, length)) {
+                    log.append("free(" + pos + ", " + length + ");\n");
+                    f1.free(pos, length);
+                    f2.free(pos, length);
                 }
-                case 1:
-                    if (f1.isUsed(pos, length)) {
-                        log.append("free(" + pos + ", " + length + ");\n");
-                        f1.free(pos, length);
-                        f2.free(pos, length);
-                    }
-                    break;
-                case 2:
-                    if (f1.isFree(pos, length)) {
-                        log.append("markUsed(" + pos + ", " + length + ");\n");
-                        f1.markUsed(pos, length);
-                        f2.markUsed(pos, length);
-                    }
-                    break;
+                break;
+            case 2:
+                if (f1.isFree(pos, length)) {
+                    log.append("markUsed(" + pos + ", " + length + ");\n");
+                    f1.markUsed(pos, length);
+                    f2.markUsed(pos, length);
+                }
+                break;
             }
             assertEquals(f1.toString(), f2.toString());
         }

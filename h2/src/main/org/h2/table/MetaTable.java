@@ -51,8 +51,8 @@ public abstract class MetaTable extends Table {
      * Create a new metadata table.
      *
      * @param schema the schema
-     * @param id     the object id
-     * @param type   the meta table type
+     * @param id the object id
+     * @param type the meta table type
      */
     protected MetaTable(Schema schema, int id, int type) {
         // tableName will be set later
@@ -67,7 +67,8 @@ public abstract class MetaTable extends Table {
     /**
      * Creates a column with the specified name and character string data type.
      *
-     * @param name the uppercase column name
+     * @param name
+     *            the uppercase column name
      * @return the column
      */
     final Column column(String name) {
@@ -79,8 +80,10 @@ public abstract class MetaTable extends Table {
     /**
      * Creates a column with the specified name and data type.
      *
-     * @param name the uppercase column name
-     * @param type the data type
+     * @param name
+     *            the uppercase column name
+     * @param type
+     *            the data type
      * @return the column
      */
     protected final Column column(String name, TypeInfo type) {
@@ -94,7 +97,7 @@ public abstract class MetaTable extends Table {
 
     @Override
     public final Index addIndex(SessionLocal session, String indexName, int indexId, IndexColumn[] cols,
-                                int uniqueColumnCount, IndexType indexType, boolean create, String indexComment) {
+            int uniqueColumnCount, IndexType indexType, boolean create, String indexComment) {
         throw DbException.getUnsupportedException("META");
     }
 
@@ -114,10 +117,10 @@ public abstract class MetaTable extends Table {
     /**
      * Checks index conditions.
      *
-     * @param session   the session
-     * @param value     the value
+     * @param session the session
+     * @param value the value
      * @param indexFrom the lower bound of value, or {@code null}
-     * @param indexTo   the higher bound of value, or {@code null}
+     * @param indexTo the higher bound of value, or {@code null}
      * @return whether row should be included into result
      */
     protected final boolean checkIndex(SessionLocal session, String value, Value indexFrom, Value indexTo) {
@@ -143,7 +146,7 @@ public abstract class MetaTable extends Table {
      * Check whether to hide the table. Tables are never hidden in the system
      * session.
      *
-     * @param table   the table
+     * @param table the table
      * @param session the session
      * @return whether the table is hidden
      */
@@ -156,8 +159,8 @@ public abstract class MetaTable extends Table {
      * last row filters.
      *
      * @param session the session
-     * @param first   the first row to return
-     * @param last    the last row to return
+     * @param first the first row to return
+     * @param last the last row to return
      * @return the generated rows
      */
     public abstract ArrayList<Row> generateRows(SessionLocal session, SearchRow first, SearchRow last);
@@ -190,8 +193,8 @@ public abstract class MetaTable extends Table {
     /**
      * Add a row to a list.
      *
-     * @param session         the session
-     * @param rows            the original row list
+     * @param session the session
+     * @param rows the original row list
      * @param stringsOrValues the values, or strings
      */
     protected final void add(SessionLocal session, ArrayList<Row> rows, Object... stringsOrValues) {

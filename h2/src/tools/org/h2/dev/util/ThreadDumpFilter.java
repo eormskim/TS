@@ -28,12 +28,12 @@ public class ThreadDumpFilter {
                 new BufferedReader(new FileReader(fileName)));
         PrintWriter writer = new PrintWriter(new BufferedWriter(
                 new FileWriter(fileName + ".filtered.txt")));
-        for (String s; (s = in.readLine()) != null; ) {
+        for (String s; (s = in.readLine()) != null;) {
             if (s.startsWith("Full thread")) {
                 do {
                     writer.println(s);
                     s = in.readLine();
-                } while (s != null && (s.length() == 0 || " \t\"".indexOf(s.charAt(0)) >= 0));
+                } while(s != null && (s.length() == 0 || " \t\"".indexOf(s.charAt(0)) >= 0));
             }
         }
         writer.close();

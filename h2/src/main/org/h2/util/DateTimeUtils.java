@@ -83,14 +83,14 @@ public class DateTimeUtils {
      */
     public static final long MAX_DATE_VALUE = (1_000_000_000L << SHIFT_YEAR) + (12 << SHIFT_MONTH) + 31;
 
-    private static final int[] NORMAL_DAYS_PER_MONTH = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    private static final int[] NORMAL_DAYS_PER_MONTH = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
     /**
      * Multipliers for {@link #convertScale(long, int, long)} and
      * {@link #appendNanos(StringBuilder, int)}.
      */
-    private static final int[] FRACTIONAL_SECONDS_TABLE = {1_000_000_000, 100_000_000,
-            10_000_000, 1_000_000, 100_000, 10_000, 1_000, 100, 10, 1};
+    private static final int[] FRACTIONAL_SECONDS_TABLE = { 1_000_000_000, 100_000_000,
+            10_000_000, 1_000_000, 100_000, 10_000, 1_000, 100, 10, 1 };
 
     private static volatile TimeZoneProvider LOCAL;
 
@@ -122,7 +122,8 @@ public class DateTimeUtils {
     /**
      * Returns current timestamp.
      *
-     * @param timeZone the time zone
+     * @param timeZone
+     *            the time zone
      * @return current timestamp
      */
     public static ValueTimestampTimeZone currentTimestamp(TimeZoneProvider timeZone) {
@@ -132,9 +133,11 @@ public class DateTimeUtils {
     /**
      * Returns current timestamp using the specified instant for its value.
      *
-     * @param timeZone the time zone
-     * @param now      timestamp source, must be greater than or equal to
-     *                 1970-01-01T00:00:00Z
+     * @param timeZone
+     *            the time zone
+     * @param now
+     *            timestamp source, must be greater than or equal to
+     *            1970-01-01T00:00:00Z
      * @return current timestamp
      */
     public static ValueTimestampTimeZone currentTimestamp(TimeZoneProvider timeZone, Instant now) {
@@ -153,9 +156,9 @@ public class DateTimeUtils {
      * Parse a date string. The format is: [+|-]year-month-day
      * or [+|-]yyyyMMdd.
      *
-     * @param s     the string to parse
+     * @param s the string to parse
      * @param start the parse index start
-     * @param end   the parse index end
+     * @param end the parse index end
      * @return the date value
      * @throws IllegalArgumentException if there is a problem
      */
@@ -197,9 +200,9 @@ public class DateTimeUtils {
      * Parse a time string. The format is: hour:minute[:second[.nanos]],
      * hhmm[ss[.nanos]], or hour.minute.second[.nanos].
      *
-     * @param s     the string to parse
+     * @param s the string to parse
      * @param start the parse index start
-     * @param end   the parse index end
+     * @param end the parse index end
      * @return the time in nanoseconds
      * @throws IllegalArgumentException if there is a problem
      */
@@ -279,9 +282,9 @@ public class DateTimeUtils {
     /**
      * Parse nanoseconds.
      *
-     * @param s     String to parse.
+     * @param s String to parse.
      * @param start Begin position at the string to read.
-     * @param end   End position at the string to read.
+     * @param end End position at the string to read.
      * @return Parsed nanoseconds.
      */
     static int parseNanos(String s, int start, int end) {
@@ -305,11 +308,14 @@ public class DateTimeUtils {
     /**
      * Parses timestamp value from the specified string.
      *
-     * @param s            string to parse
-     * @param provider     the cast information provider, may be {@code null} for
-     *                     Standard-compliant literals
-     * @param withTimeZone if {@code true} return {@link ValueTimestampTimeZone} instead of
-     *                     {@link ValueTimestamp}
+     * @param s
+     *            string to parse
+     * @param provider
+     *            the cast information provider, may be {@code null} for
+     *            Standard-compliant literals
+     * @param withTimeZone
+     *            if {@code true} return {@link ValueTimestampTimeZone} instead of
+     *            {@link ValueTimestamp}
      * @return parsed timestamp
      */
     public static Value parseTimestamp(String s, CastDataProvider provider, boolean withTimeZone) {
@@ -392,8 +398,10 @@ public class DateTimeUtils {
     /**
      * Parses TIME WITH TIME ZONE value from the specified string.
      *
-     * @param s        string to parse
-     * @param provider the cast information provider, or {@code null}
+     * @param s
+     *            string to parse
+     * @param provider
+     *            the cast information provider, or {@code null}
      * @return parsed time with time zone
      */
     public static ValueTimeTimeZone parseTimeWithTimeZone(String s, CastDataProvider provider) {
@@ -432,10 +440,12 @@ public class DateTimeUtils {
     /**
      * Calculates the seconds since epoch for the specified date value,
      * nanoseconds since midnight, and time zone offset.
-     *
-     * @param dateValue     date value
-     * @param timeNanos     nanoseconds since midnight
-     * @param offsetSeconds time zone offset in seconds
+     * @param dateValue
+     *            date value
+     * @param timeNanos
+     *            nanoseconds since midnight
+     * @param offsetSeconds
+     *            time zone offset in seconds
      * @return seconds since epoch in UTC
      */
     public static long getEpochSeconds(long dateValue, long timeNanos, int offsetSeconds) {
@@ -445,8 +455,10 @@ public class DateTimeUtils {
     /**
      * Extracts date value and nanos of day from the specified value.
      *
-     * @param value    value to extract fields from
-     * @param provider the cast information provider
+     * @param value
+     *            value to extract fields from
+     * @param provider
+     *            the cast information provider
      * @return array with date value and nanos of day
      */
     public static long[] dateAndTimeFromValue(Value value, CastDataProvider provider) {
@@ -471,7 +483,7 @@ public class DateTimeUtils {
             dateValue = v.getDateValue();
             timeNanos = v.getTimeNanos();
         }
-        return new long[]{dateValue, timeNanos};
+        return new long[] {dateValue, timeNanos};
     }
 
     /**
@@ -479,33 +491,38 @@ public class DateTimeUtils {
      * original value is a ValueTimestampTimeZone or ValueTimeTimeZone, returned
      * value will have the same time zone offset as original value.
      *
-     * @param original  original value
-     * @param dateValue date value for the returned value
-     * @param timeNanos nanos of day for the returned value
+     * @param original
+     *            original value
+     * @param dateValue
+     *            date value for the returned value
+     * @param timeNanos
+     *            nanos of day for the returned value
      * @return new value with specified date value and nanos of day
      */
     public static Value dateTimeToValue(Value original, long dateValue, long timeNanos) {
         switch (original.getValueType()) {
-            case Value.DATE:
-                return ValueDate.fromDateValue(dateValue);
-            case Value.TIME:
-                return ValueTime.fromNanos(timeNanos);
-            case Value.TIME_TZ:
-                return ValueTimeTimeZone.fromNanos(timeNanos, ((ValueTimeTimeZone) original).getTimeZoneOffsetSeconds());
-            case Value.TIMESTAMP:
-            default:
-                return ValueTimestamp.fromDateValueAndNanos(dateValue, timeNanos);
-            case Value.TIMESTAMP_TZ:
-                return ValueTimestampTimeZone.fromDateValueAndNanos(dateValue, timeNanos,
-                        ((ValueTimestampTimeZone) original).getTimeZoneOffsetSeconds());
+        case Value.DATE:
+            return ValueDate.fromDateValue(dateValue);
+        case Value.TIME:
+            return ValueTime.fromNanos(timeNanos);
+        case Value.TIME_TZ:
+            return ValueTimeTimeZone.fromNanos(timeNanos, ((ValueTimeTimeZone) original).getTimeZoneOffsetSeconds());
+        case Value.TIMESTAMP:
+        default:
+            return ValueTimestamp.fromDateValueAndNanos(dateValue, timeNanos);
+        case Value.TIMESTAMP_TZ:
+            return ValueTimestampTimeZone.fromDateValueAndNanos(dateValue, timeNanos,
+                    ((ValueTimestampTimeZone) original).getTimeZoneOffsetSeconds());
         }
     }
 
     /**
      * Returns day of week.
      *
-     * @param dateValue      the date value
-     * @param firstDayOfWeek first day of week, Monday as 1, Sunday as 7 or 0
+     * @param dateValue
+     *            the date value
+     * @param firstDayOfWeek
+     *            first day of week, Monday as 1, Sunday as 7 or 0
      * @return day of week
      * @see #getIsoDayOfWeek(long)
      */
@@ -516,7 +533,7 @@ public class DateTimeUtils {
     /**
      * Get the day of the week from the absolute day value.
      *
-     * @param absoluteValue  the absolute day
+     * @param absoluteValue the absolute day
      * @param firstDayOfWeek the first day of the week
      * @return the day of week
      */
@@ -528,7 +545,8 @@ public class DateTimeUtils {
     /**
      * Returns number of day in year.
      *
-     * @param dateValue the date value
+     * @param dateValue
+     *            the date value
      * @return number of day in year
      */
     public static int getDayOfYear(long dateValue) {
@@ -547,7 +565,8 @@ public class DateTimeUtils {
     /**
      * Returns ISO day of week.
      *
-     * @param dateValue the date value
+     * @param dateValue
+     *            the date value
      * @return ISO day of week, Monday as 1 to Sunday as 7
      * @see #getSundayDayOfWeek(long)
      */
@@ -558,7 +577,8 @@ public class DateTimeUtils {
     /**
      * Returns ISO number of week in year.
      *
-     * @param dateValue the date value
+     * @param dateValue
+     *            the date value
      * @return number of week in year
      * @see #getIsoWeekYear(long)
      * @see #getWeekOfYear(long, int, int)
@@ -570,7 +590,8 @@ public class DateTimeUtils {
     /**
      * Returns ISO week year.
      *
-     * @param dateValue the date value
+     * @param dateValue
+     *            the date value
      * @return ISO week year
      * @see #getIsoWeekOfYear(long)
      * @see #getWeekYear(long, int, int)
@@ -582,7 +603,8 @@ public class DateTimeUtils {
     /**
      * Returns day of week with Sunday as 1.
      *
-     * @param dateValue the date value
+     * @param dateValue
+     *            the date value
      * @return day of week, Sunday as 1 to Monday as 7
      * @see #getIsoDayOfWeek(long)
      */
@@ -593,9 +615,12 @@ public class DateTimeUtils {
     /**
      * Returns number of week in year.
      *
-     * @param dateValue              the date value
-     * @param firstDayOfWeek         first day of week, Monday as 1, Sunday as 7 or 0
-     * @param minimalDaysInFirstWeek minimal days in first week of year
+     * @param dateValue
+     *            the date value
+     * @param firstDayOfWeek
+     *            first day of week, Monday as 1, Sunday as 7 or 0
+     * @param minimalDaysInFirstWeek
+     *            minimal days in first week of year
      * @return number of week in year
      * @see #getIsoWeekOfYear(long)
      */
@@ -616,9 +641,12 @@ public class DateTimeUtils {
     /**
      * Get absolute day of the first day in the week year.
      *
-     * @param weekYear               the week year
-     * @param firstDayOfWeek         first day of week, Monday as 1, Sunday as 7 or 0
-     * @param minimalDaysInFirstWeek minimal days in first week of year
+     * @param weekYear
+     *            the week year
+     * @param firstDayOfWeek
+     *            first day of week, Monday as 1, Sunday as 7 or 0
+     * @param minimalDaysInFirstWeek
+     *            minimal days in first week of year
      * @return absolute day of the first day in the week year
      */
     public static long getWeekYearAbsoluteStart(int weekYear, int firstDayOfWeek, int minimalDaysInFirstWeek) {
@@ -634,9 +662,12 @@ public class DateTimeUtils {
     /**
      * Returns week year.
      *
-     * @param dateValue              the date value
-     * @param firstDayOfWeek         first day of week, Monday as 1, Sunday as 7 or 0
-     * @param minimalDaysInFirstWeek minimal days in first week of year
+     * @param dateValue
+     *            the date value
+     * @param firstDayOfWeek
+     *            first day of week, Monday as 1, Sunday as 7 or 0
+     * @param minimalDaysInFirstWeek
+     *            minimal days in first week of year
      * @return week year
      * @see #getIsoWeekYear(long)
      */
@@ -657,7 +688,7 @@ public class DateTimeUtils {
     /**
      * Returns number of days in month.
      *
-     * @param year  the year
+     * @param year the year
      * @param month the month
      * @return number of days in the specified month
      */
@@ -671,9 +702,9 @@ public class DateTimeUtils {
     /**
      * Verify if the specified date is valid.
      *
-     * @param year  the year
+     * @param year the year
      * @param month the month (January is 1)
-     * @param day   the day (1 is the first of the month)
+     * @param day the day (1 is the first of the month)
      * @return true if it is valid
      */
     public static boolean isValidDate(int year, int month, int day) {
@@ -713,9 +744,9 @@ public class DateTimeUtils {
     /**
      * Get the date value from a given date.
      *
-     * @param year  the year
+     * @param year the year
      * @param month the month (1..12)
-     * @param day   the day (1..31)
+     * @param day the day (1..31)
      * @return the date value
      */
     public static long dateValue(long year, int month, int day) {
@@ -727,9 +758,12 @@ public class DateTimeUtils {
      * values of month and/or day. Used after addition or subtraction month or years
      * to (from) it to get a valid date.
      *
-     * @param year  the year
-     * @param month the month, if out of range month and year will be normalized
-     * @param day   the day of the month, if out of range it will be saturated
+     * @param year
+     *            the year
+     * @param month
+     *            the month, if out of range month and year will be normalized
+     * @param day
+     *            the day of the month, if out of range it will be saturated
      * @return the date value
      */
     public static long dateValueFromDenormalizedDate(long year, long month, int day) {
@@ -797,7 +831,8 @@ public class DateTimeUtils {
     /**
      * Calculate the absolute day for a January, 1 of the specified year.
      *
-     * @param year the year
+     * @param year
+     *            the year
      * @return the absolute day
      */
     public static long absoluteDayFromYear(long year) {
@@ -872,7 +907,8 @@ public class DateTimeUtils {
     /**
      * Return the next date value.
      *
-     * @param dateValue the date value
+     * @param dateValue
+     *            the date value
      * @return the next date value
      */
     public static long incrementDateValue(long dateValue) {
@@ -897,7 +933,8 @@ public class DateTimeUtils {
     /**
      * Return the previous date value.
      *
-     * @param dateValue the date value
+     * @param dateValue
+     *            the date value
      * @return the previous date value
      */
     public static long decrementDateValue(long dateValue) {
@@ -918,7 +955,7 @@ public class DateTimeUtils {
     /**
      * Append a date to the string builder.
      *
-     * @param builder   the target string builder
+     * @param builder the target string builder
      * @param dateValue the date value
      * @return the specified string builder
      */
@@ -941,7 +978,7 @@ public class DateTimeUtils {
      * Append a time to the string builder.
      *
      * @param builder the target string builder
-     * @param nanos   the time in nanoseconds
+     * @param nanos the time in nanoseconds
      * @return the specified string builder
      */
     public static StringBuilder appendTime(StringBuilder builder, long nanos) {
@@ -971,7 +1008,7 @@ public class DateTimeUtils {
      * Append nanoseconds of time, if any.
      *
      * @param builder string builder to append to
-     * @param nanos   nanoseconds of second
+     * @param nanos nanoseconds of second
      * @return the specified string builder
      */
     static StringBuilder appendNanos(StringBuilder builder, int nanos) {
@@ -1001,7 +1038,7 @@ public class DateTimeUtils {
      * Append a time zone to the string builder.
      *
      * @param builder the target string builder
-     * @param tz      the time zone offset in seconds
+     * @param tz the time zone offset in seconds
      * @return the specified string builder
      */
     public static StringBuilder appendTimeZone(StringBuilder builder, int tz) {
@@ -1028,7 +1065,8 @@ public class DateTimeUtils {
     /**
      * Generates time zone name for the specified offset in seconds.
      *
-     * @param offsetSeconds time zone offset in seconds
+     * @param offsetSeconds
+     *            time zone offset in seconds
      * @return time zone name
      */
     public static String timeZoneNameFromOffsetSeconds(int offsetSeconds) {
@@ -1059,8 +1097,8 @@ public class DateTimeUtils {
      * Converts scale of nanoseconds.
      *
      * @param nanosOfDay nanoseconds of day
-     * @param scale      fractional seconds precision
-     * @param range      the allowed range of values (0..range-1)
+     * @param scale fractional seconds precision
+     * @param range the allowed range of values (0..range-1)
      * @return scaled value
      */
     public static long convertScale(long nanosOfDay, int scale, long range) {
@@ -1089,7 +1127,7 @@ public class DateTimeUtils {
      * @return timestamp with time zone with new offset
      */
     public static ValueTimestampTimeZone timestampTimeZoneAtOffset(long dateValue, long timeNanos, int oldOffset,
-                                                                   int newOffset) {
+            int newOffset) {
         timeNanos += (newOffset - oldOffset) * DateTimeUtils.NANOS_PER_SECOND;
         // Value can be 18+18 hours before or after the limit
         if (timeNanos < 0) {

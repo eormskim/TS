@@ -23,7 +23,8 @@ public abstract class VirtualConstructedTable extends VirtualTable {
     /**
      * Read the rows from the table.
      *
-     * @param session the session
+     * @param session
+     *            the session
      * @return the result
      */
     public abstract ResultInterface getResult(SessionLocal session);

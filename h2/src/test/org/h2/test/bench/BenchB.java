@@ -89,7 +89,7 @@ public class BenchB implements Bench, Runnable {
                         "BID INT, ABALANCE INT, FILLER VARCHAR(84))",
                 "CREATE TABLE HISTORY(" +
                         "TID INT, BID INT, AID INT, " +
-                        "DELTA INT, HTIME DATETIME, FILLER VARCHAR(22))"};
+                        "DELTA INT, HTIME DATETIME, FILLER VARCHAR(22))" };
         for (String sql : create) {
             db.update(sql);
         }
@@ -101,7 +101,7 @@ public class BenchB implements Bench, Runnable {
         for (int i = 0; i < BRANCHES * SCALE; i++) {
             prep.setInt(1, i);
             db.update(prep, "insertBranches");
-            if ((i + 1) % commitEvery == 0) {
+            if ((i+1) % commitEvery == 0) {
                 db.commit();
             }
         }
@@ -112,7 +112,7 @@ public class BenchB implements Bench, Runnable {
             prep.setInt(1, i);
             prep.setInt(2, i / TELLERS);
             db.update(prep, "insertTellers");
-            if ((i + 1) % commitEvery == 0) {
+            if ((i+1) % commitEvery == 0) {
                 db.commit();
             }
         }
@@ -124,7 +124,7 @@ public class BenchB implements Bench, Runnable {
             prep.setInt(1, i);
             prep.setInt(2, i / ACCOUNTS);
             db.update(prep, "insertAccounts");
-            if ((i + 1) % commitEvery == 0) {
+            if ((i+1) % commitEvery == 0) {
                 db.commit();
             }
         }

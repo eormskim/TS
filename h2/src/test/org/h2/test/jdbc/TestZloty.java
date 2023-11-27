@@ -63,7 +63,7 @@ public class TestZloty extends TestDb {
                 "CREATE TABLE TEST(ID INT, DATA BINARY)");
         PreparedStatement prep = conn.prepareStatement(
                 "INSERT INTO TEST VALUES(?, ?)");
-        byte[] shared = {0};
+        byte[] shared = { 0 };
         prep.setInt(1, 0);
         prep.setBytes(2, shared);
         prep.execute();

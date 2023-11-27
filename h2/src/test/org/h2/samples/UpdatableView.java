@@ -49,7 +49,7 @@ public class UpdatableView extends TriggerAdapter {
 
             // Test an INSERT operation and check that generated keys from the
             // source table are returned as expected.
-            stat.execute("INSERT INTO TEST_VIEW(NAME) VALUES 'Hello', 'World'", new String[]{"ID"});
+            stat.execute("INSERT INTO TEST_VIEW(NAME) VALUES 'Hello', 'World'", new String[] { "ID" });
             try (ResultSet rs = stat.getGeneratedKeys()) {
                 while (rs.next()) {
                     System.out.printf("Key %d was generated%n", rs.getLong(1));
@@ -80,7 +80,7 @@ public class UpdatableView extends TriggerAdapter {
 
     @Override
     public void init(Connection conn, String schemaName, String triggerName, String tableName, boolean before,
-                     int type) throws SQLException {
+            int type) throws SQLException {
         prepDelete = conn.prepareStatement("DELETE FROM TEST_TABLE WHERE ID = ?");
         // INSERT and UPDATE triggers should return the FINAL values of the row.
         // Table TEST_TABLE has a generated column, so the FINAL row can be

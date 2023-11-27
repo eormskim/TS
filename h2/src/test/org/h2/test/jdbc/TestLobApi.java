@@ -186,7 +186,6 @@ public class TestLobApi extends TestDb {
         assertThrows(ErrorCode.IO_EXCEPTION_1, prep).
                 setCharacterStream(1, new Reader() {
                     int pos;
-
                     @Override
                     public int read(char[] buff, int off, int len) throws IOException {
                         pos += len;
@@ -198,7 +197,6 @@ public class TestLobApi extends TestDb {
                         }
                         return len;
                     }
-
                     @Override
                     public void close() throws IOException {
                         // nothing to do
@@ -213,7 +211,6 @@ public class TestLobApi extends TestDb {
         assertThrows(ErrorCode.IO_EXCEPTION_1, prep).
                 setBinaryStream(2, new InputStream() {
                     int pos;
-
                     @Override
                     public int read() throws IOException {
                         pos++;

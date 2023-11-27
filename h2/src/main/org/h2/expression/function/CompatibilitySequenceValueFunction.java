@@ -80,14 +80,14 @@ public final class CompatibilitySequenceValueFunction extends Function1_2 {
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-            case ExpressionVisitor.INDEPENDENT:
-            case ExpressionVisitor.DETERMINISTIC:
-            case ExpressionVisitor.QUERY_COMPARABLE:
+        case ExpressionVisitor.INDEPENDENT:
+        case ExpressionVisitor.DETERMINISTIC:
+        case ExpressionVisitor.QUERY_COMPARABLE:
+            return false;
+        case ExpressionVisitor.READONLY:
+            if (!current) {
                 return false;
-            case ExpressionVisitor.READONLY:
-                if (!current) {
-                    return false;
-                }
+            }
         }
         return super.isEverything(visitor);
     }

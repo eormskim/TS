@@ -32,7 +32,8 @@ public final class PartitionData {
     /**
      * Creates new instance of partition data.
      *
-     * @param data aggregate data
+     * @param data
+     *            aggregate data
      */
     PartitionData(Object data) {
         this.data = data;
@@ -59,7 +60,8 @@ public final class PartitionData {
     /**
      * Sets the result.
      *
-     * @param result the result to set
+     * @param result
+     *            the result to set
      */
     void setResult(Value result) {
         this.result = result;
@@ -78,7 +80,8 @@ public final class PartitionData {
     /**
      * Sets the ordered result.
      *
-     * @param orderedResult the ordered result to set
+     * @param orderedResult
+     *            the ordered result to set
      */
     void setOrderedResult(HashMap<Integer, Value> orderedResult) {
         this.orderedResult = orderedResult;

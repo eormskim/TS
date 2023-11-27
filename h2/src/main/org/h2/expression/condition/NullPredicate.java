@@ -113,9 +113,9 @@ public final class NullPredicate extends SimplePredicate {
             return o.getNotIfPossible(session);
         }
         switch (left.getType().getValueType()) {
-            case Value.UNKNOWN:
-            case Value.ROW:
-                return null;
+        case Value.UNKNOWN:
+        case Value.ROW:
+            return null;
         }
         return new NullPredicate(left, !not, false);
     }

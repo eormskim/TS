@@ -52,7 +52,7 @@ public class OutputCatcher {
     /**
      * Write the output to a HTML file.
      *
-     * @param title    the title
+     * @param title the title
      * @param fileName the file name
      */
     public void writeTo(String title, String fileName) throws IOException {
@@ -174,42 +174,42 @@ public class OutputCatcher {
          * Write a character.
          *
          * @param errorStream if the character comes from the error stream
-         * @param b           the character
+         * @param b the character
          */
         void write(boolean errorStream, int b) throws IOException {
             setError(errorStream);
             switch (b) {
-                case '\n':
-                    super.write(BR);
-                    convertSpace = true;
-                    break;
-                case '\t':
+            case '\n':
+                super.write(BR);
+                convertSpace = true;
+                break;
+            case '\t':
+                super.write(NBSP);
+                super.write(NBSP);
+                break;
+            case ' ':
+                if (convertSpace) {
                     super.write(NBSP);
-                    super.write(NBSP);
-                    break;
-                case ' ':
-                    if (convertSpace) {
-                        super.write(NBSP);
-                    } else {
-                        super.write(b);
-                    }
-                    break;
-                case '<':
-                    super.write(LT);
-                    break;
-                case '>':
-                    super.write(GT);
-                    break;
-                case '&':
-                    super.write(AMP);
-                    break;
-                default:
-                    if (b >= 128) {
-                        super.write(("&#" + b + ";").getBytes());
-                    } else {
-                        super.write(b);
-                    }
-                    convertSpace = false;
+                } else {
+                    super.write(b);
+                }
+                break;
+            case '<':
+                super.write(LT);
+                break;
+            case '>':
+                super.write(GT);
+                break;
+            case '&':
+                super.write(AMP);
+                break;
+            default:
+                if (b >= 128) {
+                    super.write(("&#" + b + ";").getBytes());
+                } else {
+                    super.write(b);
+                }
+                convertSpace = false;
             }
         }
 

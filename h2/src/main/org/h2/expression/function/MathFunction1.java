@@ -130,66 +130,66 @@ public final class MathFunction1 extends Function1 {
         }
         double d = v.getDouble();
         switch (function) {
-            case SIN:
-                d = Math.sin(d);
-                break;
-            case COS:
-                d = Math.cos(d);
-                break;
-            case TAN:
-                d = Math.tan(d);
-                break;
-            case COT:
-                d = Math.tan(d);
-                if (d == 0.0) {
-                    throw DbException.get(ErrorCode.DIVISION_BY_ZERO_1, getTraceSQL());
-                }
-                d = 1d / d;
-                break;
-            case SINH:
-                d = Math.sinh(d);
-                break;
-            case COSH:
-                d = Math.cosh(d);
-                break;
-            case TANH:
-                d = Math.tanh(d);
-                break;
-            case ASIN:
-                d = Math.asin(d);
-                break;
-            case ACOS:
-                d = Math.acos(d);
-                break;
-            case ATAN:
-                d = Math.atan(d);
-                break;
-            case LOG10:
-                if (d <= 0) {
-                    throw DbException.getInvalidValueException("LOG10() argument", d);
-                }
-                d = Math.log10(d);
-                break;
-            case LN:
-                if (d <= 0) {
-                    throw DbException.getInvalidValueException("LN() argument", d);
-                }
-                d = Math.log(d);
-                break;
-            case EXP:
-                d = Math.exp(d);
-                break;
-            case SQRT:
-                d = Math.sqrt(d);
-                break;
-            case DEGREES:
-                d = Math.toDegrees(d);
-                break;
-            case RADIANS:
-                d = Math.toRadians(d);
-                break;
-            default:
-                throw DbException.getInternalError("function=" + function);
+        case SIN:
+            d = Math.sin(d);
+            break;
+        case COS:
+            d = Math.cos(d);
+            break;
+        case TAN:
+            d = Math.tan(d);
+            break;
+        case COT:
+            d = Math.tan(d);
+            if (d == 0.0) {
+                throw DbException.get(ErrorCode.DIVISION_BY_ZERO_1, getTraceSQL());
+            }
+            d = 1d / d;
+            break;
+        case SINH:
+            d = Math.sinh(d);
+            break;
+        case COSH:
+            d = Math.cosh(d);
+            break;
+        case TANH:
+            d = Math.tanh(d);
+            break;
+        case ASIN:
+            d = Math.asin(d);
+            break;
+        case ACOS:
+            d = Math.acos(d);
+            break;
+        case ATAN:
+            d = Math.atan(d);
+            break;
+        case LOG10:
+            if (d <= 0) {
+                throw DbException.getInvalidValueException("LOG10() argument", d);
+            }
+            d = Math.log10(d);
+            break;
+        case LN:
+            if (d <= 0) {
+                throw DbException.getInvalidValueException("LN() argument", d);
+            }
+            d = Math.log(d);
+            break;
+        case EXP:
+            d = Math.exp(d);
+            break;
+        case SQRT:
+            d = Math.sqrt(d);
+            break;
+        case DEGREES:
+            d = Math.toDegrees(d);
+            break;
+        case RADIANS:
+            d = Math.toRadians(d);
+            break;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         return ValueDouble.get(d);
     }

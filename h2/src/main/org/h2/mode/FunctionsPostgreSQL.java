@@ -127,7 +127,8 @@ public final class FunctionsPostgreSQL extends ModeFunction {
     /**
      * Returns mode-specific function for a given name, or {@code null}.
      *
-     * @param upperName the upper-case name of a function
+     * @param upperName
+     *            the upper-case name of a function
      * @return the function with specified name or {@code null}
      */
     public static FunctionsPostgreSQL getFunction(String upperName) {
@@ -146,29 +147,29 @@ public final class FunctionsPostgreSQL extends ModeFunction {
     protected void checkParameterCount(int len) {
         int min, max;
         switch (info.type) {
-            case HAS_DATABASE_PRIVILEGE:
-            case HAS_SCHEMA_PRIVILEGE:
-            case HAS_TABLE_PRIVILEGE:
-                min = 2;
-                max = 3;
-                break;
-            case OBJ_DESCRIPTION:
-            case PG_RELATION_SIZE:
-                min = 1;
-                max = 2;
-                break;
-            case PG_GET_INDEXDEF:
-                if (len != 1 && len != 3) {
-                    throw DbException.get(ErrorCode.INVALID_PARAMETER_COUNT_2, info.name, "1, 3");
-                }
-                return;
-            case PG_GET_EXPR:
-            case ARRAY_TO_STRING:
-                min = 2;
-                max = 3;
-                break;
-            default:
-                throw DbException.getInternalError("type=" + info.type);
+        case HAS_DATABASE_PRIVILEGE:
+        case HAS_SCHEMA_PRIVILEGE:
+        case HAS_TABLE_PRIVILEGE:
+            min = 2;
+            max = 3;
+            break;
+        case OBJ_DESCRIPTION:
+        case PG_RELATION_SIZE:
+            min = 1;
+            max = 2;
+            break;
+        case PG_GET_INDEXDEF:
+            if (len != 1 && len != 3) {
+                throw DbException.get(ErrorCode.INVALID_PARAMETER_COUNT_2, info.name, "1, 3");
+            }
+            return;
+        case PG_GET_EXPR:
+        case ARRAY_TO_STRING:
+            min = 2;
+            max = 3;
+            break;
+        default:
+            throw DbException.getInternalError("type=" + info.type);
         }
         if (len < min || len > max) {
             throw DbException.get(ErrorCode.INVALID_PARAMETER_COUNT_2, info.name, min + ".." + max);
@@ -178,15 +179,15 @@ public final class FunctionsPostgreSQL extends ModeFunction {
     @Override
     public Expression optimize(SessionLocal session) {
         switch (info.type) {
-            case CURRENT_DATABASE:
-                return new CurrentGeneralValueSpecification(CurrentGeneralValueSpecification.CURRENT_CATALOG)
-                        .optimize(session);
-            default:
-                boolean allConst = optimizeArguments(session);
-                type = TypeInfo.getTypeInfo(info.returnDataType);
-                if (allConst) {
-                    return ValueExpression.get(getValue(session));
-                }
+        case CURRENT_DATABASE:
+            return new CurrentGeneralValueSpecification(CurrentGeneralValueSpecification.CURRENT_CATALOG)
+                    .optimize(session);
+        default:
+            boolean allConst = optimizeArguments(session);
+            type = TypeInfo.getTypeInfo(info.returnDataType);
+            if (allConst) {
+                return ValueExpression.get(getValue(session));
+            }
         }
         return this;
     }
@@ -202,109 +203,109 @@ public final class FunctionsPostgreSQL extends ModeFunction {
         Value v2 = getNullOrValue(session, args, values, 2);
         Value result;
         switch (info.type) {
-            case CURRTID2:
-                // Not implemented
-                result = ValueInteger.get(1);
-                break;
-            case FORMAT_TYPE:
-                result = v0 != ValueNull.INSTANCE ? ValueVarchar.get(PgServer.formatType(v0.getInt())) //
-                        : ValueNull.INSTANCE;
-                break;
-            case HAS_DATABASE_PRIVILEGE:
-            case HAS_SCHEMA_PRIVILEGE:
-            case HAS_TABLE_PRIVILEGE:
-            case PG_TABLE_IS_VISIBLE:
-                // Not implemented
-                result = ValueBoolean.TRUE;
-                break;
-            case LASTVAL:
-                result = session.getLastIdentity();
-                if (result == ValueNull.INSTANCE) {
-                    throw DbException.get(ErrorCode.CURRENT_SEQUENCE_VALUE_IS_NOT_DEFINED_IN_SESSION_1, "lastval()");
-                }
-                result = result.convertToBigint(null);
-                break;
-            case VERSION:
-                result = ValueVarchar
-                        .get("PostgreSQL " + Constants.PG_VERSION + " server protocol using H2 " + Constants.FULL_VERSION);
-                break;
-            case OBJ_DESCRIPTION:
-                // Not implemented
+        case CURRTID2:
+            // Not implemented
+            result = ValueInteger.get(1);
+            break;
+        case FORMAT_TYPE:
+            result = v0 != ValueNull.INSTANCE ? ValueVarchar.get(PgServer.formatType(v0.getInt())) //
+                    : ValueNull.INSTANCE;
+            break;
+        case HAS_DATABASE_PRIVILEGE:
+        case HAS_SCHEMA_PRIVILEGE:
+        case HAS_TABLE_PRIVILEGE:
+        case PG_TABLE_IS_VISIBLE:
+            // Not implemented
+            result = ValueBoolean.TRUE;
+            break;
+        case LASTVAL:
+            result = session.getLastIdentity();
+            if (result == ValueNull.INSTANCE) {
+                throw DbException.get(ErrorCode.CURRENT_SEQUENCE_VALUE_IS_NOT_DEFINED_IN_SESSION_1, "lastval()");
+            }
+            result = result.convertToBigint(null);
+            break;
+        case VERSION:
+            result = ValueVarchar
+                    .get("PostgreSQL " + Constants.PG_VERSION + " server protocol using H2 " + Constants.FULL_VERSION);
+            break;
+        case OBJ_DESCRIPTION:
+            // Not implemented
+            result = ValueNull.INSTANCE;
+            break;
+        case PG_ENCODING_TO_CHAR:
+            result = ValueVarchar.get(encodingToChar(v0.getInt()));
+            break;
+        case PG_GET_EXPR:
+            // Not implemented
+            result = ValueNull.INSTANCE;
+            break;
+        case PG_GET_INDEXDEF:
+            result = getIndexdef(session, v0.getInt(), v1, v2);
+            break;
+        case PG_GET_USERBYID:
+            result = ValueVarchar.get(getUserbyid(session, v0.getInt()));
+            break;
+        case PG_POSTMASTER_START_TIME:
+            result = session.getDatabase().getSystemSession().getSessionStart();
+            break;
+        case PG_RELATION_SIZE:
+            // Optional second argument is ignored
+            result = relationSize(session, v0);
+            break;
+        case SET_CONFIG:
+            // Not implemented
+            result = v1.convertTo(Value.VARCHAR);
+            break;
+        case ARRAY_TO_STRING:
+            if (v0 == ValueNull.INSTANCE || v1 == ValueNull.INSTANCE) {
                 result = ValueNull.INSTANCE;
                 break;
-            case PG_ENCODING_TO_CHAR:
-                result = ValueVarchar.get(encodingToChar(v0.getInt()));
-                break;
-            case PG_GET_EXPR:
-                // Not implemented
-                result = ValueNull.INSTANCE;
-                break;
-            case PG_GET_INDEXDEF:
-                result = getIndexdef(session, v0.getInt(), v1, v2);
-                break;
-            case PG_GET_USERBYID:
-                result = ValueVarchar.get(getUserbyid(session, v0.getInt()));
-                break;
-            case PG_POSTMASTER_START_TIME:
-                result = session.getDatabase().getSystemSession().getSessionStart();
-                break;
-            case PG_RELATION_SIZE:
-                // Optional second argument is ignored
-                result = relationSize(session, v0);
-                break;
-            case SET_CONFIG:
-                // Not implemented
-                result = v1.convertTo(Value.VARCHAR);
-                break;
-            case ARRAY_TO_STRING:
-                if (v0 == ValueNull.INSTANCE || v1 == ValueNull.INSTANCE) {
-                    result = ValueNull.INSTANCE;
-                    break;
+            }
+            StringJoiner joiner = new StringJoiner(v1.getString());
+            if (v0.getValueType() != Value.ARRAY) {
+                throw DbException.getInvalidValueException("ARRAY_TO_STRING array", v0);
+            }
+            String nullString = null;
+            if (v2 != null) {
+                nullString = v2.getString();
+            }
+            for (Value v : ((ValueArray) v0).getList()) {
+                if (v != ValueNull.INSTANCE) {
+                    joiner.add(v.getString());
+                } else if (nullString != null) {
+                    joiner.add(nullString);
                 }
-                StringJoiner joiner = new StringJoiner(v1.getString());
-                if (v0.getValueType() != Value.ARRAY) {
-                    throw DbException.getInvalidValueException("ARRAY_TO_STRING array", v0);
-                }
-                String nullString = null;
-                if (v2 != null) {
-                    nullString = v2.getString();
-                }
-                for (Value v : ((ValueArray) v0).getList()) {
-                    if (v != ValueNull.INSTANCE) {
-                        joiner.add(v.getString());
-                    } else if (nullString != null) {
-                        joiner.add(nullString);
-                    }
-                }
-                result = ValueVarchar.get(joiner.toString());
-                break;
-            case PG_STAT_GET_NUMSCANS:
-                // Not implemented
-                result = ValueInteger.get(0);
-                break;
-            case TO_DATE:
-                result = ToDateParser.toDate(session, v0.getString(), v1.getString()).convertToDate(session);
-                break;
-            case TO_TIMESTAMP:
-                result = ToDateParser.toTimestampTz(session, v0.getString(), v1.getString());
-                break;
-            default:
-                throw DbException.getInternalError("type=" + info.type);
+            }
+            result = ValueVarchar.get(joiner.toString());
+            break;
+        case PG_STAT_GET_NUMSCANS:
+            // Not implemented
+            result = ValueInteger.get(0);
+            break;
+        case TO_DATE:
+            result = ToDateParser.toDate(session, v0.getString(), v1.getString()).convertToDate(session);
+            break;
+        case TO_TIMESTAMP:
+            result = ToDateParser.toTimestampTz(session, v0.getString(), v1.getString());
+            break;
+        default:
+            throw DbException.getInternalError("type=" + info.type);
         }
         return result;
     }
 
     private static String encodingToChar(int code) {
         switch (code) {
-            case 0:
-                return "SQL_ASCII";
-            case 6:
-                return "UTF8";
-            case 8:
-                return "LATIN1";
-            default:
-                // This function returns empty string for unknown encodings
-                return code < 40 ? "UTF8" : "";
+        case 0:
+            return "SQL_ASCII";
+        case 6:
+            return "UTF8";
+        case 8:
+            return "LATIN1";
+        default:
+            // This function returns empty string for unknown encodings
+            return code < 40 ? "UTF8" : "";
         }
     }
 
@@ -332,8 +333,7 @@ public final class FunctionsPostgreSQL extends ModeFunction {
     private static String getUserbyid(SessionLocal session, int uid) {
         User u = session.getUser();
         String name;
-        search:
-        {
+        search: {
             if (u.getId() == uid) {
                 name = u.getName();
                 break search;

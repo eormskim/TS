@@ -12,7 +12,6 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-
 import org.h2.security.AES;
 import org.h2.security.SHA256;
 import org.h2.store.fs.FileBaseDefault;

@@ -11,7 +11,6 @@ import java.io.OutputStream;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
-
 import org.h2.store.fs.FilePath;
 import org.h2.store.fs.FilePathWrapper;
 import org.h2.store.fs.FileUtils;
@@ -94,7 +93,7 @@ public class FilePathEncrypt extends FilePathWrapper {
         }
         password = fileName.substring(0, idx);
         fileName = fileName.substring(idx + 1);
-        return new String[]{password, fileName};
+        return new String[] { password, fileName };
     }
 
     /**

@@ -31,8 +31,10 @@ public final class JSONByteArrayTarget extends JSONTarget<byte[]> {
     /**
      * Encodes a JSON string and appends it to the specified output stream.
      *
-     * @param baos the output stream to append to
-     * @param s    the string to encode
+     * @param baos
+     *            the output stream to append to
+     * @param s
+     *            the string to encode
      * @return the specified output stream
      */
     public static ByteArrayOutputStream encodeString(ByteArrayOutputStream baos, String s) {
@@ -40,62 +42,62 @@ public final class JSONByteArrayTarget extends JSONTarget<byte[]> {
         for (int i = 0, length = s.length(); i < length; i++) {
             char c = s.charAt(i);
             switch (c) {
-                case '\b':
-                    baos.write('\\');
-                    baos.write('b');
-                    break;
-                case '\t':
-                    baos.write('\\');
-                    baos.write('t');
-                    break;
-                case '\f':
-                    baos.write('\\');
-                    baos.write('f');
-                    break;
-                case '\n':
-                    baos.write('\\');
-                    baos.write('n');
-                    break;
-                case '\r':
-                    baos.write('\\');
-                    baos.write('r');
-                    break;
-                case '"':
-                    baos.write('\\');
-                    baos.write('"');
-                    break;
-                case '\\':
-                    baos.write('\\');
-                    baos.write('\\');
-                    break;
-                default:
-                    if (c >= ' ') {
-                        if (c < 0x80) {
-                            baos.write(c);
-                        } else if (c < 0x800) {
-                            baos.write(0xc0 | c >> 6);
-                            baos.write(0x80 | c & 0x3f);
-                        } else if (!Character.isSurrogate(c)) {
-                            baos.write(0xe0 | c >> 12);
-                            baos.write(0x80 | c >> 6 & 0x3f);
-                            baos.write(0x80 | c & 0x3f);
-                        } else {
-                            char c2;
-                            if (!Character.isHighSurrogate(c) || ++i >= length
-                                    || !Character.isLowSurrogate(c2 = s.charAt(i))) {
-                                throw new IllegalArgumentException();
-                            }
-                            int uc = Character.toCodePoint(c, c2);
-                            baos.write(0xf0 | uc >> 18);
-                            baos.write(0x80 | uc >> 12 & 0x3f);
-                            baos.write(0x80 | uc >> 6 & 0x3f);
-                            baos.write(0x80 | uc & 0x3f);
-                        }
+            case '\b':
+                baos.write('\\');
+                baos.write('b');
+                break;
+            case '\t':
+                baos.write('\\');
+                baos.write('t');
+                break;
+            case '\f':
+                baos.write('\\');
+                baos.write('f');
+                break;
+            case '\n':
+                baos.write('\\');
+                baos.write('n');
+                break;
+            case '\r':
+                baos.write('\\');
+                baos.write('r');
+                break;
+            case '"':
+                baos.write('\\');
+                baos.write('"');
+                break;
+            case '\\':
+                baos.write('\\');
+                baos.write('\\');
+                break;
+            default:
+                if (c >= ' ') {
+                    if (c < 0x80) {
+                        baos.write(c);
+                    } else if (c < 0x800) {
+                        baos.write(0xc0 | c >> 6);
+                        baos.write(0x80 | c & 0x3f);
+                    } else if (!Character.isSurrogate(c)) {
+                        baos.write(0xe0 | c >> 12);
+                        baos.write(0x80 | c >> 6 & 0x3f);
+                        baos.write(0x80 | c & 0x3f);
                     } else {
-                        baos.write(U00_BYTES, 0, 4);
-                        baos.write(HEX[c >>> 4 & 0xf]);
-                        baos.write(HEX[c & 0xf]);
+                        char c2;
+                        if (!Character.isHighSurrogate(c) || ++i >= length
+                                || !Character.isLowSurrogate(c2 = s.charAt(i))) {
+                            throw new IllegalArgumentException();
+                        }
+                        int uc = Character.toCodePoint(c, c2);
+                        baos.write(0xf0 | uc >> 18);
+                        baos.write(0x80 | uc >> 12 & 0x3f);
+                        baos.write(0x80 | uc >> 6 & 0x3f);
+                        baos.write(0x80 | uc & 0x3f);
                     }
+                } else {
+                    baos.write(U00_BYTES, 0, 4);
+                    baos.write(HEX[c >>> 4 & 0xf]);
+                    baos.write(HEX[c & 0xf]);
+                }
             }
         }
         baos.write('"');

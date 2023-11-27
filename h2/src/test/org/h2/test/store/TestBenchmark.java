@@ -13,7 +13,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.h2.mvstore.MVMap;
 import org.h2.mvstore.MVStore;
 import org.h2.store.FileLister;
@@ -72,11 +71,11 @@ public class TestBenchmark extends TestDb {
     }
 
     private void testConcurrency(String fileName,
-                                 int concurrency, final int count) throws Exception {
+            int concurrency, final int count) throws Exception {
         Thread.sleep(1000);
-        final MVStore store = new MVStore.Builder().cacheSize(256).
-                cacheConcurrency(concurrency).
-                fileName(fileName).open();
+            final MVStore store = new MVStore.Builder().cacheSize(256).
+                    cacheConcurrency(concurrency).
+                    fileName(fileName).open();
         int threadCount = 128;
         final CountDownLatch wait = new CountDownLatch(1);
         final AtomicInteger counter = new AtomicInteger();

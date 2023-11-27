@@ -46,14 +46,14 @@ public class Compact {
     /**
      * Utility method to compact a database.
      *
-     * @param dir      the directory
-     * @param dbName   the database name
-     * @param user     the user name
+     * @param dir the directory
+     * @param dbName the database name
+     * @param user the user name
      * @param password the password
      * @throws SQLException on failure
      */
     public static void compact(String dir, String dbName,
-                               String user, String password) throws SQLException {
+            String user, String password) throws SQLException {
         String url = "jdbc:h2:" + dir + "/" + dbName;
         String file = "data/test.sql";
         Script.process(url, user, password, file, "", "");

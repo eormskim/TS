@@ -39,14 +39,14 @@ public class AlterDomainExpressions extends AlterDomain {
     @Override
     long update(Schema schema, Domain domain) {
         switch (type) {
-            case CommandInterface.ALTER_DOMAIN_DEFAULT:
-                domain.setDefaultExpression(session, expression);
-                break;
-            case CommandInterface.ALTER_DOMAIN_ON_UPDATE:
-                domain.setOnUpdateExpression(session, expression);
-                break;
-            default:
-                throw DbException.getInternalError("type=" + type);
+        case CommandInterface.ALTER_DOMAIN_DEFAULT:
+            domain.setDefaultExpression(session, expression);
+            break;
+        case CommandInterface.ALTER_DOMAIN_ON_UPDATE:
+            domain.setOnUpdateExpression(session, expression);
+            break;
+        default:
+            throw DbException.getInternalError("type=" + type);
         }
         if (expression != null) {
             forAllDependencies(session, domain, this::copyColumn, this::copyDomain, true);
@@ -65,21 +65,21 @@ public class AlterDomainExpressions extends AlterDomain {
 
     private boolean copyExpressions(SessionLocal session, Domain domain, ColumnTemplate targetColumn) {
         switch (type) {
-            case CommandInterface.ALTER_DOMAIN_DEFAULT: {
-                Expression e = domain.getDefaultExpression();
-                if (e != null && targetColumn.getDefaultExpression() == null) {
-                    targetColumn.setDefaultExpression(session, e);
-                    return true;
-                }
-                break;
+        case CommandInterface.ALTER_DOMAIN_DEFAULT: {
+            Expression e = domain.getDefaultExpression();
+            if (e != null && targetColumn.getDefaultExpression() == null) {
+                targetColumn.setDefaultExpression(session, e);
+                return true;
             }
-            case CommandInterface.ALTER_DOMAIN_ON_UPDATE: {
-                Expression e = domain.getOnUpdateExpression();
-                if (e != null && targetColumn.getOnUpdateExpression() == null) {
-                    targetColumn.setOnUpdateExpression(session, e);
-                    return true;
-                }
+            break;
+        }
+        case CommandInterface.ALTER_DOMAIN_ON_UPDATE: {
+            Expression e = domain.getOnUpdateExpression();
+            if (e != null && targetColumn.getOnUpdateExpression() == null) {
+                targetColumn.setOnUpdateExpression(session, e);
+                return true;
             }
+        }
         }
         return false;
     }

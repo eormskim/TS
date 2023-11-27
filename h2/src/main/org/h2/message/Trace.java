@@ -95,21 +95,21 @@ public final class Trace {
      * Module names by their ids as array indexes.
      */
     public static final String[] MODULE_NAMES = {
-            "command",
-            "constraint",
-            "database",
-            "function",
-            "fileLock",
-            "index",
-            "jdbc",
-            "lock",
-            "schema",
-            "sequence",
-            "setting",
-            "table",
-            "trigger",
-            "user",
-            "JDBCX"
+        "command",
+        "constraint",
+        "database",
+        "function",
+        "fileLock",
+        "index",
+        "jdbc",
+        "lock",
+        "schema",
+        "sequence",
+        "setting",
+        "table",
+        "trigger",
+        "user",
+        "JDBCX"
     };
 
     private final TraceWriter traceWriter;
@@ -177,8 +177,8 @@ public final class Trace {
     /**
      * Write a message with trace level ERROR to the trace system.
      *
-     * @param t      the exception
-     * @param s      the message
+     * @param t the exception
+     * @param s the message
      * @param params the parameters
      */
     public void error(Throwable t, String s, Object... params) {
@@ -202,7 +202,7 @@ public final class Trace {
     /**
      * Write a message with trace level INFO to the trace system.
      *
-     * @param s      the message
+     * @param s the message
      * @param params the parameters
      */
     public void info(String s, Object... params) {
@@ -252,10 +252,10 @@ public final class Trace {
     /**
      * Write a SQL statement with trace level INFO to the trace system.
      *
-     * @param sql    the SQL statement
+     * @param sql the SQL statement
      * @param params the parameters used, in the for {1:...}
-     * @param count  the update count
-     * @param time   the time it took to run the statement in ms
+     * @param count the update count
+     * @param time the time it took to run the statement in ms
      */
     public void infoSQL(String sql, String params, long count, long time) {
         if (!isEnabled(TraceSystem.INFO)) {
@@ -296,7 +296,7 @@ public final class Trace {
     /**
      * Write a message with trace level DEBUG to the trace system.
      *
-     * @param s      the message
+     * @param s the message
      * @param params the parameters
      */
     public void debug(String s, Object... params) {
@@ -319,7 +319,6 @@ public final class Trace {
 
     /**
      * Write a message with trace level DEBUG to the trace system.
-     *
      * @param t the exception
      * @param s the message
      */

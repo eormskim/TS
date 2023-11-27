@@ -23,7 +23,6 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
 import org.h2.api.ErrorCode;
 import org.h2.command.CommandInterface;
 import org.h2.constraint.Constraint;
@@ -153,8 +152,8 @@ public class ScriptCommand extends ScriptBase {
     }
 
     private LocalResult createResult() {
-        return new LocalResult(session, new Expression[]{
-                new ExpressionColumn(session.getDatabase(), new Column("SCRIPT", TypeInfo.TYPE_VARCHAR))}, 1, 1);
+        return new LocalResult(session, new Expression[] {
+                new ExpressionColumn(session.getDatabase(), new Column("SCRIPT", TypeInfo.TYPE_VARCHAR)) }, 1, 1);
     }
 
     @Override
@@ -575,8 +574,8 @@ public class ScriptCommand extends ScriptBase {
     private int writeLobStream(Value v) throws IOException {
         if (!tempLobTableCreated) {
             add("CREATE CACHED LOCAL TEMPORARY TABLE IF NOT EXISTS SYSTEM_LOB_STREAM" +
-                            "(ID INT NOT NULL, PART INT NOT NULL, " +
-                            "CDATA VARCHAR, BDATA VARBINARY)",
+                    "(ID INT NOT NULL, PART INT NOT NULL, " +
+                    "CDATA VARCHAR, BDATA VARBINARY)",
                     true);
             add("ALTER TABLE SYSTEM_LOB_STREAM ADD CONSTRAINT SYSTEM_LOB_STREAM_PRIMARY_KEY PRIMARY KEY(ID, PART)",
                     true);
@@ -587,46 +586,46 @@ public class ScriptCommand extends ScriptBase {
         }
         int id = nextLobId++;
         switch (v.getValueType()) {
-            case Value.BLOB: {
-                byte[] bytes = new byte[lobBlockSize];
-                try (InputStream input = v.getInputStream()) {
-                    for (int i = 0; ; i++) {
-                        StringBuilder buff = new StringBuilder(lobBlockSize * 2);
-                        buff.append("INSERT INTO SYSTEM_LOB_STREAM VALUES(").append(id)
-                                .append(", ").append(i).append(", NULL, X'");
-                        int len = IOUtils.readFully(input, bytes, lobBlockSize);
-                        if (len <= 0) {
-                            break;
-                        }
-                        StringUtils.convertBytesToHex(buff, bytes, len).append("')");
-                        String sql = buff.toString();
-                        add(sql, true);
+        case Value.BLOB: {
+            byte[] bytes = new byte[lobBlockSize];
+            try (InputStream input = v.getInputStream()) {
+                for (int i = 0;; i++) {
+                    StringBuilder buff = new StringBuilder(lobBlockSize * 2);
+                    buff.append("INSERT INTO SYSTEM_LOB_STREAM VALUES(").append(id)
+                            .append(", ").append(i).append(", NULL, X'");
+                    int len = IOUtils.readFully(input, bytes, lobBlockSize);
+                    if (len <= 0) {
+                        break;
                     }
+                    StringUtils.convertBytesToHex(buff, bytes, len).append("')");
+                    String sql = buff.toString();
+                    add(sql, true);
                 }
-                break;
             }
-            case Value.CLOB: {
-                char[] chars = new char[lobBlockSize];
+            break;
+        }
+        case Value.CLOB: {
+            char[] chars = new char[lobBlockSize];
 
-                try (Reader reader = v.getReader()) {
-                    for (int i = 0; ; i++) {
-                        StringBuilder buff = new StringBuilder(lobBlockSize * 2);
-                        buff.append("INSERT INTO SYSTEM_LOB_STREAM VALUES(").append(id).append(", ").append(i)
-                                .append(", ");
-                        int len = IOUtils.readFully(reader, chars, lobBlockSize);
-                        if (len == 0) {
-                            break;
-                        }
-                        StringUtils.quoteStringSQL(buff, new String(chars, 0, len)).
-                                append(", NULL)");
-                        String sql = buff.toString();
-                        add(sql, true);
+            try (Reader reader = v.getReader()) {
+                for (int i = 0;; i++) {
+                    StringBuilder buff = new StringBuilder(lobBlockSize * 2);
+                    buff.append("INSERT INTO SYSTEM_LOB_STREAM VALUES(").append(id).append(", ").append(i)
+                            .append(", ");
+                    int len = IOUtils.readFully(reader, chars, lobBlockSize);
+                    if (len == 0) {
+                        break;
                     }
+                    StringUtils.quoteStringSQL(buff, new String(chars, 0, len)).
+                        append(", NULL)");
+                    String sql = buff.toString();
+                    add(sql, true);
                 }
-                break;
             }
-            default:
-                throw DbException.getInternalError("type:" + v.getValueType());
+            break;
+        }
+        default:
+            throw DbException.getInternalError("type:" + v.getValueType());
         }
         return id;
     }
@@ -637,7 +636,7 @@ public class ScriptCommand extends ScriptBase {
      * When calling with id -1, the file is deleted.
      *
      * @param conn a connection
-     * @param id   the lob id
+     * @param id the lob id
      * @return a stream for the combined data
      * @throws SQLException on failure
      */
@@ -650,7 +649,6 @@ public class ScriptCommand extends ScriptBase {
         return new InputStream() {
             private InputStream current;
             private boolean closed;
-
             @Override
             public int read() throws IOException {
                 while (true) {
@@ -676,7 +674,6 @@ public class ScriptCommand extends ScriptBase {
                     }
                 }
             }
-
             @Override
             public void close() throws IOException {
                 if (closed) {
@@ -697,7 +694,7 @@ public class ScriptCommand extends ScriptBase {
      * This method is called from the script.
      *
      * @param conn a connection
-     * @param id   the lob id
+     * @param id the lob id
      * @return a reader for the combined data
      * @throws SQLException on failure
      */
@@ -709,7 +706,6 @@ public class ScriptCommand extends ScriptBase {
         return new Reader() {
             private Reader current;
             private boolean closed;
-
             @Override
             public int read() throws IOException {
                 while (true) {
@@ -735,7 +731,6 @@ public class ScriptCommand extends ScriptBase {
                     }
                 }
             }
-
             @Override
             public void close() throws IOException {
                 if (closed) {
@@ -748,7 +743,6 @@ public class ScriptCommand extends ScriptBase {
                     throw DataUtils.convertToIOException(e);
                 }
             }
-
             @Override
             public int read(char[] buffer, int off, int len) throws IOException {
                 if (len == 0) {

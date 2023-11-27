@@ -51,8 +51,10 @@ public class TableValueConstructor extends Query {
     /**
      * Creates new instance of table value constructor.
      *
-     * @param session the session
-     * @param rows    the rows
+     * @param session
+     *            the session
+     * @param rows
+     *            the rows
      */
     public TableValueConstructor(SessionLocal session, ArrayList<ArrayList<Expression>> rows) {
         super(session);
@@ -73,13 +75,17 @@ public class TableValueConstructor extends Query {
     /**
      * Appends visible columns of all rows to the specified result.
      *
-     * @param session the session
-     * @param result  the result
-     * @param columns the columns
-     * @param rows    the rows with data
+     * @param session
+     *            the session
+     * @param result
+     *            the result
+     * @param columns
+     *            the columns
+     * @param rows
+     *            the rows with data
      */
     public static void getVisibleResult(SessionLocal session, ResultTarget result, Column[] columns,
-                                        ArrayList<ArrayList<Expression>> rows) {
+            ArrayList<ArrayList<Expression>> rows) {
         int count = columns.length;
         for (ArrayList<Expression> row : rows) {
             Value[] values = new Value[count];
@@ -93,9 +99,12 @@ public class TableValueConstructor extends Query {
     /**
      * Appends the SQL of the values to the specified string builder..
      *
-     * @param builder  string builder
-     * @param sqlFlags formatting flags
-     * @param rows     the values
+     * @param builder
+     *            string builder
+     * @param sqlFlags
+     *            formatting flags
+     * @param rows
+     *            the values
      */
     public static void getValuesSQL(StringBuilder builder, int sqlFlags, ArrayList<ArrayList<Expression>> rows) {
         builder.append("VALUES ");
@@ -224,7 +233,7 @@ public class TableValueConstructor extends Query {
             }
         }
         Column[] columns = new Column[columnCount];
-        for (int c = 0; c < columnCount; ) {
+        for (int c = 0; c < columnCount;) {
             TypeInfo type = types[c];
             columns[c] = new Column("C" + ++c, type);
         }
@@ -321,7 +330,7 @@ public class TableValueConstructor extends Query {
 
     @Override
     public Table toTable(String alias, Column[] columnTemplates, ArrayList<Parameter> parameters,
-                         boolean forCreateView, Query topQuery) {
+            boolean forCreateView, Query topQuery) {
         if (!hasOrder() && offsetExpr == null && fetchExpr == null && table != null) {
             return table;
         }

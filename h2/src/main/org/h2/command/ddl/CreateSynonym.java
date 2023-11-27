@@ -44,9 +44,7 @@ public class CreateSynonym extends SchemaOwnerCommand {
         this.ifNotExists = ifNotExists;
     }
 
-    public void setOrReplace(boolean orReplace) {
-        this.orReplace = orReplace;
-    }
+    public void setOrReplace(boolean orReplace) { this.orReplace = orReplace; }
 
     @Override
     long update(Schema schema) {

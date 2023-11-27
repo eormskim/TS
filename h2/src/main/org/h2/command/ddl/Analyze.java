@@ -164,9 +164,9 @@ public class Analyze extends DefineCommand {
      * Analyze this table.
      *
      * @param session the session
-     * @param table   the table
-     * @param sample  the number of sample rows
-     * @param manual  whether the command was called by the user
+     * @param table the table
+     * @param sample the number of sample rows
+     * @param manual whether the command was called by the user
      */
     public static void analyzeTable(SessionLocal session, Table table, int sample, boolean manual) {
         if (table.getTableType() != TableType.TABLE //
@@ -174,7 +174,7 @@ public class Analyze extends DefineCommand {
                 || session == null //
                 || !manual && (session.getDatabase().isSysTableLocked() || table.hasSelectTrigger()) //
                 || table.isTemporary() && !table.isGlobalTemporary() //
-                && session.findLocalTempTable(table.getName()) == null //
+                        && session.findLocalTempTable(table.getName()) == null //
                 || table.isLockedExclusively() && !table.isLockedExclusivelyBy(session)
                 || !session.getUser().hasTableRight(table, Right.SELECT) //
                 // if the connection is closed and there is something to undo

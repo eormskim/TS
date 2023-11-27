@@ -38,28 +38,24 @@ public class Constants {
 
     /**
      * The TCP protocol version number 17.
-     *
      * @since 1.4.197 (2018-03-18)
      */
     public static final int TCP_PROTOCOL_VERSION_17 = 17;
 
     /**
      * The TCP protocol version number 18.
-     *
      * @since 1.4.198 (2019-02-22)
      */
     public static final int TCP_PROTOCOL_VERSION_18 = 18;
 
     /**
      * The TCP protocol version number 19.
-     *
      * @since 1.4.200 (2019-10-14)
      */
     public static final int TCP_PROTOCOL_VERSION_19 = 19;
 
     /**
      * The TCP protocol version number 20.
-     *
      * @since 2.0.202 (2021-11-25)
      */
     public static final int TCP_PROTOCOL_VERSION_20 = 20;

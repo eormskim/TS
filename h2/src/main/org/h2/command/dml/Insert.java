@@ -115,7 +115,7 @@ public final class Insert extends CommandWithValues implements ResultTarget {
      * Keep a collection of the columns to pass to update if a duplicate key
      * happens, for MySQL-style INSERT ... ON DUPLICATE KEY UPDATE ....
      *
-     * @param column     the column
+     * @param column the column
      * @param expression the expression
      */
     public void addAssignmentForDuplicate(Column column, Expression expression) {
@@ -334,7 +334,7 @@ public final class Insert extends CommandWithValues implements ResultTarget {
     }
 
     /**
-     * @param de         duplicate key exception
+     * @param de duplicate key exception
      * @param currentRow current row values (optional)
      * @return {@code true} if row was updated, {@code false} if row was ignored
      */
@@ -404,8 +404,8 @@ public final class Insert extends CommandWithValues implements ResultTarget {
         final Column[] indexedColumns;
         if (foundIndex instanceof MVPrimaryIndex) {
             MVPrimaryIndex foundMV = (MVPrimaryIndex) foundIndex;
-            indexedColumns = new Column[]{foundMV.getIndexColumns()[foundMV
-                    .getMainIndexColumn()].column};
+            indexedColumns = new Column[] { foundMV.getIndexColumns()[foundMV
+                    .getMainIndexColumn()].column };
         } else {
             indexedColumns = foundIndex.getColumns();
         }

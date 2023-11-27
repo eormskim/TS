@@ -47,7 +47,6 @@ public abstract class SearchRow extends Value {
 
     /**
      * Determine if specified column contains NULL
-     *
      * @param index column index
      * @return true if NULL
      */
@@ -67,7 +66,7 @@ public abstract class SearchRow extends Value {
      * Set the value for given column
      *
      * @param index the column number (starting with 0)
-     * @param v     the new value
+     * @param v the new value
      */
     public abstract void setValue(int index, Value v);
 
@@ -99,7 +98,6 @@ public abstract class SearchRow extends Value {
 
     /**
      * Copy all relevant values from the source to this row.
-     *
      * @param source source of column values
      */
     public abstract void copyFrom(SearchRow source);

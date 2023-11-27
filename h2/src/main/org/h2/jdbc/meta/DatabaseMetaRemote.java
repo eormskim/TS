@@ -171,7 +171,7 @@ public class DatabaseMetaRemote extends DatabaseMeta {
 
     @Override
     public ResultInterface getProcedureColumns(String catalog, String schemaPattern, String procedureNamePattern,
-                                               String columnNamePattern) {
+            String columnNamePattern) {
         return executeQuery(GET_PROCEDURE_COLUMNS_4, getString(catalog), getString(schemaPattern),
                 getString(procedureNamePattern), getString(columnNamePattern));
     }
@@ -199,7 +199,7 @@ public class DatabaseMetaRemote extends DatabaseMeta {
 
     @Override
     public ResultInterface getColumns(String catalog, String schemaPattern, String tableNamePattern,
-                                      String columnNamePattern) {
+            String columnNamePattern) {
         return executeQuery(GET_COLUMNS_4, getString(catalog), getString(schemaPattern), getString(tableNamePattern),
                 getString(columnNamePattern));
     }
@@ -218,7 +218,7 @@ public class DatabaseMetaRemote extends DatabaseMeta {
 
     @Override
     public ResultInterface getBestRowIdentifier(String catalog, String schema, String table, int scope,
-                                                boolean nullable) {
+            boolean nullable) {
         return executeQuery(GET_BEST_ROW_IDENTIFIER_5, getString(catalog), getString(schema), getString(table),
                 ValueInteger.get(scope), ValueBoolean.get(nullable));
     }
@@ -245,7 +245,7 @@ public class DatabaseMetaRemote extends DatabaseMeta {
 
     @Override
     public ResultInterface getCrossReference(String primaryCatalog, String primarySchema, String primaryTable,
-                                             String foreignCatalog, String foreignSchema, String foreignTable) {
+            String foreignCatalog, String foreignSchema, String foreignTable) {
         return executeQuery(GET_CROSS_REFERENCE_6, getString(primaryCatalog), getString(primarySchema),
                 getString(primaryTable), getString(foreignCatalog), getString(foreignSchema), getString(foreignTable));
     }
@@ -257,7 +257,7 @@ public class DatabaseMetaRemote extends DatabaseMeta {
 
     @Override
     public ResultInterface getIndexInfo(String catalog, String schema, String table, boolean unique,
-                                        boolean approximate) {
+            boolean approximate) {
         return executeQuery(GET_INDEX_INFO_5, getString(catalog), getString(schema), //
                 getString(table), ValueBoolean.get(unique), ValueBoolean.get(approximate));
     }
@@ -282,7 +282,7 @@ public class DatabaseMetaRemote extends DatabaseMeta {
 
     @Override
     public ResultInterface getAttributes(String catalog, String schemaPattern, String typeNamePattern,
-                                         String attributeNamePattern) {
+            String attributeNamePattern) {
         return executeQuery(GET_ATTRIBUTES_4, getString(catalog), getString(schemaPattern), getString(typeNamePattern),
                 getString(attributeNamePattern));
     }
@@ -314,14 +314,14 @@ public class DatabaseMetaRemote extends DatabaseMeta {
 
     @Override
     public ResultInterface getFunctionColumns(String catalog, String schemaPattern, String functionNamePattern,
-                                              String columnNamePattern) {
+            String columnNamePattern) {
         return executeQuery(GET_FUNCTION_COLUMNS_4, getString(catalog), getString(schemaPattern),
                 getString(functionNamePattern), getString(columnNamePattern));
     }
 
     @Override
     public ResultInterface getPseudoColumns(String catalog, String schemaPattern, String tableNamePattern,
-                                            String columnNamePattern) {
+            String columnNamePattern) {
         return executeQuery(GET_PSEUDO_COLUMNS_4, getString(catalog), getString(schemaPattern),
                 getString(tableNamePattern), getString(columnNamePattern));
     }

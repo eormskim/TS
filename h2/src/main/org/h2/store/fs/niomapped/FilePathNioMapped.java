@@ -7,7 +7,6 @@ package org.h2.store.fs.niomapped;
 
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-
 import org.h2.store.fs.FilePathWrapper;
 
 /**

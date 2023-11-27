@@ -40,11 +40,11 @@ public final class ToCharFunction extends FunctionN {
      */
     public static final int JULIAN_EPOCH = -2_440_588;
 
-    private static final int[] ROMAN_VALUES = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9,
-            5, 4, 1};
+    private static final int[] ROMAN_VALUES = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9,
+            5, 4, 1 };
 
-    private static final String[] ROMAN_NUMERALS = {"M", "CM", "D", "CD", "C", "XC",
-            "L", "XL", "X", "IX", "V", "IV", "I"};
+    private static final String[] ROMAN_NUMERALS = { "M", "CM", "D", "CD", "C", "XC",
+            "L", "XL", "X", "IX", "V", "IV", "I" };
 
     /**
      * The month field.
@@ -147,13 +147,13 @@ public final class ToCharFunction extends FunctionN {
      * See also TO_CHAR(number) and number format models
      * in the Oracle documentation.
      *
-     * @param number   the number to format
-     * @param format   the format pattern to use (if any)
+     * @param number the number to format
+     * @param format the format pattern to use (if any)
      * @param nlsParam the NLS parameter (if any)
      * @return the formatted number
      */
     public static String toChar(BigDecimal number, String format,
-                                @SuppressWarnings("unused") String nlsParam) {
+            @SuppressWarnings("unused") String nlsParam) {
 
         // short-circuit logic for formats that don't follow common logic below
         String formatUp = format != null ? StringUtils.toUpperEnglish(format) : null;
@@ -384,14 +384,14 @@ public final class ToCharFunction extends FunctionN {
                 break;
             }
         }
-        final char[] zeroes = new char[allZeroes ? length - idx - 1 : i - 1 - idx];
+        final char[] zeroes = new char[allZeroes ? length - idx - 1: i - 1 - idx];
         Arrays.fill(zeroes, '0');
         return String.valueOf(zeroes);
     }
 
     private static void addSign(StringBuilder output, int signum,
-                                boolean leadingSign, boolean trailingSign, boolean trailingMinus,
-                                boolean angleBrackets, boolean fillMode) {
+            boolean leadingSign, boolean trailingSign, boolean trailingMinus,
+            boolean angleBrackets, boolean fillMode) {
         if (angleBrackets) {
             if (signum < 0) {
                 output.insert(0, '<');
@@ -531,11 +531,14 @@ public final class ToCharFunction extends FunctionN {
     /**
      * Returns time zone display name or ID for the specified date-time value.
      *
-     * @param session the session
-     * @param value   value
-     * @param tzd     if {@code true} return TZD (time zone region with Daylight Saving
-     *                Time information included), if {@code false} return TZR (time zone
-     *                region)
+     * @param session
+     *            the session
+     * @param value
+     *            value
+     * @param tzd
+     *            if {@code true} return TZD (time zone region with Daylight Saving
+     *            Time information included), if {@code false} return TZR (time zone
+     *            region)
      * @return time zone display name or ID
      */
     private static String getTimeZone(SessionLocal session, Value value, boolean tzd) {
@@ -688,14 +691,15 @@ public final class ToCharFunction extends FunctionN {
      * See also TO_CHAR(datetime) and datetime format models
      * in the Oracle documentation.
      *
-     * @param session  the session
-     * @param value    the date-time value to format
-     * @param format   the format pattern to use (if any)
+     * @param session the session
+     * @param value the date-time value to format
+     * @param format the format pattern to use (if any)
      * @param nlsParam the NLS parameter (if any)
+     *
      * @return the formatted timestamp
      */
     public static String toCharDateTime(SessionLocal session, Value value, String format,
-                                        @SuppressWarnings("unused") String nlsParam) {
+            @SuppressWarnings("unused") String nlsParam) {
         long[] a = DateTimeUtils.dateAndTimeFromValue(value, session);
         long dateValue = a[0];
         long timeNanos = a[1];
@@ -718,11 +722,11 @@ public final class ToCharFunction extends FunctionN {
         StringBuilder output = new StringBuilder();
         boolean fillMode = true;
 
-        for (int i = 0, length = format.length(); i < length; ) {
+        for (int i = 0, length = format.length(); i < length;) {
 
             Capitalization cap;
 
-            // AD / BC
+                // AD / BC
 
             if ((cap = containsAt(format, i, "A.D.", "B.C.")) != null) {
                 String era = year > 0 ? "A.D." : "B.C.";
@@ -839,7 +843,7 @@ public final class ToCharFunction extends FunctionN {
                 i += 3;
             } else if (containsAt(format, i, "TZH") != null) {
                 int hours = DateTimeFunction.extractDateTime(session, value, DateTimeFunction.TIMEZONE_HOUR);
-                output.append(hours < 0 ? '-' : '+');
+                output.append( hours < 0 ? '-' : '+');
                 StringUtils.appendTwoDigits(output, Math.abs(hours));
                 i += 3;
 
@@ -974,15 +978,15 @@ public final class ToCharFunction extends FunctionN {
      * the specified substrings are found, this method returns <code>null</code>
      * .
      *
-     * @param s          the string to check
-     * @param index      the index to check at
+     * @param s the string to check
+     * @param index the index to check at
      * @param substrings the substrings to check for within the string
      * @return a capitalization strategy if the specified string contains any of
-     * the specified substrings at the specified index,
-     * <code>null</code> otherwise
+     *         the specified substrings at the specified index,
+     *         <code>null</code> otherwise
      */
     private static Capitalization containsAt(String s, int index,
-                                             String... substrings) {
+            String... substrings) {
         for (String substring : substrings) {
             if (index + substring.length() <= s.length()) {
                 boolean found = true;
@@ -1010,9 +1014,7 @@ public final class ToCharFunction extends FunctionN {
         return null;
     }
 
-    /**
-     * Represents a capitalization / casing strategy.
-     */
+    /** Represents a capitalization / casing strategy. */
     public enum Capitalization {
 
         /**
@@ -1038,7 +1040,7 @@ public final class ToCharFunction extends FunctionN {
          * @param up1 whether or not the first letter is uppercased
          * @param up2 whether or not the second letter is uppercased
          * @return the capitalization / casing strategy which should be used
-         * when the first and second letters have the specified casing
+         *         when the first and second letters have the specified casing
          */
         static Capitalization toCapitalization(Boolean up1, Boolean up2) {
             if (up1 == null) {
@@ -1063,46 +1065,46 @@ public final class ToCharFunction extends FunctionN {
                 return s;
             }
             switch (this) {
-                case UPPERCASE:
-                    return StringUtils.toUpperEnglish(s);
-                case LOWERCASE:
-                    return StringUtils.toLowerEnglish(s);
-                case CAPITALIZE:
-                    return Character.toUpperCase(s.charAt(0)) +
-                            (s.length() > 1 ? StringUtils.toLowerEnglish(s).substring(1) : "");
-                default:
-                    throw new IllegalArgumentException(
-                            "Unknown capitalization strategy: " + this);
+            case UPPERCASE:
+                return StringUtils.toUpperEnglish(s);
+            case LOWERCASE:
+                return StringUtils.toLowerEnglish(s);
+            case CAPITALIZE:
+                return Character.toUpperCase(s.charAt(0)) +
+                        (s.length() > 1 ? StringUtils.toLowerEnglish(s).substring(1) : "");
+            default:
+                throw new IllegalArgumentException(
+                        "Unknown capitalization strategy: " + this);
             }
         }
     }
 
     public ToCharFunction(Expression arg1, Expression arg2, Expression arg3) {
-        super(arg2 == null ? new Expression[]{arg1}
-                : arg3 == null ? new Expression[]{arg1, arg2} : new Expression[]{arg1, arg2, arg3});
+        super(arg2 == null ? new Expression[] { arg1 }
+                : arg3 == null ? new Expression[] { arg1, arg2 } : new Expression[] { arg1, arg2, arg3 });
     }
 
     @Override
     public Value getValue(SessionLocal session, Value v1, Value v2, Value v3) {
         switch (v1.getValueType()) {
-            case Value.TIME:
-            case Value.DATE:
-            case Value.TIMESTAMP:
-            case Value.TIMESTAMP_TZ:
-                v1 = ValueVarchar.get(toCharDateTime(session, v1, v2 == null ? null : v2.getString(),
-                        v3 == null ? null : v3.getString()), session);
-                break;
-            case Value.SMALLINT:
-            case Value.INTEGER:
-            case Value.BIGINT:
-            case Value.NUMERIC:
-            case Value.DOUBLE:
-            case Value.REAL:
-                v1 = ValueVarchar.get(toChar(v1.getBigDecimal(), v2 == null ? null : v2.getString(),
-                        v3 == null ? null : v3.getString()), session);
-                break;
-            default:
-                v1 = ValueVarchar.get(v1.getString(), session);
+        case Value.TIME:
+        case Value.DATE:
+        case Value.TIMESTAMP:
+        case Value.TIMESTAMP_TZ:
+            v1 = ValueVarchar.get(toCharDateTime(session, v1, v2 == null ? null : v2.getString(),
+                    v3 == null ? null : v3.getString()), session);
+            break;
+        case Value.SMALLINT:
+        case Value.INTEGER:
+        case Value.BIGINT:
+        case Value.NUMERIC:
+        case Value.DOUBLE:
+        case Value.REAL:
+            v1 = ValueVarchar.get(toChar(v1.getBigDecimal(), v2 == null ? null : v2.getString(),
+                    v3 == null ? null : v3.getString()), session);
+            break;
+        default:
+            v1 = ValueVarchar.get(v1.getString(), session);
         }
         return v1;
     }

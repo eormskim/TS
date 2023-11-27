@@ -16,7 +16,8 @@ public abstract class JSONValue {
     /**
      * Appends this value to the specified target.
      *
-     * @param target the target
+     * @param target
+     *            the target
      */
     public abstract void addTo(JSONTarget<?> target);
 

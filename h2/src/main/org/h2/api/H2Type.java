@@ -251,7 +251,8 @@ public final class H2Type implements SQLType {
     /**
      * Returns ARRAY data type with the specified component type.
      *
-     * @param componentType the type of elements
+     * @param componentType
+     *            the type of elements
      * @return ARRAY data type
      */
     public static H2Type array(H2Type componentType) {
@@ -262,7 +263,8 @@ public final class H2Type implements SQLType {
     /**
      * Returns ROW data type with specified types of fields and default names.
      *
-     * @param fieldTypes the type of fields
+     * @param fieldTypes
+     *            the type of fields
      * @return ROW data type
      */
     public static H2Type row(H2Type... fieldTypes) {

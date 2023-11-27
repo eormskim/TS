@@ -31,7 +31,6 @@ import java.util.Properties;
 
 import javax.naming.Context;
 import javax.sql.DataSource;
-
 import org.h2.api.ErrorCode;
 import org.h2.api.JavaObjectSerializer;
 import org.h2.engine.Constants;
@@ -57,43 +56,43 @@ public class JdbcUtils {
     public static JavaObjectSerializer serializer;
 
     private static final String[] DRIVERS = {
-            "h2:", "org.h2.Driver",
-            "Cache:", "com.intersys.jdbc.CacheDriver",
-            "daffodilDB://", "in.co.daffodil.db.rmi.RmiDaffodilDBDriver",
-            "daffodil", "in.co.daffodil.db.jdbc.DaffodilDBDriver",
-            "db2:", "com.ibm.db2.jcc.DB2Driver",
-            "derby:net:", "org.apache.derby.client.ClientAutoloadedDriver",
-            "derby://", "org.apache.derby.client.ClientAutoloadedDriver",
-            "derby:", "org.apache.derby.iapi.jdbc.AutoloadedDriver",
-            "FrontBase:", "com.frontbase.jdbc.FBJDriver",
-            "firebirdsql:", "org.firebirdsql.jdbc.FBDriver",
-            "hsqldb:", "org.hsqldb.jdbcDriver",
-            "informix-sqli:", "com.informix.jdbc.IfxDriver",
-            "jtds:", "net.sourceforge.jtds.jdbc.Driver",
-            "microsoft:", "com.microsoft.jdbc.sqlserver.SQLServerDriver",
-            "mimer:", "com.mimer.jdbc.Driver",
-            "mysql:", "com.mysql.cj.jdbc.Driver",
-            "mariadb:", "org.mariadb.jdbc.Driver",
-            "odbc:", "sun.jdbc.odbc.JdbcOdbcDriver",
-            "oracle:", "oracle.jdbc.driver.OracleDriver",
-            "pervasive:", "com.pervasive.jdbc.v2.Driver",
-            "pointbase:micro:", "com.pointbase.me.jdbc.jdbcDriver",
-            "pointbase:", "com.pointbase.jdbc.jdbcUniversalDriver",
-            "postgresql:", "org.postgresql.Driver",
-            "sybase:", "com.sybase.jdbc3.jdbc.SybDriver",
-            "sqlserver:", "com.microsoft.sqlserver.jdbc.SQLServerDriver",
-            "teradata:", "com.ncr.teradata.TeraDriver",
+        "h2:", "org.h2.Driver",
+        "Cache:", "com.intersys.jdbc.CacheDriver",
+        "daffodilDB://", "in.co.daffodil.db.rmi.RmiDaffodilDBDriver",
+        "daffodil", "in.co.daffodil.db.jdbc.DaffodilDBDriver",
+        "db2:", "com.ibm.db2.jcc.DB2Driver",
+        "derby:net:", "org.apache.derby.client.ClientAutoloadedDriver",
+        "derby://", "org.apache.derby.client.ClientAutoloadedDriver",
+        "derby:", "org.apache.derby.iapi.jdbc.AutoloadedDriver",
+        "FrontBase:", "com.frontbase.jdbc.FBJDriver",
+        "firebirdsql:", "org.firebirdsql.jdbc.FBDriver",
+        "hsqldb:", "org.hsqldb.jdbcDriver",
+        "informix-sqli:", "com.informix.jdbc.IfxDriver",
+        "jtds:", "net.sourceforge.jtds.jdbc.Driver",
+        "microsoft:", "com.microsoft.jdbc.sqlserver.SQLServerDriver",
+        "mimer:", "com.mimer.jdbc.Driver",
+        "mysql:", "com.mysql.cj.jdbc.Driver",
+        "mariadb:", "org.mariadb.jdbc.Driver",
+        "odbc:", "sun.jdbc.odbc.JdbcOdbcDriver",
+        "oracle:", "oracle.jdbc.driver.OracleDriver",
+        "pervasive:", "com.pervasive.jdbc.v2.Driver",
+        "pointbase:micro:", "com.pointbase.me.jdbc.jdbcDriver",
+        "pointbase:", "com.pointbase.jdbc.jdbcUniversalDriver",
+        "postgresql:", "org.postgresql.Driver",
+        "sybase:", "com.sybase.jdbc3.jdbc.SybDriver",
+        "sqlserver:", "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+        "teradata:", "com.ncr.teradata.TeraDriver",
     };
 
     private static final byte[] UUID_PREFIX =
             "\254\355\0\5sr\0\16java.util.UUID\274\231\3\367\230m\205/\2\0\2J\0\14leastSigBitsJ\0\13mostSigBitsxp"
-                    .getBytes(StandardCharsets.ISO_8859_1);
+            .getBytes(StandardCharsets.ISO_8859_1);
 
     private static boolean allowAllClasses;
     private static HashSet<String> allowedClassNames;
 
     /**
-     * In order to manage more than one class loader
+     *  In order to manage more than one class loader
      */
     private static final ArrayList<ClassFactory> userClassFactories = new ArrayList<>();
 
@@ -137,7 +136,7 @@ public class JdbcUtils {
      * perform access rights checking, the system property h2.allowedClasses
      * needs to be set to a list of class file name prefixes.
      *
-     * @param <Z>       generic return type
+     * @param <Z> generic return type
      * @param className the name of the class
      * @return the class object
      */
@@ -259,32 +258,32 @@ public class JdbcUtils {
     /**
      * Open a new database connection with the given settings.
      *
-     * @param driver   the driver class name
-     * @param url      the database URL
-     * @param user     the user name
+     * @param driver the driver class name
+     * @param url the database URL
+     * @param user the user name
      * @param password the password
      * @return the database connection
      * @throws SQLException on failure
      */
     public static Connection getConnection(String driver, String url,
-                                           String user, String password) throws SQLException {
+            String user, String password) throws SQLException {
         return getConnection(driver, url, user, password, null, false);
     }
 
     /**
      * Open a new database connection with the given settings.
      *
-     * @param driver                the driver class name
-     * @param url                   the database URL
-     * @param user                  the user name or {@code null}
-     * @param password              the password or {@code null}
+     * @param driver the driver class name
+     * @param url the database URL
+     * @param user the user name or {@code null}
+     * @param password the password or {@code null}
      * @param networkConnectionInfo the network connection information, or {@code null}
-     * @param forbidCreation        whether database creation is forbidden
+     * @param forbidCreation whether database creation is forbidden
      * @return the database connection
      * @throws SQLException on failure
      */
     public static Connection getConnection(String driver, String url, String user, String password,
-                                           NetworkConnectionInfo networkConnectionInfo, boolean forbidCreation) throws SQLException {
+            NetworkConnectionInfo networkConnectionInfo, boolean forbidCreation) throws SQLException {
         if (url.startsWith(Constants.START_URL)) {
             JdbcConnection connection = new JdbcConnection(url, null, user, password, forbidCreation);
             if (networkConnectionInfo != null) {
@@ -372,7 +371,7 @@ public class JdbcUtils {
      * Serialize the object to a byte array, using the serializer specified by
      * the connection info if set, or the default serializer.
      *
-     * @param obj                  the object to serialize
+     * @param obj the object to serialize
      * @param javaObjectSerializer the object serializer (may be null)
      * @return the byte array
      */
@@ -397,7 +396,7 @@ public class JdbcUtils {
      * De-serialize the byte array to an object, eventually using the serializer
      * specified by the connection info.
      *
-     * @param data                 the byte array
+     * @param data the byte array
      * @param javaObjectSerializer the object serializer (may be null)
      * @return the object
      * @throws DbException if serialization fails
@@ -446,8 +445,7 @@ public class JdbcUtils {
      * @throws DbException if serialization fails
      */
     public static ValueUuid deserializeUuid(byte[] data) {
-        uuid:
-        if (data.length == 80) {
+        uuid: if (data.length == 80) {
             for (int i = 0; i < 64; i++) {
                 if (data[i] != UUID_PREFIX[i]) {
                     break uuid;
@@ -461,10 +459,10 @@ public class JdbcUtils {
     /**
      * Set a value as a parameter in a prepared statement.
      *
-     * @param prep           the prepared statement
+     * @param prep the prepared statement
      * @param parameterIndex the parameter index
-     * @param value          the value
-     * @param conn           the own connection
+     * @param value the value
+     * @param conn the own connection
      * @throws SQLException on failure
      */
     public static void set(PreparedStatement prep, int parameterIndex, Value value, JdbcConnection conn)
@@ -481,124 +479,124 @@ public class JdbcUtils {
     }
 
     private static void setOther(PreparedStatement prep, int parameterIndex, Value value, JdbcConnection conn)
-            throws SQLException {
+                throws SQLException {
         int valueType = value.getValueType();
         switch (valueType) {
-            case Value.NULL:
-                prep.setNull(parameterIndex, Types.NULL);
-                break;
-            case Value.BOOLEAN:
-                prep.setBoolean(parameterIndex, value.getBoolean());
-                break;
-            case Value.TINYINT:
-                prep.setByte(parameterIndex, value.getByte());
-                break;
-            case Value.SMALLINT:
-                prep.setShort(parameterIndex, value.getShort());
-                break;
-            case Value.INTEGER:
-                prep.setInt(parameterIndex, value.getInt());
-                break;
-            case Value.BIGINT:
-                prep.setLong(parameterIndex, value.getLong());
-                break;
-            case Value.NUMERIC:
-            case Value.DECFLOAT:
-                prep.setBigDecimal(parameterIndex, value.getBigDecimal());
-                break;
-            case Value.DOUBLE:
-                prep.setDouble(parameterIndex, value.getDouble());
-                break;
-            case Value.REAL:
-                prep.setFloat(parameterIndex, value.getFloat());
-                break;
-            case Value.TIME:
-                try {
-                    prep.setObject(parameterIndex, JSR310Utils.valueToLocalTime(value, null), Types.TIME);
-                } catch (SQLException ignore) {
-                    prep.setTime(parameterIndex, LegacyDateTimeUtils.toTime(null, null, value));
-                }
-                break;
-            case Value.DATE:
-                try {
-                    prep.setObject(parameterIndex, JSR310Utils.valueToLocalDate(value, null), Types.DATE);
-                } catch (SQLException ignore) {
-                    prep.setDate(parameterIndex, LegacyDateTimeUtils.toDate(null, null, value));
-                }
-                break;
-            case Value.TIMESTAMP:
-                try {
-                    prep.setObject(parameterIndex, JSR310Utils.valueToLocalDateTime(value, null), Types.TIMESTAMP);
-                } catch (SQLException ignore) {
-                    prep.setTimestamp(parameterIndex, LegacyDateTimeUtils.toTimestamp(null, null, value));
-                }
-                break;
-            case Value.VARBINARY:
-            case Value.BINARY:
-            case Value.GEOMETRY:
-            case Value.JSON:
-                prep.setBytes(parameterIndex, value.getBytesNoCopy());
-                break;
-            case Value.VARCHAR:
-            case Value.VARCHAR_IGNORECASE:
-            case Value.ENUM:
-            case Value.INTERVAL_YEAR:
-            case Value.INTERVAL_MONTH:
-            case Value.INTERVAL_DAY:
-            case Value.INTERVAL_HOUR:
-            case Value.INTERVAL_MINUTE:
-            case Value.INTERVAL_SECOND:
-            case Value.INTERVAL_YEAR_TO_MONTH:
-            case Value.INTERVAL_DAY_TO_HOUR:
-            case Value.INTERVAL_DAY_TO_MINUTE:
-            case Value.INTERVAL_DAY_TO_SECOND:
-            case Value.INTERVAL_HOUR_TO_MINUTE:
-            case Value.INTERVAL_HOUR_TO_SECOND:
-            case Value.INTERVAL_MINUTE_TO_SECOND:
+        case Value.NULL:
+            prep.setNull(parameterIndex, Types.NULL);
+            break;
+        case Value.BOOLEAN:
+            prep.setBoolean(parameterIndex, value.getBoolean());
+            break;
+        case Value.TINYINT:
+            prep.setByte(parameterIndex, value.getByte());
+            break;
+        case Value.SMALLINT:
+            prep.setShort(parameterIndex, value.getShort());
+            break;
+        case Value.INTEGER:
+            prep.setInt(parameterIndex, value.getInt());
+            break;
+        case Value.BIGINT:
+            prep.setLong(parameterIndex, value.getLong());
+            break;
+        case Value.NUMERIC:
+        case Value.DECFLOAT:
+            prep.setBigDecimal(parameterIndex, value.getBigDecimal());
+            break;
+        case Value.DOUBLE:
+            prep.setDouble(parameterIndex, value.getDouble());
+            break;
+        case Value.REAL:
+            prep.setFloat(parameterIndex, value.getFloat());
+            break;
+        case Value.TIME:
+            try {
+                prep.setObject(parameterIndex, JSR310Utils.valueToLocalTime(value, null), Types.TIME);
+            } catch (SQLException ignore) {
+                prep.setTime(parameterIndex, LegacyDateTimeUtils.toTime(null, null, value));
+            }
+            break;
+        case Value.DATE:
+            try {
+                prep.setObject(parameterIndex, JSR310Utils.valueToLocalDate(value, null), Types.DATE);
+            } catch (SQLException ignore) {
+                prep.setDate(parameterIndex, LegacyDateTimeUtils.toDate(null, null, value));
+            }
+            break;
+        case Value.TIMESTAMP:
+            try {
+                prep.setObject(parameterIndex, JSR310Utils.valueToLocalDateTime(value, null), Types.TIMESTAMP);
+            } catch (SQLException ignore) {
+                prep.setTimestamp(parameterIndex, LegacyDateTimeUtils.toTimestamp(null, null, value));
+            }
+            break;
+        case Value.VARBINARY:
+        case Value.BINARY:
+        case Value.GEOMETRY:
+        case Value.JSON:
+            prep.setBytes(parameterIndex, value.getBytesNoCopy());
+            break;
+        case Value.VARCHAR:
+        case Value.VARCHAR_IGNORECASE:
+        case Value.ENUM:
+        case Value.INTERVAL_YEAR:
+        case Value.INTERVAL_MONTH:
+        case Value.INTERVAL_DAY:
+        case Value.INTERVAL_HOUR:
+        case Value.INTERVAL_MINUTE:
+        case Value.INTERVAL_SECOND:
+        case Value.INTERVAL_YEAR_TO_MONTH:
+        case Value.INTERVAL_DAY_TO_HOUR:
+        case Value.INTERVAL_DAY_TO_MINUTE:
+        case Value.INTERVAL_DAY_TO_SECOND:
+        case Value.INTERVAL_HOUR_TO_MINUTE:
+        case Value.INTERVAL_HOUR_TO_SECOND:
+        case Value.INTERVAL_MINUTE_TO_SECOND:
+            prep.setString(parameterIndex, value.getString());
+            break;
+        case Value.BLOB:
+        case Value.CLOB:
+            setLob(prep, parameterIndex, (ValueLob) value);
+            break;
+        case Value.ARRAY:
+            prep.setArray(parameterIndex, prep.getConnection().createArrayOf("NULL",
+                    (Object[]) ValueToObjectConverter.valueToDefaultObject(value, conn, true)));
+            break;
+        case Value.JAVA_OBJECT:
+            prep.setObject(parameterIndex,
+                    JdbcUtils.deserialize(value.getBytesNoCopy(), conn.getJavaObjectSerializer()),
+                    Types.JAVA_OBJECT);
+            break;
+        case Value.UUID:
+            prep.setBytes(parameterIndex, value.getBytes());
+            break;
+        case Value.CHAR:
+            try {
+                prep.setObject(parameterIndex, value.getString(), Types.CHAR);
+            } catch (SQLException ignore) {
                 prep.setString(parameterIndex, value.getString());
-                break;
-            case Value.BLOB:
-            case Value.CLOB:
-                setLob(prep, parameterIndex, (ValueLob) value);
-                break;
-            case Value.ARRAY:
-                prep.setArray(parameterIndex, prep.getConnection().createArrayOf("NULL",
-                        (Object[]) ValueToObjectConverter.valueToDefaultObject(value, conn, true)));
-                break;
-            case Value.JAVA_OBJECT:
-                prep.setObject(parameterIndex,
-                        JdbcUtils.deserialize(value.getBytesNoCopy(), conn.getJavaObjectSerializer()),
-                        Types.JAVA_OBJECT);
-                break;
-            case Value.UUID:
-                prep.setBytes(parameterIndex, value.getBytes());
-                break;
-            case Value.CHAR:
-                try {
-                    prep.setObject(parameterIndex, value.getString(), Types.CHAR);
-                } catch (SQLException ignore) {
-                    prep.setString(parameterIndex, value.getString());
-                }
-                break;
-            case Value.TIMESTAMP_TZ:
-                try {
-                    prep.setObject(parameterIndex, JSR310Utils.valueToOffsetDateTime(value, null),
-                            Types.TIMESTAMP_WITH_TIMEZONE);
-                    return;
-                } catch (SQLException ignore) {
-                    prep.setString(parameterIndex, value.getString());
-                }
-                break;
-            case Value.TIME_TZ:
-                try {
-                    prep.setObject(parameterIndex, JSR310Utils.valueToOffsetTime(value, null), Types.TIME_WITH_TIMEZONE);
-                    return;
-                } catch (SQLException ignore) {
-                    prep.setString(parameterIndex, value.getString());
-                }
-                break;
-            default:
-                throw DbException.getUnsupportedException(Value.getTypeName(valueType));
+            }
+            break;
+        case Value.TIMESTAMP_TZ:
+            try {
+                prep.setObject(parameterIndex, JSR310Utils.valueToOffsetDateTime(value, null),
+                        Types.TIMESTAMP_WITH_TIMEZONE);
+                return;
+            } catch (SQLException ignore) {
+                prep.setString(parameterIndex, value.getString());
+            }
+            break;
+        case Value.TIME_TZ:
+            try {
+                prep.setObject(parameterIndex, JSR310Utils.valueToOffsetTime(value, null), Types.TIME_WITH_TIMEZONE);
+                return;
+            } catch (SQLException ignore) {
+                prep.setString(parameterIndex, value.getString());
+            }
+            break;
+        default:
+            throw DbException.getUnsupportedException(Value.getTypeName(valueType));
         }
     }
 
@@ -616,7 +614,7 @@ public class JdbcUtils {
      * Get metadata from the database.
      *
      * @param conn the connection
-     * @param sql  the SQL statement
+     * @param sql the SQL statement
      * @return the metadata
      * @throws SQLException on failure
      */
@@ -731,7 +729,7 @@ public class JdbcUtils {
     }
 
     private static void addDatabaseMetaData(SimpleResultSet rs,
-                                            DatabaseMetaData meta) {
+            DatabaseMetaData meta) {
         Method[] methods = DatabaseMetaData.class.getDeclaredMethods();
         Arrays.sort(methods, Comparator.comparing(Method::toString));
         for (Method m : methods) {
@@ -751,7 +749,7 @@ public class JdbcUtils {
     /**
      * Check is the SQL string starts with a prefix (case insensitive).
      *
-     * @param sql     the SQL statement
+     * @param sql the SQL statement
      * @param builtIn the prefix
      * @return true if yes
      */

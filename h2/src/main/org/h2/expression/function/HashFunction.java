@@ -44,26 +44,26 @@ public final class HashFunction extends FunctionN {
     private final int function;
 
     public HashFunction(Expression arg, int function) {
-        super(new Expression[]{arg});
+        super(new Expression[] { arg });
         this.function = function;
     }
 
     public HashFunction(Expression arg1, Expression arg2, Expression arg3, int function) {
-        super(arg3 == null ? new Expression[]{arg1, arg2} : new Expression[]{arg1, arg2, arg3});
+        super(arg3 == null ? new Expression[] { arg1, arg2 } : new Expression[] { arg1, arg2, arg3 });
         this.function = function;
     }
 
     @Override
     public Value getValue(SessionLocal session, Value v1, Value v2, Value v3) {
         switch (function) {
-            case HASH:
-                v1 = getHash(v1.getString(), v2, v3 == null ? 1 : v3.getInt());
-                break;
-            case ORA_HASH:
-                v1 = oraHash(v1, v2 == null ? 0xffff_ffffL : v2.getLong(), v3 == null ? 0L : v3.getLong());
-                break;
-            default:
-                throw DbException.getInternalError("function=" + function);
+        case HASH:
+            v1 = getHash(v1.getString(), v2, v3 == null ? 1 : v3.getInt());
+            break;
+        case ORA_HASH:
+            v1 = oraHash(v1, v2 == null ? 0xffff_ffffL : v2.getLong(), v3 == null ? 0L : v3.getLong());
+            break;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         return v1;
     }
@@ -74,31 +74,31 @@ public final class HashFunction extends FunctionN {
         }
         MessageDigest md;
         switch (StringUtils.toUpperEnglish(algorithm)) {
-            case "MD5":
-            case "SHA-1":
-            case "SHA-224":
-            case "SHA-256":
-            case "SHA-384":
-            case "SHA-512":
-                md = hashImpl(value, algorithm);
-                break;
-            case "SHA256":
-                md = hashImpl(value, "SHA-256");
-                break;
-            case "SHA3-224":
-                md = hashImpl(value, SHA3.getSha3_224());
-                break;
-            case "SHA3-256":
-                md = hashImpl(value, SHA3.getSha3_256());
-                break;
-            case "SHA3-384":
-                md = hashImpl(value, SHA3.getSha3_384());
-                break;
-            case "SHA3-512":
-                md = hashImpl(value, SHA3.getSha3_512());
-                break;
-            default:
-                throw DbException.getInvalidValueException("algorithm", algorithm);
+        case "MD5":
+        case "SHA-1":
+        case "SHA-224":
+        case "SHA-256":
+        case "SHA-384":
+        case "SHA-512":
+            md = hashImpl(value, algorithm);
+            break;
+        case "SHA256":
+            md = hashImpl(value, "SHA-256");
+            break;
+        case "SHA3-224":
+            md = hashImpl(value, SHA3.getSha3_224());
+            break;
+        case "SHA3-256":
+            md = hashImpl(value, SHA3.getSha3_256());
+            break;
+        case "SHA3-384":
+            md = hashImpl(value, SHA3.getSha3_384());
+            break;
+        case "SHA3-512":
+            md = hashImpl(value, SHA3.getSha3_512());
+            break;
+        default:
+            throw DbException.getInvalidValueException("algorithm", algorithm);
         }
         byte[] b = md.digest();
         for (int i = 1; i < iterations; i++) {
@@ -142,23 +142,23 @@ public final class HashFunction extends FunctionN {
     private static MessageDigest hashImpl(Value value, MessageDigest md) {
         try {
             switch (value.getValueType()) {
-                case Value.VARCHAR:
-                case Value.CHAR:
-                case Value.VARCHAR_IGNORECASE:
-                    md.update(value.getString().getBytes(StandardCharsets.UTF_8));
-                    break;
-                case Value.BLOB:
-                case Value.CLOB: {
-                    byte[] buf = new byte[4096];
-                    try (InputStream is = value.getInputStream()) {
-                        for (int r; (r = is.read(buf)) > 0; ) {
-                            md.update(buf, 0, r);
-                        }
+            case Value.VARCHAR:
+            case Value.CHAR:
+            case Value.VARCHAR_IGNORECASE:
+                md.update(value.getString().getBytes(StandardCharsets.UTF_8));
+                break;
+            case Value.BLOB:
+            case Value.CLOB: {
+                byte[] buf = new byte[4096];
+                try (InputStream is = value.getInputStream()) {
+                    for (int r; (r = is.read(buf)) > 0;) {
+                        md.update(buf, 0, r);
                     }
-                    break;
                 }
-                default:
-                    md.update(value.getBytesNoCopy());
+                break;
+            }
+            default:
+                md.update(value.getBytesNoCopy());
             }
             return md;
         } catch (Exception ex) {
@@ -170,14 +170,14 @@ public final class HashFunction extends FunctionN {
     public Expression optimize(SessionLocal session) {
         boolean allConst = optimizeArguments(session, true);
         switch (function) {
-            case HASH:
-                type = TypeInfo.TYPE_VARBINARY;
-                break;
-            case ORA_HASH:
-                type = TypeInfo.TYPE_BIGINT;
-                break;
-            default:
-                throw DbException.getInternalError("function=" + function);
+        case HASH:
+            type = TypeInfo.TYPE_VARBINARY;
+            break;
+        case ORA_HASH:
+            type = TypeInfo.TYPE_BIGINT;
+            break;
+        default:
+            throw DbException.getInternalError("function=" + function);
         }
         if (allConst) {
             return TypedValueExpression.getTypedIfNull(getValue(session), type);

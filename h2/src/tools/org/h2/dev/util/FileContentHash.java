@@ -148,7 +148,7 @@ public class FileContentHash {
         if (old != null) {
             System.out.println("Collision: " + old + "\n" + path + "\n");
         } else {
-            hashes.put(s, path);
+            hashes.put(s,  path);
         }
     }
 

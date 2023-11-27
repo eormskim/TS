@@ -7,7 +7,6 @@ package org.h2.command.dml;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-
 import org.h2.api.ErrorCode;
 import org.h2.api.Trigger;
 import org.h2.command.Command;
@@ -133,15 +132,15 @@ public final class Merge extends CommandWithValues {
     /**
      * Updates an existing row or inserts a new one.
      *
-     * @param row                       row to replace
-     * @param expressions               source expressions, or null
-     * @param deltaChangeCollector      target result
+     * @param row row to replace
+     * @param expressions source expressions, or null
+     * @param deltaChangeCollector target result
      * @param deltaChangeCollectionMode collection mode
      * @return 1 if row was inserted, 1 if row was updated by a MERGE statement,
-     * and 2 if row was updated by a REPLACE statement
+     *         and 2 if row was updated by a REPLACE statement
      */
     private int merge(Row row, Expression[] expressions, ResultTarget deltaChangeCollector,
-                      ResultOption deltaChangeCollectionMode) {
+            ResultOption deltaChangeCollectionMode) {
         long count;
         if (update == null) {
             // if there is no valid primary key,
@@ -202,8 +201,8 @@ public final class Merge extends CommandWithValues {
                         Column[] indexColumns;
                         if (index instanceof MVPrimaryIndex) {
                             MVPrimaryIndex foundMV = (MVPrimaryIndex) index;
-                            indexColumns = new Column[]{
-                                    foundMV.getIndexColumns()[foundMV.getMainIndexColumn()].column};
+                            indexColumns = new Column[] {
+                                    foundMV.getIndexColumns()[foundMV.getMainIndexColumn()].column };
                         } else {
                             indexColumns = index.getColumns();
                         }

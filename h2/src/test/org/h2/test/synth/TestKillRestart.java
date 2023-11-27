@@ -16,7 +16,6 @@ import java.sql.Statement;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
 import org.h2.test.TestDb;
 import org.h2.test.utils.SelfDestructor;
 
@@ -45,10 +44,10 @@ public class TestKillRestart extends TestDb {
         //        "killRestart;CACHE_SIZE=2048;WRITE_DELAY=0", true);
         String user = getUser(), password = getPassword();
         String selfDestruct = SelfDestructor.getPropertyString(60);
-        String[] procDef = {getJVM(), selfDestruct,
+        String[] procDef = { getJVM(), selfDestruct,
                 "-cp", getClassPath(), "-ea",
                 getClass().getName(), "-url", url, "-user", user,
-                "-password", password};
+                "-password", password };
 
         int len = getSize(2, 15);
         for (int i = 0; i < len; i++) {
@@ -101,7 +100,7 @@ public class TestKillRestart extends TestDb {
             }
         }.start();
         if (!latch.await(2, TimeUnit.MINUTES)) {
-            String[] procDef = {"jstack", "-F", "-m", "-l", "" + pid};
+            String[] procDef = { "jstack", "-F", "-m", "-l", "" + pid };
             new ProcessBuilder().redirectErrorStream(true).command(procDef)
                     .start();
             OutputCatcher catcher = new OutputCatcher(p.getInputStream());
@@ -205,7 +204,7 @@ public class TestKillRestart extends TestDb {
                 if (r.nextInt(100) < 10) {
                     conn.createStatement().execute(
                             "ALTER TABLE TEST_META " +
-                                    "ALTER COLUMN ID INT DEFAULT 10");
+                            "ALTER COLUMN ID INT DEFAULT 10");
                 }
                 if (r.nextBoolean()) {
                     if (r.nextBoolean()) {

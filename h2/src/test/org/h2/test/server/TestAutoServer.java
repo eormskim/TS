@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.h2.api.ErrorCode;
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
@@ -123,10 +122,10 @@ public class TestAutoServer extends TestDb {
         }
         String user = getUser(), password = getPassword();
         Connection connServer = getConnection(url + ";OPEN_NEW=TRUE",
-                user, password);
+            user, password);
         try {
             SortedProperties prop = SortedProperties.loadProperties(
-                    getBaseDir() + "/" + getTestName() + ".lock.db");
+                getBaseDir() + "/" + getTestName() + ".lock.db");
             String key = prop.getProperty("id");
             String server = prop.getProperty("server");
             if (server != null) {
@@ -136,7 +135,7 @@ public class TestAutoServer extends TestDb {
                 Connection conn = DriverManager.getConnection(u2, user, password);
                 Statement stat = conn.createStatement();
                 assertThrows(ErrorCode.CONNECTION_BROKEN_1, stat).
-                        executeQuery("SELECT MAX(RAND()) FROM SYSTEM_RANGE(1, 100000000)");
+                    executeQuery("SELECT MAX(RAND()) FROM SYSTEM_RANGE(1, 100000000)");
                 conn.close();
                 int gotPort = Integer.parseInt(server.substring(server.lastIndexOf(':') + 1));
                 if (port) {
@@ -166,8 +165,7 @@ public class TestAutoServer extends TestDb {
             }
             try {
                 connServer.close();
-            } catch (SQLException ignore) {
-            }
+            } catch (SQLException ignore) {}
         }
 
         deleteDb("autoServer");

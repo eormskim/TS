@@ -11,7 +11,6 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.h2.store.fs.FileUtils;
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
@@ -61,7 +60,7 @@ public class TestRecovery extends TestDb {
         DeleteDbFiles.execute(getBaseDir(), "recovery", true);
         conn = getConnection(
                 "recovery;init=runscript from '" +
-                        getBaseDir() + "/recovery.h2.sql'");
+                getBaseDir() + "/recovery.h2.sql'");
         stat = conn.createStatement();
         stat.execute("select * from test");
         conn.close();
@@ -81,7 +80,7 @@ public class TestRecovery extends TestDb {
         DeleteDbFiles.execute(getBaseDir(), "recovery", true);
         conn = getConnection(
                 "recovery;init=runscript from '" +
-                        getBaseDir() + "/recovery.h2.sql'");
+                getBaseDir() + "/recovery.h2.sql'");
         conn.close();
     }
 

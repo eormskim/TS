@@ -20,10 +20,14 @@ public final class RangeInputStream extends FilterInputStream {
     /**
      * Creates new instance of range input stream.
      *
-     * @param in     source stream
-     * @param offset offset of the range
-     * @param limit  length of the range
-     * @throws IOException on I/O exception during seeking to the specified offset
+     * @param in
+     *            source stream
+     * @param offset
+     *            offset of the range
+     * @param limit
+     *            length of the range
+     * @throws IOException
+     *             on I/O exception during seeking to the specified offset
      */
     public RangeInputStream(InputStream in, long offset, long limit) throws IOException {
         super(in);

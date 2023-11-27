@@ -58,8 +58,8 @@ public final class CurrentGeneralValueSpecification extends Operation0 implement
      */
     public static final int SYSTEM_USER = SESSION_USER + 1;
 
-    private static final String[] NAMES = {"CURRENT_CATALOG", "CURRENT_PATH", "CURRENT_ROLE", "CURRENT_SCHEMA",
-            "CURRENT_USER", "SESSION_USER", "SYSTEM_USER"};
+    private static final String[] NAMES = { "CURRENT_CATALOG", "CURRENT_PATH", "CURRENT_ROLE", "CURRENT_SCHEMA",
+            "CURRENT_USER", "SESSION_USER", "SYSTEM_USER" };
 
     private final int specification;
 
@@ -71,46 +71,46 @@ public final class CurrentGeneralValueSpecification extends Operation0 implement
     public Value getValue(SessionLocal session) {
         String s;
         switch (specification) {
-            case CURRENT_CATALOG:
-                s = session.getDatabase().getShortName();
-                break;
-            case CURRENT_PATH: {
-                String[] searchPath = session.getSchemaSearchPath();
-                if (searchPath != null) {
-                    StringBuilder builder = new StringBuilder();
-                    for (int i = 0; i < searchPath.length; i++) {
-                        if (i > 0) {
-                            builder.append(',');
-                        }
-                        ParserUtil.quoteIdentifier(builder, searchPath[i], HasSQL.DEFAULT_SQL_FLAGS);
+        case CURRENT_CATALOG:
+            s = session.getDatabase().getShortName();
+            break;
+        case CURRENT_PATH: {
+            String[] searchPath = session.getSchemaSearchPath();
+            if (searchPath != null) {
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < searchPath.length; i++) {
+                    if (i > 0) {
+                        builder.append(',');
                     }
-                    s = builder.toString();
-                } else {
-                    s = "";
+                    ParserUtil.quoteIdentifier(builder, searchPath[i], HasSQL.DEFAULT_SQL_FLAGS);
                 }
-                break;
+                s = builder.toString();
+            } else {
+                s = "";
             }
-            case CURRENT_ROLE: {
-                Database db = session.getDatabase();
-                s = db.getPublicRole().getName();
-                if (db.getSettings().databaseToLower) {
-                    s = StringUtils.toLowerEnglish(s);
-                }
-                break;
+            break;
+        }
+        case CURRENT_ROLE: {
+            Database db = session.getDatabase();
+            s = db.getPublicRole().getName();
+            if (db.getSettings().databaseToLower) {
+                s = StringUtils.toLowerEnglish(s);
             }
-            case CURRENT_SCHEMA:
-                s = session.getCurrentSchemaName();
-                break;
-            case CURRENT_USER:
-            case SESSION_USER:
-            case SYSTEM_USER:
-                s = session.getUser().getName();
-                if (session.getDatabase().getSettings().databaseToLower) {
-                    s = StringUtils.toLowerEnglish(s);
-                }
-                break;
-            default:
-                throw DbException.getInternalError("specification=" + specification);
+            break;
+        }
+        case CURRENT_SCHEMA:
+            s = session.getCurrentSchemaName();
+            break;
+        case CURRENT_USER:
+        case SESSION_USER:
+        case SYSTEM_USER:
+            s = session.getUser().getName();
+            if (session.getDatabase().getSettings().databaseToLower) {
+                s = StringUtils.toLowerEnglish(s);
+            }
+            break;
+        default:
+            throw DbException.getInternalError("specification=" + specification);
         }
         return s != null ? ValueVarchar.get(s, session) : ValueNull.INSTANCE;
     }
@@ -123,8 +123,8 @@ public final class CurrentGeneralValueSpecification extends Operation0 implement
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-            case ExpressionVisitor.DETERMINISTIC:
-                return false;
+        case ExpressionVisitor.DETERMINISTIC:
+            return false;
         }
         return true;
     }

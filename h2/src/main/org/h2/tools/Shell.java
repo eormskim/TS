@@ -332,7 +332,7 @@ public class Shell extends Tool implements Runnable {
             }
             String data = null;
             boolean found = false;
-            for (int i = 0; ; i++) {
+            for (int i = 0;; i++) {
                 String d = prop.getProperty(Integer.toString(i));
                 if (d == null) {
                     break;
@@ -370,7 +370,7 @@ public class Shell extends Tool implements Runnable {
     }
 
     private Connection connectH2(String driver, String url, String user) throws IOException, SQLException {
-        for (; ; ) {
+        for (;;) {
             String password = readPassword();
             try {
                 return JdbcUtils.getConnection(driver, url + ";IFEXISTS=TRUE", user, password);

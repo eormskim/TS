@@ -160,65 +160,65 @@ public class TestRandomCompare extends TestDb {
             }
             appendRandomValue(random, buff);
             switch (random.nextInt(8)) {
-                case 0:
-                    buff.append("=");
-                    appendRandomValue(random, buff);
-                    break;
-                case 1:
-                    buff.append("<");
-                    appendRandomValue(random, buff);
-                    break;
-                case 2:
-                    buff.append(">");
-                    appendRandomValue(random, buff);
-                    break;
-                case 3:
-                    buff.append("<=");
-                    appendRandomValue(random, buff);
-                    break;
-                case 4:
-                    buff.append(">=");
-                    appendRandomValue(random, buff);
-                    break;
-                case 5:
-                    buff.append("<>");
-                    appendRandomValue(random, buff);
-                    break;
-                case 6:
-                    buff.append(" is distinct from ");
-                    appendRandomValue(random, buff);
-                    break;
-                case 7:
-                    buff.append(" is not distinct from ");
-                    appendRandomValue(random, buff);
-                    break;
+            case 0:
+                buff.append("=");
+                appendRandomValue(random, buff);
+                break;
+            case 1:
+                buff.append("<");
+                appendRandomValue(random, buff);
+                break;
+            case 2:
+                buff.append(">");
+                appendRandomValue(random, buff);
+                break;
+            case 3:
+                buff.append("<=");
+                appendRandomValue(random, buff);
+                break;
+            case 4:
+                buff.append(">=");
+                appendRandomValue(random, buff);
+                break;
+            case 5:
+                buff.append("<>");
+                appendRandomValue(random, buff);
+                break;
+            case 6:
+                buff.append(" is distinct from ");
+                appendRandomValue(random, buff);
+                break;
+            case 7:
+                buff.append(" is not distinct from ");
+                appendRandomValue(random, buff);
+                break;
             }
         }
     }
 
     private static void appendRandomValue(Random random, StringBuilder buff) {
         switch (random.nextInt(7)) {
-            case 0:
-                buff.append("null");
-                break;
-            case 1:
-                buff.append(1);
-                break;
-            case 2:
-                buff.append(2);
-                break;
-            case 3:
-                buff.append(3);
-                break;
-            case 4:
-                buff.append(-1);
-                break;
-            case 5:
-                buff.append("x0");
-                break;
-            case 6:
-                buff.append("x1");
-                break;
+        case 0:
+            buff.append("null");
+            break;
+        case 1:
+            buff.append(1);
+            break;
+        case 2:
+            buff.append(2);
+            break;
+        case 3:
+            buff.append(3);
+            break;
+        case 4:
+            buff.append(-1);
+            break;
+        case 5:
+            buff.append("x0");
+            break;
+        case 6:
+            buff.append("x1");
+            break;
         }
     }
 

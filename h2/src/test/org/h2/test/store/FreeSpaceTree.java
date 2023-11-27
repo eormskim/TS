@@ -76,7 +76,7 @@ public class FreeSpaceTree {
     /**
      * Mark the space as in use.
      *
-     * @param pos    the position in bytes
+     * @param pos the position in bytes
      * @param length the number of bytes
      */
     public synchronized void markUsed(long pos, int length) {
@@ -112,7 +112,7 @@ public class FreeSpaceTree {
     /**
      * Mark the space as free.
      *
-     * @param pos    the position in bytes
+     * @param pos the position in bytes
      * @param length the number of bytes
      */
     public synchronized void free(long pos, int length) {
@@ -198,7 +198,7 @@ public class FreeSpaceTree {
                 return Integer.toHexString(start) + "-";
             }
             return Integer.toHexString(start) + "-" +
-                    Integer.toHexString(start + blocks - 1);
+                Integer.toHexString(start + blocks - 1);
         }
 
     }

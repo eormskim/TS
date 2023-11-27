@@ -34,7 +34,8 @@ abstract class FilteredDataChangeStatement extends DataChangeStatement {
     /**
      * Creates new instance of FilteredDataChangeStatement.
      *
-     * @param session the session
+     * @param session
+     *            the session
      */
     FilteredDataChangeStatement(SessionLocal session) {
         super(session);

@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
-
 import org.h2.test.TestAll;
 import org.h2.test.TestBase;
 import org.h2.test.utils.SelfDestructor;
@@ -119,7 +118,7 @@ public abstract class TestHalt extends TestBase {
 
     @Override
     public void test() {
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             operations = OP_INSERT | i;
             flags = i >> 4;
             // flags |= FLAG_NO_DELAY; // | FLAG_LOBS;
@@ -226,7 +225,7 @@ public abstract class TestHalt extends TestBase {
             // String classPath = "-cp
             // .;D:/data/java/hsqldb.jar;D:/data/java/derby.jar";
             String selfDestruct = SelfDestructor.getPropertyString(60);
-            String[] procDef = {getJVM(), selfDestruct,
+            String[] procDef = { getJVM(), selfDestruct,
                     "-cp", getClassPath(),
                     getClass().getName(), "" + operations, "" + flags, "" + testValue};
             traceOperation("start: " + StringUtils.arrayCombine(procDef, ' '));
@@ -238,7 +237,7 @@ public abstract class TestHalt extends TestBase {
             if (s == null) {
                 throw new IOException(
                         "No reply from process, command: " +
-                                StringUtils.arrayCombine(procDef, ' '));
+                        StringUtils.arrayCombine(procDef, ' '));
             } else if (s.startsWith("READY")) {
                 traceOperation("got reply: " + s);
             }

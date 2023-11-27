@@ -37,8 +37,10 @@ public class LocalResult implements ResultInterface, ResultTarget {
     /**
      * Constructs a new local result object for the specified table.
      *
-     * @param session the session
-     * @param table   the table
+     * @param session
+     *            the session
+     * @param table
+     *            the table
      * @return the local result
      */
     public static LocalResult forTable(SessionLocal session, Table table) {
@@ -94,11 +96,15 @@ public class LocalResult implements ResultInterface, ResultTarget {
     /**
      * Construct a local result object.
      *
-     * @param session            the session
-     * @param expressions        the expression array
-     * @param visibleColumnCount the number of visible columns
-     * @param resultColumnCount  the number of columns including visible columns and additional
-     *                           virtual columns for ORDER BY and DISTINCT ON clauses
+     * @param session
+     *            the session
+     * @param expressions
+     *            the expression array
+     * @param visibleColumnCount
+     *            the number of visible columns
+     * @param resultColumnCount
+     *            the number of columns including visible columns and additional
+     *            virtual columns for ORDER BY and DISTINCT ON clauses
      */
     public LocalResult(SessionLocal session, Expression[] expressions, int visibleColumnCount, int resultColumnCount) {
         this.session = session;
@@ -128,6 +134,7 @@ public class LocalResult implements ResultInterface, ResultTarget {
      * Redefine count of maximum rows holds in memory for the result.
      *
      * @param maxValue Maximum rows count in memory.
+     *
      * @see SysProperties#MAX_MEMORY_ROWS
      */
     public void setMaxMemoryRows(int maxValue) {
@@ -253,8 +260,7 @@ public class LocalResult implements ResultInterface, ResultTarget {
         if (r == null) {
             r = false;
             reset();
-            loop:
-            while (next()) {
+            loop: while (next()) {
                 Value[] row = currentRow;
                 for (int i = 0; i < visibleColumnCount; i++) {
                     if (row[i].containsNull()) {
@@ -298,7 +304,6 @@ public class LocalResult implements ResultInterface, ResultTarget {
 
     /**
      * Retrieve the current row
-     *
      * @return row
      */
     public Row currentRowForTable() {

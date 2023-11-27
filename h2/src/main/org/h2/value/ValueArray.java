@@ -40,7 +40,7 @@ public final class ValueArray extends ValueCollectionBase {
      * Get or create a array value for the given value array.
      * Do not clone the data.
      *
-     * @param list     the value array
+     * @param list the value array
      * @param provider the cast information provider
      * @return the value
      */
@@ -53,8 +53,8 @@ public final class ValueArray extends ValueCollectionBase {
      * Do not clone the data.
      *
      * @param componentType the type of elements, or {@code null}
-     * @param list          the value array
-     * @param provider      the cast information provider
+     * @param list the value array
+     * @param provider the cast information provider
      * @return the value
      */
     public static ValueArray get(TypeInfo componentType, Value[] list, CastDataProvider provider) {

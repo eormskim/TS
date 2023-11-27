@@ -72,7 +72,7 @@ public class AES implements BlockCipher {
             FT3[i] = rot8(FT2[i]);
             y = RS[i];
             RT0[i] = mul(pow, log, 0x0b, y) ^ (mul(pow, log, 0x0d, y) << 8)
-                    ^ (mul(pow, log, 0x09, y) << 16) ^ (mul(pow, log, 0x0e, y) << 24);
+                ^ (mul(pow, log, 0x09, y) << 16) ^ (mul(pow, log, 0x0e, y) << 24);
             RT1[i] = rot8(RT0[i]);
             RT2[i] = rot8(RT1[i]);
             RT3[i] = rot8(RT2[i]);

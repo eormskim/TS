@@ -79,16 +79,16 @@ public class BinaryOperation extends Operation2 {
 
     private String getOperationToken() {
         switch (opType) {
-            case PLUS:
-                return "+";
-            case MINUS:
-                return "-";
-            case MULTIPLY:
-                return "*";
-            case DIVIDE:
-                return "/";
-            default:
-                throw DbException.getInternalError("opType=" + opType);
+        case PLUS:
+            return "+";
+        case MINUS:
+            return "-";
+        case MULTIPLY:
+            return "*";
+        case DIVIDE:
+            return "/";
+        default:
+            throw DbException.getInternalError("opType=" + opType);
         }
     }
 
@@ -100,28 +100,28 @@ public class BinaryOperation extends Operation2 {
             r = r.convertTo(type, session);
         }
         switch (opType) {
-            case PLUS:
-                if (l == ValueNull.INSTANCE || r == ValueNull.INSTANCE) {
-                    return ValueNull.INSTANCE;
-                }
-                return l.add(r);
-            case MINUS:
-                if (l == ValueNull.INSTANCE || r == ValueNull.INSTANCE) {
-                    return ValueNull.INSTANCE;
-                }
-                return l.subtract(r);
-            case MULTIPLY:
-                if (l == ValueNull.INSTANCE || r == ValueNull.INSTANCE) {
-                    return ValueNull.INSTANCE;
-                }
-                return l.multiply(r);
-            case DIVIDE:
-                if (l == ValueNull.INSTANCE || r == ValueNull.INSTANCE) {
-                    return ValueNull.INSTANCE;
-                }
-                return l.divide(r, type);
-            default:
-                throw DbException.getInternalError("type=" + opType);
+        case PLUS:
+            if (l == ValueNull.INSTANCE || r == ValueNull.INSTANCE) {
+                return ValueNull.INSTANCE;
+            }
+            return l.add(r);
+        case MINUS:
+            if (l == ValueNull.INSTANCE || r == ValueNull.INSTANCE) {
+                return ValueNull.INSTANCE;
+            }
+            return l.subtract(r);
+        case MULTIPLY:
+            if (l == ValueNull.INSTANCE || r == ValueNull.INSTANCE) {
+                return ValueNull.INSTANCE;
+            }
+            return l.multiply(r);
+        case DIVIDE:
+            if (l == ValueNull.INSTANCE || r == ValueNull.INSTANCE) {
+                return ValueNull.INSTANCE;
+            }
+            return l.divide(r, type);
+        default:
+            throw DbException.getInternalError("type=" + opType);
         }
     }
 
@@ -177,47 +177,47 @@ public class BinaryOperation extends Operation2 {
         long precision;
         int scale;
         switch (opType) {
-            case PLUS:
-            case MINUS:
-                // Precision is implementation-defined.
-                // Scale must be max(leftScale, rightScale).
-                // Choose the largest scale and adjust the precision of other
-                // argument.
-                if (leftScale < rightScale) {
-                    leftPrecision += rightScale - leftScale;
-                    scale = rightScale;
-                } else {
-                    rightPrecision += leftScale - rightScale;
-                    scale = leftScale;
-                }
-                // Add one extra digit to the largest precision.
-                precision = Math.max(leftPrecision, rightPrecision) + 1;
-                break;
-            case MULTIPLY:
-                // Precision is implementation-defined.
-                // Scale must be leftScale + rightScale.
-                // Use sum of precisions.
-                precision = leftPrecision + rightPrecision;
-                scale = leftScale + rightScale;
-                break;
-            case DIVIDE: {
-                // Precision and scale are implementation-defined.
-                long scaleAsLong = leftScale - rightScale + rightPrecision * 2;
-                if (scaleAsLong >= ValueNumeric.MAXIMUM_SCALE) {
-                    scale = ValueNumeric.MAXIMUM_SCALE;
-                } else if (scaleAsLong <= 0) {
-                    scale = 0;
-                } else {
-                    scale = (int) scaleAsLong;
-                }
-                // Divider can be effectively multiplied by no more than
-                // 10^rightScale, so add rightScale to its precision and adjust the
-                // result to the changes in scale.
-                precision = leftPrecision + rightScale - leftScale + scale;
-                break;
+        case PLUS:
+        case MINUS:
+            // Precision is implementation-defined.
+            // Scale must be max(leftScale, rightScale).
+            // Choose the largest scale and adjust the precision of other
+            // argument.
+            if (leftScale < rightScale) {
+                leftPrecision += rightScale - leftScale;
+                scale = rightScale;
+            } else {
+                rightPrecision += leftScale - rightScale;
+                scale = leftScale;
             }
-            default:
-                throw DbException.getInternalError("type=" + opType);
+            // Add one extra digit to the largest precision.
+            precision = Math.max(leftPrecision, rightPrecision) + 1;
+            break;
+        case MULTIPLY:
+            // Precision is implementation-defined.
+            // Scale must be leftScale + rightScale.
+            // Use sum of precisions.
+            precision = leftPrecision + rightPrecision;
+            scale = leftScale + rightScale;
+            break;
+        case DIVIDE: {
+            // Precision and scale are implementation-defined.
+            long scaleAsLong = leftScale - rightScale + rightPrecision * 2;
+            if (scaleAsLong >= ValueNumeric.MAXIMUM_SCALE) {
+                scale = ValueNumeric.MAXIMUM_SCALE;
+            } else if (scaleAsLong <= 0) {
+                scale = 0;
+            } else {
+                scale = (int) scaleAsLong;
+            }
+            // Divider can be effectively multiplied by no more than
+            // 10^rightScale, so add rightScale to its precision and adjust the
+            // result to the changes in scale.
+            precision = leftPrecision + rightScale - leftScale + scale;
+            break;
+        }
+        default:
+            throw DbException.getInternalError("type=" + opType);
         }
         type = TypeInfo.getTypeInfo(Value.NUMERIC, precision, scale, null);
     }
@@ -228,18 +228,18 @@ public class BinaryOperation extends Operation2 {
         long leftPrecision = leftType.getPrecision(), rightPrecision = rightType.getPrecision();
         long precision;
         switch (opType) {
-            case PLUS:
-            case MINUS:
-            case DIVIDE:
-                // Add one extra digit to the largest precision.
-                precision = Math.max(leftPrecision, rightPrecision) + 1;
-                break;
-            case MULTIPLY:
-                // Use sum of precisions.
-                precision = leftPrecision + rightPrecision;
-                break;
-            default:
-                throw DbException.getInternalError("type=" + opType);
+        case PLUS:
+        case MINUS:
+        case DIVIDE:
+            // Add one extra digit to the largest precision.
+            precision = Math.max(leftPrecision, rightPrecision) + 1;
+            break;
+        case MULTIPLY:
+            // Use sum of precisions.
+            precision = leftPrecision + rightPrecision;
+            break;
+        default:
+            throw DbException.getInternalError("type=" + opType);
         }
         type = TypeInfo.getTypeInfo(Value.DECFLOAT, precision, 0, null);
     }
@@ -266,153 +266,153 @@ public class BinaryOperation extends Operation2 {
             throw getUnsupported(l, r);
         }
         switch (opType) {
-            case PLUS:
-                if (lInterval && rInterval) {
-                    if (DataType.isYearMonthIntervalType(l) == DataType.isYearMonthIntervalType(r)) {
-                        return new IntervalOperation(IntervalOpType.INTERVAL_PLUS_INTERVAL, left, right);
-                    }
-                } else if (lInterval && rDateTime) {
-                    if (r == Value.TIME && DataType.isYearMonthIntervalType(l)) {
-                        break;
-                    }
-                    return new IntervalOperation(IntervalOpType.DATETIME_PLUS_INTERVAL, right, left);
-                } else if (lDateTime && rInterval) {
-                    if (l == Value.TIME && DataType.isYearMonthIntervalType(r)) {
-                        break;
-                    }
-                    return new IntervalOperation(IntervalOpType.DATETIME_PLUS_INTERVAL, left, right);
+        case PLUS:
+            if (lInterval && rInterval) {
+                if (DataType.isYearMonthIntervalType(l) == DataType.isYearMonthIntervalType(r)) {
+                    return new IntervalOperation(IntervalOpType.INTERVAL_PLUS_INTERVAL, left, right);
                 }
-                break;
-            case MINUS:
-                if (lInterval && rInterval) {
-                    if (DataType.isYearMonthIntervalType(l) == DataType.isYearMonthIntervalType(r)) {
-                        return new IntervalOperation(IntervalOpType.INTERVAL_MINUS_INTERVAL, left, right);
-                    }
-                } else if (lDateTime && rInterval) {
-                    if (l == Value.TIME && DataType.isYearMonthIntervalType(r)) {
-                        break;
-                    }
-                    return new IntervalOperation(IntervalOpType.DATETIME_MINUS_INTERVAL, left, right);
+            } else if (lInterval && rDateTime) {
+                if (r == Value.TIME && DataType.isYearMonthIntervalType(l)) {
+                    break;
                 }
-                break;
-            case MULTIPLY:
-                if (lInterval && rNumeric) {
-                    return new IntervalOperation(IntervalOpType.INTERVAL_MULTIPLY_NUMERIC, left, right);
-                } else if (lNumeric && rInterval) {
-                    return new IntervalOperation(IntervalOpType.INTERVAL_MULTIPLY_NUMERIC, right, left);
+                return new IntervalOperation(IntervalOpType.DATETIME_PLUS_INTERVAL, right, left);
+            } else if (lDateTime && rInterval) {
+                if (l == Value.TIME && DataType.isYearMonthIntervalType(r)) {
+                    break;
                 }
-                break;
-            case DIVIDE:
-                if (lInterval) {
-                    if (rNumeric) {
-                        return new IntervalOperation(IntervalOpType.INTERVAL_DIVIDE_NUMERIC, left, right);
-                    } else if (rInterval && DataType.isYearMonthIntervalType(l) == DataType.isYearMonthIntervalType(r)) {
-                        // Non-standard
-                        return new IntervalOperation(IntervalOpType.INTERVAL_DIVIDE_INTERVAL, left, right);
-                    }
+                return new IntervalOperation(IntervalOpType.DATETIME_PLUS_INTERVAL, left, right);
+            }
+            break;
+        case MINUS:
+            if (lInterval && rInterval) {
+                if (DataType.isYearMonthIntervalType(l) == DataType.isYearMonthIntervalType(r)) {
+                    return new IntervalOperation(IntervalOpType.INTERVAL_MINUS_INTERVAL, left, right);
                 }
-                break;
-            default:
+            } else if (lDateTime && rInterval) {
+                if (l == Value.TIME && DataType.isYearMonthIntervalType(r)) {
+                    break;
+                }
+                return new IntervalOperation(IntervalOpType.DATETIME_MINUS_INTERVAL, left, right);
+            }
+            break;
+        case MULTIPLY:
+            if (lInterval && rNumeric) {
+                return new IntervalOperation(IntervalOpType.INTERVAL_MULTIPLY_NUMERIC, left, right);
+            } else if (lNumeric && rInterval) {
+                return new IntervalOperation(IntervalOpType.INTERVAL_MULTIPLY_NUMERIC, right, left);
+            }
+            break;
+        case DIVIDE:
+            if (lInterval) {
+                if (rNumeric) {
+                    return new IntervalOperation(IntervalOpType.INTERVAL_DIVIDE_NUMERIC, left, right);
+                } else if (rInterval && DataType.isYearMonthIntervalType(l) == DataType.isYearMonthIntervalType(r)) {
+                    // Non-standard
+                    return new IntervalOperation(IntervalOpType.INTERVAL_DIVIDE_INTERVAL, left, right);
+                }
+            }
+            break;
+        default:
         }
         throw getUnsupported(l, r);
     }
 
     private Expression optimizeDateTime(SessionLocal session, int l, int r) {
         switch (opType) {
-            case PLUS: {
-                if (DataType.isDateTimeType(l)) {
-                    if (DataType.isDateTimeType(r)) {
-                        if (l > r) {
-                            swap();
-                            int t = l;
-                            l = r;
-                            r = t;
-                        }
-                        return new CompatibilityDatePlusTimeOperation(right, left).optimize(session);
+        case PLUS: {
+            if (DataType.isDateTimeType(l)) {
+                if (DataType.isDateTimeType(r)) {
+                    if (l > r) {
+                        swap();
+                        int t = l;
+                        l = r;
+                        r = t;
                     }
-                    swap();
-                    int t = l;
-                    l = r;
-                    r = t;
+                    return new CompatibilityDatePlusTimeOperation(right, left).optimize(session);
                 }
-                switch (l) {
-                    case Value.INTEGER:
-                        // Oracle date add
-                        return new DateTimeFunction(DateTimeFunction.DATEADD, DateTimeFunction.DAY, left, right)
-                                .optimize(session);
-                    case Value.NUMERIC:
-                    case Value.REAL:
-                    case Value.DOUBLE:
-                    case Value.DECFLOAT:
-                        // Oracle date add
-                        return new DateTimeFunction(DateTimeFunction.DATEADD, DateTimeFunction.SECOND,
-                                new BinaryOperation(OpType.MULTIPLY, ValueExpression.get(ValueInteger.get(60 * 60 * 24)),
-                                        left), right).optimize(session);
+                swap();
+                int t = l;
+                l = r;
+                r = t;
+            }
+            switch (l) {
+            case Value.INTEGER:
+                // Oracle date add
+                return new DateTimeFunction(DateTimeFunction.DATEADD, DateTimeFunction.DAY, left, right)
+                        .optimize(session);
+            case Value.NUMERIC:
+            case Value.REAL:
+            case Value.DOUBLE:
+            case Value.DECFLOAT:
+                // Oracle date add
+                return new DateTimeFunction(DateTimeFunction.DATEADD, DateTimeFunction.SECOND,
+                        new BinaryOperation(OpType.MULTIPLY, ValueExpression.get(ValueInteger.get(60 * 60 * 24)),
+                                left), right).optimize(session);
+            }
+            break;
+        }
+        case MINUS:
+            switch (l) {
+            case Value.DATE:
+            case Value.TIMESTAMP:
+            case Value.TIMESTAMP_TZ:
+                switch (r) {
+                case Value.INTEGER: {
+                    if (forcedType != null) {
+                        throw getUnexpectedForcedTypeException();
+                    }
+                    // Oracle date subtract
+                    return new DateTimeFunction(DateTimeFunction.DATEADD, DateTimeFunction.DAY,
+                            new UnaryOperation(right), left).optimize(session);
+                }
+                case Value.NUMERIC:
+                case Value.REAL:
+                case Value.DOUBLE:
+                case Value.DECFLOAT: {
+                    if (forcedType != null) {
+                        throw getUnexpectedForcedTypeException();
+                    }
+                    // Oracle date subtract
+                    return new DateTimeFunction(DateTimeFunction.DATEADD, DateTimeFunction.SECOND,
+                            new BinaryOperation(OpType.MULTIPLY, ValueExpression.get(ValueInteger.get(-60 * 60 * 24)),
+                                    right), left).optimize(session);
+                }
+                case Value.TIME:
+                case Value.TIME_TZ:
+                case Value.DATE:
+                case Value.TIMESTAMP:
+                case Value.TIMESTAMP_TZ:
+                    return new IntervalOperation(IntervalOpType.DATETIME_MINUS_DATETIME, left, right, forcedType);
+                }
+                break;
+            case Value.TIME:
+            case Value.TIME_TZ:
+                if (DataType.isDateTimeType(r)) {
+                    return new IntervalOperation(IntervalOpType.DATETIME_MINUS_DATETIME, left, right, forcedType);
                 }
                 break;
             }
-            case MINUS:
-                switch (l) {
-                    case Value.DATE:
-                    case Value.TIMESTAMP:
-                    case Value.TIMESTAMP_TZ:
-                        switch (r) {
-                            case Value.INTEGER: {
-                                if (forcedType != null) {
-                                    throw getUnexpectedForcedTypeException();
-                                }
-                                // Oracle date subtract
-                                return new DateTimeFunction(DateTimeFunction.DATEADD, DateTimeFunction.DAY,
-                                        new UnaryOperation(right), left).optimize(session);
-                            }
-                            case Value.NUMERIC:
-                            case Value.REAL:
-                            case Value.DOUBLE:
-                            case Value.DECFLOAT: {
-                                if (forcedType != null) {
-                                    throw getUnexpectedForcedTypeException();
-                                }
-                                // Oracle date subtract
-                                return new DateTimeFunction(DateTimeFunction.DATEADD, DateTimeFunction.SECOND,
-                                        new BinaryOperation(OpType.MULTIPLY, ValueExpression.get(ValueInteger.get(-60 * 60 * 24)),
-                                                right), left).optimize(session);
-                            }
-                            case Value.TIME:
-                            case Value.TIME_TZ:
-                            case Value.DATE:
-                            case Value.TIMESTAMP:
-                            case Value.TIMESTAMP_TZ:
-                                return new IntervalOperation(IntervalOpType.DATETIME_MINUS_DATETIME, left, right, forcedType);
-                        }
-                        break;
-                    case Value.TIME:
-                    case Value.TIME_TZ:
-                        if (DataType.isDateTimeType(r)) {
-                            return new IntervalOperation(IntervalOpType.DATETIME_MINUS_DATETIME, left, right, forcedType);
-                        }
-                        break;
-                }
-                break;
-            case MULTIPLY:
-                if (l == Value.TIME) {
-                    type = TypeInfo.TYPE_TIME;
-                    convertRight = false;
-                    return this;
-                } else if (r == Value.TIME) {
-                    swap();
-                    type = TypeInfo.TYPE_TIME;
-                    convertRight = false;
-                    return this;
-                }
-                break;
-            case DIVIDE:
-                if (l == Value.TIME) {
-                    type = TypeInfo.TYPE_TIME;
-                    convertRight = false;
-                    return this;
-                }
-                break;
-            default:
+            break;
+        case MULTIPLY:
+            if (l == Value.TIME) {
+                type = TypeInfo.TYPE_TIME;
+                convertRight = false;
+                return this;
+            } else if (r == Value.TIME) {
+                swap();
+                type = TypeInfo.TYPE_TIME;
+                convertRight = false;
+                return this;
+            }
+            break;
+        case DIVIDE:
+            if (l == Value.TIME) {
+                type = TypeInfo.TYPE_TIME;
+                convertRight = false;
+                return this;
+            }
+            break;
+        default:
         }
         throw getUnsupported(l, r);
     }

@@ -13,7 +13,8 @@ public interface ExpressionWithFlags {
     /**
      * Set the flags for this expression.
      *
-     * @param flags the flags to set
+     * @param flags
+     *            the flags to set
      */
     void setFlags(int flags);
 

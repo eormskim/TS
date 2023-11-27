@@ -29,8 +29,10 @@ public final class InformationSchema extends MetaSchema {
     /**
      * Creates new instance of information schema.
      *
-     * @param database the database
-     * @param owner    the owner of the schema (system user)
+     * @param database
+     *            the database
+     * @param owner
+     *            the owner of the schema (system user)
      */
     public InformationSchema(Database database, User owner) {
         super(database, Constants.INFORMATION_SCHEMA_ID, database.sysIdentifier("INFORMATION_SCHEMA"), owner);

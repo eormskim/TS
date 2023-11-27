@@ -214,8 +214,8 @@ public final class ValueDecfloat extends ValueBigDecimalBase {
      * Divides to {@link BigDecimal} values and returns a {@code DECFLOAT}
      * result of the specified data type.
      *
-     * @param dividend     the dividend
-     * @param divisor      the divisor
+     * @param dividend the dividend
+     * @param divisor the divisor
      * @param quotientType the type of quotient
      * @return the quotient
      */

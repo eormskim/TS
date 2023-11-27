@@ -54,42 +54,42 @@ public class TestTimer extends TestDb {
             int action = random.nextInt(10);
             int x = max == 0 ? 0 : random.nextInt(max);
             switch (action) {
-                case 0:
-                case 1:
-                case 2:
-                    stat.execute("INSERT INTO TEST VALUES(NULL, 'Hello')");
-                    ResultSet rs = stat.getGeneratedKeys();
-                    rs.next();
-                    int i = rs.getInt(1);
-                    max = i;
-                    count++;
+            case 0:
+            case 1:
+            case 2:
+                stat.execute("INSERT INTO TEST VALUES(NULL, 'Hello')");
+                ResultSet rs = stat.getGeneratedKeys();
+                rs.next();
+                int i = rs.getInt(1);
+                max = i;
+                count++;
+                break;
+            case 3:
+            case 4:
+                if (count == 0) {
                     break;
-                case 3:
-                case 4:
-                    if (count == 0) {
-                        break;
-                    }
-                    stat.execute("UPDATE TEST SET NAME=NAME||'+' WHERE ID=" + x);
+                }
+                stat.execute("UPDATE TEST SET NAME=NAME||'+' WHERE ID=" + x);
+                break;
+            case 5:
+            case 6:
+                if (count == 0) {
                     break;
-                case 5:
-                case 6:
-                    if (count == 0) {
-                        break;
-                    }
-                    count -= stat.executeUpdate("DELETE FROM TEST WHERE ID=" + x);
-                    break;
-                case 7:
-                    rs = stat.executeQuery("SELECT COUNT(*) FROM TEST");
-                    rs.next();
-                    int c = rs.getInt(1);
-                    assertEquals(count, c);
-                    long time = System.nanoTime();
-                    if (time > startTime + TimeUnit.SECONDS.toNanos(5)) {
-                        println("rows: " + count);
-                        startTime = time;
-                    }
-                    break;
-                default:
+                }
+                count -= stat.executeUpdate("DELETE FROM TEST WHERE ID=" + x);
+                break;
+            case 7:
+                rs = stat.executeQuery("SELECT COUNT(*) FROM TEST");
+                rs.next();
+                int c = rs.getInt(1);
+                assertEquals(count, c);
+                long time = System.nanoTime();
+                if (time > startTime + TimeUnit.SECONDS.toNanos(5)) {
+                    println("rows: " + count);
+                    startTime = time;
+                }
+                break;
+            default:
             }
         }
     }
@@ -127,7 +127,7 @@ public class TestTimer extends TestDb {
 
     private void backup() {
         println("backup");
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             String s = "timer." + i + ".zip";
             File f = new File(s);
             if (f.exists()) {

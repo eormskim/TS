@@ -10,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-
 import org.h2.store.fs.rec.FilePathRec;
 import org.h2.test.unit.TestReopen;
 import org.h2.tools.DeleteDbFiles;

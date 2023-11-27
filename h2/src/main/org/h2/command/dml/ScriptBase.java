@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-
 import org.h2.api.ErrorCode;
 import org.h2.command.Prepared;
 import org.h2.engine.Constants;

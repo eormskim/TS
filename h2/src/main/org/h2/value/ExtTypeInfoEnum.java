@@ -25,10 +25,12 @@ public final class ExtTypeInfoEnum extends ExtTypeInfo {
     /**
      * Returns enumerators for the two specified values for a binary operation.
      *
-     * @param left  left (first) operand
-     * @param right right (second) operand
+     * @param left
+     *            left (first) operand
+     * @param right
+     *            right (second) operand
      * @return enumerators from the left or the right value, or an empty array
-     * if both values do not have enumerators
+     *         if both values do not have enumerators
      */
     public static ExtTypeInfoEnum getEnumeratorsForBinaryOperation(Value left, Value right) {
         if (left.getValueType() == Value.ENUM) {
@@ -75,7 +77,8 @@ public final class ExtTypeInfoEnum extends ExtTypeInfo {
     /**
      * Creates new instance of extended parameters of the ENUM data type.
      *
-     * @param enumerators the enumerators. May not be modified by caller or this class.
+     * @param enumerators
+     *            the enumerators. May not be modified by caller or this class.
      */
     public ExtTypeInfoEnum(String[] enumerators) {
         int length;
@@ -130,7 +133,8 @@ public final class ExtTypeInfoEnum extends ExtTypeInfo {
     /**
      * Returns an enumerator with specified 0-based ordinal value.
      *
-     * @param ordinal ordinal value of an enumerator
+     * @param ordinal
+     *            ordinal value of an enumerator
      * @return the enumerator with specified ordinal value
      */
     public String getEnumerator(int ordinal) {
@@ -139,8 +143,7 @@ public final class ExtTypeInfoEnum extends ExtTypeInfo {
 
     /**
      * Get ValueEnum instance for an ordinal.
-     *
-     * @param ordinal  ordinal value of an enum
+     * @param ordinal ordinal value of an enum
      * @param provider the cast information provider
      * @return ValueEnum instance
      */
@@ -162,8 +165,7 @@ public final class ExtTypeInfoEnum extends ExtTypeInfo {
 
     /**
      * Get ValueEnum instance for a label string.
-     *
-     * @param label    label string
+     * @param label label string
      * @param provider the cast information provider
      * @return ValueEnum instance
      */

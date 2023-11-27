@@ -4,7 +4,6 @@
  * Initial Developer: H2 Group
  */
 package org.h2.tools;
-
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.StringTokenizer;
-
 import org.h2.message.DbException;
 import org.h2.store.fs.FileUtils;
 import org.h2.util.IOUtils;
@@ -22,7 +20,7 @@ import org.h2.util.Tool;
 
 /**
  * Converts a .trace.db file to a SQL script and Java source code.
- * <p>
+ *
  * SQL statement statistics are listed as well.
  */
 public class ConvertTraceFile extends Tool {
@@ -107,16 +105,16 @@ public class ConvertTraceFile extends Tool {
      * Converts a trace file to a Java class file and a script file.
      */
     private void convertFile(String traceFileName, String javaClassName,
-                             String script) throws IOException {
+            String script) throws IOException {
         LineNumberReader reader = new LineNumberReader(
                 IOUtils.getReader(
-                        FileUtils.newInputStream(traceFileName)));
+                FileUtils.newInputStream(traceFileName)));
         PrintWriter javaWriter = new PrintWriter(
                 IOUtils.getBufferedWriter(
-                        FileUtils.newOutputStream(javaClassName + ".java", false)));
+                FileUtils.newOutputStream(javaClassName + ".java", false)));
         PrintWriter scriptWriter = new PrintWriter(
                 IOUtils.getBufferedWriter(
-                        FileUtils.newOutputStream(script, false)));
+                FileUtils.newOutputStream(script, false)));
         javaWriter.println("import java.io.*;");
         javaWriter.println("import java.sql.*;");
         javaWriter.println("import java.math.*;");
@@ -189,15 +187,15 @@ public class ConvertTraceFile extends Tool {
                 accumTime += stat.time;
                 StringBuilder buff = new StringBuilder(100);
                 buff.append("-- ").
-                        append(padNumberLeft(100 * stat.time / timeTotal, 3)).
-                        append("% ").
-                        append(padNumberLeft(100 * accumTime / timeTotal, 3)).
-                        append('%').
-                        append(padNumberLeft(stat.time, 8)).
-                        append(padNumberLeft(stat.executeCount, 8)).
-                        append(padNumberLeft(stat.resultCount, 8)).
-                        append(' ').
-                        append(removeNewlines(stat.sql));
+                    append(padNumberLeft(100 * stat.time / timeTotal, 3)).
+                    append("% ").
+                    append(padNumberLeft(100 * accumTime / timeTotal, 3)).
+                    append('%').
+                    append(padNumberLeft(stat.time, 8)).
+                    append(padNumberLeft(stat.executeCount, 8)).
+                    append(padNumberLeft(stat.resultCount, 8)).
+                    append(' ').
+                    append(removeNewlines(stat.sql));
                 scriptWriter.println(buff.toString());
             }
         }

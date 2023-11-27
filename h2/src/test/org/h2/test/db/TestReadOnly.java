@@ -69,7 +69,7 @@ public class TestReadOnly extends TestDb {
         conn.close();
         Backup.execute(dir + "/readonly.zip", dir, "readonlyInZip", true);
         conn = getConnection(
-                "jdbc:h2:zip:" + dir + "/readonly.zip!/readonlyInZip", getUser(), getPassword());
+                "jdbc:h2:zip:"+dir+"/readonly.zip!/readonlyInZip", getUser(), getPassword());
         conn.createStatement().execute("select * from test where id=1");
         conn.close();
         Server server = Server.createTcpServer("-baseDir", dir);
@@ -78,13 +78,13 @@ public class TestReadOnly extends TestDb {
         try {
             conn = getConnection(
                     "jdbc:h2:tcp://localhost:" + port + "/zip:readonly.zip!/readonlyInZip",
-                    getUser(), getPassword());
+                        getUser(), getPassword());
             conn.createStatement().execute("select * from test where id=1");
             conn.close();
             FilePathZip2.register();
             conn = getConnection(
                     "jdbc:h2:tcp://localhost:" + port + "/zip2:readonly.zip!/readonlyInZip",
-                    getUser(), getPassword());
+                        getUser(), getPassword());
             conn.createStatement().execute("select * from test where id=1");
             conn.close();
         } finally {
@@ -102,7 +102,7 @@ public class TestReadOnly extends TestDb {
         conn.close();
         conn = getConnection(
                 "readonlyTemp;ACCESS_MODE_DATA=r;" +
-                        "MAX_MEMORY_ROWS=10");
+                "MAX_MEMORY_ROWS=10");
         stat = conn.createStatement();
         stat.execute("SELECT DISTINCT ID FROM TEST");
         conn.close();
