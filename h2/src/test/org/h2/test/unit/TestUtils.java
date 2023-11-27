@@ -14,6 +14,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
+
 import org.h2.test.TestBase;
 import org.h2.util.Bits;
 import org.h2.util.IOUtils;
@@ -60,7 +61,7 @@ public class TestUtils extends TestBase {
             assertEquals(0, IOUtils.readFully(in, buffer, -2));
             assertEquals(0, IOUtils.readFully(in, buffer, -1));
             assertEquals(0, IOUtils.readFully(in, buffer, 0));
-            for (int j = 1, off = 0;; j += 1) {
+            for (int j = 1, off = 0; ; j += 1) {
                 int read = Math.max(0, Math.min(i - off, j));
                 int l = IOUtils.readFully(in, buffer, j);
                 assertEquals(read, l);
@@ -78,7 +79,7 @@ public class TestUtils extends TestBase {
             assertEquals(0, IOUtils.readFully(in, buffer, -2));
             assertEquals(0, IOUtils.readFully(in, buffer, -1));
             assertEquals(0, IOUtils.readFully(in, buffer, 0));
-            for (int j = 1, off = 0;; j += 1) {
+            for (int j = 1, off = 0; ; j += 1) {
                 int read = Math.max(0, Math.min(i - off, j));
                 int l = IOUtils.readFully(in, buffer, j);
                 assertEquals(read, l);
@@ -149,13 +150,13 @@ public class TestUtils extends TestBase {
 
     private void testSortTopN() {
         Comparator<Integer> comp = Comparator.naturalOrder();
-        Integer[] arr = new Integer[] {};
+        Integer[] arr = new Integer[]{};
         Utils.sortTopN(arr, 0, 0, comp);
 
-        arr = new Integer[] { 1 };
+        arr = new Integer[]{1};
         Utils.sortTopN(arr, 0, 1, comp);
 
-        arr = new Integer[] { 3, 5, 1, 4, 2 };
+        arr = new Integer[]{3, 5, 1, 4, 2};
         Utils.sortTopN(arr, 0, 2, comp);
         assertEquals(arr[0].intValue(), 1);
         assertEquals(arr[1].intValue(), 2);

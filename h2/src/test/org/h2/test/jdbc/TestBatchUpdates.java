@@ -136,7 +136,7 @@ public class TestBatchUpdates extends TestDb {
      * This method is called by the database.
      *
      * @param message the message (currently not used)
-     * @param f the float
+     * @param f       the float
      * @return the float converted to an int
      */
     public static int updatePrices(@SuppressWarnings("unused") String message, double f) {
@@ -203,7 +203,7 @@ public class TestBatchUpdates extends TestDb {
     private void testAddBatch01() throws SQLException {
         trace("testAddBatch01");
         int i = 0;
-        int[] retValue = { 0, 0, 0 };
+        int[] retValue = {0, 0, 0};
         String s = COFFEE_UPDATE;
         trace("Prepared Statement String:" + s);
         prep = conn.prepareStatement(s);
@@ -249,7 +249,7 @@ public class TestBatchUpdates extends TestDb {
     private void testAddBatch02() throws SQLException {
         trace("testAddBatch02");
         int i = 0;
-        int[] retValue = { 0, 0, 0 };
+        int[] retValue = {0, 0, 0};
         int updCountLength = 0;
         String sUpdCoffee = COFFEE_UPDATE1;
         String sDelCoffee = COFFEE_DELETE1;
@@ -307,7 +307,7 @@ public class TestBatchUpdates extends TestDb {
     private void testExecuteBatch01() throws SQLException {
         trace("testExecuteBatch01");
         int i = 0;
-        int[] retValue = { 0, 0, 0 };
+        int[] retValue = {0, 0, 0};
         int updCountLength = 0;
         String sPrepStmt = COFFEE_UPDATE;
         trace("Prepared Statement String:" + sPrepStmt);
@@ -395,7 +395,7 @@ public class TestBatchUpdates extends TestDb {
     private void testExecuteBatch04() throws SQLException {
         trace("testExecuteBatch04");
         int i = 0;
-        int[] retValue = { 0, 0, 0 };
+        int[] retValue = {0, 0, 0};
         int updCountLength = 0;
         String sUpdCoffee = COFFEE_UPDATE1;
         String sInsCoffee = COFFEE_INSERT1;
@@ -487,7 +487,7 @@ public class TestBatchUpdates extends TestDb {
 
     private void testContinueBatch01() throws SQLException {
         trace("testContinueBatch01");
-        int[] batchUpdates = { 0, 0, 0 };
+        int[] batchUpdates = {0, 0, 0};
         int buCountLen = 0;
         try {
             String sPrepStmt = COFFEE_UPDATE_SET;

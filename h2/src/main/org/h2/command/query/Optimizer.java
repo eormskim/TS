@@ -7,6 +7,7 @@ package org.h2.command.query;
 
 import java.util.BitSet;
 import java.util.Random;
+
 import org.h2.engine.SessionLocal;
 import org.h2.expression.Expression;
 import org.h2.table.Plan;
@@ -135,7 +136,7 @@ class Optimizer {
                             break;
                         }
                         list[i] = filters[j];
-                        Plan part = new Plan(list, i+1, condition);
+                        Plan part = new Plan(list, i + 1, condition);
                         double costNow = part.calculateCost(session, allColumnsSet);
                         if (costPart < 0 || costNow < costPart) {
                             costPart = costNow;
@@ -232,7 +233,7 @@ class Optimizer {
      * Calculate the best query plan to use.
      *
      * @param parse If we do not need to really get the best plan because it is
-     *            a view parsing stage.
+     *              a view parsing stage.
      */
     void optimize(boolean parse) {
         if (parse) {

@@ -17,7 +17,7 @@ abstract class AggregateData {
      * Add a value to this aggregate.
      *
      * @param session the session
-     * @param v the value
+     * @param v       the value
      */
     abstract void add(SessionLocal session, Value v);
 

@@ -76,12 +76,12 @@ public abstract class Operation2 extends Expression {
     @Override
     public Expression getSubexpression(int index) {
         switch (index) {
-        case 0:
-            return left;
-        case 1:
-            return right;
-        default:
-            throw new IndexOutOfBoundsException();
+            case 0:
+                return left;
+            case 1:
+                return right;
+            default:
+                throw new IndexOutOfBoundsException();
         }
     }
 

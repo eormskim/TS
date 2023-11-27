@@ -39,18 +39,18 @@ public class TestDateIso8601 extends TestBase {
             throw new IllegalStateException();
         }
         switch (type) {
-        case DATE:
-            return ValueDate.parse(s).getDateValue();
-        case TIMESTAMP:
-            return ValueTimestamp.parse(s, null).getDateValue();
-        case TIMESTAMP_TIMEZONE_0:
-            return ValueTimestampTimeZone.parse(s + " 00:00:00.0Z", null).getDateValue();
-        case TIMESTAMP_TIMEZONE_PLUS_18:
-            return ValueTimestampTimeZone.parse(s + " 00:00:00+18:00", null).getDateValue();
-        case TIMESTAMP_TIMEZONE_MINUS_18:
-            return ValueTimestampTimeZone.parse(s + " 00:00:00-18:00", null).getDateValue();
-        default:
-            throw new IllegalStateException();
+            case DATE:
+                return ValueDate.parse(s).getDateValue();
+            case TIMESTAMP:
+                return ValueTimestamp.parse(s, null).getDateValue();
+            case TIMESTAMP_TIMEZONE_0:
+                return ValueTimestampTimeZone.parse(s + " 00:00:00.0Z", null).getDateValue();
+            case TIMESTAMP_TIMEZONE_PLUS_18:
+                return ValueTimestampTimeZone.parse(s + " 00:00:00+18:00", null).getDateValue();
+            case TIMESTAMP_TIMEZONE_MINUS_18:
+                return ValueTimestampTimeZone.parse(s + " 00:00:00-18:00", null).getDateValue();
+            default:
+                throw new IllegalStateException();
         }
     }
 

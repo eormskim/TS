@@ -34,7 +34,7 @@ import org.h2.tools.RunScript;
 public class Migrate {
 
     private static final String USER = "sa";
-    private static final String PASSWORD  = "sa";
+    private static final String PASSWORD = "sa";
     private static final File OLD_H2_FILE = new File("./h2-1.2.127.jar");
     private static final String DOWNLOAD_URL =
             "https://repo1.maven.org/maven2/com/h2database/h2/1.2.127/h2-1.2.127.jar";
@@ -58,16 +58,16 @@ public class Migrate {
     /**
      * Migrate a database.
      *
-     * @param file the database file (must end with .data.db) or directory
+     * @param file      the database file (must end with .data.db) or directory
      * @param recursive if the file parameter is in fact a directory (in which
-     *            case the directory is scanned recursively)
-     * @param user the user name of the database
-     * @param password the password
-     * @param runQuiet to run in quiet mode
+     *                  case the directory is scanned recursively)
+     * @param user      the user name of the database
+     * @param password  the password
+     * @param runQuiet  to run in quiet mode
      * @throws Exception if conversion fails
      */
     public void execute(File file, boolean recursive, String user,
-            String password, boolean runQuiet) throws Exception {
+                        String password, boolean runQuiet) throws Exception {
         String pathToJavaExe = getJavaExecutablePath();
         this.quiet = runQuiet;
         if (file.isDirectory() && recursive) {
@@ -85,7 +85,7 @@ public class Migrate {
         }
         String url = "jdbc:h2:" + file.getAbsolutePath();
         url = url.substring(0, url.length() - Constants.SUFFIX_OLD_DATABASE_FILE.length());
-        exec(new String[] {
+        exec(new String[]{
                 pathToJavaExe,
                 "-Xmx128m",
                 "-cp", OLD_H2_FILE.getAbsolutePath(),
@@ -193,7 +193,7 @@ public class Migrate {
         for (byte c : value) {
             int x = c & 0xff;
             buff.append(Integer.toString(x >> 4, 16)).
-                append(Integer.toString(x & 0xf, 16));
+                    append(Integer.toString(x & 0xf, 16));
         }
         return buff.toString();
     }

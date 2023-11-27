@@ -62,12 +62,12 @@ public class AlterTableSet extends SchemaCommand {
         session.getUser().checkTableRight(table, Right.SCHEMA_OWNER);
         table.lock(session, Table.EXCLUSIVE_LOCK);
         switch (type) {
-        case CommandInterface.ALTER_TABLE_SET_REFERENTIAL_INTEGRITY:
-            table.setCheckForeignKeyConstraints(session, value, value ?
-                    checkExisting : false);
-            break;
-        default:
-            throw DbException.getInternalError("type="+type);
+            case CommandInterface.ALTER_TABLE_SET_REFERENTIAL_INTEGRITY:
+                table.setCheckForeignKeyConstraints(session, value, value ?
+                        checkExisting : false);
+                break;
+            default:
+                throw DbException.getInternalError("type=" + type);
         }
         return 0;
     }

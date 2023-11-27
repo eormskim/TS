@@ -51,19 +51,19 @@ public final class Rownum extends Operation0 {
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-        case ExpressionVisitor.QUERY_COMPARABLE:
-        case ExpressionVisitor.OPTIMIZABLE_AGGREGATE:
-        case ExpressionVisitor.DETERMINISTIC:
-        case ExpressionVisitor.INDEPENDENT:
-        case ExpressionVisitor.EVALUATABLE:
-            return false;
-        case ExpressionVisitor.DECREMENT_QUERY_LEVEL:
-            if (visitor.getQueryLevel() > 0) {
-                singleRow = true;
-            }
-            //$FALL-THROUGH$
-        default:
-            return true;
+            case ExpressionVisitor.QUERY_COMPARABLE:
+            case ExpressionVisitor.OPTIMIZABLE_AGGREGATE:
+            case ExpressionVisitor.DETERMINISTIC:
+            case ExpressionVisitor.INDEPENDENT:
+            case ExpressionVisitor.EVALUATABLE:
+                return false;
+            case ExpressionVisitor.DECREMENT_QUERY_LEVEL:
+                if (visitor.getQueryLevel() > 0) {
+                    singleRow = true;
+                }
+                //$FALL-THROUGH$
+            default:
+                return true;
         }
     }
 

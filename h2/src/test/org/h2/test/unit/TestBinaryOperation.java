@@ -22,8 +22,7 @@ public class TestBinaryOperation extends TestBase {
     /**
      * Run just this test.
      *
-     * @param a
-     *            ignored
+     * @param a ignored
      */
     public static void main(String... a) throws Exception {
         TestBase.createCaller().init().testFromMain();
@@ -57,7 +56,7 @@ public class TestBinaryOperation extends TestBase {
     }
 
     private void assertPrecisionScale(int expectedPrecision, int expectedScale, int expectedDecfloatPrecision,
-            BinaryOperation.OpType type, int precision1, int scale1, int precision2, int scale2) {
+                                      BinaryOperation.OpType type, int precision1, int scale1, int precision2, int scale2) {
         TestExpression left = new TestExpression(TypeInfo.getTypeInfo(Value.NUMERIC, precision1, scale1, null));
         TestExpression right = new TestExpression(TypeInfo.getTypeInfo(Value.NUMERIC, precision2, scale2, null));
         TypeInfo typeInfo = new BinaryOperation(type, left, right).optimize(null).getType();

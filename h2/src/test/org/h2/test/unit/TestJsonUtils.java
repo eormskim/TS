@@ -26,8 +26,8 @@ import org.h2.util.json.JSONValueTarget;
  */
 public class TestJsonUtils extends TestBase {
 
-    private static final Charset[] CHARSETS = { StandardCharsets.UTF_8, StandardCharsets.UTF_16BE,
-            StandardCharsets.UTF_16LE, Charset.forName("UTF-32BE"), Charset.forName("UTF-32LE") };
+    private static final Charset[] CHARSETS = {StandardCharsets.UTF_8, StandardCharsets.UTF_16BE,
+            StandardCharsets.UTF_16LE, Charset.forName("UTF-32BE"), Charset.forName("UTF-32LE")};
 
     private static final Callable<JSONTarget<?>> STRING_TARGET = () -> new JSONStringTarget();
 
@@ -44,8 +44,7 @@ public class TestJsonUtils extends TestBase {
     /**
      * Run just this test.
      *
-     * @param a
-     *            ignored
+     * @param a ignored
      */
     public static void main(String... a) throws Exception {
         TestBase.createCaller().init().testFromMain();
@@ -227,14 +226,14 @@ public class TestJsonUtils extends TestBase {
     private void testSourcesAndTargets(String src, String expected, boolean hasNonUniqueKeys) throws Exception {
         JSONItemType itemType;
         switch (expected.charAt(0)) {
-        case '[':
-            itemType = JSONItemType.ARRAY;
-            break;
-        case '{':
-            itemType = JSONItemType.OBJECT;
-            break;
-        default:
-            itemType = JSONItemType.SCALAR;
+            case '[':
+                itemType = JSONItemType.ARRAY;
+                break;
+            case '{':
+                itemType = JSONItemType.OBJECT;
+                break;
+            default:
+                itemType = JSONItemType.SCALAR;
         }
         assertEquals(expected, JSONStringSource.parse(src, new JSONStringTarget()));
         assertEquals(expected.getBytes(StandardCharsets.UTF_8), //
@@ -261,7 +260,8 @@ public class TestJsonUtils extends TestBase {
 
     private void testSourcesAndTargetsError(String src, Callable<JSONTarget<?>> constructor, boolean testBytes)
             throws Exception {
-        check: {
+        check:
+        {
             JSONTarget<?> target = constructor.call();
             try {
                 JSONStringSource.parse(src, target);
@@ -289,21 +289,21 @@ public class TestJsonUtils extends TestBase {
 
     private void testUtfError() {
         // 2 bytes
-        testUtfError(new byte[] { '"', (byte) 0xc2, (byte) 0xc0, '"' });
-        testUtfError(new byte[] { '"', (byte) 0xc1, (byte) 0xbf, '"' });
-        testUtfError(new byte[] { '"', (byte) 0xc2 });
+        testUtfError(new byte[]{'"', (byte) 0xc2, (byte) 0xc0, '"'});
+        testUtfError(new byte[]{'"', (byte) 0xc1, (byte) 0xbf, '"'});
+        testUtfError(new byte[]{'"', (byte) 0xc2});
         // 3 bytes
-        testUtfError(new byte[] { '"', (byte) 0xe1, (byte) 0xc0, (byte) 0x80, '"' });
-        testUtfError(new byte[] { '"', (byte) 0xe1, (byte) 0x80, (byte) 0xc0, '"' });
-        testUtfError(new byte[] { '"', (byte) 0xe0, (byte) 0x9f, (byte) 0xbf, '"' });
-        testUtfError(new byte[] { '"', (byte) 0xe1, (byte) 0x80 });
+        testUtfError(new byte[]{'"', (byte) 0xe1, (byte) 0xc0, (byte) 0x80, '"'});
+        testUtfError(new byte[]{'"', (byte) 0xe1, (byte) 0x80, (byte) 0xc0, '"'});
+        testUtfError(new byte[]{'"', (byte) 0xe0, (byte) 0x9f, (byte) 0xbf, '"'});
+        testUtfError(new byte[]{'"', (byte) 0xe1, (byte) 0x80});
         // 4 bytes
-        testUtfError(new byte[] { '"', (byte) 0xf1, (byte) 0xc0, (byte) 0x80, (byte) 0x80, '"' });
-        testUtfError(new byte[] { '"', (byte) 0xf1, (byte) 0x80, (byte) 0xc0, (byte) 0x80, '"' });
-        testUtfError(new byte[] { '"', (byte) 0xf1, (byte) 0x80, (byte) 0x80, (byte) 0xc0, '"' });
-        testUtfError(new byte[] { '"', (byte) 0xf0, (byte) 0x8f, (byte) 0xbf, (byte) 0xbf, '"' });
-        testUtfError(new byte[] { '"', (byte) 0xf4, (byte) 0x90, (byte) 0x80, (byte) 0x80, '"' });
-        testUtfError(new byte[] { '"', (byte) 0xf1, (byte) 0x80, (byte) 0x80 });
+        testUtfError(new byte[]{'"', (byte) 0xf1, (byte) 0xc0, (byte) 0x80, (byte) 0x80, '"'});
+        testUtfError(new byte[]{'"', (byte) 0xf1, (byte) 0x80, (byte) 0xc0, (byte) 0x80, '"'});
+        testUtfError(new byte[]{'"', (byte) 0xf1, (byte) 0x80, (byte) 0x80, (byte) 0xc0, '"'});
+        testUtfError(new byte[]{'"', (byte) 0xf0, (byte) 0x8f, (byte) 0xbf, (byte) 0xbf, '"'});
+        testUtfError(new byte[]{'"', (byte) 0xf4, (byte) 0x90, (byte) 0x80, (byte) 0x80, '"'});
+        testUtfError(new byte[]{'"', (byte) 0xf1, (byte) 0x80, (byte) 0x80});
     }
 
     private void testUtfError(byte[] bytes) {

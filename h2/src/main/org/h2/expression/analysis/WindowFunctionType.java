@@ -75,38 +75,37 @@ public enum WindowFunctionType {
     /**
      * Returns the type of window function with the specified name, or null.
      *
-     * @param name
-     *            name of a window function
+     * @param name name of a window function
      * @return the type of window function, or null.
      */
     public static WindowFunctionType get(String name) {
         switch (name) {
-        case "ROW_NUMBER":
-            return ROW_NUMBER;
-        case "RANK":
-            return RANK;
-        case "DENSE_RANK":
-            return DENSE_RANK;
-        case "PERCENT_RANK":
-            return PERCENT_RANK;
-        case "CUME_DIST":
-            return CUME_DIST;
-        case "NTILE":
-            return NTILE;
-        case "LEAD":
-            return LEAD;
-        case "LAG":
-            return LAG;
-        case "FIRST_VALUE":
-            return FIRST_VALUE;
-        case "LAST_VALUE":
-            return LAST_VALUE;
-        case "NTH_VALUE":
-            return NTH_VALUE;
-        case "RATIO_TO_REPORT":
-            return RATIO_TO_REPORT;
-        default:
-            return null;
+            case "ROW_NUMBER":
+                return ROW_NUMBER;
+            case "RANK":
+                return RANK;
+            case "DENSE_RANK":
+                return DENSE_RANK;
+            case "PERCENT_RANK":
+                return PERCENT_RANK;
+            case "CUME_DIST":
+                return CUME_DIST;
+            case "NTILE":
+                return NTILE;
+            case "LEAD":
+                return LEAD;
+            case "LAG":
+                return LAG;
+            case "FIRST_VALUE":
+                return FIRST_VALUE;
+            case "LAST_VALUE":
+                return LAST_VALUE;
+            case "NTH_VALUE":
+                return NTH_VALUE;
+            case "RATIO_TO_REPORT":
+                return RATIO_TO_REPORT;
+            default:
+                return null;
         }
     }
 
@@ -128,14 +127,14 @@ public enum WindowFunctionType {
      */
     public boolean requiresWindowOrdering() {
         switch (this) {
-        case RANK:
-        case DENSE_RANK:
-        case NTILE:
-        case LEAD:
-        case LAG:
-            return true;
-        default:
-            return false;
+            case RANK:
+            case DENSE_RANK:
+            case NTILE:
+            case LEAD:
+            case LAG:
+                return true;
+            default:
+                return false;
         }
     }
 

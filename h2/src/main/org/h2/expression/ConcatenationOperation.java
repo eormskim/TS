@@ -30,7 +30,7 @@ public final class ConcatenationOperation extends OperationN {
     }
 
     public ConcatenationOperation(Expression op1, Expression op2) {
-        super(new Expression[] { op1, op2 });
+        super(new Expression[]{op1, op2});
         argsCount = 2;
     }
 

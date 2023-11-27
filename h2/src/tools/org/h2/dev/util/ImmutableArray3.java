@@ -37,7 +37,7 @@ public abstract class ImmutableArray3<K> implements Iterable<K> {
      * Set the entry at this index.
      *
      * @param index the index
-     * @param obj the object
+     * @param obj   the object
      * @return the new immutable array
      */
     public abstract ImmutableArray3<K> set(int index, K obj);
@@ -46,7 +46,7 @@ public abstract class ImmutableArray3<K> implements Iterable<K> {
      * Insert an entry at this index.
      *
      * @param index the index
-     * @param obj the object
+     * @param obj   the object
      * @return the new immutable array
      */
     public abstract ImmutableArray3<K> insert(int index, K obj);
@@ -63,7 +63,7 @@ public abstract class ImmutableArray3<K> implements Iterable<K> {
      * Get a sub-array.
      *
      * @param fromIndex the index of the first entry
-     * @param toIndex the end index, plus one
+     * @param toIndex   the end index, plus one
      * @return the new immutable array
      */
     public ImmutableArray3<K> subArray(int fromIndex, int toIndex) {
@@ -199,10 +199,10 @@ public abstract class ImmutableArray3<K> implements Iterable<K> {
         /**
          * Get a plain array with the given entry updated.
          *
-         * @param <K> the type
-         * @param base the base type
+         * @param <K>   the type
+         * @param base  the base type
          * @param index the index
-         * @param obj the object
+         * @param obj   the object
          * @return the immutable array
          */
         static <K> ImmutableArray3<K> set(ImmutableArray3<K> base, int index, K obj) {
@@ -218,10 +218,10 @@ public abstract class ImmutableArray3<K> implements Iterable<K> {
         /**
          * Get a plain array with the given entry inserted.
          *
-         * @param <K> the type
-         * @param base the base type
+         * @param <K>   the type
+         * @param base  the base type
          * @param index the index
-         * @param obj the object
+         * @param obj   the object
          * @return the immutable array
          */
         static <K> ImmutableArray3<K> insert(ImmutableArray3<K> base, int index, K obj) {
@@ -237,8 +237,8 @@ public abstract class ImmutableArray3<K> implements Iterable<K> {
         /**
          * Get a plain array with the given entry removed.
          *
-         * @param <K> the type
-         * @param base the base type
+         * @param <K>   the type
+         * @param base  the base type
          * @param index the index
          * @return the immutable array
          */

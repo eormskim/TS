@@ -119,7 +119,7 @@ public class WebApp {
     /**
      * Set the web session and attributes.
      *
-     * @param session the session
+     * @param session    the session
      * @param attributes the attributes
      */
     void setSession(WebSession session, Properties attributes) {
@@ -130,7 +130,7 @@ public class WebApp {
     /**
      * Process an HTTP request.
      *
-     * @param file the file that was requested
+     * @param file                  the file that was requested
      * @param networkConnectionInfo the network connection information
      * @return the name of the file to return to the client
      */
@@ -176,11 +176,11 @@ public class WebApp {
             file = process(file, networkConnectionInfo);
         } else if (file.endsWith(".jsp")) {
             switch (file) {
-            case "admin.jsp":
-            case "tools.jsp":
-                if (!checkAdmin(file)) {
-                    file = process("adminLogin.do", networkConnectionInfo);
-                }
+                case "admin.jsp":
+                case "tools.jsp":
+                    if (!checkAdmin(file)) {
+                        file = process("adminLogin.do", networkConnectionInfo);
+                    }
             }
         }
         return file;
@@ -190,14 +190,14 @@ public class WebApp {
         StringBuilder buff = new StringBuilder();
         for (String value : elements) {
             buff.append("<option value=\"").
-                append(PageParser.escapeHtmlData(value)).
-                append('\"');
+                    append(PageParser.escapeHtmlData(value)).
+                    append('\"');
             if (value.equals(selected)) {
                 buff.append(" selected");
             }
             buff.append('>').
-                append(PageParser.escapeHtml(value)).
-                append("</option>");
+                    append(PageParser.escapeHtml(value)).
+                    append("</option>");
         }
         return buff.toString();
     }
@@ -206,14 +206,14 @@ public class WebApp {
         StringBuilder buff = new StringBuilder();
         for (String[] n : elements) {
             buff.append("<option value=\"").
-                append(PageParser.escapeHtmlData(n[0])).
-                append('\"');
+                    append(PageParser.escapeHtmlData(n[0])).
+                    append('\"');
             if (n[0].equals(selected)) {
                 buff.append(" selected");
             }
             buff.append('>').
-                append(PageParser.escapeHtml(n[1])).
-                append("</option>");
+                    append(PageParser.escapeHtml(n[1])).
+                    append("</option>");
         }
         return buff.toString();
     }
@@ -222,60 +222,60 @@ public class WebApp {
         trace("process " + file);
         while (file.endsWith(".do")) {
             switch (file) {
-            case "login.do":
-                file = login(networkConnectionInfo);
-                break;
-            case "index.do":
-                file = index();
-                break;
-            case "logout.do":
-                file = logout();
-                break;
-            case "settingRemove.do":
-                file = settingRemove();
-                break;
-            case "settingSave.do":
-                file = settingSave();
-                break;
-            case "test.do":
-                file = test(networkConnectionInfo);
-                break;
-            case "query.do":
-                file = query();
-                break;
-            case "tables.do":
-                file = tables();
-                break;
-            case "editResult.do":
-                file = editResult();
-                break;
-            case "getHistory.do":
-                file = getHistory();
-                break;
-            case "admin.do":
-                file = checkAdmin(file) ? admin() : "adminLogin.do";
-                break;
-            case "adminSave.do":
-                file = checkAdmin(file) ? adminSave() : "adminLogin.do";
-                break;
-            case "adminStartTranslate.do":
-                file = checkAdmin(file) ? adminStartTranslate() : "adminLogin.do";
-                break;
-            case "adminShutdown.do":
-                file = checkAdmin(file) ? adminShutdown() : "adminLogin.do";
-                break;
-            case "autoCompleteList.do":
-                file = autoCompleteList();
-                break;
-            case "tools.do":
-                file = checkAdmin(file) ? tools() : "adminLogin.do";
-                break;
-            case "adminLogin.do":
-                file = adminLogin();
-                break;
-            default:
-                file = "error.jsp";
-                break;
+                case "login.do":
+                    file = login(networkConnectionInfo);
+                    break;
+                case "index.do":
+                    file = index();
+                    break;
+                case "logout.do":
+                    file = logout();
+                    break;
+                case "settingRemove.do":
+                    file = settingRemove();
+                    break;
+                case "settingSave.do":
+                    file = settingSave();
+                    break;
+                case "test.do":
+                    file = test(networkConnectionInfo);
+                    break;
+                case "query.do":
+                    file = query();
+                    break;
+                case "tables.do":
+                    file = tables();
+                    break;
+                case "editResult.do":
+                    file = editResult();
+                    break;
+                case "getHistory.do":
+                    file = getHistory();
+                    break;
+                case "admin.do":
+                    file = checkAdmin(file) ? admin() : "adminLogin.do";
+                    break;
+                case "adminSave.do":
+                    file = checkAdmin(file) ? adminSave() : "adminLogin.do";
+                    break;
+                case "adminStartTranslate.do":
+                    file = checkAdmin(file) ? adminStartTranslate() : "adminLogin.do";
+                    break;
+                case "adminShutdown.do":
+                    file = checkAdmin(file) ? adminShutdown() : "adminLogin.do";
+                    break;
+                case "autoCompleteList.do":
+                    file = autoCompleteList();
+                    break;
+                case "tools.do":
+                    file = checkAdmin(file) ? tools() : "adminLogin.do";
+                    break;
+                case "adminLogin.do":
+                    file = adminLogin();
+                    break;
+                default:
+                    file = "error.jsp";
+                    break;
             }
         }
         trace("return " + file);
@@ -539,7 +539,7 @@ public class WebApp {
     }
 
     private static int addColumns(boolean mainSchema, DbTableOrView table, StringBuilder builder, int treeIndex,
-            boolean showColumnTypes, StringBuilder columnsBuilder) {
+                                  boolean showColumnTypes, StringBuilder columnsBuilder) {
         DbColumn[] columns = table.getColumns();
         for (int i = 0; columns != null && i < columns.length; i++) {
             DbColumn column = columns[i];
@@ -592,7 +592,7 @@ public class WebApp {
     }
 
     private static int addIndexes(boolean mainSchema, DatabaseMetaData meta,
-            String table, String schema, StringBuilder buff, int treeIndex)
+                                  String table, String schema, StringBuilder buff, int treeIndex)
             throws SQLException {
         ResultSet rs;
         try {
@@ -718,8 +718,8 @@ public class WebApp {
     }
 
     private static int addTableOrView(DbSchema schema, boolean mainSchema, StringBuilder builder, int treeIndex,
-            DatabaseMetaData meta, boolean showColumns, String indentation, boolean isOracle, boolean notManyTables,
-            DbTableOrView table, boolean isView, PreparedStatement prep, String indentNode) throws SQLException {
+                                      DatabaseMetaData meta, boolean showColumns, String indentation, boolean isOracle, boolean notManyTables,
+                                      DbTableOrView table, boolean isView, PreparedStatement prep, String indentNode) throws SQLException {
         int tableId = treeIndex;
         String tab = table.getQuotedName();
         if (!mainSchema) {
@@ -986,14 +986,14 @@ public class WebApp {
             String success;
             if (time > 1000) {
                 success = "<a class=\"error\" href=\"#\" " +
-                    "onclick=\"var x=document.getElementById('prof').style;x." +
-                    "display=x.display==''?'none':'';\">" +
-                    "${text.login.testSuccessful}</a>" +
-                    "<span style=\"display: none;\" id=\"prof\"><br />" +
-                    PageParser.escapeHtml(profOpen) +
-                    "<br />" +
-                    PageParser.escapeHtml(profClose) +
-                    "</span>";
+                        "onclick=\"var x=document.getElementById('prof').style;x." +
+                        "display=x.display==''?'none':'';\">" +
+                        "${text.login.testSuccessful}</a>" +
+                        "<span style=\"display: none;\" id=\"prof\"><br />" +
+                        PageParser.escapeHtml(profOpen) +
+                        "<br />" +
+                        PageParser.escapeHtml(profClose) +
+                        "</span>";
             } else {
                 success = "<div class=\"success\">${text.login.testSuccessful}</div>";
             }
@@ -1009,7 +1009,7 @@ public class WebApp {
     /**
      * Get the formatted login error message.
      *
-     * @param e the exception
+     * @param e    the exception
      * @param isH2 if the current database is a H2 database
      * @return the formatted error message
      */
@@ -1089,10 +1089,12 @@ public class WebApp {
                 list.add(page.substring(idx + "${result}".length()));
                 session.put("chunks", new Iterator<String>() {
                     private int i;
+
                     @Override
                     public boolean hasNext() {
                         return i < list.size();
                     }
+
                     @Override
                     public String next() {
                         String s = list.get(i++);
@@ -1124,8 +1126,8 @@ public class WebApp {
      * Execute a query and append the result to the buffer.
      *
      * @param conn the connection
-     * @param s the statement
-     * @param i the index
+     * @param s    the statement
+     * @param i    the index
      * @param size the number of statements
      * @param buff the target buffer
      */
@@ -1135,7 +1137,7 @@ public class WebApp {
         }
         boolean forceEdit = s.startsWith("@edit");
         buff.append(getResult(conn, i + 1, s, size == 1, forceEdit)).
-            append("<br />");
+                append("<br />");
     }
 
     private String editResult() {
@@ -1183,7 +1185,7 @@ public class WebApp {
     }
 
     private String getResult(Connection conn, int id, String sql,
-            boolean allowEdit, boolean forceEdit) {
+                             boolean allowEdit, boolean forceEdit) {
         try {
             sql = sql.trim();
             StringBuilder buff = new StringBuilder();
@@ -1473,16 +1475,16 @@ public class WebApp {
         for (int i = history.size() - 1; i >= 0; i--) {
             String sql = history.get(i);
             buff.append("<tr><td><a href=\"getHistory.do?id=").
-                append(i).
-                append("&jsessionid=${sessionId}\" target=\"h2query\" >").
-                append("<img width=16 height=16 src=\"ico_write.gif\" " +
-                        "onmouseover = \"this.className ='icon_hover'\" ").
-                append("onmouseout = \"this.className ='icon'\" " +
-                        "class=\"icon\" alt=\"${text.resultEdit.edit}\" ").
-                append("title=\"${text.resultEdit.edit}\" border=\"1\"/></a>").
-                append("</td><td>").
-                append(PageParser.escapeHtml(sql)).
-                append("</td></tr>");
+                    append(i).
+                    append("&jsessionid=${sessionId}\" target=\"h2query\" >").
+                    append("<img width=16 height=16 src=\"ico_write.gif\" " +
+                            "onmouseover = \"this.className ='icon_hover'\" ").
+                    append("onmouseout = \"this.className ='icon'\" " +
+                            "class=\"icon\" alt=\"${text.resultEdit.edit}\" ").
+                    append("title=\"${text.resultEdit.edit}\" border=\"1\"/></a>").
+                    append("</td><td>").
+                    append(PageParser.escapeHtml(sql)).
+                    append("</td></tr>");
         }
         buff.append("</table>");
         return buff.toString();
@@ -1495,29 +1497,29 @@ public class WebApp {
             return "No parameter meta data";
         }
         buff.append("<table cellspacing=0 cellpadding=0>").
-            append("<tr><th>className</th><th>mode</th><th>type</th>").
-            append("<th>typeName</th><th>precision</th><th>scale</th></tr>");
+                append("<tr><th>className</th><th>mode</th><th>type</th>").
+                append("<th>typeName</th><th>precision</th><th>scale</th></tr>");
         for (int i = 0; i < meta.getParameterCount(); i++) {
             buff.append("</tr><td>").
-                append(meta.getParameterClassName(i + 1)).
-                append("</td><td>").
-                append(meta.getParameterMode(i + 1)).
-                append("</td><td>").
-                append(meta.getParameterType(i + 1)).
-                append("</td><td>").
-                append(meta.getParameterTypeName(i + 1)).
-                append("</td><td>").
-                append(meta.getPrecision(i + 1)).
-                append("</td><td>").
-                append(meta.getScale(i + 1)).
-                append("</td></tr>");
+                    append(meta.getParameterClassName(i + 1)).
+                    append("</td><td>").
+                    append(meta.getParameterMode(i + 1)).
+                    append("</td><td>").
+                    append(meta.getParameterType(i + 1)).
+                    append("</td><td>").
+                    append(meta.getParameterTypeName(i + 1)).
+                    append("</td><td>").
+                    append(meta.getPrecision(i + 1)).
+                    append("</td><td>").
+                    append(meta.getScale(i + 1)).
+                    append("</td></tr>");
         }
         buff.append("</table>");
         return buff.toString();
     }
 
     private String getResultSet(String sql, ResultSet rs, boolean metadata,
-            boolean list, boolean edit, long time, boolean allowEdit)
+                                boolean list, boolean edit, long time, boolean allowEdit)
             throws SQLException {
         int maxrows = getMaxrows();
         time = System.currentTimeMillis() - time;
@@ -1592,13 +1594,13 @@ public class WebApp {
                 }
                 rows++;
                 buff.append("<tr><td>Row #</td><td>").
-                    append(rows).append("</tr>");
+                        append(rows).append("</tr>");
                 for (int i = 0; i < columns; i++) {
                     buff.append("<tr><td>").
-                        append(PageParser.escapeHtml(meta.getColumnLabel(i + 1))).
-                        append("</td><td>").
-                        append(escapeData(rs, i + 1)).
-                        append("</td></tr>");
+                            append(PageParser.escapeHtml(meta.getColumnLabel(i + 1))).
+                            append("</td><td>").
+                            append(escapeData(rs, i + 1)).
+                            append("</td></tr>");
                 }
             }
         } else {
@@ -1608,8 +1610,8 @@ public class WebApp {
             }
             for (int i = 0; i < columns; i++) {
                 buff.append("<th>").
-                    append(PageParser.escapeHtml(meta.getColumnLabel(i + 1))).
-                    append("</th>");
+                        append(PageParser.escapeHtml(meta.getColumnLabel(i + 1))).
+                        append("</th>");
             }
             buff.append("</tr>");
             while (rs.next()) {
@@ -1620,30 +1622,30 @@ public class WebApp {
                 buff.append("<tr>");
                 if (edit) {
                     buff.append("<td>").
-                        append("<img onclick=\"javascript:editRow(").
-                        append(rs.getRow()).
-                        append(",'${sessionId}', '${text.resultEdit.save}', " +
-                                "'${text.resultEdit.cancel}'").
-                        append(")\" width=16 height=16 src=\"ico_write.gif\" " +
-                                "onmouseover = \"this.className ='icon_hover'\" " +
-                                "onmouseout = \"this.className ='icon'\" " +
-                                "class=\"icon\" alt=\"${text.resultEdit.edit}\" " +
-                                "title=\"${text.resultEdit.edit}\" border=\"1\"/>").
-                        append("<img onclick=\"javascript:deleteRow(").
-                        append(rs.getRow()).
-                        append(",'${sessionId}', '${text.resultEdit.delete}', " +
-                                "'${text.resultEdit.cancel}'").
-                        append(")\" width=16 height=16 src=\"ico_remove.gif\" " +
-                                "onmouseover = \"this.className ='icon_hover'\" " +
-                                "onmouseout = \"this.className ='icon'\" " +
-                                "class=\"icon\" alt=\"${text.resultEdit.delete}\" " +
-                                "title=\"${text.resultEdit.delete}\" border=\"1\" /></a>").
-                        append("</td>");
+                            append("<img onclick=\"javascript:editRow(").
+                            append(rs.getRow()).
+                            append(",'${sessionId}', '${text.resultEdit.save}', " +
+                                    "'${text.resultEdit.cancel}'").
+                            append(")\" width=16 height=16 src=\"ico_write.gif\" " +
+                                    "onmouseover = \"this.className ='icon_hover'\" " +
+                                    "onmouseout = \"this.className ='icon'\" " +
+                                    "class=\"icon\" alt=\"${text.resultEdit.edit}\" " +
+                                    "title=\"${text.resultEdit.edit}\" border=\"1\"/>").
+                            append("<img onclick=\"javascript:deleteRow(").
+                            append(rs.getRow()).
+                            append(",'${sessionId}', '${text.resultEdit.delete}', " +
+                                    "'${text.resultEdit.cancel}'").
+                            append(")\" width=16 height=16 src=\"ico_remove.gif\" " +
+                                    "onmouseover = \"this.className ='icon_hover'\" " +
+                                    "onmouseout = \"this.className ='icon'\" " +
+                                    "class=\"icon\" alt=\"${text.resultEdit.delete}\" " +
+                                    "title=\"${text.resultEdit.delete}\" border=\"1\" /></a>").
+                            append("</td>");
                 }
                 for (int i = 0; i < columns; i++) {
                     buff.append("<td>").
-                        append(escapeData(rs, i + 1)).
-                        append("</td>");
+                            append(escapeData(rs, i + 1)).
+                            append("</td>");
                 }
                 buff.append("</tr>");
             }
@@ -1652,7 +1654,7 @@ public class WebApp {
         try {
             if (!session.getContents().isDB2()) {
                 isUpdatable = rs.getConcurrency() == ResultSet.CONCUR_UPDATABLE
-                    && rs.getType() != ResultSet.TYPE_FORWARD_ONLY;
+                        && rs.getType() != ResultSet.TYPE_FORWARD_ONLY;
             }
         } catch (NullPointerException e) {
             // ignore
@@ -1669,14 +1671,14 @@ public class WebApp {
         }
         if (edit) {
             buff.append("<tr><td>").
-                append("<img onclick=\"javascript:editRow(-1, " +
-                        "'${sessionId}', '${text.resultEdit.save}', '${text.resultEdit.cancel}'").
-                append(")\" width=16 height=16 src=\"ico_add.gif\" " +
-                        "onmouseover = \"this.className ='icon_hover'\" " +
-                        "onmouseout = \"this.className ='icon'\" " +
-                        "class=\"icon\" alt=\"${text.resultEdit.add}\" " +
-                        "title=\"${text.resultEdit.add}\" border=\"1\"/>").
-                append("</td>");
+                    append("<img onclick=\"javascript:editRow(-1, " +
+                            "'${sessionId}', '${text.resultEdit.save}', '${text.resultEdit.cancel}'").
+                    append(")\" width=16 height=16 src=\"ico_add.gif\" " +
+                            "onmouseover = \"this.className ='icon_hover'\" " +
+                            "onmouseout = \"this.className ='icon'\" " +
+                            "class=\"icon\" alt=\"${text.resultEdit.add}\" " +
+                            "title=\"${text.resultEdit.add}\" border=\"1\"/>").
+                    append("</td>");
             for (int i = 0; i < columns; i++) {
                 buff.append("<td></td>");
             }
@@ -1703,8 +1705,8 @@ public class WebApp {
                     "<input type=\"submit\" class=\"button\" " +
                     "value=\"${text.resultEdit.editResult}\" />" +
                     "<input type=\"hidden\" name=\"sql\" value=\"@edit ").
-            append(PageParser.escapeHtmlData(sql)).
-            append("\" /></form>");
+                    append(PageParser.escapeHtmlData(sql)).
+                    append("\" /></form>");
         }
         return buff.toString();
     }
@@ -1764,16 +1766,16 @@ public class WebApp {
             // set an appropriate default value
             int type = rs.getMetaData().getColumnType(columnIndex);
             switch (type) {
-            case Types.TIME:
-                rs.updateString(columnIndex, "12:00:00");
-                break;
-            case Types.TIMESTAMP:
-            case Types.DATE:
-                rs.updateString(columnIndex, "2001-01-01");
-                break;
-            default:
-                rs.updateString(columnIndex, "1");
-                break;
+                case Types.TIME:
+                    rs.updateString(columnIndex, "12:00:00");
+                    break;
+                case Types.TIMESTAMP:
+                case Types.DATE:
+                    rs.updateString(columnIndex, "2001-01-01");
+                    break;
+                default:
+                    rs.updateString(columnIndex, "1");
+                    break;
             }
             return;
         } else if (x.startsWith("= ")) {
@@ -1790,27 +1792,27 @@ public class WebApp {
             return;
         }
         switch (type) {
-        case Types.BIGINT:
-            rs.updateLong(columnIndex, Long.decode(x));
-            break;
-        case Types.DECIMAL:
-            rs.updateBigDecimal(columnIndex, new BigDecimal(x));
-            break;
-        case Types.DOUBLE:
-        case Types.FLOAT:
-            rs.updateDouble(columnIndex, Double.parseDouble(x));
-            break;
-        case Types.REAL:
-            rs.updateFloat(columnIndex, Float.parseFloat(x));
-            break;
-        case Types.INTEGER:
-            rs.updateInt(columnIndex, Integer.decode(x));
-            break;
-        case Types.TINYINT:
-            rs.updateShort(columnIndex, Short.decode(x));
-            break;
-        default:
-            rs.updateString(columnIndex, x);
+            case Types.BIGINT:
+                rs.updateLong(columnIndex, Long.decode(x));
+                break;
+            case Types.DECIMAL:
+                rs.updateBigDecimal(columnIndex, new BigDecimal(x));
+                break;
+            case Types.DOUBLE:
+            case Types.FLOAT:
+                rs.updateDouble(columnIndex, Double.parseDouble(x));
+                break;
+            case Types.REAL:
+                rs.updateFloat(columnIndex, Float.parseFloat(x));
+                break;
+            case Types.INTEGER:
+                rs.updateInt(columnIndex, Integer.decode(x));
+                break;
+            case Types.TINYINT:
+                rs.updateShort(columnIndex, Short.decode(x));
+                break;
+            default:
+                rs.updateString(columnIndex, x);
         }
     }
 

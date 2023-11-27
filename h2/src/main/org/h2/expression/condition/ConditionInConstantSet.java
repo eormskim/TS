@@ -39,19 +39,17 @@ public final class ConditionInConstantSet extends Condition {
     /**
      * Create a new IN(..) condition.
      *
-     * @param session the session
-     * @param left
-     *            the expression before IN. Cannot have {@link Value#UNKNOWN}
-     *            data type and {@link Value#ENUM} type is also supported only
-     *            for {@link ExpressionColumn}.
-     * @param not whether the result should be negated
+     * @param session     the session
+     * @param left        the expression before IN. Cannot have {@link Value#UNKNOWN}
+     *                    data type and {@link Value#ENUM} type is also supported only
+     *                    for {@link ExpressionColumn}.
+     * @param not         whether the result should be negated
      * @param whenOperand whether this is a when operand
-     * @param valueList
-     *            the value list (at least two elements); all values must be
-     *            comparable with left value
+     * @param valueList   the value list (at least two elements); all values must be
+     *                    comparable with left value
      */
     ConditionInConstantSet(SessionLocal session, Expression left, boolean not, boolean whenOperand,
-            ArrayList<Expression> valueList) {
+                           ArrayList<Expression> valueList) {
         this.left = left;
         this.not = not;
         this.whenOperand = whenOperand;
@@ -183,7 +181,7 @@ public final class ConditionInConstantSet extends Condition {
      * A IN(1, 2) OR A=3, the constant 3 is added: A IN(1, 2, 3).
      *
      * @param session the session
-     * @param other the second condition
+     * @param other   the second condition
      * @return null if the condition was not added, or the new condition
      */
     Expression getAdditional(SessionLocal session, Comparison other) {

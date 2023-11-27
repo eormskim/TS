@@ -51,14 +51,14 @@ public interface InDoubtTransaction {
     default String getStateDescription() {
         int state = getState();
         switch (state) {
-        case 0:
-            return "IN_DOUBT";
-        case 1:
-            return "COMMIT";
-        case 2:
-            return "ROLLBACK";
-        default:
-            throw DbException.getInternalError("state=" + state);
+            case 0:
+                return "IN_DOUBT";
+            case 1:
+                return "COMMIT";
+            case 2:
+                return "ROLLBACK";
+            default:
+                throw DbException.getInternalError("state=" + state);
         }
     }
 

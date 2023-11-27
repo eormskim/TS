@@ -33,67 +33,67 @@ public class TransactionCommand extends Prepared {
     @Override
     public long update() {
         switch (type) {
-        case CommandInterface.SET_AUTOCOMMIT_TRUE:
-            session.setAutoCommit(true);
-            break;
-        case CommandInterface.SET_AUTOCOMMIT_FALSE:
-            session.setAutoCommit(false);
-            break;
-        case CommandInterface.BEGIN:
-            session.begin();
-            break;
-        case CommandInterface.COMMIT:
-            session.commit(false);
-            break;
-        case CommandInterface.ROLLBACK:
-            session.rollback();
-            break;
-        case CommandInterface.CHECKPOINT:
-            session.getUser().checkAdmin();
-            session.getDatabase().checkpoint();
-            break;
-        case CommandInterface.SAVEPOINT:
-            session.addSavepoint(savepointName);
-            break;
-        case CommandInterface.ROLLBACK_TO_SAVEPOINT:
-            session.rollbackToSavepoint(savepointName);
-            break;
-        case CommandInterface.CHECKPOINT_SYNC:
-            session.getUser().checkAdmin();
-            session.getDatabase().sync();
-            break;
-        case CommandInterface.PREPARE_COMMIT:
-            session.prepareCommit(transactionName);
-            break;
-        case CommandInterface.COMMIT_TRANSACTION:
-            session.getUser().checkAdmin();
-            session.setPreparedTransaction(transactionName, true);
-            break;
-        case CommandInterface.ROLLBACK_TRANSACTION:
-            session.getUser().checkAdmin();
-            session.setPreparedTransaction(transactionName, false);
-            break;
-        case CommandInterface.SHUTDOWN:
-        case CommandInterface.SHUTDOWN_COMPACT:
-        case CommandInterface.SHUTDOWN_DEFRAG:
-            session.commit(false);
-            //$FALL-THROUGH$
-        case CommandInterface.SHUTDOWN_IMMEDIATELY: {
-            session.getUser().checkAdmin();
-            // throttle, to allow testing concurrent
-            // execution of shutdown and query
-            session.throttle();
-            Database db = session.getDatabase();
-            if (db.setExclusiveSession(session, true)) {
-                db.setCompactMode(type);
-                // close the database, but don't update the persistent setting
-                db.setCloseDelay(0);
-                session.close();
+            case CommandInterface.SET_AUTOCOMMIT_TRUE:
+                session.setAutoCommit(true);
+                break;
+            case CommandInterface.SET_AUTOCOMMIT_FALSE:
+                session.setAutoCommit(false);
+                break;
+            case CommandInterface.BEGIN:
+                session.begin();
+                break;
+            case CommandInterface.COMMIT:
+                session.commit(false);
+                break;
+            case CommandInterface.ROLLBACK:
+                session.rollback();
+                break;
+            case CommandInterface.CHECKPOINT:
+                session.getUser().checkAdmin();
+                session.getDatabase().checkpoint();
+                break;
+            case CommandInterface.SAVEPOINT:
+                session.addSavepoint(savepointName);
+                break;
+            case CommandInterface.ROLLBACK_TO_SAVEPOINT:
+                session.rollbackToSavepoint(savepointName);
+                break;
+            case CommandInterface.CHECKPOINT_SYNC:
+                session.getUser().checkAdmin();
+                session.getDatabase().sync();
+                break;
+            case CommandInterface.PREPARE_COMMIT:
+                session.prepareCommit(transactionName);
+                break;
+            case CommandInterface.COMMIT_TRANSACTION:
+                session.getUser().checkAdmin();
+                session.setPreparedTransaction(transactionName, true);
+                break;
+            case CommandInterface.ROLLBACK_TRANSACTION:
+                session.getUser().checkAdmin();
+                session.setPreparedTransaction(transactionName, false);
+                break;
+            case CommandInterface.SHUTDOWN:
+            case CommandInterface.SHUTDOWN_COMPACT:
+            case CommandInterface.SHUTDOWN_DEFRAG:
+                session.commit(false);
+                //$FALL-THROUGH$
+            case CommandInterface.SHUTDOWN_IMMEDIATELY: {
+                session.getUser().checkAdmin();
+                // throttle, to allow testing concurrent
+                // execution of shutdown and query
+                session.throttle();
+                Database db = session.getDatabase();
+                if (db.setExclusiveSession(session, true)) {
+                    db.setCompactMode(type);
+                    // close the database, but don't update the persistent setting
+                    db.setCloseDelay(0);
+                    session.close();
+                }
+                break;
             }
-            break;
-        }
-        default:
-            throw DbException.getInternalError("type=" + type);
+            default:
+                throw DbException.getInternalError("type=" + type);
         }
         return 0;
     }

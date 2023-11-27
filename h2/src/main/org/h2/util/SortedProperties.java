@@ -22,6 +22,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.TreeMap;
 import java.util.Vector;
+
 import org.h2.store.fs.FileUtils;
 
 /**
@@ -46,12 +47,12 @@ public class SortedProperties extends Properties {
      * Get a boolean property value from a properties object.
      *
      * @param prop the properties object
-     * @param key the key
-     * @param def the default value
+     * @param key  the key
+     * @param def  the default value
      * @return the value if set, or the default value if not
      */
     public static boolean getBooleanProperty(Properties prop, String key,
-            boolean def) {
+                                             boolean def) {
         try {
             return Utils.parseBoolean(prop.getProperty(key, null), def, true);
         } catch (IllegalArgumentException e) {
@@ -64,8 +65,8 @@ public class SortedProperties extends Properties {
      * Get an int property value from a properties object.
      *
      * @param prop the properties object
-     * @param key the key
-     * @param def the default value
+     * @param key  the key
+     * @param def  the default value
      * @return the value if set, or the default value if not
      */
     public static int getIntProperty(Properties prop, String key, int def) {
@@ -82,8 +83,8 @@ public class SortedProperties extends Properties {
      * Get a string property value from a properties object.
      *
      * @param prop the properties object
-     * @param key the key
-     * @param def the default value
+     * @param key  the key
+     * @param def  the default value
      * @return the value if set, or the default value if not
      */
     public static String getStringProperty(Properties prop, String key, String def) {

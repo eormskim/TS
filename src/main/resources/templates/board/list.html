@@ -8,7 +8,7 @@
 </th:block>
 
 <div layout:fragment="content" class="content">
-    <input type="hidden" id="pageNo" th:value="${pageNo}" />
+    <input type="hidden" id="pageNo" th:value="${pageNo}"/>
     <div class="container">
         <h1 class="page-header">게시판 목록</h1>
         <div class="text-right">
@@ -16,23 +16,24 @@
         </div>
         <br>
         <div class="input-group">
-            <input type="text" id="searchVal" onkeyup="enterkey()" class="form-control" placeholder="Search" th:value="${searchVal}">
+            <input type="text" id="searchVal" onkeyup="enterkey()" class="form-control" placeholder="Search"
+                   th:value="${searchVal}">
             <div class="input-group-btn">
                 <button class="btn btn-default" type="button" onclick="search()">
                     <i class="glyphicon glyphicon-search"></i>
                 </button>
             </div>
         </div>
-        <br />
+        <br/>
 
         <form>
             <table class="table table-hover">
                 <colgroup>
-                    <col width="10%" />
-                    <col width="50%" />
-                    <col width="10%" />
-                    <col width="10%" />
-                    <col width="10%" />
+                    <col width="10%"/>
+                    <col width="50%"/>
+                    <col width="10%"/>
+                    <col width="10%"/>
+                    <col width="10%"/>
                 </colgroup>
                 <thead>
                 <tr>
@@ -44,17 +45,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr th:if="${totalPage == 0}">
-                        <td colspan="5" style="text-align:center">조회된 리스트가 없습니다.</td>
-                    </tr>
+                <tr th:if="${totalPage == 0}">
+                    <td colspan="5" style="text-align:center">조회된 리스트가 없습니다.</td>
+                </tr>
 
-                    <tr th:each="list, index : ${board}">
-                        <td th:text="${resultDataTotal - (size * number) - index.index}"></td>
-                        <td><a th:text="${list.boardTitle}" th:href="@{/board/detail/} + ${list.boardIdx}"></a></td>
-                        <td th:text="${list.regId}"></td>
-                        <td th:text="${#temporals.format(list.regDate, 'yyyy-MM-dd')}"></td>
-                        <td th:text="${list.viewCount}"></td>
-                    </tr>
+                <tr th:each="list, index : ${board}">
+                    <td th:text="${resultDataTotal - (size * number) - index.index}"></td>
+                    <td><a th:text="${list.boardTitle}" th:href="@{/board/detail/} + ${list.boardIdx}"></a></td>
+                    <td th:text="${list.regId}"></td>
+                    <td th:text="${#temporals.format(list.regDate, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${list.viewCount}"></td>
+                </tr>
                 </tbody>
             </table>
 
@@ -65,7 +66,9 @@
             <div th:if="${totalPage != 0}" class="text-center">
                 <ul class="pagination">
                     <li th:each="page : ${#numbers.sequence(0, totalPage - 1)}">
-                        <a th:classappend="${pageStat.index == pageNo} ? on" th:href="@{/(page=${pageStat.index}, searchVal=${searchVal})}" th:text="${pageStat.index + 1}"></a>
+                        <a th:classappend="${pageStat.index == pageNo} ? on"
+                           th:href="@{/(page=${pageStat.index}, searchVal=${searchVal})}"
+                           th:text="${pageStat.index + 1}"></a>
                     </li>
                 </ul>
             </div>
@@ -77,9 +80,9 @@
 <script th:inline="javascript">
 
     //검색기능
-    function search(){
+    function search() {
         let searchVal = $.trim($("#searchVal").val());
-        location.href="/?searchVal="+searchVal;
+        location.href = "/?searchVal=" + searchVal;
     }
 
     //엔터키 클릭시 검색

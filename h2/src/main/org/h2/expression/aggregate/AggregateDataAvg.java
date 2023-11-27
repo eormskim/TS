@@ -32,8 +32,7 @@ final class AggregateDataAvg extends AggregateData {
     private BigInteger integerValue;
 
     /**
-     * @param dataType
-     *            the data type of the computed result
+     * @param dataType the data type of the computed result
      */
     AggregateDataAvg(TypeInfo dataType) {
         this.dataType = dataType;
@@ -46,19 +45,19 @@ final class AggregateDataAvg extends AggregateData {
         }
         count++;
         switch (dataType.getValueType()) {
-        case Value.DOUBLE:
-            doubleValue += v.getDouble();
-            break;
-        case Value.NUMERIC:
-        case Value.DECFLOAT: {
-            BigDecimal bd = v.getBigDecimal();
-            decimalValue = decimalValue == null ? bd : decimalValue.add(bd);
-            break;
-        }
-        default: {
-            BigInteger bi = IntervalUtils.intervalToAbsolute((ValueInterval) v);
-            integerValue = integerValue == null ? bi : integerValue.add(bi);
-        }
+            case Value.DOUBLE:
+                doubleValue += v.getDouble();
+                break;
+            case Value.NUMERIC:
+            case Value.DECFLOAT: {
+                BigDecimal bd = v.getBigDecimal();
+                decimalValue = decimalValue == null ? bd : decimalValue.add(bd);
+                break;
+            }
+            default: {
+                BigInteger bi = IntervalUtils.intervalToAbsolute((ValueInterval) v);
+                integerValue = integerValue == null ? bi : integerValue.add(bi);
+            }
         }
     }
 
@@ -70,19 +69,19 @@ final class AggregateDataAvg extends AggregateData {
         Value v;
         int valueType = dataType.getValueType();
         switch (valueType) {
-        case Value.DOUBLE:
-            v = ValueDouble.get(doubleValue / count);
-            break;
-        case Value.NUMERIC:
-            v = ValueNumeric
-                    .get(decimalValue.divide(BigDecimal.valueOf(count), dataType.getScale(), RoundingMode.HALF_DOWN));
-            break;
-        case Value.DECFLOAT:
-            v = ValueDecfloat.divide(decimalValue, BigDecimal.valueOf(count), dataType);
-            break;
-        default:
-            v = IntervalUtils.intervalFromAbsolute(IntervalQualifier.valueOf(valueType - Value.INTERVAL_YEAR),
-                    integerValue.divide(BigInteger.valueOf(count)));
+            case Value.DOUBLE:
+                v = ValueDouble.get(doubleValue / count);
+                break;
+            case Value.NUMERIC:
+                v = ValueNumeric
+                        .get(decimalValue.divide(BigDecimal.valueOf(count), dataType.getScale(), RoundingMode.HALF_DOWN));
+                break;
+            case Value.DECFLOAT:
+                v = ValueDecfloat.divide(decimalValue, BigDecimal.valueOf(count), dataType);
+                break;
+            default:
+                v = IntervalUtils.intervalFromAbsolute(IntervalQualifier.valueOf(valueType - Value.INTERVAL_YEAR),
+                        integerValue.divide(BigInteger.valueOf(count)));
         }
         return v.castTo(dataType, session);
     }

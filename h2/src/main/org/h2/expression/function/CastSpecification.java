@@ -61,41 +61,41 @@ public final class CastSpecification extends Function1 {
 
     private static boolean canOptimizeCast(int src, int dst) {
         switch (src) {
-        case Value.TIME:
-            switch (dst) {
-            case Value.TIME_TZ:
-            case Value.TIMESTAMP:
-            case Value.TIMESTAMP_TZ:
-                return false;
-            }
-            break;
-        case Value.TIME_TZ:
-            switch (dst) {
             case Value.TIME:
-            case Value.TIMESTAMP:
-            case Value.TIMESTAMP_TZ:
-                return false;
-            }
-            break;
-        case Value.DATE:
-            if (dst == Value.TIMESTAMP_TZ) {
-                return false;
-            }
-            break;
-        case Value.TIMESTAMP:
-            switch (dst) {
+                switch (dst) {
+                    case Value.TIME_TZ:
+                    case Value.TIMESTAMP:
+                    case Value.TIMESTAMP_TZ:
+                        return false;
+                }
+                break;
             case Value.TIME_TZ:
-            case Value.TIMESTAMP_TZ:
-                return false;
-            }
-            break;
-        case Value.TIMESTAMP_TZ:
-            switch (dst) {
-            case Value.TIME:
+                switch (dst) {
+                    case Value.TIME:
+                    case Value.TIMESTAMP:
+                    case Value.TIMESTAMP_TZ:
+                        return false;
+                }
+                break;
             case Value.DATE:
+                if (dst == Value.TIMESTAMP_TZ) {
+                    return false;
+                }
+                break;
             case Value.TIMESTAMP:
-                return false;
-            }
+                switch (dst) {
+                    case Value.TIME_TZ:
+                    case Value.TIMESTAMP_TZ:
+                        return false;
+                }
+                break;
+            case Value.TIMESTAMP_TZ:
+                switch (dst) {
+                    case Value.TIME:
+                    case Value.DATE:
+                    case Value.TIMESTAMP:
+                        return false;
+                }
         }
         return true;
     }

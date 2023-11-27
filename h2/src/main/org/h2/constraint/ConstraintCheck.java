@@ -6,6 +6,7 @@
 package org.h2.constraint;
 
 import java.util.HashSet;
+
 import org.h2.api.ErrorCode;
 import org.h2.engine.SessionLocal;
 import org.h2.expression.Expression;
@@ -70,7 +71,7 @@ public class ConstraintCheck extends Constraint {
     }
 
     @Override
-    public String  getCreateSQLWithoutIndexes() {
+    public String getCreateSQLWithoutIndexes() {
         return getCreateSQL();
     }
 

@@ -68,7 +68,7 @@ public class TaskProcess {
             if (line == null) {
                 throw new RuntimeException(
                         "No reply from process, command: " +
-                        StringUtils.arrayCombine(procDef, ' '));
+                                StringUtils.arrayCombine(procDef, ' '));
             } else if (line.startsWith("running")) {
             } else if (line.startsWith("init error")) {
                 throw new RuntimeException(line);

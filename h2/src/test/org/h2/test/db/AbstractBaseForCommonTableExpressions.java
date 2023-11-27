@@ -24,22 +24,22 @@ public abstract class AbstractBaseForCommonTableExpressions extends TestDb {
     /**
      * Test a query.
      *
-     * @param maxRetries the number of times the query is run
-     * @param expectedRowData the expected result data
-     * @param expectedColumnNames the expected columns of the result
-     * @param expectedNumberOfRows the expected number of rows
-     * @param setupSQL the SQL statement used for setup
-     * @param withQuery the query
+     * @param maxRetries                                  the number of times the query is run
+     * @param expectedRowData                             the expected result data
+     * @param expectedColumnNames                         the expected columns of the result
+     * @param expectedNumberOfRows                        the expected number of rows
+     * @param setupSQL                                    the SQL statement used for setup
+     * @param withQuery                                   the query
      * @param closeAndReopenDatabaseConnectionOnIteration whether the connection
-     *            should be re-opened each time
-     * @param expectedColumnTypes the expected datatypes of the result
-     * @param anyOrder whether any order of rows should be allowed.
-     *                 If {@code true}, this method may sort expectedRowData.
+     *                                                    should be re-opened each time
+     * @param expectedColumnTypes                         the expected datatypes of the result
+     * @param anyOrder                                    whether any order of rows should be allowed.
+     *                                                    If {@code true}, this method may sort expectedRowData.
      */
     void testRepeatedQueryWithSetup(int maxRetries, String[] expectedRowData, String[] expectedColumnNames,
-            int expectedNumberOfRows, String setupSQL, String withQuery,
-            int closeAndReopenDatabaseConnectionOnIteration, String[] expectedColumnTypes,
-            boolean anyOrder) throws SQLException {
+                                    int expectedNumberOfRows, String setupSQL, String withQuery,
+                                    int closeAndReopenDatabaseConnectionOnIteration, String[] expectedColumnTypes,
+                                    boolean anyOrder) throws SQLException {
 
         deleteDb("commonTableExpressionQueries");
         Connection conn = getConnection("commonTableExpressionQueries");

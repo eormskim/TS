@@ -42,16 +42,11 @@ public final class SimpleColumnInfo {
     /**
      * Creates metadata.
      *
-     * @param name
-     *            name of the column
-     * @param type
-     *            type of the column, see {@link java.sql.Types}
-     * @param typeName
-     *            type name of the column
-     * @param precision
-     *            precision of the column
-     * @param scale
-     *            scale of the column
+     * @param name      name of the column
+     * @param type      type of the column, see {@link java.sql.Types}
+     * @param typeName  type name of the column
+     * @param precision precision of the column
+     * @param scale     scale of the column
      */
     public SimpleColumnInfo(String name, int type, String typeName, int precision, int scale) {
         this.name = name;

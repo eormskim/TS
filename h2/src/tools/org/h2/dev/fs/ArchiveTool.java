@@ -106,6 +106,7 @@ public class ArchiveTool {
         long size = getSize(new File(fromDir), new Runnable() {
             int count;
             long lastTime = start;
+
             @Override
             public void run() {
                 count++;
@@ -130,7 +131,7 @@ public class ArchiveTool {
         String temp = toFile + ".temp";
         OutputStream out =
                 new BufferedOutputStream(
-                                new FileOutputStream(toFile), 1024 * 1024);
+                        new FileOutputStream(toFile), 1024 * 1024);
         Deflater def = new Deflater();
         def.setLevel(level);
         out = new BufferedOutputStream(
@@ -141,7 +142,7 @@ public class ArchiveTool {
         log.println();
         log.println("Compressed to " +
                 new File(toFile).length() / MB + " MB in " +
-                TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - start)  +
+                TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - start) +
                 " seconds");
         log.println();
     }
@@ -402,7 +403,7 @@ public class ArchiveTool {
     }
 
     private static void sort(Log log, InputStream in, OutputStream out,
-            String tempFileName, long size) throws IOException {
+                             String tempFileName, long size) throws IOException {
         int bufferSize = 32 * 1024 * 1024;
         DataOutputStream tempOut = new DataOutputStream(new BufferedOutputStream(
                 new FileOutputStream(tempFileName), 1024 * 1024));
@@ -423,7 +424,7 @@ public class ArchiveTool {
             }
             log.printProgress(len);
             TreeMap<Chunk, Chunk> map = new TreeMap<>();
-            for (int pos = 0; pos < len;) {
+            for (int pos = 0; pos < len; ) {
                 int[] key = getKey(bytes, pos, len);
                 int l = key[3];
                 byte[] buff = Arrays.copyOfRange(bytes, pos, pos + l);
@@ -533,7 +534,7 @@ public class ArchiveTool {
     }
 
     private static long openSegments(List<Long> segmentStart, TreeSet<ChunkStream> segmentIn,
-            String tempFileName, boolean readKey) throws IOException {
+                                     String tempFileName, boolean readKey) throws IOException {
         long inPos = 0;
         int bufferTotal = 64 * 1024 * 1024;
         int bufferPerStream = bufferTotal / segmentStart.size();
@@ -585,9 +586,9 @@ public class ArchiveTool {
      * Read a number of bytes. This method repeats reading until
      * either the bytes have been read, or EOF.
      *
-     * @param in the input stream
+     * @param in     the input stream
      * @param buffer the target buffer
-     * @param max the number of bytes to read
+     * @param max    the number of bytes to read
      * @return the number of bytes read (max unless EOF has been reached)
      */
     private static int readFully(InputStream in, byte[] buffer, int max)
@@ -655,7 +656,7 @@ public class ArchiveTool {
     }
 
     private static long getSipHash24(byte[] b, int start, int end, long k0,
-            long k1) {
+                                     long k1) {
         long v0 = k0 ^ 0x736f6d6570736575L;
         long v1 = k1 ^ 0x646f72616e646f6dL;
         long v2 = k0 ^ 0x6c7967656e657261L;
@@ -761,7 +762,7 @@ public class ArchiveTool {
     }
 
     private static void combine(Log log, InputStream in, OutputStream out,
-            String tempFileName) throws IOException {
+                                String tempFileName) throws IOException {
         int bufferSize = 16 * 1024 * 1024;
         DataOutputStream tempOut =
                 new DataOutputStream(
@@ -934,7 +935,7 @@ public class ArchiveTool {
         /**
          * Read a chunk.
          *
-         * @param in the input stream
+         * @param in      the input stream
          * @param readKey whether to read the sort key
          * @return the chunk, or null if 0 has been read
          */
@@ -972,7 +973,7 @@ public class ArchiveTool {
         /**
          * Write a chunk.
          *
-         * @param out the output stream
+         * @param out      the output stream
          * @param writeKey whether to write the sort key
          * @return the number of bytes written
          */
@@ -1074,8 +1075,8 @@ public class ArchiveTool {
         /**
          * Set the range.
          *
-         * @param low the percent value if current = 0
-         * @param high the percent value if current = total
+         * @param low   the percent value if current = 0
+         * @param high  the percent value if current = total
          * @param total the maximum value
          */
         void setRange(int low, int high, long total) {
@@ -1111,7 +1112,7 @@ public class ArchiveTool {
      * Write a variable size long value.
      *
      * @param out the output stream
-     * @param x the value
+     * @param x   the value
      * @return the number of bytes written
      */
     static int writeVarLong(OutputStream out, long x)

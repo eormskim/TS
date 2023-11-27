@@ -17,6 +17,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
 import java.util.Properties;
+
 import org.h2.Driver;
 import org.h2.api.ErrorCode;
 import org.h2.engine.Constants;
@@ -84,8 +85,8 @@ public class FileLock implements Runnable {
      * Create a new file locking object.
      *
      * @param traceSystem the trace system to use
-     * @param fileName the file name
-     * @param sleep the number of milliseconds to sleep
+     * @param fileName    the file name
+     * @param sleep       the number of milliseconds to sleep
      */
     public FileLock(TraceSystem traceSystem, String fileName, int sleep) {
         this.trace = traceSystem == null ?
@@ -106,15 +107,15 @@ public class FileLock implements Runnable {
             throw DbException.getInternalError("already locked");
         }
         switch (fileLockMethod) {
-        case FILE:
-            lockFile();
-            break;
-        case SOCKET:
-            lockSocket();
-            break;
-        case FS:
-        case NO:
-            break;
+            case FILE:
+                lockFile();
+                break;
+            case SOCKET:
+                lockSocket();
+                break;
+            case FS:
+            case NO:
+                break;
         }
         locked = true;
     }
@@ -165,7 +166,7 @@ public class FileLock implements Runnable {
      * Add or change a setting to the properties. This call does not save the
      * file.
      *
-     * @param key the key
+     * @param key   the key
      * @param value the value
      */
     public void setProperty(String key, String value) {
@@ -214,7 +215,8 @@ public class FileLock implements Runnable {
                 ByteBuffer b = ByteBuffer.wrap(new byte[1]);
                 f.read(b);
             }
-        } catch (IOException ignoreEx) {}
+        } catch (IOException ignoreEx) {
+        }
         return FileUtils.lastModified(fileName);
     }
 

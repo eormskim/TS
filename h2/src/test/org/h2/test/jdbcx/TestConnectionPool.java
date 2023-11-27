@@ -203,7 +203,7 @@ public class TestConnectionPool extends TestDb {
                         Connection conn = man.getConnection();
                         if (man.getActiveConnections() >= len + 1) {
                             throw new Exception("a: " +
-                                    man.getActiveConnections()  +
+                                    man.getActiveConnections() +
                                     " is not smaller than b: " + (len + 1));
                         }
                         Statement stat = conn.createStatement();

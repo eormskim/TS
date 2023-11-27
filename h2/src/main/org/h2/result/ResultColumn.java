@@ -72,9 +72,9 @@ public class ResultColumn {
     /**
      * Write a result column to the given output.
      *
-     * @param out the object to where to write the data
+     * @param out    the object to where to write the data
      * @param result the result
-     * @param i the column index
+     * @param i      the column index
      * @throws IOException on failure
      */
     public static void writeColumn(Transfer out, ResultInterface result, int i)

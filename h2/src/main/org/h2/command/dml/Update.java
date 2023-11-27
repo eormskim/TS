@@ -108,7 +108,7 @@ public final class Update extends FilteredDataChangeStatement {
         // the cached row is already updated - we need the old values
         table.updateRows(prepared, session, rows);
         if (table.fireRow()) {
-            for (rows.reset(); rows.next();) {
+            for (rows.reset(); rows.next(); ) {
                 Row o = rows.currentRowForTable();
                 rows.next();
                 Row n = rows.currentRowForTable();
@@ -148,9 +148,9 @@ public final class Update extends FilteredDataChangeStatement {
         setClauseList.mapAndOptimize(session, targetTableFilter, fromTableFilter);
         TableFilter[] filters = null;
         if (fromTableFilter == null) {
-            filters = new TableFilter[] { targetTableFilter };
+            filters = new TableFilter[]{targetTableFilter};
         } else {
-            filters = new TableFilter[] { targetTableFilter, fromTableFilter };
+            filters = new TableFilter[]{targetTableFilter, fromTableFilter};
         }
         PlanItem item = targetTableFilter.getBestPlanItem(session, filters, 0, new AllColumnsForPlan(filters));
         targetTableFilter.setPlanItem(item);

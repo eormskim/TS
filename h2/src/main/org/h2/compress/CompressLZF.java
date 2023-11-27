@@ -72,7 +72,7 @@ import java.nio.ByteBuffer;
  * <li>Back-reference: copy previous data to output stream, with specified
  * offset from location and length. The length is at least 3 bytes.</li>
  * </ul>
- *<p>
+ * <p>
  * The first byte of the compressed stream is the control byte. For literal
  * runs, the highest three bits of the control byte are not set, the lower
  * bits are the literal run length, and the next bytes are data to copy directly
@@ -179,11 +179,11 @@ public final class CompressLZF implements Compressor {
             //       && (((in[ref] & 255) << 8) | (in[ref + 1] & 255)) ==
             //           ((future >> 8) & 0xffff)) {
             if (ref < inPos
-                        && ref > offset
-                        && (off = inPos - ref - 1) < MAX_OFF
-                        && in[ref + 2] == p2
-                        && in[ref + 1] == (byte) (future >> 8)
-                        && in[ref] == (byte) (future >> 16)) {
+                    && ref > offset
+                    && (off = inPos - ref - 1) < MAX_OFF
+                    && in[ref + 2] == p2
+                    && in[ref + 1] == (byte) (future >> 8)
+                    && in[ref] == (byte) (future >> 16)) {
                 // match
                 int maxLen = inLen - inPos - 2;
                 if (maxLen > MAX_REF) {
@@ -259,9 +259,9 @@ public final class CompressLZF implements Compressor {
     /**
      * Compress a number of bytes.
      *
-     * @param in the input data
-     * @param inPos the offset at the input buffer
-     * @param out the output area
+     * @param in     the input data
+     * @param inPos  the offset at the input buffer
+     * @param out    the output area
      * @param outPos the offset at the output array
      * @return the end position
      */
@@ -289,11 +289,11 @@ public final class CompressLZF implements Compressor {
             //       && (((in[ref] & 255) << 8) | (in[ref + 1] & 255)) ==
             //           ((future >> 8) & 0xffff)) {
             if (ref < inPos
-                        && ref > offset
-                        && (off = inPos - ref - 1) < MAX_OFF
-                        && in.get(ref + 2) == p2
-                        && in.get(ref + 1) == (byte) (future >> 8)
-                        && in.get(ref) == (byte) (future >> 16)) {
+                    && ref > offset
+                    && (off = inPos - ref - 1) < MAX_OFF
+                    && in.get(ref + 2) == p2
+                    && in.get(ref + 1) == (byte) (future >> 8)
+                    && in.get(ref) == (byte) (future >> 16)) {
                 // match
                 int maxLen = inLen - inPos - 2;
                 if (maxLen > MAX_REF) {
@@ -368,7 +368,7 @@ public final class CompressLZF implements Compressor {
 
     @Override
     public void expand(byte[] in, int inPos, int inLen, byte[] out, int outPos,
-            int outLen) {
+                       int outLen) {
         // if ((inPos | outPos | outLen) < 0) {
         if (inPos < 0 || outPos < 0 || outLen < 0) {
             throw new IllegalArgumentException();
@@ -421,7 +421,7 @@ public final class CompressLZF implements Compressor {
     /**
      * Expand a number of compressed bytes.
      *
-     * @param in the compressed data
+     * @param in  the compressed data
      * @param out the output area
      */
     public static void expand(ByteBuffer in, ByteBuffer out) {

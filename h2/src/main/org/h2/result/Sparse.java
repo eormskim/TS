@@ -17,7 +17,7 @@ import org.h2.value.ValueBigint;
  * @author <a href='mailto:andrei.tokar@gmail.com'>Andrei Tokar</a>
  */
 public final class Sparse extends DefaultRow {
-    private final int   columnCount;
+    private final int columnCount;
     private final int[] map;
 
     Sparse(int columnCount, int capacity, int[] map) {

@@ -122,8 +122,8 @@ public class Data {
      * Append a number of bytes to this buffer.
      *
      * @param buff the data
-     * @param off the offset in the data
-     * @param len the length in bytes
+     * @param off  the offset in the data
+     * @param len  the length in bytes
      */
     public void write(byte[] buff, int off, int len) {
         System.arraycopy(buff, off, data, pos, len);
@@ -135,8 +135,8 @@ public class Data {
      * current position is incremented accordingly.
      *
      * @param buff the output buffer
-     * @param off the offset in the output buffer
-     * @param len the number of bytes to copy
+     * @param off  the offset in the output buffer
+     * @param len  the number of bytes to copy
      */
     public void read(byte[] buff, int off, int len) {
         System.arraycopy(data, pos, buff, off, len);

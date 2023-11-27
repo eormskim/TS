@@ -64,10 +64,8 @@ public final class Bits {
      * or length of the second array is smaller than the first array, 1 is returned.
      * If the contents and lengths are the same, 0 is returned.
      *
-     * @param data1
-     *            the first char array (must not be null)
-     * @param data2
-     *            the second char array (must not be null)
+     * @param data1 the first char array (must not be null)
+     * @param data2 the second char array (must not be null)
      * @return the result of the comparison (-1, 1 or 0)
      */
     public static int compareNotNull(char[] data1, char[] data2) {
@@ -84,10 +82,8 @@ public final class Bits {
      * This method interprets bytes as signed.
      * </p>
      *
-     * @param data1
-     *            the first byte array (must not be null)
-     * @param data2
-     *            the second byte array (must not be null)
+     * @param data1 the first byte array (must not be null)
+     * @param data2 the second byte array (must not be null)
      * @return the result of the comparison (-1, 1 or 0)
      */
     public static int compareNotNullSigned(byte[] data1, byte[] data2) {
@@ -104,10 +100,8 @@ public final class Bits {
      * This method interprets bytes as unsigned.
      * </p>
      *
-     * @param data1
-     *            the first byte array (must not be null)
-     * @param data2
-     *            the second byte array (must not be null)
+     * @param data1 the first byte array (must not be null)
+     * @param data2 the second byte array (must not be null)
      * @return the result of the comparison (-1, 1 or 0)
      */
     public static int compareNotNullUnsigned(byte[] data1, byte[] data2) {
@@ -118,10 +112,8 @@ public final class Bits {
      * Reads a int value from the byte array at the given position in big-endian
      * order.
      *
-     * @param buff
-     *            the byte array
-     * @param pos
-     *            the position
+     * @param buff the byte array
+     * @param pos  the position
      * @return the value
      */
     public static int readInt(byte[] buff, int pos) {
@@ -132,10 +124,8 @@ public final class Bits {
      * Reads a int value from the byte array at the given position in
      * little-endian order.
      *
-     * @param buff
-     *            the byte array
-     * @param pos
-     *            the position
+     * @param buff the byte array
+     * @param pos  the position
      * @return the value
      */
     public static int readIntLE(byte[] buff, int pos) {
@@ -146,10 +136,8 @@ public final class Bits {
      * Reads a long value from the byte array at the given position in
      * big-endian order.
      *
-     * @param buff
-     *            the byte array
-     * @param pos
-     *            the position
+     * @param buff the byte array
+     * @param pos  the position
      * @return the value
      */
     public static long readLong(byte[] buff, int pos) {
@@ -160,10 +148,8 @@ public final class Bits {
      * Reads a long value from the byte array at the given position in
      * little-endian order.
      *
-     * @param buff
-     *            the byte array
-     * @param pos
-     *            the position
+     * @param buff the byte array
+     * @param pos  the position
      * @return the value
      */
     public static long readLongLE(byte[] buff, int pos) {
@@ -174,10 +160,8 @@ public final class Bits {
      * Reads a double value from the byte array at the given position in
      * big-endian order.
      *
-     * @param buff
-     *            the byte array
-     * @param pos
-     *            the position
+     * @param buff the byte array
+     * @param pos  the position
      * @return the value
      */
     public static double readDouble(byte[] buff, int pos) {
@@ -188,10 +172,8 @@ public final class Bits {
      * Reads a double value from the byte array at the given position in
      * little-endian order.
      *
-     * @param buff
-     *            the byte array
-     * @param pos
-     *            the position
+     * @param buff the byte array
+     * @param pos  the position
      * @return the value
      */
     public static double readDoubleLE(byte[] buff, int pos) {
@@ -201,10 +183,8 @@ public final class Bits {
     /**
      * Converts UUID value to byte array in big-endian order.
      *
-     * @param msb
-     *            most significant part of UUID
-     * @param lsb
-     *            least significant part of UUID
+     * @param msb most significant part of UUID
+     * @param lsb least significant part of UUID
      * @return byte array representation
      */
     public static byte[] uuidToBytes(long msb, long lsb) {
@@ -217,8 +197,7 @@ public final class Bits {
     /**
      * Converts UUID value to byte array in big-endian order.
      *
-     * @param uuid
-     *            UUID value
+     * @param uuid UUID value
      * @return byte array representation
      */
     public static byte[] uuidToBytes(UUID uuid) {
@@ -229,12 +208,9 @@ public final class Bits {
      * Writes a int value to the byte array at the given position in big-endian
      * order.
      *
-     * @param buff
-     *            the byte array
-     * @param pos
-     *            the position
-     * @param x
-     *            the value to write
+     * @param buff the byte array
+     * @param pos  the position
+     * @param x    the value to write
      */
     public static void writeInt(byte[] buff, int pos, int x) {
         INT_VH_BE.set(buff, pos, x);
@@ -244,12 +220,9 @@ public final class Bits {
      * Writes a int value to the byte array at the given position in
      * little-endian order.
      *
-     * @param buff
-     *            the byte array
-     * @param pos
-     *            the position
-     * @param x
-     *            the value to write
+     * @param buff the byte array
+     * @param pos  the position
+     * @param x    the value to write
      */
     public static void writeIntLE(byte[] buff, int pos, int x) {
         INT_VH_LE.set(buff, pos, x);
@@ -259,12 +232,9 @@ public final class Bits {
      * Writes a long value to the byte array at the given position in big-endian
      * order.
      *
-     * @param buff
-     *            the byte array
-     * @param pos
-     *            the position
-     * @param x
-     *            the value to write
+     * @param buff the byte array
+     * @param pos  the position
+     * @param x    the value to write
      */
     public static void writeLong(byte[] buff, int pos, long x) {
         LONG_VH_BE.set(buff, pos, x);
@@ -274,12 +244,9 @@ public final class Bits {
      * Writes a long value to the byte array at the given position in
      * little-endian order.
      *
-     * @param buff
-     *            the byte array
-     * @param pos
-     *            the position
-     * @param x
-     *            the value to write
+     * @param buff the byte array
+     * @param pos  the position
+     * @param x    the value to write
      */
     public static void writeLongLE(byte[] buff, int pos, long x) {
         LONG_VH_LE.set(buff, pos, x);
@@ -289,12 +256,9 @@ public final class Bits {
      * Writes a double value to the byte array at the given position in
      * big-endian order.
      *
-     * @param buff
-     *            the byte array
-     * @param pos
-     *            the position
-     * @param x
-     *            the value to write
+     * @param buff the byte array
+     * @param pos  the position
+     * @param x    the value to write
      */
     public static void writeDouble(byte[] buff, int pos, double x) {
         DOUBLE_VH_BE.set(buff, pos, x);
@@ -304,12 +268,9 @@ public final class Bits {
      * Writes a double value to the byte array at the given position in
      * little-endian order.
      *
-     * @param buff
-     *            the byte array
-     * @param pos
-     *            the position
-     * @param x
-     *            the value to write
+     * @param buff the byte array
+     * @param pos  the position
+     * @param x    the value to write
      */
     public static void writeDoubleLE(byte[] buff, int pos, double x) {
         DOUBLE_VH_LE.set(buff, pos, x);

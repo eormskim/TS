@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Properties;
+
 import org.h2.server.Service;
 import org.h2.store.fs.FileUtils;
 import org.h2.tools.Server;
@@ -240,7 +241,7 @@ public class FtpServer extends Tool implements Service {
         String date;
         if (mod.after(now)
                 || Math.abs((now.getTime() - mod.getTime()) /
-                        1000 / 60 / 60 / 24) > 180) {
+                1000 / 60 / 60 / 24) > 180) {
             synchronized (dateFormatOld) {
                 date = dateFormatOld.format(mod);
             }
@@ -295,7 +296,7 @@ public class FtpServer extends Tool implements Service {
     /**
      * Get the directory listing for this directory.
      *
-     * @param directory the directory to list
+     * @param directory       the directory to list
      * @param listDirectories if sub-directories should be listed
      * @return the list
      */

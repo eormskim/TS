@@ -53,9 +53,9 @@ public class SecurePassword {
                 "drop table account if exists");
         stat.execute(
                 "create table account(" +
-                "name varchar primary key, " +
-                "salt binary default secure_rand(16), " +
-                "hash binary)");
+                        "name varchar primary key, " +
+                        "salt binary default secure_rand(16), " +
+                        "hash binary)");
         PreparedStatement prep;
         prep = conn.prepareStatement("insert into account(name) values(?)");
         prep.setString(1, "Joe");
@@ -64,8 +64,8 @@ public class SecurePassword {
 
         prep = conn.prepareStatement(
                 "update account set " +
-                "hash=hash('SHA256', stringtoutf8(salt||?), 10) " +
-                "where name=?");
+                        "hash=hash('SHA256', stringtoutf8(salt||?), 10) " +
+                        "where name=?");
         prep.setString(1, "secret");
         prep.setString(2, "Joe");
         prep.execute();
@@ -73,8 +73,8 @@ public class SecurePassword {
 
         prep = conn.prepareStatement(
                 "select * from account " +
-                "where name=? " +
-                "and hash=hash('SHA256', stringtoutf8(salt||?), 10)");
+                        "where name=? " +
+                        "and hash=hash('SHA256', stringtoutf8(salt||?), 10)");
         prep.setString(1, "Joe");
         prep.setString(2, "secret");
         ResultSet rs = prep.executeQuery();

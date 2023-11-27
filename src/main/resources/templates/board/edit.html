@@ -12,28 +12,33 @@
             <h2>게시판 글쓰기</h2>
             <div class="mb-3">
                 <label for="boardTitle">제목</label>
-                <input type="text" class="form-control" id="boardTitle" name="boardTitle" maxlength="40" placeholder="제목을 입력해 주세요">
+                <input type="text" class="form-control" id="boardTitle" name="boardTitle" maxlength="40"
+                       placeholder="제목을 입력해 주세요">
             </div>
             <br>
             <div class="mb-3">
                 <label for="regId">작성자</label>
-                <input type="text" class="form-control" id="regId" name="regId" maxlength="20"  placeholder="작성자를 입력해 주세요">
+                <input type="text" class="form-control" id="regId" name="regId" maxlength="20"
+                       placeholder="작성자를 입력해 주세요">
             </div>
             <br>
             <div class="mb-3">
                 <label for="password">비밀번호</label>
-                <input type="password" class="form-control" id="password" name="password" maxlength="20" placeholder="비밀번호를 입력해 주세요">
+                <input type="password" class="form-control" id="password" name="password" maxlength="20"
+                       placeholder="비밀번호를 입력해 주세요">
             </div>
             <br>
             <div class="mb-3">
                 <label for="boardContent">내용</label>
-                <textarea class="form-control" rows="5" id="boardContent" name="boardContent" placeholder="내용을 입력해 주세요"></textarea>
+                <textarea class="form-control" rows="5" id="boardContent" name="boardContent"
+                          placeholder="내용을 입력해 주세요"></textarea>
             </div>
             <br>
             <br>
             <div>
                 <button onclick="save();" type="button" class="btn btn-sm btn-primary" id="btnSave">저장</button>
-                <button onclick="location.href='/'" type="button" class="btn btn-sm btn-primary" id="btnList">목록</button>
+                <button onclick="location.href='/'" type="button" class="btn btn-sm btn-primary" id="btnList">목록
+                </button>
             </div>
         </div>
     </article>
@@ -41,42 +46,42 @@
 </html>
 <script th:inline="javascript">
     //게시판 등록
-    function save(){
+    function save() {
         let params = {
-            boardTitle : $.trim($("#boardTitle").val())
-            ,boardContent : $.trim($("#boardContent").val())
-            ,regId : $.trim($("#regId").val())
-            ,password : $("#password").val()
-            ,delYn : 'N'
+            boardTitle: $.trim($("#boardTitle").val())
+            , boardContent: $.trim($("#boardContent").val())
+            , regId: $.trim($("#regId").val())
+            , password: $("#password").val()
+            , delYn: 'N'
         }
 
         console.log(params);
 
-        if(params.boardTitle == ""){
+        if (params.boardTitle == "") {
             alert("제목을 입력해주세요.");
             return false;
-        }else if(params.boardContent == ""){
+        } else if (params.boardContent == "") {
             alert("내용을 입력해주세요.");
             return false;
-        }else if(params.regId == ""){
+        } else if (params.regId == "") {
             alert("작성자를 입력해주세요.");
             return false;
-        }else if(params.password == ""){
+        } else if (params.password == "") {
             alert("비밀번호를 입력해주세요.");
             return false;
         }
 
         $.ajax({
-            type : 'POST'
-            ,url : "/board/save"
-            ,dataType : 'json'
-            ,data : JSON.stringify(params)
-            ,contentType: 'application/json'
-            ,success : function(result) {
+            type: 'POST'
+            , url: "/board/save"
+            , dataType: 'json'
+            , data: JSON.stringify(params)
+            , contentType: 'application/json'
+            , success: function (result) {
                 alert("글 등록 완료.");
-                location.href="/";
+                location.href = "/";
             },
-            error: function(request, status, error) {
+            error: function (request, status, error) {
 
             }
         })

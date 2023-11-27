@@ -28,8 +28,8 @@ public interface BlockCipher {
      * means the bytes are overwritten.
      *
      * @param bytes the byte array
-     * @param off the start index
-     * @param len the number of bytes to encrypt
+     * @param off   the start index
+     * @param len   the number of bytes to encrypt
      */
     void encrypt(byte[] bytes, int off, int len);
 
@@ -38,8 +38,8 @@ public interface BlockCipher {
      * means the bytes are overwritten.
      *
      * @param bytes the byte array
-     * @param off the start index
-     * @param len the number of bytes to decrypt
+     * @param off   the start index
+     * @param len   the number of bytes to decrypt
      */
     void decrypt(byte[] bytes, int off, int len);
 

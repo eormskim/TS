@@ -63,8 +63,7 @@ public abstract class AbstractAggregate extends DataAnalysisOperation {
     /**
      * Sets the FILTER condition.
      *
-     * @param filterCondition
-     *            FILTER condition
+     * @param filterCondition FILTER condition
      */
     public void setFilterCondition(Expression filterCondition) {
         this.filterCondition = filterCondition;
@@ -110,7 +109,7 @@ public abstract class AbstractAggregate extends DataAnalysisOperation {
 
     @Override
     protected void getOrderedResultLoop(SessionLocal session, HashMap<Integer, Value> result,
-            ArrayList<Value[]> ordered, int rowIdColumn) {
+                                        ArrayList<Value[]> ordered, int rowIdColumn) {
         WindowFrame frame = over.getWindowFrame();
         /*
          * With RANGE (default) or GROUPS units and EXCLUDE GROUP or EXCLUDE NO
@@ -148,10 +147,10 @@ public abstract class AbstractAggregate extends DataAnalysisOperation {
         }
         // All other types of frames (slow)
         int size = ordered.size();
-        for (int i = 0; i < size;) {
+        for (int i = 0; i < size; ) {
             Object aggregateData = createAggregateData();
             for (Iterator<Value[]> iter = WindowFrame.iterator(over, session, ordered, getOverOrderBySort(), i,
-                    false); iter.hasNext();) {
+                    false); iter.hasNext(); ) {
                 updateFromExpressions(session, aggregateData, iter.next());
             }
             Value r = getAggregatedValue(session, aggregateData);
@@ -185,12 +184,12 @@ public abstract class AbstractAggregate extends DataAnalysisOperation {
     }
 
     private void aggregateFastPartition(SessionLocal session, HashMap<Integer, Value> result,
-            ArrayList<Value[]> ordered, int rowIdColumn, boolean grouped) {
+                                        ArrayList<Value[]> ordered, int rowIdColumn, boolean grouped) {
         Object aggregateData = createAggregateData();
         int size = ordered.size();
         int lastIncludedRow = -1;
         Value r = null;
-        for (int i = 0; i < size;) {
+        for (int i = 0; i < size; ) {
             int newLast = WindowFrame.getEndIndex(over, session, ordered, getOverOrderBySort(), i);
             assert newLast >= lastIncludedRow;
             if (newLast > lastIncludedRow) {
@@ -207,11 +206,11 @@ public abstract class AbstractAggregate extends DataAnalysisOperation {
     }
 
     private void aggregateFastPartitionInReverse(SessionLocal session, HashMap<Integer, Value> result,
-            ArrayList<Value[]> ordered, int rowIdColumn, boolean grouped) {
+                                                 ArrayList<Value[]> ordered, int rowIdColumn, boolean grouped) {
         Object aggregateData = createAggregateData();
         int firstIncludedRow = ordered.size();
         Value r = null;
-        for (int i = firstIncludedRow - 1; i >= 0;) {
+        for (int i = firstIncludedRow - 1; i >= 0; ) {
             int newLast = over.getWindowFrame().getStartIndex(session, ordered, getOverOrderBySort(), i);
             assert newLast <= firstIncludedRow;
             if (newLast < firstIncludedRow) {
@@ -232,7 +231,7 @@ public abstract class AbstractAggregate extends DataAnalysisOperation {
     }
 
     private int processGroup(HashMap<Integer, Value> result, Value r, ArrayList<Value[]> ordered,
-            int rowIdColumn, int i, int size, boolean grouped) {
+                             int rowIdColumn, int i, int size, boolean grouped) {
         Value[] firstRowInGroup = ordered.get(i), currentRowInGroup = firstRowInGroup;
         do {
             result.put(currentRowInGroup[rowIdColumn].getInt(), r);
@@ -242,7 +241,7 @@ public abstract class AbstractAggregate extends DataAnalysisOperation {
     }
 
     private void aggregateWholePartition(SessionLocal session, HashMap<Integer, Value> result,
-            ArrayList<Value[]> ordered, int rowIdColumn) {
+                                         ArrayList<Value[]> ordered, int rowIdColumn) {
         // Aggregate values from the whole partition
         Object aggregateData = createAggregateData();
         for (Value[] row : ordered) {
@@ -258,12 +257,9 @@ public abstract class AbstractAggregate extends DataAnalysisOperation {
     /**
      * Updates the provided aggregate data from the remembered expressions.
      *
-     * @param session
-     *            the session
-     * @param aggregateData
-     *            aggregate data
-     * @param array
-     *            values of expressions
+     * @param session       the session
+     * @param aggregateData aggregate data
+     * @param array         values of expressions
      */
     protected abstract void updateFromExpressions(SessionLocal session, Object aggregateData, Value[] array);
 
@@ -287,10 +283,8 @@ public abstract class AbstractAggregate extends DataAnalysisOperation {
     /**
      * Updates an aggregate value.
      *
-     * @param session
-     *            the session
-     * @param aggregateData
-     *            aggregate data
+     * @param session       the session
+     * @param aggregateData aggregate data
      */
     protected abstract void updateAggregate(SessionLocal session, Object aggregateData);
 

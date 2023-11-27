@@ -69,6 +69,7 @@ public class TestMultiThreadedKernel extends TestDb {
                         JdbcUtils.closeSilently(conn);
                     }
                 }
+
                 private void work(Connection conn) throws SQLException {
                     Statement stat = conn.createStatement();
                     stat.execute(

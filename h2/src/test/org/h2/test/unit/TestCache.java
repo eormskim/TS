@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
+
 import org.h2.message.Trace;
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
@@ -76,7 +77,7 @@ public class TestCache extends TestDb implements CacheWriter {
 
         stat.execute(
                 "insert into test select x, random_uuid() || space(1) " +
-                "from system_range(1, 10000)");
+                        "from system_range(1, 10000)");
 
         // stat.execute("create index idx_test_n on test(data)");
         // stat.execute("select data from test where data >= ''");

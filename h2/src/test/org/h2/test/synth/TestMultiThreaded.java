@@ -51,9 +51,11 @@ public class TestMultiThreaded extends TestDb {
             stat = conn.createStatement();
             random = new Random(id);
         }
+
         public Throwable getException() {
             return exception;
         }
+
         @Override
         public void run() {
             int count = 0;
@@ -61,58 +63,58 @@ public class TestMultiThreaded extends TestDb {
             try {
                 while (!stop) {
                     switch (random.nextInt(6)) {
-                    case 0:
-                        // insert a row for this connection
-                        traceThread("insert " + id + " count: " + count);
-                        stat.execute("INSERT INTO TEST(NAME) VALUES('"+ id +"')");
-                        traceThread("insert done");
-                        count++;
-                        break;
-                    case 1:
-                        // delete a row for this connection
-                        if (count > 0) {
-                            traceThread("delete " + id + " count: " + count);
-                            int updateCount = stat.executeUpdate(
-                                    "DELETE FROM TEST " +
-                                    "WHERE NAME = '"+ id +"' AND ROWNUM()<2");
-                            traceThread("delete done");
-                            if (updateCount != 1) {
-                                throw new AssertionError(
-                                        "Expected: 1 Deleted: " + updateCount);
+                        case 0:
+                            // insert a row for this connection
+                            traceThread("insert " + id + " count: " + count);
+                            stat.execute("INSERT INTO TEST(NAME) VALUES('" + id + "')");
+                            traceThread("insert done");
+                            count++;
+                            break;
+                        case 1:
+                            // delete a row for this connection
+                            if (count > 0) {
+                                traceThread("delete " + id + " count: " + count);
+                                int updateCount = stat.executeUpdate(
+                                        "DELETE FROM TEST " +
+                                                "WHERE NAME = '" + id + "' AND ROWNUM()<2");
+                                traceThread("delete done");
+                                if (updateCount != 1) {
+                                    throw new AssertionError(
+                                            "Expected: 1 Deleted: " + updateCount);
+                                }
+                                count--;
                             }
-                            count--;
-                        }
-                        break;
-                    case 2:
-                        // select the number of rows of this connection
-                        traceThread("select " + id + " count: " + count);
-                        rs = stat.executeQuery("SELECT COUNT(*) " +
-                                "FROM TEST WHERE NAME = '"+ id +"'");
-                        traceThread("select done");
-                        rs.next();
-                        int got = rs.getInt(1);
-                        if (got != count) {
-                            throw new AssertionError("Expected: " + count + " got: " + got);
-                        }
-                        break;
-                    case 3:
-                        traceThread("insert");
-                        stat.execute("INSERT INTO TEST(NAME) VALUES(NULL)");
-                        traceThread("insert done");
-                        break;
-                    case 4:
-                        traceThread("delete");
-                        stat.execute("DELETE FROM TEST WHERE NAME IS NULL");
-                        traceThread("delete done");
-                        break;
-                    case 5:
-                        traceThread("select");
-                        rs = stat.executeQuery("SELECT * FROM TEST WHERE NAME IS NULL");
-                        traceThread("select done");
-                        while (rs.next()) {
-                            rs.getString(1);
-                        }
-                        break;
+                            break;
+                        case 2:
+                            // select the number of rows of this connection
+                            traceThread("select " + id + " count: " + count);
+                            rs = stat.executeQuery("SELECT COUNT(*) " +
+                                    "FROM TEST WHERE NAME = '" + id + "'");
+                            traceThread("select done");
+                            rs.next();
+                            int got = rs.getInt(1);
+                            if (got != count) {
+                                throw new AssertionError("Expected: " + count + " got: " + got);
+                            }
+                            break;
+                        case 3:
+                            traceThread("insert");
+                            stat.execute("INSERT INTO TEST(NAME) VALUES(NULL)");
+                            traceThread("insert done");
+                            break;
+                        case 4:
+                            traceThread("delete");
+                            stat.execute("DELETE FROM TEST WHERE NAME IS NULL");
+                            traceThread("delete done");
+                            break;
+                        case 5:
+                            traceThread("select");
+                            rs = stat.executeQuery("SELECT * FROM TEST WHERE NAME IS NULL");
+                            traceThread("select done");
+                            while (rs.next()) {
+                                rs.getString(1);
+                            }
+                            break;
                     }
                 }
             } catch (Throwable e) {
@@ -125,6 +127,7 @@ public class TestMultiThreaded extends TestDb {
                 trace(id + " " + s);
             }
         }
+
         public void stopNow() {
             this.stop = true;
         }

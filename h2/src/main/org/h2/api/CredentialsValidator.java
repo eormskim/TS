@@ -20,12 +20,10 @@ public interface CredentialsValidator extends Configurable {
     /**
      * Validate user credential.
      *
-     * @param authenticationInfo
-     *            = authentication info
+     * @param authenticationInfo = authentication info
      * @return true if credentials are valid, otherwise false
-     * @throws Exception
-     *             any exception occurred (invalid credentials or internal
-     *             issue) prevent user login
+     * @throws Exception any exception occurred (invalid credentials or internal
+     *                   issue) prevent user login
      */
     boolean validateCredentials(AuthenticationInfo authenticationInfo) throws Exception;
 

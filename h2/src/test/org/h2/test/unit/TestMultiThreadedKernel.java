@@ -70,11 +70,11 @@ public class TestMultiThreadedKernel extends TestDb implements Runnable {
         try {
             org.h2.Driver.load();
             Connection conn = DriverManager.getConnection(url +
-                    ";LOCK_MODE=3;WRITE_DELAY=0",
+                            ";LOCK_MODE=3;WRITE_DELAY=0",
                     user, password);
             conn.createStatement().execute(
                     "CREATE TABLE TEST" + id +
-                    "(COL1 BIGINT AUTO_INCREMENT PRIMARY KEY, COL2 BIGINT)");
+                            "(COL1 BIGINT AUTO_INCREMENT PRIMARY KEY, COL2 BIGINT)");
             PreparedStatement prep = conn.prepareStatement(
                     "insert into TEST" + id + "(col2) values (?)");
             for (int i = 0; !master.stop; i++) {

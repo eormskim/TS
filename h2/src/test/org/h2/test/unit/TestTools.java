@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
 import org.h2.api.ErrorCode;
 import org.h2.engine.SysProperties;
 import org.h2.store.FileLister;
@@ -398,7 +399,7 @@ public class TestTools extends TestDb {
         assertTrue(rs.wasNull());
 
         // all updateX methods
-        for (Method m: rs.getClass().getMethods()) {
+        for (Method m : rs.getClass().getMethods()) {
             if (m.getName().startsWith("update")) {
                 if (m.getName().equals("updateRow")) {
                     continue;
@@ -726,8 +727,8 @@ public class TestTools extends TestDb {
         prep.setBigDecimal(3, new BigDecimal("10.20"));
         prep.executeUpdate();
         stat.execute("create table test2(id int primary key,\n" +
-                "a real, b double, c bigint,\n" +
-                "d smallint, e boolean, f varbinary, g date, h time, i timestamp)",
+                        "a real, b double, c bigint,\n" +
+                        "d smallint, e boolean, f varbinary, g date, h time, i timestamp)",
                 Statement.NO_GENERATED_KEYS);
         prep = conn.prepareStatement(
                 "insert into test2 values(1, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -736,7 +737,7 @@ public class TestTools extends TestDb {
         prep.setLong(3, Long.MIN_VALUE);
         prep.setShort(4, Short.MIN_VALUE);
         prep.setBoolean(5, false);
-        prep.setBytes(6, new byte[] { (byte) 10, (byte) 20 });
+        prep.setBytes(6, new byte[]{(byte) 10, (byte) 20});
         prep.setDate(7, java.sql.Date.valueOf("2007-12-31"));
         prep.setTime(8, java.sql.Time.valueOf("23:59:59"));
         prep.setTimestamp(9, java.sql.Timestamp.valueOf("2007-12-31 23:59:59"));
@@ -787,7 +788,7 @@ public class TestTools extends TestDb {
         assertEquals(Long.MIN_VALUE, rs.getLong("c"));
         assertEquals(Short.MIN_VALUE, rs.getShort("d"));
         assertFalse(rs.getBoolean("e"));
-        assertEquals(new byte[] { (byte) 10, (byte) 20 }, rs.getBytes("f"));
+        assertEquals(new byte[]{(byte) 10, (byte) 20}, rs.getBytes("f"));
         assertEquals("2007-12-31", rs.getString("g"));
         assertEquals("23:59:59", rs.getString("h"));
         assertEquals("2007-12-31 23:59:59", rs.getString("i"));
@@ -1024,21 +1025,21 @@ public class TestTools extends TestDb {
         stat.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, DATA CLOB) "
                 + "AS SELECT X, SPACE(3000) FROM SYSTEM_RANGE(1, 300)");
         conn.close();
-        String[] args = { "-dir", dir, "-db", "testChangeFileEncryption",
-                "-cipher", "AES", "-decrypt", "abc", "-quiet" };
+        String[] args = {"-dir", dir, "-db", "testChangeFileEncryption",
+                "-cipher", "AES", "-decrypt", "abc", "-quiet"};
         new ChangeFileEncryption().runTool(args);
-        args = new String[] { "-dir", dir, "-db", "testChangeFileEncryption",
-                "-cipher", "AES", "-encrypt", "def", "-quiet" };
+        args = new String[]{"-dir", dir, "-db", "testChangeFileEncryption",
+                "-cipher", "AES", "-encrypt", "def", "-quiet"};
         new ChangeFileEncryption().runTool(args);
         conn = getConnection(url, "sa", "def 123");
         stat = conn.createStatement();
         stat.execute("SELECT * FROM TEST");
         assertThrows(ErrorCode.CANNOT_CHANGE_SETTING_WHEN_OPEN_1,
-                () -> new ChangeFileEncryption().runTool(new String[] { "-dir", dir, "-db", "testChangeFileEncryption",
-                        "-cipher", "AES", "-decrypt", "def", "-quiet" }));
+                () -> new ChangeFileEncryption().runTool(new String[]{"-dir", dir, "-db", "testChangeFileEncryption",
+                        "-cipher", "AES", "-decrypt", "def", "-quiet"}));
         conn.close();
-        args = new String[] { "-dir", dir, "-db", "testChangeFileEncryption",
-                "-quiet" };
+        args = new String[]{"-dir", dir, "-db", "testChangeFileEncryption",
+                "-quiet"};
         DeleteDbFiles.main(args);
     }
 
@@ -1064,7 +1065,7 @@ public class TestTools extends TestDb {
         stat = conn.createStatement();
         stat.execute("SELECT * FROM TEST");
         conn.close();
-        String[] args = new String[] { "-dir", dir, "-db", "testChangeFileEncryption", "-quiet" };
+        String[] args = new String[]{"-dir", dir, "-db", "testChangeFileEncryption", "-quiet"};
         DeleteDbFiles.main(args);
     }
 
@@ -1073,8 +1074,8 @@ public class TestTools extends TestDb {
         try {
             deleteDb("test");
             Server tcpServer = Server.createTcpServer("-ifNotExists",
-                            "-baseDir", getBaseDir(),
-                            "-tcpAllowOthers").start();
+                    "-baseDir", getBaseDir(),
+                    "-tcpAllowOthers").start();
             remainingServers.add(tcpServer);
             final int port = tcpServer.getPort();
             conn = getConnection("jdbc:h2:tcp://localhost:" + port + "/test", "sa", "");
@@ -1088,9 +1089,9 @@ public class TestTools extends TestDb {
                     () -> Server.shutdownTcpServer("tcp://localhost:" + port, "", true, false));
             tcpServer.stop();
             Server tcpServerWithPassword = Server.createTcpServer(
-                            "-ifExists",
-                            "-tcpPassword", "abc",
-                            "-baseDir", getBaseDir()).start();
+                    "-ifExists",
+                    "-tcpPassword", "abc",
+                    "-baseDir", getBaseDir()).start();
             final int prt = tcpServerWithPassword.getPort();
             remainingServers.add(tcpServerWithPassword);
             // must not be able to create new db
@@ -1114,8 +1115,8 @@ public class TestTools extends TestDb {
             // Test filesystem prefix and escape from baseDir
             deleteDb("testSplit");
             server = Server.createTcpServer("-ifNotExists",
-                            "-baseDir", getBaseDir(),
-                            "-tcpAllowOthers").start();
+                    "-baseDir", getBaseDir(),
+                    "-tcpAllowOthers").start();
             final int p = server.getPort();
             conn = getConnection("jdbc:h2:tcp://localhost:" + p + "/split:testSplit", "sa", "");
             conn.close();
@@ -1162,7 +1163,7 @@ public class TestTools extends TestDb {
         /**
          * Get the reader.
          *
-         * @param pos the position
+         * @param pos    the position
          * @param length the length
          * @return the reader
          */
@@ -1247,7 +1248,7 @@ public class TestTools extends TestDb {
         /**
          * Get the binary stream.
          *
-         * @param pos the position
+         * @param pos    the position
          * @param length the length
          * @return the input stream
          */

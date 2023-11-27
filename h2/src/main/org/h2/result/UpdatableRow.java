@@ -43,7 +43,7 @@ public class UpdatableRow {
      * Construct a new object that is linked to the result set. The constructor
      * reads the database meta data to find out if the result set is updatable.
      *
-     * @param conn the database connection
+     * @param conn   the database connection
      * @param result the result
      * @throws SQLException on failure
      */
@@ -82,7 +82,7 @@ public class UpdatableRow {
         ResultSet rs = meta.getTables(null,
                 StringUtils.escapeMetaDataPattern(schemaName),
                 StringUtils.escapeMetaDataPattern(tableName),
-                new String[] { type });
+                new String[]{type});
         if (!rs.next()) {
             return;
         }
@@ -270,7 +270,7 @@ public class UpdatableRow {
     /**
      * Update a row in the database.
      *
-     * @param current the old row
+     * @param current   the old row
      * @param updateRow the new row
      * @throws SQLException if the row has been deleted
      */

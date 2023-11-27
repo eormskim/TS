@@ -6,6 +6,7 @@
 package org.h2.table;
 
 import java.util.ArrayList;
+
 import org.h2.api.ErrorCode;
 import org.h2.engine.SessionLocal;
 import org.h2.expression.Expression;
@@ -40,14 +41,14 @@ public class RangeTable extends VirtualTable {
      * Create a new range with the given start and end expressions.
      *
      * @param schema the schema (always the main schema)
-     * @param min the start expression
-     * @param max the end expression
+     * @param min    the start expression
+     * @param max    the end expression
      */
     public RangeTable(Schema schema, Expression min, Expression max) {
         super(schema, 0, NAME);
         this.min = min;
         this.max = max;
-        Column[] columns = new Column[] { new Column("X", TypeInfo.TYPE_BIGINT) };
+        Column[] columns = new Column[]{new Column("X", TypeInfo.TYPE_BIGINT)};
         setColumns(columns);
         index = new RangeIndex(this, IndexColumn.wrap(columns));
     }

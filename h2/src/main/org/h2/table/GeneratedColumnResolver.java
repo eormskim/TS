@@ -27,8 +27,7 @@ class GeneratedColumnResolver implements ColumnResolver {
     /**
      * Column resolver for generated columns.
      *
-     * @param table
-     *            the table
+     * @param table the table
      */
     GeneratedColumnResolver(Table table) {
         this.table = table;
@@ -37,8 +36,7 @@ class GeneratedColumnResolver implements ColumnResolver {
     /**
      * Set the current row.
      *
-     * @param current
-     *            the current row
+     * @param current the current row
      */
     void set(Row current) {
         this.current = current;

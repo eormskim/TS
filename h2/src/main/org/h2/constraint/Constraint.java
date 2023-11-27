@@ -6,6 +6,7 @@
 package org.h2.constraint;
 
 import java.util.HashSet;
+
 import org.h2.engine.DbObject;
 import org.h2.engine.SessionLocal;
 import org.h2.expression.Expression;
@@ -87,9 +88,9 @@ public abstract class Constraint extends SchemaObject implements Comparable<Cons
      * This method throws an exception if not.
      *
      * @param session the session
-     * @param t the table
-     * @param oldRow the old row
-     * @param newRow the new row
+     * @param t       the table
+     * @param oldRow  the old row
+     * @param newRow  the new row
      */
     public abstract void checkRow(SessionLocal session, Table t, Row oldRow, Row newRow);
 
@@ -130,7 +131,7 @@ public abstract class Constraint extends SchemaObject implements Comparable<Cons
      *
      * @return the SQL statement
      */
-    public abstract String  getCreateSQLWithoutIndexes();
+    public abstract String getCreateSQLWithoutIndexes();
 
     /**
      * Check if this constraint needs to be checked before updating the data.
@@ -203,7 +204,7 @@ public abstract class Constraint extends SchemaObject implements Comparable<Cons
      *
      * @param visitor the visitor
      * @return true if every visited expression returned true, or if there are
-     *         no expressions
+     * no expressions
      */
     public boolean isEverything(@SuppressWarnings("unused") ExpressionVisitor visitor) {
         return true;

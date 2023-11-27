@@ -13,7 +13,6 @@ import org.h2.mvstore.WriteBuffer;
  * A data type that allows to save its state.
  *
  * @param <D> type of opaque parameter passed as an operational context to Factory.create()
- *
  * @author <a href='mailto:andrei.tokar@gmail.com'>Andrei Tokar</a>
  */
 public interface StatefulDataType<D> {
@@ -21,7 +20,7 @@ public interface StatefulDataType<D> {
     /**
      * Save the state.
      *
-     * @param buff the target buffer
+     * @param buff     the target buffer
      * @param metaType the meta type
      */
     void save(WriteBuffer buff, MetaType<D> metaType);
@@ -37,9 +36,9 @@ public interface StatefulDataType<D> {
         /**
          * Reads the data type.
          *
-         * @param buff the buffer the source buffer
+         * @param buff         the buffer the source buffer
          * @param metaDataType the type
-         * @param database the database
+         * @param database     the database
          * @return the data type
          */
         DataType<?> create(ByteBuffer buff, MetaType<D> metaDataType, D database);

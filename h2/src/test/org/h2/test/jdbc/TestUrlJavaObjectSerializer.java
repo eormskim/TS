@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Types;
+
 import org.h2.api.JavaObjectSerializer;
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
@@ -41,7 +42,7 @@ public class TestUrlJavaObjectSerializer extends TestDb {
             deleteDb("javaSerializer");
             String fqn = FakeJavaObjectSerializer.class.getName();
             Connection conn = getConnection(
-                    "javaSerializer;JAVA_OBJECT_SERIALIZER='"+fqn+"'");
+                    "javaSerializer;JAVA_OBJECT_SERIALIZER='" + fqn + "'");
 
             Statement stat = conn.createStatement();
             stat.execute("create table t1(id identity, val other)");
@@ -58,7 +59,7 @@ public class TestUrlJavaObjectSerializer extends TestDb {
             assertTrue(rs.next());
 
             assertEquals(100500, ((Integer) rs.getObject(1)).intValue());
-            assertEquals(new byte[] { 1, 2, 3 }, rs.getBytes(1));
+            assertEquals(new byte[]{1, 2, 3}, rs.getBytes(1));
 
             conn.close();
             deleteDb("javaSerializer");
@@ -81,12 +82,12 @@ public class TestUrlJavaObjectSerializer extends TestDb {
         public byte[] serialize(Object obj) throws Exception {
             testBaseRef.assertEquals(100500, ((Integer) obj).intValue());
 
-            return new byte[] { 1, 2, 3 };
+            return new byte[]{1, 2, 3};
         }
 
         @Override
         public Object deserialize(byte[] bytes) throws Exception {
-            testBaseRef.assertEquals(new byte[] { 1, 2, 3 }, bytes);
+            testBaseRef.assertEquals(new byte[]{1, 2, 3}, bytes);
 
             return 100500;
         }

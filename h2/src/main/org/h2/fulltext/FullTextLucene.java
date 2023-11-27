@@ -117,14 +117,14 @@ public class FullTextLucene extends FullText {
      * Create a new full text index for a table and column list. Each table may
      * only have one index at any time.
      *
-     * @param conn the connection
-     * @param schema the schema name of the table (case sensitive)
-     * @param table the table name (case sensitive)
+     * @param conn       the connection
+     * @param schema     the schema name of the table (case sensitive)
+     * @param table      the table name (case sensitive)
      * @param columnList the column list (null for all columns)
      * @throws SQLException on failure
      */
     public static void createIndex(Connection conn, String schema,
-            String table, String columnList) throws SQLException {
+                                   String table, String columnList) throws SQLException {
         init(conn);
         PreparedStatement prep = conn.prepareStatement("INSERT INTO " + SCHEMA
                 + ".INDEXES(SCHEMA, `TABLE`, COLUMNS) VALUES(?, ?, ?)");
@@ -140,9 +140,9 @@ public class FullTextLucene extends FullText {
      * Drop an existing full text index for a table. This method returns
      * silently if no index for this table exists.
      *
-     * @param conn the connection
+     * @param conn   the connection
      * @param schema the schema name of the table (case sensitive)
-     * @param table the table name (case sensitive)
+     * @param table  the table name (case sensitive)
      * @throws SQLException on failure
      */
     public static void dropIndex(Connection conn, String schema, String table)
@@ -202,15 +202,15 @@ public class FullTextLucene extends FullText {
      * </li><li>SCORE (float) the relevance score as returned by Lucene.
      * </li></ul>
      *
-     * @param conn the connection
-     * @param text the search query
-     * @param limit the maximum number of rows or 0 for no limit
+     * @param conn   the connection
+     * @param text   the search query
+     * @param limit  the maximum number of rows or 0 for no limit
      * @param offset the offset or 0 for no offset
      * @return the result set
      * @throws SQLException on failure
      */
     public static ResultSet search(Connection conn, String text, int limit,
-            int offset) throws SQLException {
+                                   int offset) throws SQLException {
         return search(conn, text, limit, offset, false);
     }
 
@@ -228,15 +228,15 @@ public class FullTextLucene extends FullText {
      * <li>SCORE (float) the relevance score as returned by Lucene.</li>
      * </ul>
      *
-     * @param conn the connection
-     * @param text the search query
-     * @param limit the maximum number of rows or 0 for no limit
+     * @param conn   the connection
+     * @param text   the search query
+     * @param limit  the maximum number of rows or 0 for no limit
      * @param offset the offset or 0 for no offset
      * @return the result set
      * @throws SQLException on failure
      */
     public static ResultSet searchData(Connection conn, String text, int limit,
-            int offset) throws SQLException {
+                                       int offset) throws SQLException {
         return search(conn, text, limit, offset, true);
     }
 
@@ -253,18 +253,18 @@ public class FullTextLucene extends FullText {
     /**
      * Create the trigger.
      *
-     * @param conn the database connection
+     * @param conn   the database connection
      * @param schema the schema name
-     * @param table the table name
+     * @param table  the table name
      * @throws SQLException on failure
      */
     private static void createTrigger(Connection conn, String schema,
-            String table) throws SQLException {
+                                      String table) throws SQLException {
         createOrDropTrigger(conn, schema, table, true);
     }
 
     private static void createOrDropTrigger(Connection conn,
-            String schema, String table, boolean create) throws SQLException {
+                                            String schema, String table, boolean create) throws SQLException {
         Statement stat = conn.createStatement();
         String trigger = StringUtils.quoteIdentifier(schema) + "." +
                 StringUtils.quoteIdentifier(TRIGGER_PREFIX + table);
@@ -275,13 +275,13 @@ public class FullTextLucene extends FullText {
             // the trigger is also called on rollback because transaction
             // rollback will not undo the changes in the Lucene index
             builder.append(trigger).
-                append(" AFTER INSERT, UPDATE, DELETE, ROLLBACK ON ");
+                    append(" AFTER INSERT, UPDATE, DELETE, ROLLBACK ON ");
             StringUtils.quoteIdentifier(builder, schema).
-                append('.');
+                    append('.');
             StringUtils.quoteIdentifier(builder, table).
-                append(" FOR EACH ROW CALL \"").
-                append(FullTextLucene.FullTextTrigger.class.getName()).
-                append('\"');
+                    append(" FOR EACH ROW CALL \"").
+                    append(FullTextLucene.FullTextTrigger.class.getName()).
+                    append('\"');
             stat.execute(builder.toString());
         }
     }
@@ -348,13 +348,13 @@ public class FullTextLucene extends FullText {
     /**
      * Add the existing data to the index.
      *
-     * @param conn the database connection
+     * @param conn   the database connection
      * @param schema the schema name
-     * @param table the table name
+     * @param table  the table name
      * @throws SQLException on failure
      */
     private static void indexExistingRows(Connection conn, String schema,
-            String table) throws SQLException {
+                                          String table) throws SQLException {
         FullTextLucene.FullTextTrigger existing = new FullTextLucene.FullTextTrigger();
         existing.init(conn, schema, null, table, false, Trigger.INSERT);
         String sql = "SELECT * FROM " + StringUtils.quoteIdentifier(schema)
@@ -391,7 +391,7 @@ public class FullTextLucene extends FullText {
         synchronized (INDEX_ACCESS) {
             try {
                 IndexAccess access = INDEX_ACCESS.remove(indexPath);
-                if(access != null) {
+                if (access != null) {
                     access.close();
                 }
             } catch (Exception e) {
@@ -403,16 +403,16 @@ public class FullTextLucene extends FullText {
     /**
      * Do the search.
      *
-     * @param conn the database connection
-     * @param text the query
-     * @param limit the limit
+     * @param conn   the database connection
+     * @param text   the query
+     * @param limit  the limit
      * @param offset the offset
-     * @param data whether the raw data should be returned
+     * @param data   whether the raw data should be returned
      * @return the result set
      * @throws SQLException on failure
      */
     protected static ResultSet search(Connection conn, String text,
-            int limit, int offset, boolean data) throws SQLException {
+                                      int limit, int offset, boolean data) throws SQLException {
         SimpleResultSet result = createResultSet(data);
         if (conn.getMetaData().getURL().startsWith("jdbc:columnlist:")) {
             // this is just to query the result set columns
@@ -500,11 +500,12 @@ public class FullTextLucene extends FullText {
 
         /**
          * INTERNAL
+         *
          * @see Trigger#init(Connection, String, String, String, boolean, int)
          */
         @Override
         public void init(Connection conn, String schemaName, String triggerName,
-                String tableName, boolean before, int type) throws SQLException {
+                         String tableName, boolean before, int type) throws SQLException {
             this.schema = schemaName;
             this.table = tableName;
             this.indexPath = getIndexPath(conn);
@@ -542,7 +543,7 @@ public class FullTextLucene extends FullText {
             ArrayList<String> indexList = Utils.newSmallArrayList();
             PreparedStatement prep = conn.prepareStatement(
                     "SELECT COLUMNS FROM " + SCHEMA
-                    + ".INDEXES WHERE SCHEMA=? AND `TABLE`=?");
+                            + ".INDEXES WHERE SCHEMA=? AND `TABLE`=?");
             prep.setString(1, schemaName);
             prep.setString(2, tableName);
             rs = prep.executeQuery();
@@ -564,6 +565,7 @@ public class FullTextLucene extends FullText {
 
         /**
          * INTERNAL
+         *
          * @see Trigger#fire(Connection, Object[], Object[])
          */
         @Override
@@ -596,6 +598,7 @@ public class FullTextLucene extends FullText {
 
         /**
          * Commit all changes to the Lucene index.
+         *
          * @throws SQLException on failure
          */
         void commitIndex() throws SQLException {
@@ -609,7 +612,7 @@ public class FullTextLucene extends FullText {
         /**
          * Add a row to the index.
          *
-         * @param row the row
+         * @param row         the row
          * @param commitIndex whether to commit the changes to the Lucene index
          * @throws SQLException on failure
          */
@@ -654,7 +657,7 @@ public class FullTextLucene extends FullText {
         /**
          * Delete a row from the index.
          *
-         * @param row the row
+         * @param row         the row
          * @param commitIndex whether to commit the changes to the Lucene index
          * @throws SQLException on failure
          */
@@ -744,6 +747,7 @@ public class FullTextLucene extends FullText {
 
         /**
          * Commit the changes.
+         *
          * @throws IOException on failure
          */
         public synchronized void commit() throws IOException {
@@ -754,6 +758,7 @@ public class FullTextLucene extends FullText {
 
         /**
          * Close the index.
+         *
          * @throws IOException on failure
          */
         public synchronized void close() throws IOException {

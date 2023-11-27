@@ -126,9 +126,9 @@ public abstract class DbObject implements HasSQL {
     /**
      * Initialize some attributes of this object.
      *
-     * @param db the database
-     * @param objectId the object id
-     * @param name the name
+     * @param db            the database
+     * @param objectId      the object id
+     * @param name          the name
      * @param traceModuleId the trace module id
      */
     protected DbObject(Database db, int objectId, String name, int traceModuleId) {
@@ -224,7 +224,7 @@ public abstract class DbObject implements HasSQL {
      * Build a SQL statement to re-create the object, or to create a copy of the
      * object with a different name or referencing a different table
      *
-     * @param table the new table
+     * @param table      the new table
      * @param quotedName the quoted name
      * @return the SQL statement
      */

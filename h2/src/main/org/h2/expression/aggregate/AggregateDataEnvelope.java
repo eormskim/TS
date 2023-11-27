@@ -30,8 +30,7 @@ final class AggregateDataEnvelope extends AggregateData {
      * Get the index (if any) for the column specified in the geometry
      * aggregate.
      *
-     * @param on
-     *            the expression (usually a column expression)
+     * @param on the expression (usually a column expression)
      * @return the index, or null
      */
     static Index getGeometryColumnIndex(Expression on) {

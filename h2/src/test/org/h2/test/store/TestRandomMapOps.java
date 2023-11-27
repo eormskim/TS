@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.TreeMap;
+
 import org.h2.mvstore.Cursor;
 import org.h2.mvstore.MVMap;
 import org.h2.mvstore.MVStore;
@@ -90,94 +91,94 @@ public class TestRandomMapOps extends TestBase {
         for (; op < loopCount; op++) {
             int k = r.nextInt(3 * keyRange / 2);
             if (k >= keyRange) {
-                k = recentKeys[k  % recentKeys.length];
+                k = recentKeys[k % recentKeys.length];
             } else {
                 recentKeys[op % recentKeys.length] = k;
             }
             String v = k + "_Value_" + op;
             int type = r.nextInt(15);
             switch (type) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-                log(op, k, v, "m.put({0}, {1})");
-                m.put(k, v);
-                map.put(k, v);
-                break;
-            case 4:
-            case 5:
-                log(op, k, v, "m.remove({0})");
-                m.remove(k);
-                map.remove(k);
-                break;
-            case 6:
-                log(op, k, v, "s.compact(90, 1024)");
-                s.compact(90, 1024);
-                break;
-            case 7:
-                if (op % 64 == 0) {
-                    log(op, k, v, "m.clear()");
-                    m.clear();
-                    map.clear();
-                }
-                break;
-            case 8:
-                log(op, k, v, "s.commit()");
-                s.commit();
-                break;
-            case 9:
-                if (fileName != null) {
-                    log(op, k, v, "s.commit()");
-                    s.commit();
-                    log(op, k, v, "s.close()");
-                    s.close();
-                    log(op, k, v, "s = openStore(fileName)");
-                    s = openStore(fileName);
-                    log(op, k, v, "m = s.openMap(\"data\")");
-                    m = s.openMap("data");
-                }
-                break;
-            case 10:
-                log(op, k, v, "s.commit()");
-                s.commit();
-                log(op, k, v, "s.compactMoveChunks()");
-                s.compactMoveChunks();
-                break;
-            case 11: {
-                int rangeSize = r.nextInt(2 * keysPerPage);
-                int step = r.nextBoolean() ? 1 : -1;
-                for (int i = 0; i < rangeSize; i++) {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
                     log(op, k, v, "m.put({0}, {1})");
                     m.put(k, v);
                     map.put(k, v);
-                    k += step;
-                    v = k + "_Value_" + op;
-                }
-                break;
-            }
-            case 12: {
-                int rangeSize = r.nextInt(2 * keysPerPage);
-                int step = r.nextBoolean() ? 1 : -1;
-                for (int i = 0; i < rangeSize; i++) {
+                    break;
+                case 4:
+                case 5:
                     log(op, k, v, "m.remove({0})");
                     m.remove(k);
                     map.remove(k);
-                    k += step;
+                    break;
+                case 6:
+                    log(op, k, v, "s.compact(90, 1024)");
+                    s.compact(90, 1024);
+                    break;
+                case 7:
+                    if (op % 64 == 0) {
+                        log(op, k, v, "m.clear()");
+                        m.clear();
+                        map.clear();
+                    }
+                    break;
+                case 8:
+                    log(op, k, v, "s.commit()");
+                    s.commit();
+                    break;
+                case 9:
+                    if (fileName != null) {
+                        log(op, k, v, "s.commit()");
+                        s.commit();
+                        log(op, k, v, "s.close()");
+                        s.close();
+                        log(op, k, v, "s = openStore(fileName)");
+                        s = openStore(fileName);
+                        log(op, k, v, "m = s.openMap(\"data\")");
+                        m = s.openMap("data");
+                    }
+                    break;
+                case 10:
+                    log(op, k, v, "s.commit()");
+                    s.commit();
+                    log(op, k, v, "s.compactMoveChunks()");
+                    s.compactMoveChunks();
+                    break;
+                case 11: {
+                    int rangeSize = r.nextInt(2 * keysPerPage);
+                    int step = r.nextBoolean() ? 1 : -1;
+                    for (int i = 0; i < rangeSize; i++) {
+                        log(op, k, v, "m.put({0}, {1})");
+                        m.put(k, v);
+                        map.put(k, v);
+                        k += step;
+                        v = k + "_Value_" + op;
+                    }
+                    break;
                 }
-                break;
-            }
-            default:
-                log(op, k, v, "m.getKeyIndex({0})");
-                ArrayList<Integer> keyList = new ArrayList<>(map.keySet());
-                int index = Collections.binarySearch(keyList, k, null);
-                int index2 = (int) m.getKeyIndex(k);
-                assertEquals(index, index2);
-                if (index >= 0) {
-                    int k2 = m.getKey(index);
-                    assertEquals(k2, k);
+                case 12: {
+                    int rangeSize = r.nextInt(2 * keysPerPage);
+                    int step = r.nextBoolean() ? 1 : -1;
+                    for (int i = 0; i < rangeSize; i++) {
+                        log(op, k, v, "m.remove({0})");
+                        m.remove(k);
+                        map.remove(k);
+                        k += step;
+                    }
+                    break;
                 }
-                break;
+                default:
+                    log(op, k, v, "m.getKeyIndex({0})");
+                    ArrayList<Integer> keyList = new ArrayList<>(map.keySet());
+                    int index = Collections.binarySearch(keyList, k, null);
+                    int index2 = (int) m.getKeyIndex(k);
+                    assertEquals(index, index2);
+                    if (index >= 0) {
+                        int k2 = m.getKey(index);
+                        assertEquals(k2, k);
+                    }
+                    break;
             }
             assertEquals(map.get(k), m.get(k));
             assertEquals(map.ceilingKey(k), m.ceilingKey(k));
@@ -220,7 +221,7 @@ public class TestRandomMapOps extends TestBase {
                 entrySet = reverse(map.headMap(from + 1).entrySet());
                 assertEquals(msg, entrySet, cursor);
 
-                msg = "rev (null, "+from+")";
+                msg = "rev (null, " + from + ")";
                 cursor = m.cursor(null, from, true);
                 entrySet = reverse(map.tailMap(from).entrySet());
                 assertEquals(msg, entrySet, cursor);
@@ -234,16 +235,16 @@ public class TestRandomMapOps extends TestBase {
         s.close();
     }
 
-    private static <K,V> Collection<Map.Entry<K,V>> reverse(Collection<Map.Entry<K,V>> entrySet) {
-        ArrayList<Map.Entry<K,V>> list = new ArrayList<>(entrySet);
+    private static <K, V> Collection<Map.Entry<K, V>> reverse(Collection<Map.Entry<K, V>> entrySet) {
+        ArrayList<Map.Entry<K, V>> list = new ArrayList<>(entrySet);
         Collections.reverse(list);
         entrySet = list;
         return entrySet;
     }
 
-    private <K,V> void assertEquals(String msg, Iterable<Map.Entry<K, V>> entrySet, Cursor<K, V> cursor) {
+    private <K, V> void assertEquals(String msg, Iterable<Map.Entry<K, V>> entrySet, Cursor<K, V> cursor) {
         int cnt = 0;
-        for (Map.Entry<K,V> entry : entrySet) {
+        for (Map.Entry<K, V> entry : entrySet) {
             String message = msg + " " + cnt;
             assertTrue(message, cursor.hasNext());
             assertEquals(message, entry.getKey(), cursor.next());
@@ -270,9 +271,9 @@ public class TestRandomMapOps extends TestBase {
     /**
      * Log the operation
      *
-     * @param op the operation id
-     * @param k the key
-     * @param v the value
+     * @param op  the operation id
+     * @param k   the key
+     * @param v   the value
      * @param msg the message
      */
     private static void log(int op, int k, String v, String msg) {

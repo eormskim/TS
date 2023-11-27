@@ -39,47 +39,45 @@ public class WindowFunction extends DataAnalysisOperation {
     /**
      * Returns minimal number of arguments for the specified type.
      *
-     * @param type
-     *            the type of a window function
+     * @param type the type of a window function
      * @return minimal number of arguments
      */
     public static int getMinArgumentCount(WindowFunctionType type) {
         switch (type) {
-        case NTILE:
-        case LEAD:
-        case LAG:
-        case FIRST_VALUE:
-        case LAST_VALUE:
-        case RATIO_TO_REPORT:
-            return 1;
-        case NTH_VALUE:
-            return 2;
-        default:
-            return 0;
+            case NTILE:
+            case LEAD:
+            case LAG:
+            case FIRST_VALUE:
+            case LAST_VALUE:
+            case RATIO_TO_REPORT:
+                return 1;
+            case NTH_VALUE:
+                return 2;
+            default:
+                return 0;
         }
     }
 
     /**
      * Returns maximal number of arguments for the specified type.
      *
-     * @param type
-     *            the type of a window function
+     * @param type the type of a window function
      * @return maximal number of arguments
      */
     public static int getMaxArgumentCount(WindowFunctionType type) {
         switch (type) {
-        case NTILE:
-        case FIRST_VALUE:
-        case LAST_VALUE:
-        case RATIO_TO_REPORT:
-            return 1;
-        case LEAD:
-        case LAG:
-            return 3;
-        case NTH_VALUE:
-            return 2;
-        default:
-            return 0;
+            case NTILE:
+            case FIRST_VALUE:
+            case LAST_VALUE:
+            case RATIO_TO_REPORT:
+                return 1;
+            case LEAD:
+            case LAG:
+                return 3;
+            case NTH_VALUE:
+                return 2;
+            default:
+                return 0;
         }
     }
 
@@ -101,12 +99,9 @@ public class WindowFunction extends DataAnalysisOperation {
     /**
      * Creates new instance of a window function.
      *
-     * @param type
-     *            the type
-     * @param select
-     *            the select statement
-     * @param args
-     *            arguments, or null
+     * @param type   the type
+     * @param select the select statement
+     * @param args   arguments, or null
      */
     public WindowFunction(WindowFunctionType type, Select select, Expression[] args) {
         super(select);
@@ -126,8 +121,7 @@ public class WindowFunction extends DataAnalysisOperation {
     /**
      * Sets FROM FIRST or FROM LAST clause value.
      *
-     * @param fromLast
-     *            whether FROM LAST clause was specified.
+     * @param fromLast whether FROM LAST clause was specified.
      */
     public void setFromLast(boolean fromLast) {
         this.fromLast = fromLast;
@@ -136,8 +130,7 @@ public class WindowFunction extends DataAnalysisOperation {
     /**
      * Sets RESPECT NULLS or IGNORE NULLS clause value.
      *
-     * @param ignoreNulls
-     *            whether IGNORE NULLS clause was specified
+     * @param ignoreNulls whether IGNORE NULLS clause was specified
      */
     public void setIgnoreNulls(boolean ignoreNulls) {
         this.ignoreNulls = ignoreNulls;
@@ -184,38 +177,38 @@ public class WindowFunction extends DataAnalysisOperation {
 
     @Override
     protected void getOrderedResultLoop(SessionLocal session, HashMap<Integer, Value> result,
-            ArrayList<Value[]> ordered, int rowIdColumn) {
+                                        ArrayList<Value[]> ordered, int rowIdColumn) {
         switch (type) {
-        case ROW_NUMBER:
-            for (int i = 0, size = ordered.size(); i < size;) {
-                result.put(ordered.get(i)[rowIdColumn].getInt(), ValueBigint.get(++i));
-            }
-            break;
-        case RANK:
-        case DENSE_RANK:
-        case PERCENT_RANK:
-            getRank(result, ordered, rowIdColumn);
-            break;
-        case CUME_DIST:
-            getCumeDist(result, ordered, rowIdColumn);
-            break;
-        case NTILE:
-            getNtile(result, ordered, rowIdColumn);
-            break;
-        case LEAD:
-        case LAG:
-            getLeadLag(result, ordered, rowIdColumn, session);
-            break;
-        case FIRST_VALUE:
-        case LAST_VALUE:
-        case NTH_VALUE:
-            getNth(session, result, ordered, rowIdColumn);
-            break;
-        case RATIO_TO_REPORT:
-            getRatioToReport(result, ordered, rowIdColumn);
-            break;
-        default:
-            throw DbException.getInternalError("type=" + type);
+            case ROW_NUMBER:
+                for (int i = 0, size = ordered.size(); i < size; ) {
+                    result.put(ordered.get(i)[rowIdColumn].getInt(), ValueBigint.get(++i));
+                }
+                break;
+            case RANK:
+            case DENSE_RANK:
+            case PERCENT_RANK:
+                getRank(result, ordered, rowIdColumn);
+                break;
+            case CUME_DIST:
+                getCumeDist(result, ordered, rowIdColumn);
+                break;
+            case NTILE:
+                getNtile(result, ordered, rowIdColumn);
+                break;
+            case LEAD:
+            case LAG:
+                getLeadLag(result, ordered, rowIdColumn, session);
+                break;
+            case FIRST_VALUE:
+            case LAST_VALUE:
+            case NTH_VALUE:
+                getNth(session, result, ordered, rowIdColumn);
+                break;
+            case RATIO_TO_REPORT:
+                getRatioToReport(result, ordered, rowIdColumn);
+                break;
+            default:
+                throw DbException.getInternalError("type=" + type);
         }
     }
 
@@ -246,7 +239,7 @@ public class WindowFunction extends DataAnalysisOperation {
 
     private void getCumeDist(HashMap<Integer, Value> result, ArrayList<Value[]> orderedData, int rowIdColumn) {
         int size = orderedData.size();
-        for (int start = 0; start < size;) {
+        for (int start = 0; start < size; ) {
             Value[] array = orderedData.get(start);
             int end = start + 1;
             while (end < size && overOrderBySort.compare(array, orderedData.get(end)) == 0) {
@@ -283,7 +276,7 @@ public class WindowFunction extends DataAnalysisOperation {
     }
 
     private void getLeadLag(HashMap<Integer, Value> result, ArrayList<Value[]> ordered, int rowIdColumn,
-            SessionLocal session) {
+                            SessionLocal session) {
         int size = ordered.size();
         int numExpressions = getNumExpressions();
         TypeInfo dataType = args[0].getType();
@@ -348,34 +341,34 @@ public class WindowFunction extends DataAnalysisOperation {
     }
 
     private void getNth(SessionLocal session, HashMap<Integer, Value> result, ArrayList<Value[]> ordered,
-            int rowIdColumn) {
+                        int rowIdColumn) {
         int size = ordered.size();
         for (int i = 0; i < size; i++) {
             Value[] row = ordered.get(i);
             int rowId = row[rowIdColumn].getInt();
             Value v;
             switch (type) {
-            case FIRST_VALUE:
-                v = getNthValue(WindowFrame.iterator(over, session, ordered, getOverOrderBySort(), i, false), 0,
-                        ignoreNulls);
-                break;
-            case LAST_VALUE:
-                v = getNthValue(WindowFrame.iterator(over, session, ordered, getOverOrderBySort(), i, true), 0,
-                        ignoreNulls);
-                break;
-            case NTH_VALUE: {
-                int n = row[1].getInt();
-                if (n <= 0) {
-                    throw DbException.getInvalidValueException("nth row", n);
+                case FIRST_VALUE:
+                    v = getNthValue(WindowFrame.iterator(over, session, ordered, getOverOrderBySort(), i, false), 0,
+                            ignoreNulls);
+                    break;
+                case LAST_VALUE:
+                    v = getNthValue(WindowFrame.iterator(over, session, ordered, getOverOrderBySort(), i, true), 0,
+                            ignoreNulls);
+                    break;
+                case NTH_VALUE: {
+                    int n = row[1].getInt();
+                    if (n <= 0) {
+                        throw DbException.getInvalidValueException("nth row", n);
+                    }
+                    n--;
+                    Iterator<Value[]> iter = WindowFrame.iterator(over, session, ordered, getOverOrderBySort(), i,
+                            fromLast);
+                    v = getNthValue(iter, n, ignoreNulls);
+                    break;
                 }
-                n--;
-                Iterator<Value[]> iter = WindowFrame.iterator(over, session, ordered, getOverOrderBySort(), i,
-                        fromLast);
-                v = getNthValue(iter, n, ignoreNulls);
-                break;
-            }
-            default:
-                throw DbException.getInternalError("type=" + type);
+                default:
+                    throw DbException.getInternalError("type=" + type);
             }
             result.put(rowId, v);
         }
@@ -431,13 +424,13 @@ public class WindowFunction extends DataAnalysisOperation {
     public Expression optimize(SessionLocal session) {
         if (over.getWindowFrame() != null) {
             switch (type) {
-            case FIRST_VALUE:
-            case LAST_VALUE:
-            case NTH_VALUE:
-                break;
-            default:
-                String sql = getTraceSQL();
-                throw DbException.getSyntaxError(sql, sql.length() - 1);
+                case FIRST_VALUE:
+                case LAST_VALUE:
+                case NTH_VALUE:
+                    break;
+                default:
+                    String sql = getTraceSQL();
+                    throw DbException.getSyntaxError(sql, sql.length() - 1);
             }
         }
         if (over.getOrderBy() == null) {
@@ -454,14 +447,14 @@ public class WindowFunction extends DataAnalysisOperation {
         // clause.
         if (over.getOrderBy() == null) {
             switch (type) {
-            case RANK:
-            case DENSE_RANK:
-                return ValueExpression.get(ValueBigint.get(1L));
-            case PERCENT_RANK:
-                return ValueExpression.get(ValueDouble.ZERO);
-            case CUME_DIST:
-                return ValueExpression.get(ValueDouble.ONE);
-            default:
+                case RANK:
+                case DENSE_RANK:
+                    return ValueExpression.get(ValueBigint.get(1L));
+                case PERCENT_RANK:
+                    return ValueExpression.get(ValueDouble.ZERO);
+                case CUME_DIST:
+                    return ValueExpression.get(ValueDouble.ONE);
+                default:
             }
         }
         if (args != null) {
@@ -485,23 +478,23 @@ public class WindowFunction extends DataAnalysisOperation {
     @Override
     public TypeInfo getType() {
         switch (type) {
-        case ROW_NUMBER:
-        case RANK:
-        case DENSE_RANK:
-        case NTILE:
-            return TypeInfo.TYPE_BIGINT;
-        case PERCENT_RANK:
-        case CUME_DIST:
-        case RATIO_TO_REPORT:
-            return TypeInfo.TYPE_DOUBLE;
-        case LEAD:
-        case LAG:
-        case FIRST_VALUE:
-        case LAST_VALUE:
-        case NTH_VALUE:
-            return args[0].getType();
-        default:
-            throw DbException.getInternalError("type=" + type);
+            case ROW_NUMBER:
+            case RANK:
+            case DENSE_RANK:
+            case NTILE:
+                return TypeInfo.TYPE_BIGINT;
+            case PERCENT_RANK:
+            case CUME_DIST:
+            case RATIO_TO_REPORT:
+                return TypeInfo.TYPE_DOUBLE;
+            case LEAD:
+            case LAG:
+            case FIRST_VALUE:
+            case LAST_VALUE:
+            case NTH_VALUE:
+                return args[0].getType();
+            default:
+                throw DbException.getInternalError("type=" + type);
         }
     }
 
@@ -517,14 +510,14 @@ public class WindowFunction extends DataAnalysisOperation {
         }
         if (ignoreNulls) {
             switch (type) {
-            case LEAD:
-            case LAG:
-            case FIRST_VALUE:
-            case LAST_VALUE:
-            case NTH_VALUE:
-                builder.append(" IGNORE NULLS");
-                //$FALL-THROUGH$
-            default:
+                case LEAD:
+                case LAG:
+                case FIRST_VALUE:
+                case LAST_VALUE:
+                case NTH_VALUE:
+                    builder.append(" IGNORE NULLS");
+                    //$FALL-THROUGH$
+                default:
             }
         }
         return appendTailConditions(builder, sqlFlags, type.requiresWindowOrdering());

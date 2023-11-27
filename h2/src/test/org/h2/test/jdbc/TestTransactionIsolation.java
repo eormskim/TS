@@ -8,6 +8,7 @@ package org.h2.test.jdbc;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import org.h2.api.ErrorCode;
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
@@ -46,7 +47,7 @@ public class TestTransactionIsolation extends TestDb {
         assertEquals(Connection.TRANSACTION_READ_COMMITTED, conn1.getTransactionIsolation());
 
         try (Connection conn = getConnection("transactionIsolation");
-                Statement stmt = conn.createStatement()) {
+             Statement stmt = conn.createStatement()) {
             stmt.execute("CREATE TABLE TEST(ID INT)");
         }
         testIt(Connection.TRANSACTION_READ_UNCOMMITTED);
@@ -55,7 +56,7 @@ public class TestTransactionIsolation extends TestDb {
         testIt(Connection.TRANSACTION_SERIALIZABLE);
 
         try (Connection conn = getConnection("transactionIsolation");
-                Statement stmt = conn.createStatement()) {
+             Statement stmt = conn.createStatement()) {
             stmt.execute("DROP TABLE TEST");
             stmt.execute("CREATE TABLE TEST(ID INT UNIQUE)");
         }
@@ -71,7 +72,7 @@ public class TestTransactionIsolation extends TestDb {
 
     private void testIt(int isolationLevel2) throws SQLException {
         try (Connection conn = getConnection("transactionIsolation");
-                Statement stmt = conn.createStatement()) {
+             Statement stmt = conn.createStatement()) {
             stmt.execute("DELETE FROM TEST");
             stmt.execute("INSERT INTO TEST VALUES(1)");
         }
@@ -96,7 +97,7 @@ public class TestTransactionIsolation extends TestDb {
         assertSingleValue(conn1.createStatement(), "SELECT * FROM TEST", value);
         int newValue = value + 1;
         conn2.createStatement().executeUpdate("UPDATE TEST SET ID=" + newValue);
-        assertSingleValue(conn1.createStatement(), "SELECT * FROM TEST", dirtyVisible ? newValue  : value);
+        assertSingleValue(conn1.createStatement(), "SELECT * FROM TEST", dirtyVisible ? newValue : value);
         conn2.commit();
         assertSingleValue(conn1.createStatement(), "SELECT * FROM TEST", committedVisible ? newValue : value);
     }

@@ -22,7 +22,7 @@ public class TableValueConstructorTable extends VirtualConstructedTable {
     private final ArrayList<ArrayList<Expression>> rows;
 
     public TableValueConstructorTable(Schema schema, SessionLocal session, Column[] columns,
-            ArrayList<ArrayList<Expression>> rows) {
+                                      ArrayList<ArrayList<Expression>> rows) {
         super(schema, 0, "VALUES");
         setColumns(columns);
         this.rows = rows;

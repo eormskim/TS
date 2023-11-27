@@ -179,7 +179,7 @@ public class ErrorCode {
      * an attempt is made to INSERT or UPDATE an ENUM-typed cell,
      * but the value is not one of the values enumerated by the
      * type.
-     *
+     * <p>
      * Example:
      * <pre>
      * CREATE TABLE TEST(CASE ENUM('sensitive','insensitive'));
@@ -192,7 +192,7 @@ public class ErrorCode {
      * The error with code <code>22032</code> is thrown when an
      * attempt is made to add or modify an ENUM-typed column so
      * that one or more of its enumerators would be empty.
-     *
+     * <p>
      * Example:
      * <pre>
      * CREATE TABLE TEST(CASE ENUM(' '));
@@ -204,7 +204,7 @@ public class ErrorCode {
      * The error with code <code>22033</code> is thrown when an
      * attempt is made to add or modify an ENUM-typed column so
      * that it would have duplicate values.
-     *
+     * <p>
      * Example:
      * <pre>
      * CREATE TABLE TEST(CASE ENUM('sensitive', 'sensitive'));
@@ -215,7 +215,7 @@ public class ErrorCode {
     /**
      * The error with code <code>22034</code> is thrown when an
      * attempt is made to read non-existing element of an array.
-     *
+     * <p>
      * Example:
      * <pre>
      * VALUES ARRAY[1, 2][3]
@@ -1127,9 +1127,9 @@ public class ErrorCode {
     public static final int UNSUPPORTED_CIPHER = 90055;
 
     /**
-    * The error with code <code>90056</code> is thrown when trying to format a
-    * timestamp using TO_DATE and TO_TIMESTAMP  with an invalid format.
-    */
+     * The error with code <code>90056</code> is thrown when trying to format a
+     * timestamp using TO_DATE and TO_TIMESTAMP  with an invalid format.
+     */
     public static final int INVALID_TO_DATE_FORMAT = 90056;
 
     /**
@@ -1196,7 +1196,6 @@ public class ErrorCode {
      * a directory or file could not be created. This can occur when
      * trying to create a directory if a file with the same name already
      * exists, or vice versa.
-     *
      */
     public static final int FILE_CREATION_FAILED_1 = 90062;
 
@@ -2032,12 +2031,12 @@ public class ErrorCode {
 
     /**
      * The error with code <code>90138</code> is thrown when
-     *
+     * <p>
      * trying to open a persistent database using an incorrect database name.
      * The name of a persistent database contains the path and file name prefix
      * where the data is stored. The file name part of a database name must be
      * at least two characters.
-     *
+     * <p>
      * Example of wrong usage:
      * <pre>
      * DriverManager.getConnection("jdbc:h2:~/t");
@@ -2248,36 +2247,38 @@ public class ErrorCode {
 
     /**
      * INTERNAL
+     *
      * @param errorCode to check
      * @return true if provided code is common, false otherwise
      */
     public static boolean isCommon(int errorCode) {
         // this list is sorted alphabetically
         switch (errorCode) {
-        case DATA_CONVERSION_ERROR_1:
-        case DUPLICATE_KEY_1:
-        case FUNCTION_ALIAS_ALREADY_EXISTS_1:
-        case LOCK_TIMEOUT_1:
-        case NULL_NOT_ALLOWED:
-        case NO_DATA_AVAILABLE:
-        case NUMERIC_VALUE_OUT_OF_RANGE_1:
-        case OBJECT_CLOSED:
-        case REFERENTIAL_INTEGRITY_VIOLATED_CHILD_EXISTS_1:
-        case REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1:
-        case SYNTAX_ERROR_1:
-        case SYNTAX_ERROR_2:
-        case TABLE_OR_VIEW_ALREADY_EXISTS_1:
-        case TABLE_OR_VIEW_NOT_FOUND_1:
-        case TABLE_OR_VIEW_NOT_FOUND_WITH_CANDIDATES_2:
-        case TABLE_OR_VIEW_NOT_FOUND_DATABASE_EMPTY_1:
-        case VALUE_TOO_LONG_2:
-            return true;
+            case DATA_CONVERSION_ERROR_1:
+            case DUPLICATE_KEY_1:
+            case FUNCTION_ALIAS_ALREADY_EXISTS_1:
+            case LOCK_TIMEOUT_1:
+            case NULL_NOT_ALLOWED:
+            case NO_DATA_AVAILABLE:
+            case NUMERIC_VALUE_OUT_OF_RANGE_1:
+            case OBJECT_CLOSED:
+            case REFERENTIAL_INTEGRITY_VIOLATED_CHILD_EXISTS_1:
+            case REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1:
+            case SYNTAX_ERROR_1:
+            case SYNTAX_ERROR_2:
+            case TABLE_OR_VIEW_ALREADY_EXISTS_1:
+            case TABLE_OR_VIEW_NOT_FOUND_1:
+            case TABLE_OR_VIEW_NOT_FOUND_WITH_CANDIDATES_2:
+            case TABLE_OR_VIEW_NOT_FOUND_DATABASE_EMPTY_1:
+            case VALUE_TOO_LONG_2:
+                return true;
         }
         return false;
     }
 
     /**
      * INTERNAL
+     *
      * @param errorCode to get state for
      * @return error state
      */
@@ -2287,44 +2288,62 @@ public class ErrorCode {
 
         switch (errorCode) {
 
-        // 02: no data
-        case NO_DATA_AVAILABLE: return "02000";
+            // 02: no data
+            case NO_DATA_AVAILABLE:
+                return "02000";
 
-        // 07: dynamic SQL error
-        case INVALID_PARAMETER_COUNT_2: return "07001";
+            // 07: dynamic SQL error
+            case INVALID_PARAMETER_COUNT_2:
+                return "07001";
 
-        // 08: connection exception
-        case ERROR_OPENING_DATABASE_1: return "08000";
+            // 08: connection exception
+            case ERROR_OPENING_DATABASE_1:
+                return "08000";
 
-        // 21: cardinality violation
-        case COLUMN_COUNT_DOES_NOT_MATCH: return "21S02";
+            // 21: cardinality violation
+            case COLUMN_COUNT_DOES_NOT_MATCH:
+                return "21S02";
 
-        // 22: data exception
-        case ARRAY_ELEMENT_ERROR_2: return "2202E";
+            // 22: data exception
+            case ARRAY_ELEMENT_ERROR_2:
+                return "2202E";
 
-        // 42: syntax error or access rule violation
-        case TABLE_OR_VIEW_ALREADY_EXISTS_1: return "42S01";
-        case TABLE_OR_VIEW_NOT_FOUND_1: return "42S02";
-        case TABLE_OR_VIEW_NOT_FOUND_WITH_CANDIDATES_2: return "42S03";
-        case TABLE_OR_VIEW_NOT_FOUND_DATABASE_EMPTY_1: return "42S04";
-        case INDEX_ALREADY_EXISTS_1: return "42S11";
-        case INDEX_NOT_FOUND_1: return "42S12";
-        case DUPLICATE_COLUMN_NAME_1: return "42S21";
-        case COLUMN_NOT_FOUND_1: return "42S22";
-        case IDENTICAL_EXPRESSIONS_SHOULD_BE_USED: return "42S31";
+            // 42: syntax error or access rule violation
+            case TABLE_OR_VIEW_ALREADY_EXISTS_1:
+                return "42S01";
+            case TABLE_OR_VIEW_NOT_FOUND_1:
+                return "42S02";
+            case TABLE_OR_VIEW_NOT_FOUND_WITH_CANDIDATES_2:
+                return "42S03";
+            case TABLE_OR_VIEW_NOT_FOUND_DATABASE_EMPTY_1:
+                return "42S04";
+            case INDEX_ALREADY_EXISTS_1:
+                return "42S11";
+            case INDEX_NOT_FOUND_1:
+                return "42S12";
+            case DUPLICATE_COLUMN_NAME_1:
+                return "42S21";
+            case COLUMN_NOT_FOUND_1:
+                return "42S22";
+            case IDENTICAL_EXPRESSIONS_SHOULD_BE_USED:
+                return "42S31";
 
-        // 0A: feature not supported
+            // 0A: feature not supported
 
-        // HZ: remote database access
+            // HZ: remote database access
 
-        // HY
-        case GENERAL_ERROR_1: return "HY000";
-        case UNKNOWN_DATA_TYPE_1: return "HY004";
+            // HY
+            case GENERAL_ERROR_1:
+                return "HY000";
+            case UNKNOWN_DATA_TYPE_1:
+                return "HY004";
 
-        case FEATURE_NOT_SUPPORTED_1: return "HYC00";
-        case LOCK_TIMEOUT_1: return "HYT00";
-        default:
-            return Integer.toString(errorCode);
+            case FEATURE_NOT_SUPPORTED_1:
+                return "HYC00";
+            case LOCK_TIMEOUT_1:
+                return "HYT00";
+            default:
+                return Integer.toString(errorCode);
         }
     }
 

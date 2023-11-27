@@ -29,8 +29,7 @@ public final class MergedResult {
     /**
      * Appends a result.
      *
-     * @param result
-     *            result to append
+     * @param result result to append
      */
     public void add(ResultInterface result) {
         int count = result.getVisibleColumnCount();

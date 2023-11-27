@@ -7,6 +7,7 @@ package org.h2.dev.util;
 
 import java.util.Arrays;
 import java.util.Iterator;
+
 import org.h2.mvstore.DataUtils;
 
 /**
@@ -51,7 +52,7 @@ public final class ImmutableArray<K> implements Iterable<K> {
      * Set the entry at this index.
      *
      * @param index the index
-     * @param obj the object
+     * @param obj   the object
      * @return the new immutable array
      */
     public ImmutableArray<K> set(int index, K obj) {
@@ -64,7 +65,7 @@ public final class ImmutableArray<K> implements Iterable<K> {
      * Insert an entry at this index.
      *
      * @param index the index
-     * @param obj the object
+     * @param obj   the object
      * @return the new immutable array
      */
     public ImmutableArray<K> insert(int index, K obj) {
@@ -94,7 +95,7 @@ public final class ImmutableArray<K> implements Iterable<K> {
      * Get a sub-array.
      *
      * @param fromIndex the index of the first entry
-     * @param toIndex the end index, plus one
+     * @param toIndex   the end index, plus one
      * @return the new immutable array
      */
     public ImmutableArray<K> subArray(int fromIndex, int toIndex) {

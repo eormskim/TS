@@ -40,7 +40,7 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
      * Create a new server for the given service.
      *
      * @param service the service
-     * @param args the command line arguments
+     * @param args    the command line arguments
      * @throws SQLException on failure
      */
     public Server(Service service, String... args) throws SQLException {
@@ -55,7 +55,7 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
 
     /**
      * When running without options, -tcp, -web, -browser and -pg are started.
-     *
+     * <p>
      * Options are case sensitive.
      * <table>
      * <caption>Supported options</caption>
@@ -116,7 +116,7 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
      * <td>Allows to map a database name to another (all servers)</td></tr>
      * </table>
      * The options -xAllowOthers are potentially risky.
-     *
+     * <p>
      * For details, see Advanced Topics / Protection against Remote Access.
      *
      * @param args the command line arguments
@@ -139,7 +139,7 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
                     // no parameters
                 } else if ("-webExternalNames".equals(arg)) {
                     i++;
-                }  else if ("-webDaemon".equals(arg)) {
+                } else if ("-webDaemon".equals(arg)) {
                     // no parameters
                 } else if ("-webSSL".equals(arg)) {
                     // no parameters
@@ -376,15 +376,15 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
      *         password, true, false);
      * </pre>
      *
-     * @param url example: tcp://localhost:9094
+     * @param url      example: tcp://localhost:9094
      * @param password the password to use ("" for no password)
-     * @param force the shutdown (don't wait)
-     * @param all whether all TCP servers that are running in the JVM should be
-     *            stopped
+     * @param force    the shutdown (don't wait)
+     * @param all      whether all TCP servers that are running in the JVM should be
+     *                 stopped
      * @throws SQLException on failure
      */
     public static void shutdownTcpServer(String url, String password,
-            boolean force, boolean all) throws SQLException {
+                                         boolean force, boolean all) throws SQLException {
         TcpServer.shutdown(url, password, force, all);
     }
 
@@ -399,9 +399,9 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
             buff.append("Not started");
         } else if (isRunning(false)) {
             buff.append(service.getType()).
-                append(" server running at ").
-                append(service.getURL()).
-                append(" (");
+                    append(" server running at ").
+                    append(service.getURL()).
+                    append(" (");
             if (service.getAllowOthers()) {
                 buff.append("others can connect");
             } else {
@@ -410,10 +410,10 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
             buff.append(')');
         } else {
             buff.append("The ").
-                append(service.getType()).
-                append(" server could not be started. " +
-                        "Possible cause: another server is already running at ").
-                append(service.getURL());
+                    append(service.getType()).
+                    append(" server could not be started. " +
+                            "Possible cause: another server is already running at ").
+                    append(service.getURL());
         }
         return buff.toString();
     }
@@ -440,12 +440,9 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
     /**
      * Create a new web server, but does not start it yet.
      *
-     * @param args
-     *            the argument list
-     * @param key
-     *            key, or null
-     * @param allowSecureCreation
-     *            whether creation of databases using the key should be allowed
+     * @param args                the argument list
+     * @param key                 key, or null
+     * @param allowSecureCreation whether creation of databases using the key should be allowed
      * @return the server
      */
     static Server createWebServer(String[] args, String key, boolean allowSecureCreation) throws SQLException {
@@ -512,6 +509,7 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
 
     /**
      * Tries to start the server.
+     *
      * @return the server if successful
      * @throws SQLException if the server could not be started
      */
@@ -539,7 +537,7 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
             }
             throw DbException.get(ErrorCode.EXCEPTION_OPENING_PORT_2,
                     name, "timeout; " +
-                    "please check your network configuration, specially the file /etc/hosts");
+                            "please check your network configuration, specially the file /etc/hosts");
         } catch (DbException e) {
             throw DbException.toSQLException(e);
         }
@@ -625,6 +623,7 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
 
     /**
      * INTERNAL
+     *
      * @param shutdownHandler to set
      */
     public void setShutdownHandler(ShutdownHandler shutdownHandler) {
@@ -683,9 +682,9 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
                     }
                     rt.exec(args);
                 } else if (osName.contains("windows")) {
-                    rt.exec(new String[] { "cmd.exe", "/C",  browser, url });
+                    rt.exec(new String[]{"cmd.exe", "/C", browser, url});
                 } else {
-                    rt.exec(new String[] { browser, url });
+                    rt.exec(new String[]{browser, url});
                 }
                 return;
             }
@@ -693,34 +692,34 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
                 Class<?> desktopClass = Class.forName("java.awt.Desktop");
                 // Desktop.isDesktopSupported()
                 Boolean supported = (Boolean) desktopClass.
-                    getMethod("isDesktopSupported").
-                    invoke(null, new Object[0]);
+                        getMethod("isDesktopSupported").
+                        invoke(null, new Object[0]);
                 URI uri = new URI(url);
                 if (supported) {
                     // Desktop.getDesktop();
                     Object desktop = desktopClass.getMethod("getDesktop").
-                        invoke(null);
+                            invoke(null);
                     // desktop.browse(uri);
                     desktopClass.getMethod("browse", URI.class).
-                        invoke(desktop, uri);
+                            invoke(desktop, uri);
                     return;
                 }
             } catch (Exception e) {
                 // ignore
             }
             if (osName.contains("windows")) {
-                rt.exec(new String[] { "rundll32", "url.dll,FileProtocolHandler", url });
+                rt.exec(new String[]{"rundll32", "url.dll,FileProtocolHandler", url});
             } else if (osName.contains("mac") || osName.contains("darwin")) {
                 // Mac OS: to open a page with Safari, use "open -a Safari"
-                Runtime.getRuntime().exec(new String[] { "open", url });
+                Runtime.getRuntime().exec(new String[]{"open", url});
             } else {
-                String[] browsers = { "xdg-open", "chromium", "google-chrome",
+                String[] browsers = {"xdg-open", "chromium", "google-chrome",
                         "firefox", "mozilla-firefox", "mozilla", "konqueror",
-                        "netscape", "opera", "midori" };
+                        "netscape", "opera", "midori"};
                 boolean ok = false;
                 for (String b : browsers) {
                     try {
-                        rt.exec(new String[] { b, url });
+                        rt.exec(new String[]{b, url});
                         ok = true;
                         break;
                     } catch (Exception e) {
@@ -731,13 +730,13 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
                     // No success in detection.
                     throw new Exception(
                             "Browser detection failed, and java property 'h2.browser' " +
-                            "and environment variable BROWSER are not set to a browser executable.");
+                                    "and environment variable BROWSER are not set to a browser executable.");
                 }
             }
         } catch (Exception e) {
             throw new Exception(
                     "Failed to start a browser to open the URL " +
-            url + ": " + e.getMessage());
+                            url + ": " + e.getMessage());
         }
     }
 
@@ -760,18 +759,18 @@ public class Server extends Tool implements Runnable, ShutdownHandler {
      * inspect the database when debugging. This method return as soon as the
      * user has disconnected.
      *
-     * @param conn the database connection (the database must be open)
+     * @param conn             the database connection (the database must be open)
      * @param ignoreProperties if {@code true} properties from
-     *         {@code .h2.server.properties} will be ignored
+     *                         {@code .h2.server.properties} will be ignored
      * @throws SQLException on failure
      */
     public static void startWebServer(Connection conn, boolean ignoreProperties) throws SQLException {
         WebServer webServer = new WebServer();
         String[] args;
         if (ignoreProperties) {
-            args = new String[] { "-webPort", "0", "-properties", "null"};
+            args = new String[]{"-webPort", "0", "-properties", "null"};
         } else {
-            args = new String[] { "-webPort", "0" };
+            args = new String[]{"-webPort", "0"};
         }
         Server web = new Server(webServer, args);
         web.start();

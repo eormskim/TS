@@ -26,10 +26,8 @@ public final class CardinalityExpression extends Function1 {
     /**
      * Creates new instance of cardinality expression.
      *
-     * @param arg
-     *            argument
-     * @param max
-     *            {@code false} for {@code CARDINALITY}, {@code true} for
+     * @param arg argument
+     * @param max {@code false} for {@code CARDINALITY}, {@code true} for
      *            {@code ARRAY_MAX_CARDINALITY}
      */
     public CardinalityExpression(Expression arg, boolean max) {

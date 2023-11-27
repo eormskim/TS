@@ -299,7 +299,7 @@ public class SetTypes {
         list.add("DEFAULT_NULL_ORDERING");
         list.add("TRUNCATE_LARGE_LENGTH");
         TYPES = list;
-        assert(list.size() == COUNT);
+        assert (list.size() == COUNT);
     }
 
     /**

@@ -42,7 +42,7 @@ public class TestKeywords extends TestBase {
         CONTEXT_SENSITIVE_KEYWORD;
     }
 
-    private static final HashSet<String> SQL92_RESERVED_WORDS = toSet(new String[] {
+    private static final HashSet<String> SQL92_RESERVED_WORDS = toSet(new String[]{
 
             "ABSOLUTE", "ACTION", "ADD", "ALL", "ALLOCATE", "ALTER", "AND", "ANY", "ARE", "AS", "ASC", "ASSERTION",
             "AT", "AUTHORIZATION", "AVG",
@@ -104,7 +104,7 @@ public class TestKeywords extends TestBase {
 
     });
 
-    private static final HashSet<String> SQL1999_RESERVED_WORDS = toSet(new String[] {
+    private static final HashSet<String> SQL1999_RESERVED_WORDS = toSet(new String[]{
 
             "ABSOLUTE", "ACTION", "ADD", "ADMIN", "AFTER", "AGGREGATE", "ALIAS", "ALL", "ALLOCATE", "ALTER", "AND",
             "ANY", "ARE", "ARRAY", "AS", "ASC", "ASSERTION", "AT", "AUTHORIZATION",
@@ -171,7 +171,7 @@ public class TestKeywords extends TestBase {
 
     });
 
-    private static final HashSet<String> SQL2003_RESERVED_WORDS = toSet(new String[] {
+    private static final HashSet<String> SQL2003_RESERVED_WORDS = toSet(new String[]{
 
             "ABS", "ALL", "ALLOCATE", "ALTER", "AND", "ANY", "ARE", "ARRAY", "AS", "ASENSITIVE", "ASYMMETRIC", "AT",
             "ATOMIC", "AUTHORIZATION", "AVG",
@@ -240,7 +240,7 @@ public class TestKeywords extends TestBase {
 
     });
 
-    private static final HashSet<String> SQL2008_RESERVED_WORDS = toSet(new String[] {
+    private static final HashSet<String> SQL2008_RESERVED_WORDS = toSet(new String[]{
 
             "ABS", "ALL", "ALLOCATE", "ALTER", "AND", "ANY", "ARE", "ARRAY", "AS", "ASENSITIVE", "ASYMMETRIC", "AT",
             "ATOMIC", "AUTHORIZATION", "AVG",
@@ -310,7 +310,7 @@ public class TestKeywords extends TestBase {
 
     });
 
-    private static final HashSet<String> SQL2011_RESERVED_WORDS = toSet(new String[] {
+    private static final HashSet<String> SQL2011_RESERVED_WORDS = toSet(new String[]{
 
             "ABS", "ALL", "ALLOCATE", "ALTER", "AND", "ANY", "ARE", "ARRAY", "ARRAY_AGG", "ARRAY_MAX_CARDINALITY", //
             "AS", "ASENSITIVE", "ASYMMETRIC", "AT", "ATOMIC", "AUTHORIZATION", "AVG",
@@ -383,7 +383,7 @@ public class TestKeywords extends TestBase {
 
     });
 
-    private static final HashSet<String> SQL2016_RESERVED_WORDS = toSet(new String[] {
+    private static final HashSet<String> SQL2016_RESERVED_WORDS = toSet(new String[]{
 
             "ABS", "ACOS", "ALL", "ALLOCATE", "ALTER", "AND", "ANY", "ARE", "ARRAY", "ARRAY_AGG",
             "ARRAY_MAX_CARDINALITY", "AS", "ASENSITIVE", "ASIN", "ASYMMETRIC", "AT", "ATAN", "ATOMIC", "AUTHORIZATION",
@@ -459,7 +459,7 @@ public class TestKeywords extends TestBase {
 
     });
 
-    private static final HashSet<String> STRICT_MODE_NON_KEYWORDS = toSet(new String[] { "LIMIT", "MINUS", "TOP" });
+    private static final HashSet<String> STRICT_MODE_NON_KEYWORDS = toSet(new String[]{"LIMIT", "MINUS", "TOP"});
 
     private static final HashSet<String> ALL_RESEVED_WORDS;
 
@@ -492,14 +492,14 @@ public class TestKeywords extends TestBase {
         r.accept(new ClassVisitor(Opcodes.ASM8) {
             @Override
             public FieldVisitor visitField(int access, String name, String descriptor, String signature, //
-                    Object value) {
+                                           Object value) {
                 add(value);
                 return null;
             }
 
             @Override
             public MethodVisitor visitMethod(int access, String name, String descriptor, String signature,
-                    String[] exceptions) {
+                                             String[] exceptions) {
                 return new MethodVisitor(Opcodes.ASM8) {
                     @Override
                     public void visitLdcInsn(Object value) {
@@ -525,14 +525,14 @@ public class TestKeywords extends TestBase {
                 }
                 final TokenType type;
                 switch (ParserUtil.getTokenType(s, false, true)) {
-                case ParserUtil.IDENTIFIER:
-                    type = TokenType.IDENTIFIER;
-                    break;
-                case ParserUtil.KEYWORD:
-                    type = TokenType.CONTEXT_SENSITIVE_KEYWORD;
-                    break;
-                default:
-                    type = TokenType.KEYWORD;
+                    case ParserUtil.IDENTIFIER:
+                        type = TokenType.IDENTIFIER;
+                        break;
+                    case ParserUtil.KEYWORD:
+                        type = TokenType.CONTEXT_SENSITIVE_KEYWORD;
+                        break;
+                    default:
+                        type = TokenType.KEYWORD;
                 }
                 tokens.put(s, type);
             }
@@ -552,8 +552,7 @@ public class TestKeywords extends TestBase {
     /**
      * Run just this test.
      *
-     * @param a
-     *            ignored
+     * @param a ignored
      */
     public static void main(String... a) throws Exception {
         TestBase.createCaller().init().testFromMain();
@@ -652,32 +651,32 @@ public class TestKeywords extends TestBase {
                     }
                 }
                 switch (type) {
-                case IDENTIFIER:
-                    if (exception1 != null) {
-                        throw new AssertionError(s + " must be a keyword.", exception1);
-                    }
-                    if (exception2 != null) {
-                        throw new AssertionError(s + " must be a context-sensitive keyword.", exception2);
-                    }
-                    break;
-                case KEYWORD:
-                    if (exception1 == null && exception2 == null) {
-                        throw new AssertionError(s + " may be removed from a list of keywords.");
-                    }
-                    if (exception1 == null) {
-                        throw new AssertionError(s + " may be a context-sensitive keyword.");
-                    }
-                    break;
-                case CONTEXT_SENSITIVE_KEYWORD:
-                    if (exception1 != null) {
-                        throw new AssertionError(s + " must be a keyword.", exception1);
-                    }
-                    if (exception2 == null) {
-                        throw new AssertionError(s + " may be removed from a list of context-sensitive keywords.");
-                    }
-                    break;
-                default:
-                    fail();
+                    case IDENTIFIER:
+                        if (exception1 != null) {
+                            throw new AssertionError(s + " must be a keyword.", exception1);
+                        }
+                        if (exception2 != null) {
+                            throw new AssertionError(s + " must be a context-sensitive keyword.", exception2);
+                        }
+                        break;
+                    case KEYWORD:
+                        if (exception1 == null && exception2 == null) {
+                            throw new AssertionError(s + " may be removed from a list of keywords.");
+                        }
+                        if (exception1 == null) {
+                            throw new AssertionError(s + " may be a context-sensitive keyword.");
+                        }
+                        break;
+                    case CONTEXT_SENSITIVE_KEYWORD:
+                        if (exception1 != null) {
+                            throw new AssertionError(s + " must be a keyword.", exception1);
+                        }
+                        if (exception2 == null) {
+                            throw new AssertionError(s + " may be removed from a list of context-sensitive keywords.");
+                        }
+                        break;
+                    default:
+                        fail();
                 }
             }
         }
@@ -712,13 +711,13 @@ public class TestKeywords extends TestBase {
         TreeSet<String> set = new TreeSet<>();
         for (Entry<String, TokenType> entry : TOKENS.entrySet()) {
             switch (entry.getValue()) {
-            case KEYWORD:
-            case CONTEXT_SENSITIVE_KEYWORD: {
-                String s = entry.getKey();
-                if (!SQL2003_RESERVED_WORDS.contains(s)) {
-                    set.add(s);
+                case KEYWORD:
+                case CONTEXT_SENSITIVE_KEYWORD: {
+                    String s = entry.getKey();
+                    if (!SQL2003_RESERVED_WORDS.contains(s)) {
+                        set.add(s);
+                    }
                 }
-            }
             }
         }
         try (Connection conn = DriverManager.getConnection("jdbc:h2:mem:")) {

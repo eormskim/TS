@@ -47,7 +47,7 @@ public class TestKillRestartMulti extends TestDb {
     /**
      * This method is called when executing this application from the command
      * line.
-     *
+     * <p>
      * Note that this entry can be used in two different ways, either
      * (a) running just this test
      * (b) or when this test invokes itself in a child process
@@ -134,7 +134,7 @@ public class TestKillRestartMulti extends TestDb {
             try {
                 Backup.execute(backup, getBaseDir(), "killRestartMulti", true);
                 Connection conn = null;
-                for (int j = 0;; j++) {
+                for (int j = 0; ; j++) {
                     try {
                         conn = openConnection();
                         break;

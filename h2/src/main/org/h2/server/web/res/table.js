@@ -10,11 +10,11 @@ function addEvent(elm, evType, fn, useCapture) {
     // addEvent and removeEvent
     // cross-browser event handling for IE5+,  NS6 and Mozilla
     // By Scott Andrew
-    if (elm.addEventListener){
+    if (elm.addEventListener) {
         elm.addEventListener(evType, fn, useCapture);
         return true;
-    } else if (elm.attachEvent){
-        var r = elm.attachEvent("on"+evType, fn);
+    } else if (elm.attachEvent) {
+        var r = elm.attachEvent("on" + evType, fn);
         return r;
     } else {
         alert("Handler could not be added");
@@ -27,14 +27,14 @@ function initSort() {
         return;
     }
     var tables = document.getElementsByTagName("table");
-    for (var i=0; i<tables.length; i++) {
+    for (var i = 0; i < tables.length; i++) {
         table = tables[i];
         if (table.rows && table.rows.length > 0) {
             var header = table.rows[0];
-            for(var j=0;j<header.cells.length;j++) {
+            for (var j = 0; j < header.cells.length; j++) {
                 var cell = header.cells[j];
                 var text = cell.innerHTML;
-                cell.innerHTML = '<a href="#" style="text-decoration: none;" class="sortHeader" onclick="resortTable(this);">'+text+'<span class="sortArrow">&nbsp;&nbsp;</span></a>';
+                cell.innerHTML = '<a href="#" style="text-decoration: none;" class="sortHeader" onclick="resortTable(this);">' + text + '<span class="sortArrow">&nbsp;&nbsp;</span></a>';
             }
         }
     }
@@ -44,34 +44,30 @@ function editRow(row, session, write, undo) {
     var table = document.getElementById('editTable');
     var y = row < 0 ? table.rows.length - 1 : row;
     var i;
-    for(i=1; i<table.rows.length; i++) {
+    for (i = 1; i < table.rows.length; i++) {
         var cell = table.rows[i].cells[0];
         if (i == y) {
-            var edit = '<img width=16 height=16 src="ico_ok.gif" onclick="editOk('+row+')" onmouseover = "this.className =\'icon_hover\'" onmouseout = "this.className=\'icon\'" class="icon" alt="'+write+'" title="'+write+'" border="1"/>';
-            var undo = '<img width=16 height=16 src="ico_undo.gif" onclick="editCancel('+row+')" onmouseover = "this.className =\'icon_hover\'" onmouseout = "this.className=\'icon\'" class="icon" alt="'+undo+'" title="'+undo+'" border="1"/>';
+            var edit = '<img width=16 height=16 src="ico_ok.gif" onclick="editOk(' + row + ')" onmouseover = "this.className =\'icon_hover\'" onmouseout = "this.className=\'icon\'" class="icon" alt="' + write + '" title="' + write + '" border="1"/>';
+            var undo = '<img width=16 height=16 src="ico_undo.gif" onclick="editCancel(' + row + ')" onmouseover = "this.className =\'icon_hover\'" onmouseout = "this.className=\'icon\'" class="icon" alt="' + undo + '" title="' + undo + '" border="1"/>';
             cell.innerHTML = edit + undo;
         } else {
             cell.innerHTML = '';
         }
     }
     var cells = table.rows[y].cells;
-    for (i=1; i<cells.length; i++) {
+    for (i = 1; i < cells.length; i++) {
         var cell = cells[i];
         var text = getInnerText(cell);
         // escape so we can edit data that contains HTML special characters
         // '&' needs to be replaced first
-        text = text.replace(/&/g, '&amp;').
-            replace(/'/g, '&apos;').
-            replace(/"/g, '&quot;').
-            replace(/</g, '&lt;').
-            replace(/>/g, '&gt;');
+        text = text.replace(/&/g, '&amp;').replace(/'/g, '&apos;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         var size;
         var newHTML;
         if (text.indexOf('\n') >= 0) {
             size = 40;
             newHTML = '<textarea name="$rowName" cols="$size" onkeydown="return editKeyDown($row, this, event)">$t</textarea/>';
         } else {
-            size = text.length+5;
+            size = text.length + 5;
             newHTML = '<input type="text" name="$rowName" value="$t" size="$size" onkeydown="return editKeyDown($row, this, event)" />';
         }
         newHTML = newHTML.replace('$rowName', 'r' + row + 'c' + i);
@@ -86,18 +82,18 @@ function deleteRow(row, session, write, undo) {
     var table = document.getElementById('editTable');
     var y = row < 0 ? table.rows.length - 1 : row;
     var i;
-    for(i=1; i<table.rows.length; i++) {
+    for (i = 1; i < table.rows.length; i++) {
         var cell = table.rows[i].cells[0];
         if (i == y) {
-            var edit = '<img width=16 height=16 src="ico_remove_ok.gif" onclick="deleteOk('+row+')" onmouseover = "this.className =\'icon_hover\'" onmouseout = "this.className=\'icon\'" class="icon" alt="'+write+'" title="'+write+'" border="1"/>';
-            var undo = '<img width=16 height=16 src="ico_undo.gif" onclick="editCancel('+row+')" onmouseover = "this.className =\'icon_hover\'" onmouseout = "this.className=\'icon\'" class="icon" alt="'+undo+'" title="'+undo+'" border="1"/>';
+            var edit = '<img width=16 height=16 src="ico_remove_ok.gif" onclick="deleteOk(' + row + ')" onmouseover = "this.className =\'icon_hover\'" onmouseout = "this.className=\'icon\'" class="icon" alt="' + write + '" title="' + write + '" border="1"/>';
+            var undo = '<img width=16 height=16 src="ico_undo.gif" onclick="editCancel(' + row + ')" onmouseover = "this.className =\'icon_hover\'" onmouseout = "this.className=\'icon\'" class="icon" alt="' + undo + '" title="' + undo + '" border="1"/>';
             cell.innerHTML = edit + undo;
         } else {
             cell.innerHTML = '';
         }
     }
     var cells = table.rows[y].cells;
-    for (i=1; i<cells.length; i++) {
+    for (i = 1; i < cells.length; i++) {
         var s = cells[i].style;
         s.color = 'red';
         s.textDecoration = 'line-through';
@@ -124,7 +120,7 @@ function deleteOk(row) {
 }
 
 function editKeyDown(row, object, event) {
-    var key=event.keyCode? event.keyCode : event.charCode;
+    var key = event.keyCode ? event.keyCode : event.charCode;
     if (key == 46 && event.ctrlKey) {
         // ctrl + delete
         object.value = 'null';
@@ -152,12 +148,12 @@ function getInnerText(el) {
     var l = cs.length;
     for (var i = 0; i < l; i++) {
         switch (cs[i].nodeType) {
-        case 1: //ELEMENT_NODE
-            str += getInnerText(cs[i]);
-            break;
-        case 3:    //TEXT_NODE
-            str += cs[i].nodeValue;
-            break;
+            case 1: //ELEMENT_NODE
+                str += getInnerText(cs[i]);
+                break;
+            case 3:    //TEXT_NODE
+                str += cs[i].nodeValue;
+                break;
         }
     }
     return str;
@@ -170,14 +166,14 @@ function isNullCell(td) {
 function resortTable(link) {
     // get the span
     var span;
-    for (var ci=0;ci<link.childNodes.length;ci++) {
+    for (var ci = 0; ci < link.childNodes.length; ci++) {
         if (link.childNodes[ci].tagName && link.childNodes[ci].tagName.toLowerCase() == 'span') {
             span = link.childNodes[ci];
         }
     }
     var td = link.parentNode;
     var column = td.cellIndex;
-    var table = getParent(td,'TABLE');
+    var table = getParent(td, 'TABLE');
     var rows = table.rows;
     if (rows.length <= 1) return;
 
@@ -196,7 +192,7 @@ function resortTable(link) {
         }
     }
     var newRows = new Array();
-    for (i=1; i<rows.length; i++) {
+    for (i = 1; i < rows.length; i++) {
         var o = new Object();
         o.data = rows[i];
         o.id = i;
@@ -212,32 +208,32 @@ function resortTable(link) {
                 o.sort = txt;
             }
         }
-        newRows[i-1] = o;
+        newRows[i - 1] = o;
     }
     newRows.sort(sortCallback);
     var arrow;
     if (span.getAttribute("sortDir") == 'down') {
         arrow = '&nbsp;<span style="color:gray">&#x25b2;</span>';
         newRows.reverse();
-        span.setAttribute('sortDir','up');
+        span.setAttribute('sortDir', 'up');
     } else {
         arrow = '&nbsp;<span style="color:gray">&#x25bc;</span>';
-        span.setAttribute('sortDir','down');
+        span.setAttribute('sortDir', 'down');
     }
 
     // we appendChild rows that already exist to the tbody,
     // so it moves them rather than creating new ones
     var body = table.tBodies[0];
-    for (i=0; i<newRows.length; i++) {
+    for (i = 0; i < newRows.length; i++) {
         body.appendChild(newRows[i].data);
     }
 
     // delete any other arrows there may be showing
     var allSpans = document.getElementsByTagName("span");
-    for (var i=0;i<allSpans.length;i++) {
+    for (var i = 0; i < allSpans.length; i++) {
         if (allSpans[i].className == 'sortArrow') {
             // in the same table as us?
-            if (getParent(allSpans[i],"table") == getParent(link,"table")) {
+            if (getParent(allSpans[i], "table") == getParent(link, "table")) {
                 allSpans[i].innerHTML = '&nbsp;&nbsp;';
             }
         }
@@ -247,7 +243,7 @@ function resortTable(link) {
 
 function getParent(el, pTagName) {
     if (el == null) return null;
-    else if (el.nodeType == 1 && el.tagName.toLowerCase() == pTagName.toLowerCase())    {
+    else if (el.nodeType == 1 && el.tagName.toLowerCase() == pTagName.toLowerCase()) {
         // Gecko bug, supposed to be uppercase
         return el;
     } else {
@@ -261,5 +257,5 @@ function sortCallback(ra, rb) {
     } else if (rb.IsNull) {
         return 1;
     }
-    return (ra.sort==rb.sort) ? (ra.id-rb.id) : (ra.sort<rb.sort ? -1 : 1);
+    return (ra.sort == rb.sort) ? (ra.id - rb.id) : (ra.sort < rb.sort ? -1 : 1);
 }

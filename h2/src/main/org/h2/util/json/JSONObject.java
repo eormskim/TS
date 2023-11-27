@@ -22,7 +22,7 @@ public class JSONObject extends JSONValue {
     /**
      * Add a key-value pair.
      *
-     * @param name the key
+     * @param name  the key
      * @param value the value
      */
     void addMember(String name, JSONValue value) {
@@ -52,10 +52,9 @@ public class JSONObject extends JSONValue {
     /**
      * Returns value of the first member with the specified name.
      *
-     * @param name
-     *            name of the member
+     * @param name name of the member
      * @return value of the first member with the specified name, or
-     *         {@code null}
+     * {@code null}
      */
     public JSONValue getFirst(String name) {
         for (SimpleImmutableEntry<String, JSONValue> entry : members) {

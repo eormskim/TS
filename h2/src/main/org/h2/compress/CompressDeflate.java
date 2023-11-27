@@ -77,7 +77,7 @@ public class CompressDeflate implements Compressor {
 
     @Override
     public void expand(byte[] in, int inPos, int inLen, byte[] out, int outPos,
-            int outLen) {
+                       int outLen) {
         Inflater decompresser = new Inflater();
         decompresser.setInput(in, inPos, inLen);
         decompresser.finished();

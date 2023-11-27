@@ -115,185 +115,185 @@ public class AlterTableAddConstraint extends AlterTable {
         table.lock(session, Table.EXCLUSIVE_LOCK);
         Constraint constraint;
         switch (type) {
-        case CommandInterface.ALTER_TABLE_ADD_CONSTRAINT_PRIMARY_KEY: {
-            IndexColumn.mapColumns(indexColumns, table);
-            index = table.findPrimaryKey();
-            ArrayList<Constraint> constraints = table.getConstraints();
-            for (int i = 0; constraints != null && i < constraints.size(); i++) {
-                Constraint c = constraints.get(i);
-                if (Constraint.Type.PRIMARY_KEY == c.getConstraintType()) {
-                    throw DbException.get(ErrorCode.SECOND_PRIMARY_KEY);
-                }
-            }
-            if (index != null) {
-                // if there is an index, it must match with the one declared
-                // we don't test ascending / descending
-                IndexColumn[] pkCols = index.getIndexColumns();
-                if (pkCols.length != indexColumns.length) {
-                    throw DbException.get(ErrorCode.SECOND_PRIMARY_KEY);
-                }
-                for (int i = 0; i < pkCols.length; i++) {
-                    if (pkCols[i].column != indexColumns[i].column) {
+            case CommandInterface.ALTER_TABLE_ADD_CONSTRAINT_PRIMARY_KEY: {
+                IndexColumn.mapColumns(indexColumns, table);
+                index = table.findPrimaryKey();
+                ArrayList<Constraint> constraints = table.getConstraints();
+                for (int i = 0; constraints != null && i < constraints.size(); i++) {
+                    Constraint c = constraints.get(i);
+                    if (Constraint.Type.PRIMARY_KEY == c.getConstraintType()) {
                         throw DbException.get(ErrorCode.SECOND_PRIMARY_KEY);
                     }
                 }
-            } else {
-                IndexType indexType = IndexType.createPrimaryKey(
-                        table.isPersistIndexes(), primaryKeyHash);
-                String indexName = table.getSchema().getUniqueIndexName(
-                        session, table, Constants.PREFIX_PRIMARY_KEY);
-                int indexId = session.getDatabase().allocateObjectId();
-                try {
-                    index = table.addIndex(session, indexName, indexId, indexColumns, indexColumns.length, indexType,
-                            true, null);
-                } finally {
-                    getSchema().freeUniqueName(indexName);
-                }
-            }
-            index.getIndexType().setBelongsToConstraint(true);
-            int id = getObjectId();
-            String name = generateConstraintName(table);
-            ConstraintUnique pk = new ConstraintUnique(getSchema(),
-                    id, name, table, true);
-            pk.setColumns(indexColumns);
-            pk.setIndex(index, true);
-            constraint = pk;
-            break;
-        }
-        case CommandInterface.ALTER_TABLE_ADD_CONSTRAINT_UNIQUE:
-            if (indexColumns == null) {
-                Column[] columns = table.getColumns();
-                int columnCount = columns.length;
-                ArrayList<IndexColumn> list = new ArrayList<>(columnCount);
-                for (int i = 0; i < columnCount; i++) {
-                    Column c = columns[i];
-                    if (c.getVisible()) {
-                        IndexColumn indexColumn = new IndexColumn(c.getName());
-                        indexColumn.column = c;
-                        list.add(indexColumn);
+                if (index != null) {
+                    // if there is an index, it must match with the one declared
+                    // we don't test ascending / descending
+                    IndexColumn[] pkCols = index.getIndexColumns();
+                    if (pkCols.length != indexColumns.length) {
+                        throw DbException.get(ErrorCode.SECOND_PRIMARY_KEY);
+                    }
+                    for (int i = 0; i < pkCols.length; i++) {
+                        if (pkCols[i].column != indexColumns[i].column) {
+                            throw DbException.get(ErrorCode.SECOND_PRIMARY_KEY);
+                        }
+                    }
+                } else {
+                    IndexType indexType = IndexType.createPrimaryKey(
+                            table.isPersistIndexes(), primaryKeyHash);
+                    String indexName = table.getSchema().getUniqueIndexName(
+                            session, table, Constants.PREFIX_PRIMARY_KEY);
+                    int indexId = session.getDatabase().allocateObjectId();
+                    try {
+                        index = table.addIndex(session, indexName, indexId, indexColumns, indexColumns.length, indexType,
+                                true, null);
+                    } finally {
+                        getSchema().freeUniqueName(indexName);
                     }
                 }
-                if (list.isEmpty()) {
-                    throw DbException.get(ErrorCode.SYNTAX_ERROR_1, "UNIQUE(VALUE) on table without columns");
-                }
-                indexColumns = list.toArray(new IndexColumn[0]);
-            } else {
-                IndexColumn.mapColumns(indexColumns, table);
-            }
-            constraint = createUniqueConstraint(table, index, indexColumns, false);
-            break;
-        case CommandInterface.ALTER_TABLE_ADD_CONSTRAINT_CHECK: {
-            int id = getObjectId();
-            String name = generateConstraintName(table);
-            ConstraintCheck check = new ConstraintCheck(getSchema(), id, name, table);
-            TableFilter filter = new TableFilter(session, table, null, false, null, 0, null);
-            checkExpression.mapColumns(filter, 0, Expression.MAP_INITIAL);
-            checkExpression = checkExpression.optimize(session);
-            check.setExpression(checkExpression);
-            check.setTableFilter(filter);
-            constraint = check;
-            if (checkExisting) {
-                check.checkExistingData(session);
-            }
-            break;
-        }
-        case CommandInterface.ALTER_TABLE_ADD_CONSTRAINT_REFERENTIAL: {
-            Table refTable = refSchema.resolveTableOrView(session, refTableName);
-            if (refTable == null) {
-                throw DbException.get(ErrorCode.TABLE_OR_VIEW_NOT_FOUND_1, refTableName);
-            }
-            if (refTable != table) {
-                session.getUser().checkTableRight(refTable, Right.SCHEMA_OWNER);
-            }
-            if (!refTable.canReference()) {
-                StringBuilder builder = new StringBuilder("Reference ");
-                refTable.getSQL(builder, HasSQL.TRACE_SQL_FLAGS);
-                throw DbException.getUnsupportedException(builder.toString());
-            }
-            boolean isOwner = false;
-            IndexColumn.mapColumns(indexColumns, table);
-            if (refIndexColumns == null) {
-                refIndexColumns = refTable.getPrimaryKey().getIndexColumns();
-            } else {
-                IndexColumn.mapColumns(refIndexColumns, refTable);
-            }
-            int columnCount = indexColumns.length;
-            if (refIndexColumns.length != columnCount) {
-                throw DbException.get(ErrorCode.COLUMN_COUNT_DOES_NOT_MATCH);
-            }
-            for (IndexColumn indexColumn : indexColumns) {
-                Column column = indexColumn.column;
-                if (column.isGeneratedAlways()) {
-                    switch (deleteAction) {
-                    case SET_DEFAULT:
-                    case SET_NULL:
-                        throw DbException.get(ErrorCode.GENERATED_COLUMN_CANNOT_BE_UPDATABLE_BY_CONSTRAINT_2,
-                                column.getSQLWithTable(new StringBuilder(), HasSQL.TRACE_SQL_FLAGS).toString(),
-                                "ON DELETE " + deleteAction.getSqlName());
-                    default:
-                        // All other actions are allowed
-                    }
-                    switch (updateAction) {
-                    case CASCADE:
-                    case SET_DEFAULT:
-                    case SET_NULL:
-                        throw DbException.get(ErrorCode.GENERATED_COLUMN_CANNOT_BE_UPDATABLE_BY_CONSTRAINT_2,
-                                column.getSQLWithTable(new StringBuilder(), HasSQL.TRACE_SQL_FLAGS).toString(),
-                                "ON UPDATE " + updateAction.getSqlName());
-                    default:
-                        // All other actions are allowed
-                    }
-                }
-            }
-            for (int i = 0; i < columnCount; i++) {
-                Column column1 = indexColumns[i].column, column2 = refIndexColumns[i].column;
-                if (!DataType.areStableComparable(column1.getType(), column2.getType())) {
-                    throw DbException.get(ErrorCode.UNCOMPARABLE_REFERENCED_COLUMN_2, column1.getCreateSQL(),
-                            column2.getCreateSQL());
-                }
-            }
-            ConstraintUnique unique = getUniqueConstraint(refTable, refIndexColumns);
-            if (unique == null && !session.isQuirksMode()
-                    && !session.getMode().createUniqueConstraintForReferencedColumns) {
-                throw DbException.get(ErrorCode.CONSTRAINT_NOT_FOUND_1, IndexColumn.writeColumns(
-                        new StringBuilder("PRIMARY KEY | UNIQUE ("), refIndexColumns, HasSQL.TRACE_SQL_FLAGS)
-                        .append(')').toString());
-            }
-            if (index != null && canUseIndex(index, table, indexColumns, false)) {
-                isOwner = true;
                 index.getIndexType().setBelongsToConstraint(true);
-            } else {
-                index = getIndex(table, indexColumns, false);
-                if (index == null) {
-                    index = createIndex(table, indexColumns, false);
-                    isOwner = true;
+                int id = getObjectId();
+                String name = generateConstraintName(table);
+                ConstraintUnique pk = new ConstraintUnique(getSchema(),
+                        id, name, table, true);
+                pk.setColumns(indexColumns);
+                pk.setIndex(index, true);
+                constraint = pk;
+                break;
+            }
+            case CommandInterface.ALTER_TABLE_ADD_CONSTRAINT_UNIQUE:
+                if (indexColumns == null) {
+                    Column[] columns = table.getColumns();
+                    int columnCount = columns.length;
+                    ArrayList<IndexColumn> list = new ArrayList<>(columnCount);
+                    for (int i = 0; i < columnCount; i++) {
+                        Column c = columns[i];
+                        if (c.getVisible()) {
+                            IndexColumn indexColumn = new IndexColumn(c.getName());
+                            indexColumn.column = c;
+                            list.add(indexColumn);
+                        }
+                    }
+                    if (list.isEmpty()) {
+                        throw DbException.get(ErrorCode.SYNTAX_ERROR_1, "UNIQUE(VALUE) on table without columns");
+                    }
+                    indexColumns = list.toArray(new IndexColumn[0]);
+                } else {
+                    IndexColumn.mapColumns(indexColumns, table);
                 }
+                constraint = createUniqueConstraint(table, index, indexColumns, false);
+                break;
+            case CommandInterface.ALTER_TABLE_ADD_CONSTRAINT_CHECK: {
+                int id = getObjectId();
+                String name = generateConstraintName(table);
+                ConstraintCheck check = new ConstraintCheck(getSchema(), id, name, table);
+                TableFilter filter = new TableFilter(session, table, null, false, null, 0, null);
+                checkExpression.mapColumns(filter, 0, Expression.MAP_INITIAL);
+                checkExpression = checkExpression.optimize(session);
+                check.setExpression(checkExpression);
+                check.setTableFilter(filter);
+                constraint = check;
+                if (checkExisting) {
+                    check.checkExistingData(session);
+                }
+                break;
             }
-            int id = getObjectId();
-            String name = generateConstraintName(table);
-            ConstraintReferential refConstraint = new ConstraintReferential(getSchema(),
-                    id, name, table);
-            refConstraint.setColumns(indexColumns);
-            refConstraint.setIndex(index, isOwner);
-            refConstraint.setRefTable(refTable);
-            refConstraint.setRefColumns(refIndexColumns);
-            if (unique == null) {
-                unique = createUniqueConstraint(refTable, refIndex, refIndexColumns, true);
-                addConstraintToTable(db, refTable, unique);
-                createdUniqueConstraint = unique;
+            case CommandInterface.ALTER_TABLE_ADD_CONSTRAINT_REFERENTIAL: {
+                Table refTable = refSchema.resolveTableOrView(session, refTableName);
+                if (refTable == null) {
+                    throw DbException.get(ErrorCode.TABLE_OR_VIEW_NOT_FOUND_1, refTableName);
+                }
+                if (refTable != table) {
+                    session.getUser().checkTableRight(refTable, Right.SCHEMA_OWNER);
+                }
+                if (!refTable.canReference()) {
+                    StringBuilder builder = new StringBuilder("Reference ");
+                    refTable.getSQL(builder, HasSQL.TRACE_SQL_FLAGS);
+                    throw DbException.getUnsupportedException(builder.toString());
+                }
+                boolean isOwner = false;
+                IndexColumn.mapColumns(indexColumns, table);
+                if (refIndexColumns == null) {
+                    refIndexColumns = refTable.getPrimaryKey().getIndexColumns();
+                } else {
+                    IndexColumn.mapColumns(refIndexColumns, refTable);
+                }
+                int columnCount = indexColumns.length;
+                if (refIndexColumns.length != columnCount) {
+                    throw DbException.get(ErrorCode.COLUMN_COUNT_DOES_NOT_MATCH);
+                }
+                for (IndexColumn indexColumn : indexColumns) {
+                    Column column = indexColumn.column;
+                    if (column.isGeneratedAlways()) {
+                        switch (deleteAction) {
+                            case SET_DEFAULT:
+                            case SET_NULL:
+                                throw DbException.get(ErrorCode.GENERATED_COLUMN_CANNOT_BE_UPDATABLE_BY_CONSTRAINT_2,
+                                        column.getSQLWithTable(new StringBuilder(), HasSQL.TRACE_SQL_FLAGS).toString(),
+                                        "ON DELETE " + deleteAction.getSqlName());
+                            default:
+                                // All other actions are allowed
+                        }
+                        switch (updateAction) {
+                            case CASCADE:
+                            case SET_DEFAULT:
+                            case SET_NULL:
+                                throw DbException.get(ErrorCode.GENERATED_COLUMN_CANNOT_BE_UPDATABLE_BY_CONSTRAINT_2,
+                                        column.getSQLWithTable(new StringBuilder(), HasSQL.TRACE_SQL_FLAGS).toString(),
+                                        "ON UPDATE " + updateAction.getSqlName());
+                            default:
+                                // All other actions are allowed
+                        }
+                    }
+                }
+                for (int i = 0; i < columnCount; i++) {
+                    Column column1 = indexColumns[i].column, column2 = refIndexColumns[i].column;
+                    if (!DataType.areStableComparable(column1.getType(), column2.getType())) {
+                        throw DbException.get(ErrorCode.UNCOMPARABLE_REFERENCED_COLUMN_2, column1.getCreateSQL(),
+                                column2.getCreateSQL());
+                    }
+                }
+                ConstraintUnique unique = getUniqueConstraint(refTable, refIndexColumns);
+                if (unique == null && !session.isQuirksMode()
+                        && !session.getMode().createUniqueConstraintForReferencedColumns) {
+                    throw DbException.get(ErrorCode.CONSTRAINT_NOT_FOUND_1, IndexColumn.writeColumns(
+                            new StringBuilder("PRIMARY KEY | UNIQUE ("), refIndexColumns, HasSQL.TRACE_SQL_FLAGS)
+                            .append(')').toString());
+                }
+                if (index != null && canUseIndex(index, table, indexColumns, false)) {
+                    isOwner = true;
+                    index.getIndexType().setBelongsToConstraint(true);
+                } else {
+                    index = getIndex(table, indexColumns, false);
+                    if (index == null) {
+                        index = createIndex(table, indexColumns, false);
+                        isOwner = true;
+                    }
+                }
+                int id = getObjectId();
+                String name = generateConstraintName(table);
+                ConstraintReferential refConstraint = new ConstraintReferential(getSchema(),
+                        id, name, table);
+                refConstraint.setColumns(indexColumns);
+                refConstraint.setIndex(index, isOwner);
+                refConstraint.setRefTable(refTable);
+                refConstraint.setRefColumns(refIndexColumns);
+                if (unique == null) {
+                    unique = createUniqueConstraint(refTable, refIndex, refIndexColumns, true);
+                    addConstraintToTable(db, refTable, unique);
+                    createdUniqueConstraint = unique;
+                }
+                refConstraint.setRefConstraint(unique);
+                if (checkExisting) {
+                    refConstraint.checkExistingData(session);
+                }
+                refTable.addConstraint(refConstraint);
+                refConstraint.setDeleteAction(deleteAction);
+                refConstraint.setUpdateAction(updateAction);
+                constraint = refConstraint;
+                break;
             }
-            refConstraint.setRefConstraint(unique);
-            if (checkExisting) {
-                refConstraint.checkExistingData(session);
-            }
-            refTable.addConstraint(refConstraint);
-            refConstraint.setDeleteAction(deleteAction);
-            refConstraint.setUpdateAction(updateAction);
-            constraint = refConstraint;
-            break;
-        }
-        default:
-            throw DbException.getInternalError("type=" + type);
+            default:
+                throw DbException.getInternalError("type=" + type);
         }
         // parent relationship is already set with addConstraint
         constraint.setComment(comment);
@@ -302,7 +302,7 @@ public class AlterTableAddConstraint extends AlterTable {
     }
 
     private ConstraintUnique createUniqueConstraint(Table table, Index index, IndexColumn[] indexColumns,
-            boolean forForeignKey) {
+                                                    boolean forForeignKey) {
         boolean isOwner = false;
         if (index != null && canUseIndex(index, table, indexColumns, true)) {
             isOwner = true;
@@ -462,7 +462,7 @@ public class AlterTableAddConstraint extends AlterTable {
      * Set the referenced table.
      *
      * @param refSchema the schema
-     * @param ref the table name
+     * @param ref       the table name
      */
     public void setRefTableName(Schema refSchema, String ref) {
         this.refSchema = refSchema;

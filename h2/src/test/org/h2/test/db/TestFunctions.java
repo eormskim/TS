@@ -174,7 +174,7 @@ public class TestFunctions extends TestDb implements AggregateFunction {
         stat.execute("create alias varargs_function_table for '" + TestFunctions.class.getName()
                 + ".varArgsFunctionTable'");
         ResultSet rs = stat.executeQuery("select * from varargs_function_table(1,2,3,5,8,13)");
-        for (int i : new int[] { 1, 2, 3, 5, 8, 13 }) {
+        for (int i : new int[]{1, 2, 3, 5, 8, 13}) {
             assertTrue(rs.next());
             assertEquals(i, rs.getInt(1));
         }
@@ -200,7 +200,7 @@ public class TestFunctions extends TestDb implements AggregateFunction {
      * This method is called via reflection from the database.
      *
      * @param conn the connection
-     * @param p the parameter
+     * @param p    the parameter
      * @return a result set
      */
     public static ResultSet functionTableWithParameter(@SuppressWarnings("unused") Connection conn, int p) {
@@ -559,7 +559,7 @@ public class TestFunctions extends TestDb implements AggregateFunction {
         stat.execute("CREATE ALIAS printMean FOR '" + getClass().getName() + ".printMean'");
         rs = stat.executeQuery(
                 "select printMean('A'), printMean('A', 10), " +
-                "printMean('BB', 10, 20), printMean ('CCC', 10, 20, 30)");
+                        "printMean('BB', 10, 20), printMean ('CCC', 10, 20, 30)");
         rs.next();
         assertEquals("A: 0", rs.getString(1));
         assertEquals("A: 10", rs.getString(2));
@@ -630,7 +630,6 @@ public class TestFunctions extends TestDb implements AggregateFunction {
         conn.close();
         FileUtils.delete(fileName);
     }
-
 
 
     /**
@@ -1110,7 +1109,7 @@ public class TestFunctions extends TestDb implements AggregateFunction {
         deleteDb("functions");
         Connection conn = getConnection("functions");
         PreparedStatement prep = conn.prepareStatement("SELECT ARRAY_MAX_CARDINALITY(?)");
-        prep.setObject(1, new Integer[] { 1, 2, 3 });
+        prep.setObject(1, new Integer[]{1, 2, 3});
         try (ResultSet rs = prep.executeQuery()) {
             rs.next();
             assertEquals(3, rs.getInt(1));
@@ -1128,14 +1127,14 @@ public class TestFunctions extends TestDb implements AggregateFunction {
 
         PreparedStatement prep = conn.prepareStatement(
                 "select array_test(?) from dual");
-        prep.setObject(1, new Integer[] { 1, 2 });
+        prep.setObject(1, new Integer[]{1, 2});
         try (ResultSet rs = prep.executeQuery()) {
             rs.next();
             assertTrue(rs.getObject(1) instanceof Array);
         }
 
         CallableStatement call = conn.prepareCall("{ ? = call array_test(?) }");
-        call.setObject(2, new Integer[] { 2, 1 });
+        call.setObject(2, new Integer[]{2, 1});
         call.registerOutParameter(1, Types.ARRAY);
         call.execute();
         assertEquals(Object[].class.getName(), call.getArray(1).getArray()
@@ -1148,12 +1147,12 @@ public class TestFunctions extends TestDb implements AggregateFunction {
         prep = conn.prepareStatement("SELECT F(ARRAY[ARRAY['1', '2'], ARRAY['3']])");
         try (ResultSet rs = prep.executeQuery()) {
             rs.next();
-            assertEquals(new Integer[][] {{1, 2}, {3}}, rs.getObject(1, Integer[][].class));
+            assertEquals(new Integer[][]{{1, 2}, {3}}, rs.getObject(1, Integer[][].class));
         }
         prep = conn.prepareStatement("SELECT F(ARRAY[ARRAY[1::BIGINT, 2::BIGINT], ARRAY[3::BIGINT]])");
         try (ResultSet rs = prep.executeQuery()) {
             rs.next();
-            assertEquals(new Short[][] {{1, 2}, {3}}, rs.getObject(1, Short[][].class));
+            assertEquals(new Short[][]{{1, 2}, {3}}, rs.getObject(1, Short[][].class));
         }
         stat.execute("DROP ALIAS F");
 
@@ -1265,7 +1264,7 @@ public class TestFunctions extends TestDb implements AggregateFunction {
         assertEquals(date, ToDateParser.toDate(session, "08:12", "HH:MI"));
         assertEquals(date, ToDateParser.toDate(session, "08:12", "HH12:MI"));
 
-        date = ValueTimestamp.parse(defDate +  "08:12:34", null);
+        date = ValueTimestamp.parse(defDate + "08:12:34", null);
         assertEquals(date, ToDateParser.toDate(session, "08:12:34", "HH:MI:SS"));
 
         date = ValueTimestamp.parse(defDate + "12:00:00", null);
@@ -1351,7 +1350,7 @@ public class TestFunctions extends TestDb implements AggregateFunction {
 
         stat.executeUpdate("CREATE TABLE T (X TIMESTAMP(6))");
         stat.executeUpdate("INSERT INTO T VALUES " +
-                "(TIMESTAMP '"+timestamp1979.toString()+"')");
+                "(TIMESTAMP '" + timestamp1979.toString() + "')");
         stat.executeUpdate("CREATE TABLE U (X TIMESTAMP(6))");
         stat.executeUpdate("INSERT INTO U VALUES " +
                 "(TIMESTAMP '-100-01-15 14:04:02.120')");
@@ -2070,7 +2069,7 @@ public class TestFunctions extends TestDb implements AggregateFunction {
      * This method is called via reflection from the database.
      *
      * @param conn the connection
-     * @param id the test id
+     * @param id   the test id
      * @param name the text
      * @return the count
      */
@@ -2090,7 +2089,7 @@ public class TestFunctions extends TestDb implements AggregateFunction {
      * This method is called via reflection from the database.
      *
      * @param conn the connection
-     * @param sql the SQL statement
+     * @param sql  the SQL statement
      * @return the result set
      */
     public static ResultSet select(Connection conn, String sql)
@@ -2117,7 +2116,7 @@ public class TestFunctions extends TestDb implements AggregateFunction {
      * @return the test array
      */
     public static String[] getArray() {
-        return new String[] { "0", "Hello" };
+        return new String[]{"0", "Hello"};
     }
 
     /**
@@ -2136,17 +2135,17 @@ public class TestFunctions extends TestDb implements AggregateFunction {
      * Test method to create a simple result set.
      *
      * @param rowCount the number of rows
-     * @param ip an int
-     * @param bp a boolean
-     * @param fp a float
-     * @param dp a double
-     * @param lp a long
-     * @param byParam a byte
-     * @param sp a short
+     * @param ip       an int
+     * @param bp       a boolean
+     * @param fp       a float
+     * @param dp       a double
+     * @param lp       a long
+     * @param byParam  a byte
+     * @param sp       a short
      * @return a result set
      */
     public static ResultSet simpleResultSet(Integer rowCount, int ip,
-            boolean bp, float fp, double dp, long lp, byte byParam, short sp) {
+                                            boolean bp, float fp, double dp, long lp, byte byParam, short sp) {
         SimpleResultSet rs = new SimpleResultSet();
         rs.addColumn("ID", Types.INTEGER, 10, 0);
         rs.addColumn("NAME", Types.VARCHAR, 255, 0);
@@ -2243,7 +2242,7 @@ public class TestFunctions extends TestDb implements AggregateFunction {
     /**
      * This method is called via reflection from the database.
      *
-     * @param conn the connection
+     * @param conn   the connection
      * @param values the values
      * @return the mean value
      */
@@ -2294,7 +2293,7 @@ public class TestFunctions extends TestDb implements AggregateFunction {
         for (Object a : args) {
             buff.append(a);
         }
-        return new String[] { buff.toString() };
+        return new String[]{buff.toString()};
     }
 
     /**

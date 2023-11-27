@@ -186,7 +186,7 @@ public class TestCancel extends TestDb {
         }
         trace("inserted");
         // TODO test insert into ... select
-        for (int i = 1;;) {
+        for (int i = 1; ; ) {
             Statement query = conn.createStatement();
             CancelThread cancel = new CancelThread(query, i);
             visit(0);
@@ -195,7 +195,7 @@ public class TestCancel extends TestDb {
                 Thread.yield();
                 assertThrows(ErrorCode.STATEMENT_WAS_CANCELED, query,
                         "SELECT VISIT(ID), (SELECT SUM(X) " +
-                        "FROM SYSTEM_RANGE(1, 100000) WHERE X<>ID) FROM TEST ORDER BY ID");
+                                "FROM SYSTEM_RANGE(1, 100000) WHERE X<>ID) FROM TEST ORDER BY ID");
             } finally {
                 cancel.stopNow();
                 cancel.join();

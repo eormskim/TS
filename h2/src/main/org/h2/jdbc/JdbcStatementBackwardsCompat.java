@@ -20,10 +20,8 @@ public interface JdbcStatementBackwardsCompat {
     /**
      * Enquotes the specified identifier.
      *
-     * @param identifier
-     *            identifier to quote if required
-     * @param alwaysQuote
-     *            if {@code true} identifier will be quoted unconditionally
+     * @param identifier  identifier to quote if required
+     * @param alwaysQuote if {@code true} identifier will be quoted unconditionally
      * @return specified identifier quoted if required or explicitly requested
      * @throws SQLException on failure
      */
@@ -32,8 +30,7 @@ public interface JdbcStatementBackwardsCompat {
     /**
      * Checks if specified identifier may be used without quotes.
      *
-     * @param identifier
-     *            identifier to check
+     * @param identifier identifier to check
      * @return is specified identifier may be used without quotes
      * @throws SQLException on failure
      */

@@ -27,11 +27,10 @@ import org.h2.security.auth.ConfigProperties;
  * <ul>
  *    <li>appName inside the JAAS configuration (by default h2)</li>
  * </ul>
- *
  */
 public class JaasCredentialsValidator implements CredentialsValidator {
 
-    public static final String DEFAULT_APPNAME="h2";
+    public static final String DEFAULT_APPNAME = "h2";
 
     private String appName;
 
@@ -41,15 +40,16 @@ public class JaasCredentialsValidator implements CredentialsValidator {
 
     /**
      * Create the validator with the given name of JAAS configuration
+     *
      * @param appName = name of JAAS configuration
      */
     public JaasCredentialsValidator(String appName) {
-        this.appName=appName;
+        this.appName = appName;
     }
 
     @Override
     public void configure(ConfigProperties configProperties) {
-        appName=configProperties.getStringValue("appName",appName);
+        appName = configProperties.getStringValue("appName", appName);
     }
 
     static class AuthenticationInfoCallbackHandler implements CallbackHandler {

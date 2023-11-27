@@ -27,8 +27,7 @@ public final class ExtTypeInfoRow extends ExtTypeInfo {
     /**
      * Creates new instance of extended parameters of ROW data type.
      *
-     * @param fields
-     *            fields
+     * @param fields fields
      */
     public ExtTypeInfoRow(Typed[] fields) {
         this(fields, fields.length);
@@ -37,17 +36,15 @@ public final class ExtTypeInfoRow extends ExtTypeInfo {
     /**
      * Creates new instance of extended parameters of ROW data type.
      *
-     * @param fields
-     *            fields
-     * @param degree
-     *            number of fields to use
+     * @param fields fields
+     * @param degree number of fields to use
      */
     public ExtTypeInfoRow(Typed[] fields, int degree) {
         if (degree > Constants.MAX_COLUMNS) {
             throw DbException.get(ErrorCode.TOO_MANY_COLUMNS_1, "" + Constants.MAX_COLUMNS);
         }
         LinkedHashMap<String, TypeInfo> map = new LinkedHashMap<>((int) Math.ceil(degree / .75));
-        for (int i = 0; i < degree;) {
+        for (int i = 0; i < degree; ) {
             TypeInfo t = fields[i].getType();
             map.put("C" + ++i, t);
         }
@@ -57,8 +54,7 @@ public final class ExtTypeInfoRow extends ExtTypeInfo {
     /**
      * Creates new instance of extended parameters of ROW data type.
      *
-     * @param fields
-     *            fields
+     * @param fields fields
      */
     public ExtTypeInfoRow(LinkedHashMap<String, TypeInfo> fields) {
         if (fields.size() > Constants.MAX_COLUMNS) {
@@ -118,7 +114,7 @@ public final class ExtTypeInfoRow extends ExtTypeInfo {
             return false;
         }
         for (Iterator<Map.Entry<String, TypeInfo>> i1 = fields.entrySet().iterator(), i2 = fields2.entrySet()
-                .iterator(); i1.hasNext();) {
+                .iterator(); i1.hasNext(); ) {
             Map.Entry<String, TypeInfo> e1 = i1.next(), e2 = i2.next();
             if (!e1.getKey().equals(e2.getKey()) || !e1.getValue().equals(e2.getValue())) {
                 return false;

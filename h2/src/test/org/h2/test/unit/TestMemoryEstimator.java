@@ -8,6 +8,7 @@ package org.h2.test.unit;
 import java.nio.ByteBuffer;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
+
 import org.h2.mvstore.WriteBuffer;
 import org.h2.mvstore.type.BasicDataType;
 import org.h2.test.TestBase;
@@ -47,7 +48,7 @@ public class TestMemoryEstimator extends TestBase {
         int err2 = 0;
         int size = 10000;
         for (int i = 0; i < size; i++) {
-            int x = (int)Math.abs(100 + random.nextGaussian() * 30);
+            int x = (int) Math.abs(100 + random.nextGaussian() * 30);
             int y = MemoryEstimator.estimateMemory(stat, dataType, x);
             sum += x;
             sum2 += x * x;
@@ -70,12 +71,12 @@ public class TestMemoryEstimator extends TestBase {
         long err2 = 0;
         int size = 10000;
         int pageSz;
-        for (int i = 0; i < size; i+=pageSz) {
+        for (int i = 0; i < size; i += pageSz) {
             pageSz = random.nextInt(48) + 1;
             Integer[] storage = dataType.createStorage(pageSz);
             int x = 0;
             for (int k = 0; k < pageSz; k++) {
-                storage[k] = (int)Math.abs(100 + random.nextGaussian() * 30);
+                storage[k] = (int) Math.abs(100 + random.nextGaussian() * 30);
                 x += storage[k];
             }
             int y = MemoryEstimator.estimateMemory(stat, dataType, storage, pageSz);
@@ -108,13 +109,18 @@ public class TestMemoryEstimator extends TestBase {
         }
 
         @Override
-        public void write(WriteBuffer buff, Integer obj) {}
+        public void write(WriteBuffer buff, Integer obj) {
+        }
 
         @Override
-        public Integer read(ByteBuffer buff) { return null; }
+        public Integer read(ByteBuffer buff) {
+            return null;
+        }
 
         @Override
-        public Integer[] createStorage(int size) { return new Integer[size]; }
+        public Integer[] createStorage(int size) {
+            return new Integer[size];
+        }
     }
 
 }

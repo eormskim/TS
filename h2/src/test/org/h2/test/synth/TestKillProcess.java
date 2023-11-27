@@ -49,7 +49,7 @@ public class TestKillProcess {
             conn1.setAutoCommit(false);
             long time = System.nanoTime();
             String d = null;
-            for (int i = 0;; i++) {
+            for (int i = 0; ; i++) {
                 long t = System.nanoTime();
                 if (t > time + TimeUnit.SECONDS.toNanos(1)) {
                     ArrayList<String> list = FileLister.getDatabaseFiles(
@@ -78,10 +78,10 @@ public class TestKillProcess {
                     account = random.nextInt(accounts);
                     conn1.createStatement().execute(
                             "UPDATE TEST_A SET DATA='" + d +
-                            "' WHERE ID=" + account);
+                                    "' WHERE ID=" + account);
                     conn1.createStatement().execute(
                             "UPDATE TEST_B SET DATA='" + d +
-                            "' WHERE ID=" + account);
+                                    "' WHERE ID=" + account);
                 }
             }
         } catch (Throwable e) {

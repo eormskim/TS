@@ -72,10 +72,8 @@ public final class GeoJsonUtils {
         /**
          * Creates new GeoJson output target.
          *
-         * @param output
-         *            output JSON target
-         * @param dimensionSystem
-         *            dimension system to use
+         * @param output          output JSON target
+         * @param dimensionSystem dimension system to use
          */
         public GeoJsonTarget(JSONByteArrayTarget output, int dimensionSystem) {
             if (dimensionSystem == DIMENSION_SYSTEM_XYM) {
@@ -145,13 +143,13 @@ public final class GeoJsonUtils {
         @Override
         protected void endObject(int type) {
             switch (type) {
-            case MULTI_POINT:
-            case MULTI_LINE_STRING:
-            case MULTI_POLYGON:
-                inMultiLine = inMulti = false;
-                //$FALL-THROUGH$
-            case GEOMETRY_COLLECTION:
-                output.endArray();
+                case MULTI_POINT:
+                case MULTI_LINE_STRING:
+                case MULTI_POLYGON:
+                    inMultiLine = inMulti = false;
+                    //$FALL-THROUGH$
+                case GEOMETRY_COLLECTION:
+                    output.endArray();
             }
             if (!inMulti && !wasEmpty) {
                 output.endObject();
@@ -212,15 +210,12 @@ public final class GeoJsonUtils {
     /**
      * Converts EWKB with known dimension system to GeoJson.
      *
-     * @param ewkb
-     *            geometry object in EWKB format
-     * @param dimensionSystem
-     *            dimension system of the specified object, may be the same or
-     *            smaller than its real dimension system. M dimension system is
-     *            not supported.
+     * @param ewkb            geometry object in EWKB format
+     * @param dimensionSystem dimension system of the specified object, may be the same or
+     *                        smaller than its real dimension system. M dimension system is
+     *                        not supported.
      * @return GeoJson representation of the specified geometry
-     * @throws DbException
-     *             on unsupported dimension system
+     * @throws DbException on unsupported dimension system
      */
     public static byte[] ewkbToGeoJson(byte[] ewkb, int dimensionSystem) {
         JSONByteArrayTarget output = new JSONByteArrayTarget();
@@ -232,13 +227,10 @@ public final class GeoJsonUtils {
     /**
      * Converts EWKB with known dimension system to GeoJson.
      *
-     * @param json
-     *            geometry object in GeoJson format
-     * @param srid
-     *            the SRID of geometry
+     * @param json geometry object in GeoJson format
+     * @param srid the SRID of geometry
      * @return GeoJson representation of the specified geometry
-     * @throws DbException
-     *             on unsupported dimension system
+     * @throws DbException on unsupported dimension system
      */
     public static byte[] geoJsonToEwkb(byte[] json, int srid) {
         JSONValue v = JSONBytesSource.parse(json, new JSONValueTarget());
@@ -263,29 +255,29 @@ public final class GeoJsonUtils {
                 throw new IllegalArgumentException();
             }
             switch (((JSONString) t).getString()) {
-            case "Point":
-                parse(o, target, POINT);
-                break;
-            case "LineString":
-                parse(o, target, LINE_STRING);
-                break;
-            case "Polygon":
-                parse(o, target, POLYGON);
-                break;
-            case "MultiPoint":
-                parse(o, target, MULTI_POINT);
-                break;
-            case "MultiLineString":
-                parse(o, target, MULTI_LINE_STRING);
-                break;
-            case "MultiPolygon":
-                parse(o, target, MULTI_POLYGON);
-                break;
-            case "GeometryCollection":
-                parseGeometryCollection(o, target);
-                break;
-            default:
-                throw new IllegalArgumentException();
+                case "Point":
+                    parse(o, target, POINT);
+                    break;
+                case "LineString":
+                    parse(o, target, LINE_STRING);
+                    break;
+                case "Polygon":
+                    parse(o, target, POLYGON);
+                    break;
+                case "MultiPoint":
+                    parse(o, target, MULTI_POINT);
+                    break;
+                case "MultiLineString":
+                    parse(o, target, MULTI_LINE_STRING);
+                    break;
+                case "MultiPolygon":
+                    parse(o, target, MULTI_POLYGON);
+                    break;
+                case "GeometryCollection":
+                    parseGeometryCollection(o, target);
+                    break;
+                default:
+                    throw new IllegalArgumentException();
             }
         } else {
             throw new IllegalArgumentException();
@@ -299,64 +291,64 @@ public final class GeoJsonUtils {
         }
         JSONArray a = (JSONArray) t;
         switch (type) {
-        case POINT:
-            target.startPoint();
-            parseCoordinate(a, target, 0, 1);
-            target.endObject(POINT);
-            break;
-        case LINE_STRING: {
-            parseLineString(a, target);
-            break;
-        }
-        case POLYGON: {
-            parsePolygon(a, target);
-            break;
-        }
-        case MULTI_POINT: {
-            JSONValue[] points = a.getArray();
-            int numPoints = points.length;
-            target.startCollection(MULTI_POINT, numPoints);
-            for (int i = 0; i < numPoints; i++) {
+            case POINT:
                 target.startPoint();
-                parseCoordinate(points[i], target, 0, 1);
+                parseCoordinate(a, target, 0, 1);
                 target.endObject(POINT);
-                target.endCollectionItem(target, MULTI_POINT, i, numPoints);
+                break;
+            case LINE_STRING: {
+                parseLineString(a, target);
+                break;
             }
-            target.endObject(MULTI_POINT);
-            break;
-        }
-        case MULTI_LINE_STRING: {
-            JSONValue[] strings = a.getArray();
-            int numStrings = strings.length;
-            target.startCollection(MULTI_LINE_STRING, numStrings);
-            for (int i = 0; i < numStrings; i++) {
-                JSONValue string = strings[i];
-                if (!(string instanceof JSONArray)) {
-                    throw new IllegalArgumentException();
+            case POLYGON: {
+                parsePolygon(a, target);
+                break;
+            }
+            case MULTI_POINT: {
+                JSONValue[] points = a.getArray();
+                int numPoints = points.length;
+                target.startCollection(MULTI_POINT, numPoints);
+                for (int i = 0; i < numPoints; i++) {
+                    target.startPoint();
+                    parseCoordinate(points[i], target, 0, 1);
+                    target.endObject(POINT);
+                    target.endCollectionItem(target, MULTI_POINT, i, numPoints);
                 }
-                parseLineString((JSONArray) string, target);
-                target.endCollectionItem(target, MULTI_LINE_STRING, i, numStrings);
+                target.endObject(MULTI_POINT);
+                break;
             }
-            target.endObject(MULTI_LINE_STRING);
-            break;
-        }
-        case MULTI_POLYGON: {
-            JSONValue[] polygons = a.getArray();
-            int numPolygons = polygons.length;
-            target.startCollection(MULTI_POLYGON, numPolygons);
-            for (int i = 0; i < numPolygons; i++) {
-                JSONValue string = polygons[i];
-                if (!(string instanceof JSONArray)) {
-                    throw new IllegalArgumentException();
+            case MULTI_LINE_STRING: {
+                JSONValue[] strings = a.getArray();
+                int numStrings = strings.length;
+                target.startCollection(MULTI_LINE_STRING, numStrings);
+                for (int i = 0; i < numStrings; i++) {
+                    JSONValue string = strings[i];
+                    if (!(string instanceof JSONArray)) {
+                        throw new IllegalArgumentException();
+                    }
+                    parseLineString((JSONArray) string, target);
+                    target.endCollectionItem(target, MULTI_LINE_STRING, i, numStrings);
                 }
-                parsePolygon((JSONArray) string, target);
-                target.endCollectionItem(target, MULTI_POLYGON, i, numPolygons);
+                target.endObject(MULTI_LINE_STRING);
+                break;
             }
-            target.endObject(MULTI_POLYGON);
-            break;
-        }
-        default:
-            throw new IllegalArgumentException();
+            case MULTI_POLYGON: {
+                JSONValue[] polygons = a.getArray();
+                int numPolygons = polygons.length;
+                target.startCollection(MULTI_POLYGON, numPolygons);
+                for (int i = 0; i < numPolygons; i++) {
+                    JSONValue string = polygons[i];
+                    if (!(string instanceof JSONArray)) {
+                        throw new IllegalArgumentException();
+                    }
+                    parsePolygon((JSONArray) string, target);
+                    target.endCollectionItem(target, MULTI_POLYGON, i, numPolygons);
+                }
+                target.endObject(MULTI_POLYGON);
+                break;
+            }
+            default:
+                throw new IllegalArgumentException();
         }
     }
 

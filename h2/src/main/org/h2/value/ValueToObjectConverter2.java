@@ -50,8 +50,7 @@ public final class ValueToObjectConverter2 extends TraceObject {
     /**
      * Get the type information for the given Java class.
      *
-     * @param clazz
-     *            the Java class
+     * @param clazz the Java class
      * @return the value type
      */
     public static TypeInfo classToType(Class<?> clazz) {
@@ -123,14 +122,10 @@ public final class ValueToObjectConverter2 extends TraceObject {
     /**
      * Read a value from the given result set.
      *
-     * @param session
-     *            the session
-     * @param rs
-     *            the result set
-     * @param columnIndex
-     *            the column index (1-based)
-     * @param type
-     *            the data type
+     * @param session     the session
+     * @param rs          the result set
+     * @param columnIndex the column index (1-based)
+     * @param type        the data type
      * @return the value
      */
     public static Value readValue(Session session, ResultSet rs, int columnIndex, int type) {
@@ -151,277 +146,277 @@ public final class ValueToObjectConverter2 extends TraceObject {
             throws SQLException {
         Value v;
         switch (type) {
-        case Value.NULL:
-            v = ValueNull.INSTANCE;
-            break;
-        case Value.CHAR: {
-            String s = rs.getString(columnIndex);
-            v = (s == null) ? ValueNull.INSTANCE : ValueChar.get(s);
-            break;
-        }
-        case Value.VARCHAR: {
-            String s = rs.getString(columnIndex);
-            v = (s == null) ? ValueNull.INSTANCE : ValueVarchar.get(s, session);
-            break;
-        }
-        case Value.CLOB: {
-            if (session == null) {
+            case Value.NULL:
+                v = ValueNull.INSTANCE;
+                break;
+            case Value.CHAR: {
                 String s = rs.getString(columnIndex);
-                v = s == null ? ValueNull.INSTANCE : ValueClob.createSmall(s);
-            } else {
-                Reader in = rs.getCharacterStream(columnIndex);
-                v = in == null ? ValueNull.INSTANCE
-                        : session.addTemporaryLob(
-                                session.getDataHandler().getLobStorage().createClob(new BufferedReader(in), -1));
-            }
-            break;
-        }
-        case Value.VARCHAR_IGNORECASE: {
-            String s = rs.getString(columnIndex);
-            v = s == null ? ValueNull.INSTANCE : ValueVarcharIgnoreCase.get(s);
-            break;
-        }
-        case Value.BINARY: {
-            byte[] bytes = rs.getBytes(columnIndex);
-            v = bytes == null ? ValueNull.INSTANCE : ValueBinary.getNoCopy(bytes);
-            break;
-        }
-        case Value.VARBINARY: {
-            byte[] bytes = rs.getBytes(columnIndex);
-            v = bytes == null ? ValueNull.INSTANCE : ValueVarbinary.getNoCopy(bytes);
-            break;
-        }
-        case Value.BLOB: {
-            if (session == null) {
-                byte[] buff = rs.getBytes(columnIndex);
-                v = buff == null ? ValueNull.INSTANCE : ValueBlob.createSmall(buff);
-            } else {
-                InputStream in = rs.getBinaryStream(columnIndex);
-                v = in == null ? ValueNull.INSTANCE
-                        : session.addTemporaryLob(session.getDataHandler().getLobStorage().createBlob(in, -1));
-            }
-            break;
-        }
-        case Value.BOOLEAN: {
-            boolean value = rs.getBoolean(columnIndex);
-            v = rs.wasNull() ? ValueNull.INSTANCE : ValueBoolean.get(value);
-            break;
-        }
-        case Value.TINYINT: {
-            byte value = rs.getByte(columnIndex);
-            v = rs.wasNull() ? ValueNull.INSTANCE : ValueTinyint.get(value);
-            break;
-        }
-        case Value.SMALLINT: {
-            short value = rs.getShort(columnIndex);
-            v = rs.wasNull() ? ValueNull.INSTANCE : ValueSmallint.get(value);
-            break;
-        }
-        case Value.INTEGER: {
-            int value = rs.getInt(columnIndex);
-            v = rs.wasNull() ? ValueNull.INSTANCE : ValueInteger.get(value);
-            break;
-        }
-        case Value.BIGINT: {
-            long value = rs.getLong(columnIndex);
-            v = rs.wasNull() ? ValueNull.INSTANCE : ValueBigint.get(value);
-            break;
-        }
-        case Value.NUMERIC: {
-            BigDecimal value = rs.getBigDecimal(columnIndex);
-            v = value == null ? ValueNull.INSTANCE : ValueNumeric.getAnyScale(value);
-            break;
-        }
-        case Value.REAL: {
-            float value = rs.getFloat(columnIndex);
-            v = rs.wasNull() ? ValueNull.INSTANCE : ValueReal.get(value);
-            break;
-        }
-        case Value.DOUBLE: {
-            double value = rs.getDouble(columnIndex);
-            v = rs.wasNull() ? ValueNull.INSTANCE : ValueDouble.get(value);
-            break;
-        }
-        case Value.DECFLOAT: {
-            BigDecimal value = rs.getBigDecimal(columnIndex);
-            v = value == null ? ValueNull.INSTANCE : ValueDecfloat.get(value);
-            break;
-        }
-        case Value.DATE: {
-            try {
-                LocalDate value = rs.getObject(columnIndex, LocalDate.class);
-                v = value == null ? ValueNull.INSTANCE : JSR310Utils.localDateToValue(value);
+                v = (s == null) ? ValueNull.INSTANCE : ValueChar.get(s);
                 break;
-            } catch (SQLException ignore) {
-                Date value = rs.getDate(columnIndex);
-                v = value == null ? ValueNull.INSTANCE : LegacyDateTimeUtils.fromDate(session, null, value);
             }
-            break;
-        }
-        case Value.TIME: {
-            try {
-                LocalTime value = rs.getObject(columnIndex, LocalTime.class);
-                v = value == null ? ValueNull.INSTANCE : JSR310Utils.localTimeToValue(value);
+            case Value.VARCHAR: {
+                String s = rs.getString(columnIndex);
+                v = (s == null) ? ValueNull.INSTANCE : ValueVarchar.get(s, session);
                 break;
-            } catch (SQLException ignore) {
-                Time value = rs.getTime(columnIndex);
-                v = value == null ? ValueNull.INSTANCE : LegacyDateTimeUtils.fromTime(session, null, value);
             }
-            break;
-        }
-        case Value.TIME_TZ: {
-            try {
-                OffsetTime value = rs.getObject(columnIndex, OffsetTime.class);
-                v = value == null ? ValueNull.INSTANCE : JSR310Utils.offsetTimeToValue(value);
-                break;
-            } catch (SQLException ignore) {
-                Object obj = rs.getObject(columnIndex);
-                if (obj == null) {
-                    v = ValueNull.INSTANCE;
+            case Value.CLOB: {
+                if (session == null) {
+                    String s = rs.getString(columnIndex);
+                    v = s == null ? ValueNull.INSTANCE : ValueClob.createSmall(s);
                 } else {
-                    v = ValueTimeTimeZone.parse(obj.toString());
+                    Reader in = rs.getCharacterStream(columnIndex);
+                    v = in == null ? ValueNull.INSTANCE
+                            : session.addTemporaryLob(
+                            session.getDataHandler().getLobStorage().createClob(new BufferedReader(in), -1));
                 }
-            }
-            break;
-        }
-        case Value.TIMESTAMP: {
-            try {
-                LocalDateTime value = rs.getObject(columnIndex, LocalDateTime.class);
-                v = value == null ? ValueNull.INSTANCE : JSR310Utils.localDateTimeToValue(value);
                 break;
-            } catch (SQLException ignore) {
-                Timestamp value = rs.getTimestamp(columnIndex);
-                v = value == null ? ValueNull.INSTANCE : LegacyDateTimeUtils.fromTimestamp(session, null, value);
             }
-            break;
-        }
-        case Value.TIMESTAMP_TZ: {
-            try {
-                OffsetDateTime value = rs.getObject(columnIndex, OffsetDateTime.class);
-                v = value == null ? ValueNull.INSTANCE : JSR310Utils.offsetDateTimeToValue(value);
+            case Value.VARCHAR_IGNORECASE: {
+                String s = rs.getString(columnIndex);
+                v = s == null ? ValueNull.INSTANCE : ValueVarcharIgnoreCase.get(s);
                 break;
-            } catch (SQLException ignore) {
-                Object obj = rs.getObject(columnIndex);
-                if (obj == null) {
-                    v = ValueNull.INSTANCE;
-                } else if (obj instanceof ZonedDateTime) {
-                    v = JSR310Utils.zonedDateTimeToValue((ZonedDateTime) obj);
+            }
+            case Value.BINARY: {
+                byte[] bytes = rs.getBytes(columnIndex);
+                v = bytes == null ? ValueNull.INSTANCE : ValueBinary.getNoCopy(bytes);
+                break;
+            }
+            case Value.VARBINARY: {
+                byte[] bytes = rs.getBytes(columnIndex);
+                v = bytes == null ? ValueNull.INSTANCE : ValueVarbinary.getNoCopy(bytes);
+                break;
+            }
+            case Value.BLOB: {
+                if (session == null) {
+                    byte[] buff = rs.getBytes(columnIndex);
+                    v = buff == null ? ValueNull.INSTANCE : ValueBlob.createSmall(buff);
                 } else {
-                    v = ValueTimestampTimeZone.parse(obj.toString(), session);
+                    InputStream in = rs.getBinaryStream(columnIndex);
+                    v = in == null ? ValueNull.INSTANCE
+                            : session.addTemporaryLob(session.getDataHandler().getLobStorage().createBlob(in, -1));
                 }
+                break;
             }
-            break;
-        }
-        case Value.INTERVAL_YEAR:
-        case Value.INTERVAL_MONTH:
-        case Value.INTERVAL_DAY:
-        case Value.INTERVAL_HOUR:
-        case Value.INTERVAL_MINUTE:
-        case Value.INTERVAL_SECOND:
-        case Value.INTERVAL_YEAR_TO_MONTH:
-        case Value.INTERVAL_DAY_TO_HOUR:
-        case Value.INTERVAL_DAY_TO_MINUTE:
-        case Value.INTERVAL_DAY_TO_SECOND:
-        case Value.INTERVAL_HOUR_TO_MINUTE:
-        case Value.INTERVAL_HOUR_TO_SECOND:
-        case Value.INTERVAL_MINUTE_TO_SECOND: {
-            String s = rs.getString(columnIndex);
-            v = s == null ? ValueNull.INSTANCE
-                    : IntervalUtils.parseFormattedInterval(IntervalQualifier.valueOf(type - Value.INTERVAL_YEAR), s);
-            break;
-        }
-        case Value.JAVA_OBJECT: {
-            byte[] buff;
-            try {
-                buff = rs.getBytes(columnIndex);
-            } catch (SQLException ignore) {
+            case Value.BOOLEAN: {
+                boolean value = rs.getBoolean(columnIndex);
+                v = rs.wasNull() ? ValueNull.INSTANCE : ValueBoolean.get(value);
+                break;
+            }
+            case Value.TINYINT: {
+                byte value = rs.getByte(columnIndex);
+                v = rs.wasNull() ? ValueNull.INSTANCE : ValueTinyint.get(value);
+                break;
+            }
+            case Value.SMALLINT: {
+                short value = rs.getShort(columnIndex);
+                v = rs.wasNull() ? ValueNull.INSTANCE : ValueSmallint.get(value);
+                break;
+            }
+            case Value.INTEGER: {
+                int value = rs.getInt(columnIndex);
+                v = rs.wasNull() ? ValueNull.INSTANCE : ValueInteger.get(value);
+                break;
+            }
+            case Value.BIGINT: {
+                long value = rs.getLong(columnIndex);
+                v = rs.wasNull() ? ValueNull.INSTANCE : ValueBigint.get(value);
+                break;
+            }
+            case Value.NUMERIC: {
+                BigDecimal value = rs.getBigDecimal(columnIndex);
+                v = value == null ? ValueNull.INSTANCE : ValueNumeric.getAnyScale(value);
+                break;
+            }
+            case Value.REAL: {
+                float value = rs.getFloat(columnIndex);
+                v = rs.wasNull() ? ValueNull.INSTANCE : ValueReal.get(value);
+                break;
+            }
+            case Value.DOUBLE: {
+                double value = rs.getDouble(columnIndex);
+                v = rs.wasNull() ? ValueNull.INSTANCE : ValueDouble.get(value);
+                break;
+            }
+            case Value.DECFLOAT: {
+                BigDecimal value = rs.getBigDecimal(columnIndex);
+                v = value == null ? ValueNull.INSTANCE : ValueDecfloat.get(value);
+                break;
+            }
+            case Value.DATE: {
                 try {
-                    Object o = rs.getObject(columnIndex);
-                    buff = o != null ? JdbcUtils.serialize(o, session.getJavaObjectSerializer()) : null;
-                } catch (Exception e) {
-                    throw DbException.convert(e);
+                    LocalDate value = rs.getObject(columnIndex, LocalDate.class);
+                    v = value == null ? ValueNull.INSTANCE : JSR310Utils.localDateToValue(value);
+                    break;
+                } catch (SQLException ignore) {
+                    Date value = rs.getDate(columnIndex);
+                    v = value == null ? ValueNull.INSTANCE : LegacyDateTimeUtils.fromDate(session, null, value);
                 }
+                break;
             }
-            v = buff == null ? ValueNull.INSTANCE : ValueJavaObject.getNoCopy(buff);
-            break;
-        }
-        case Value.ENUM: {
-            int value = rs.getInt(columnIndex);
-            v = rs.wasNull() ? ValueNull.INSTANCE : ValueInteger.get(value);
-            break;
-        }
-        case Value.GEOMETRY: {
-            Object x = rs.getObject(columnIndex);
-            v = x == null ? ValueNull.INSTANCE : ValueGeometry.getFromGeometry(x);
-            break;
-        }
-        case Value.JSON: {
-            Object x = rs.getObject(columnIndex);
-            if (x == null) {
-                v = ValueNull.INSTANCE;
-            } else {
-                Class<?> clazz = x.getClass();
-                if (clazz == byte[].class) {
-                    v = ValueJson.fromJson((byte[]) x);
-                } else if (clazz == String.class) {
-                    v = ValueJson.fromJson((String) x);
-                } else {
-                    v = ValueJson.fromJson(x.toString());
+            case Value.TIME: {
+                try {
+                    LocalTime value = rs.getObject(columnIndex, LocalTime.class);
+                    v = value == null ? ValueNull.INSTANCE : JSR310Utils.localTimeToValue(value);
+                    break;
+                } catch (SQLException ignore) {
+                    Time value = rs.getTime(columnIndex);
+                    v = value == null ? ValueNull.INSTANCE : LegacyDateTimeUtils.fromTime(session, null, value);
                 }
+                break;
             }
-            break;
-        }
-        case Value.UUID: {
-            Object o = rs.getObject(columnIndex);
-            if (o == null) {
-                v = ValueNull.INSTANCE;
-            } else if (o instanceof UUID) {
-                v = ValueUuid.get((UUID) o);
-            } else if (o instanceof byte[]) {
-                v = ValueUuid.get((byte[]) o);
-            } else {
-                v = ValueUuid.get((String) o);
+            case Value.TIME_TZ: {
+                try {
+                    OffsetTime value = rs.getObject(columnIndex, OffsetTime.class);
+                    v = value == null ? ValueNull.INSTANCE : JSR310Utils.offsetTimeToValue(value);
+                    break;
+                } catch (SQLException ignore) {
+                    Object obj = rs.getObject(columnIndex);
+                    if (obj == null) {
+                        v = ValueNull.INSTANCE;
+                    } else {
+                        v = ValueTimeTimeZone.parse(obj.toString());
+                    }
+                }
+                break;
             }
-            break;
-        }
-        case Value.ARRAY: {
-            Array array = rs.getArray(columnIndex);
-            if (array == null) {
-                v = ValueNull.INSTANCE;
-            } else {
-                Object[] list = (Object[]) array.getArray();
-                if (list == null) {
+            case Value.TIMESTAMP: {
+                try {
+                    LocalDateTime value = rs.getObject(columnIndex, LocalDateTime.class);
+                    v = value == null ? ValueNull.INSTANCE : JSR310Utils.localDateTimeToValue(value);
+                    break;
+                } catch (SQLException ignore) {
+                    Timestamp value = rs.getTimestamp(columnIndex);
+                    v = value == null ? ValueNull.INSTANCE : LegacyDateTimeUtils.fromTimestamp(session, null, value);
+                }
+                break;
+            }
+            case Value.TIMESTAMP_TZ: {
+                try {
+                    OffsetDateTime value = rs.getObject(columnIndex, OffsetDateTime.class);
+                    v = value == null ? ValueNull.INSTANCE : JSR310Utils.offsetDateTimeToValue(value);
+                    break;
+                } catch (SQLException ignore) {
+                    Object obj = rs.getObject(columnIndex);
+                    if (obj == null) {
+                        v = ValueNull.INSTANCE;
+                    } else if (obj instanceof ZonedDateTime) {
+                        v = JSR310Utils.zonedDateTimeToValue((ZonedDateTime) obj);
+                    } else {
+                        v = ValueTimestampTimeZone.parse(obj.toString(), session);
+                    }
+                }
+                break;
+            }
+            case Value.INTERVAL_YEAR:
+            case Value.INTERVAL_MONTH:
+            case Value.INTERVAL_DAY:
+            case Value.INTERVAL_HOUR:
+            case Value.INTERVAL_MINUTE:
+            case Value.INTERVAL_SECOND:
+            case Value.INTERVAL_YEAR_TO_MONTH:
+            case Value.INTERVAL_DAY_TO_HOUR:
+            case Value.INTERVAL_DAY_TO_MINUTE:
+            case Value.INTERVAL_DAY_TO_SECOND:
+            case Value.INTERVAL_HOUR_TO_MINUTE:
+            case Value.INTERVAL_HOUR_TO_SECOND:
+            case Value.INTERVAL_MINUTE_TO_SECOND: {
+                String s = rs.getString(columnIndex);
+                v = s == null ? ValueNull.INSTANCE
+                        : IntervalUtils.parseFormattedInterval(IntervalQualifier.valueOf(type - Value.INTERVAL_YEAR), s);
+                break;
+            }
+            case Value.JAVA_OBJECT: {
+                byte[] buff;
+                try {
+                    buff = rs.getBytes(columnIndex);
+                } catch (SQLException ignore) {
+                    try {
+                        Object o = rs.getObject(columnIndex);
+                        buff = o != null ? JdbcUtils.serialize(o, session.getJavaObjectSerializer()) : null;
+                    } catch (Exception e) {
+                        throw DbException.convert(e);
+                    }
+                }
+                v = buff == null ? ValueNull.INSTANCE : ValueJavaObject.getNoCopy(buff);
+                break;
+            }
+            case Value.ENUM: {
+                int value = rs.getInt(columnIndex);
+                v = rs.wasNull() ? ValueNull.INSTANCE : ValueInteger.get(value);
+                break;
+            }
+            case Value.GEOMETRY: {
+                Object x = rs.getObject(columnIndex);
+                v = x == null ? ValueNull.INSTANCE : ValueGeometry.getFromGeometry(x);
+                break;
+            }
+            case Value.JSON: {
+                Object x = rs.getObject(columnIndex);
+                if (x == null) {
                     v = ValueNull.INSTANCE;
                 } else {
+                    Class<?> clazz = x.getClass();
+                    if (clazz == byte[].class) {
+                        v = ValueJson.fromJson((byte[]) x);
+                    } else if (clazz == String.class) {
+                        v = ValueJson.fromJson((String) x);
+                    } else {
+                        v = ValueJson.fromJson(x.toString());
+                    }
+                }
+                break;
+            }
+            case Value.UUID: {
+                Object o = rs.getObject(columnIndex);
+                if (o == null) {
+                    v = ValueNull.INSTANCE;
+                } else if (o instanceof UUID) {
+                    v = ValueUuid.get((UUID) o);
+                } else if (o instanceof byte[]) {
+                    v = ValueUuid.get((byte[]) o);
+                } else {
+                    v = ValueUuid.get((String) o);
+                }
+                break;
+            }
+            case Value.ARRAY: {
+                Array array = rs.getArray(columnIndex);
+                if (array == null) {
+                    v = ValueNull.INSTANCE;
+                } else {
+                    Object[] list = (Object[]) array.getArray();
+                    if (list == null) {
+                        v = ValueNull.INSTANCE;
+                    } else {
+                        int len = list.length;
+                        Value[] values = new Value[len];
+                        for (int i = 0; i < len; i++) {
+                            values[i] = ValueToObjectConverter.objectToValue(session, list[i], Value.NULL);
+                        }
+                        v = ValueArray.get(values, session);
+                    }
+                }
+                break;
+            }
+            case Value.ROW: {
+                Object o = rs.getObject(columnIndex);
+                if (o == null) {
+                    v = ValueNull.INSTANCE;
+                } else if (o instanceof ResultSet) {
+                    v = ValueToObjectConverter.resultSetToValue(session, (ResultSet) o);
+                } else {
+                    Object[] list = (Object[]) o;
                     int len = list.length;
                     Value[] values = new Value[len];
                     for (int i = 0; i < len; i++) {
                         values[i] = ValueToObjectConverter.objectToValue(session, list[i], Value.NULL);
                     }
-                    v = ValueArray.get(values, session);
+                    v = ValueRow.get(values);
                 }
+                break;
             }
-            break;
-        }
-        case Value.ROW: {
-            Object o = rs.getObject(columnIndex);
-            if (o == null) {
-                v = ValueNull.INSTANCE;
-            } else if (o instanceof ResultSet) {
-                v = ValueToObjectConverter.resultSetToValue(session, (ResultSet) o);
-            } else {
-                Object[] list = (Object[]) o;
-                int len = list.length;
-                Value[] values = new Value[len];
-                for (int i = 0; i < len; i++) {
-                    values[i] = ValueToObjectConverter.objectToValue(session, list[i], Value.NULL);
-                }
-                v = ValueRow.get(values);
-            }
-            break;
-        }
-        default:
-            throw DbException.getInternalError("data type " + type);
+            default:
+                throw DbException.getInternalError("data type " + type);
         }
         return v;
     }

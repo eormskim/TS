@@ -53,28 +53,28 @@ public final class StringFunction2 extends Function2 {
         }
         int length = s.length();
         switch (function) {
-        case LEFT:
-            if (count > length) {
-                count = length;
+            case LEFT:
+                if (count > length) {
+                    count = length;
+                }
+                s = s.substring(0, count);
+                break;
+            case RIGHT:
+                if (count > length) {
+                    count = length;
+                }
+                s = s.substring(length - count);
+                break;
+            case REPEAT: {
+                StringBuilder builder = new StringBuilder(length * count);
+                while (count-- > 0) {
+                    builder.append(s);
+                }
+                s = builder.toString();
+                break;
             }
-            s = s.substring(0, count);
-            break;
-        case RIGHT:
-            if (count > length) {
-                count = length;
-            }
-            s = s.substring(length - count);
-            break;
-        case REPEAT: {
-            StringBuilder builder = new StringBuilder(length * count);
-            while (count-- > 0) {
-                builder.append(s);
-            }
-            s = builder.toString();
-            break;
-        }
-        default:
-            throw DbException.getInternalError("function=" + function);
+            default:
+                throw DbException.getInternalError("function=" + function);
         }
         return ValueVarchar.get(s, session);
     }
@@ -84,15 +84,15 @@ public final class StringFunction2 extends Function2 {
         left = left.optimize(session);
         right = right.optimize(session);
         switch (function) {
-        case LEFT:
-        case RIGHT:
-            type = TypeInfo.getTypeInfo(Value.VARCHAR, left.getType().getPrecision(), 0, null);
-            break;
-        case REPEAT:
-            type = TypeInfo.TYPE_VARCHAR;
-            break;
-        default:
-            throw DbException.getInternalError("function=" + function);
+            case LEFT:
+            case RIGHT:
+                type = TypeInfo.getTypeInfo(Value.VARCHAR, left.getType().getPrecision(), 0, null);
+                break;
+            case REPEAT:
+                type = TypeInfo.TYPE_VARCHAR;
+                break;
+            default:
+                throw DbException.getInternalError("function=" + function);
         }
         if (left.isConstant() && right.isConstant()) {
             return TypedValueExpression.getTypedIfNull(getValue(session), type);

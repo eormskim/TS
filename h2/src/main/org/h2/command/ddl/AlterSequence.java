@@ -58,7 +58,7 @@ public class AlterSequence extends SchemaOwnerCommand {
      *
      * @param column the column
      * @param always whether value should be always generated, or null if "set
-     *            generated is not specified
+     *               generated is not specified
      */
     public void setColumn(Column column, Boolean always) {
         this.column = column;

@@ -8,6 +8,7 @@ package org.h2.mvstore.db;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicLong;
+
 import org.h2.api.ErrorCode;
 import org.h2.command.query.AllColumnsForPlan;
 import org.h2.engine.Database;
@@ -107,10 +108,10 @@ public class MVPrimaryIndex extends MVIndex<Long, SearchRow> {
             }
         }
 
-        TransactionMap<Long,SearchRow> map = getMap(session);
+        TransactionMap<Long, SearchRow> map = getMap(session);
         long rowKey = row.getKey();
         try {
-            Row old = (Row)map.putIfAbsent(rowKey, row);
+            Row old = (Row) map.putIfAbsent(rowKey, row);
             if (old != null) {
                 int errorCode = ErrorCode.CONCURRENT_UPDATE_1;
                 if (map.getImmediate(rowKey) != null || map.getFromSnapshot(rowKey) != null) {
@@ -129,7 +130,7 @@ public class MVPrimaryIndex extends MVIndex<Long, SearchRow> {
         // syntax
         long last;
         while (rowKey > (last = lastKey.get())) {
-            if(lastKey.compareAndSet(last, rowKey)) break;
+            if (lastKey.compareAndSet(last, rowKey)) break;
         }
     }
 
@@ -143,9 +144,9 @@ public class MVPrimaryIndex extends MVIndex<Long, SearchRow> {
                 }
             }
         }
-        TransactionMap<Long,SearchRow> map = getMap(session);
+        TransactionMap<Long, SearchRow> map = getMap(session);
         try {
-            Row existing = (Row)map.remove(row.getKey());
+            Row existing = (Row) map.remove(row.getKey());
             if (existing == null) {
                 StringBuilder builder = new StringBuilder();
                 getSQL(builder, TRACE_SQL_FLAGS).append(": ").append(row.getKey());
@@ -184,9 +185,9 @@ public class MVPrimaryIndex extends MVIndex<Long, SearchRow> {
             }
         }
 
-        TransactionMap<Long,SearchRow> map = getMap(session);
+        TransactionMap<Long, SearchRow> map = getMap(session);
         try {
-            Row existing = (Row)map.put(key, newRow);
+            Row existing = (Row) map.put(key, newRow);
             if (existing == null) {
                 StringBuilder builder = new StringBuilder();
                 getSQL(builder, TRACE_SQL_FLAGS).append(": ").append(key);
@@ -208,16 +209,16 @@ public class MVPrimaryIndex extends MVIndex<Long, SearchRow> {
      * Lock a single row.
      *
      * @param session database session
-     * @param row to lock
+     * @param row     to lock
      * @return row object if it exists
      */
     Row lockRow(SessionLocal session, Row row) {
-        TransactionMap<Long,SearchRow> map = getMap(session);
+        TransactionMap<Long, SearchRow> map = getMap(session);
         long key = row.getKey();
         return lockRow(map, key);
     }
 
-    private Row lockRow(TransactionMap<Long,SearchRow> map, long key) {
+    private Row lockRow(TransactionMap<Long, SearchRow> map, long key) {
         try {
             return setRowKey((Row) map.lock(key), key);
         } catch (MVStoreException ex) {
@@ -259,7 +260,7 @@ public class MVPrimaryIndex extends MVIndex<Long, SearchRow> {
 
     @Override
     public Row getRow(SessionLocal session, long key) {
-        TransactionMap<Long,SearchRow> map = getMap(session);
+        TransactionMap<Long, SearchRow> map = getMap(session);
         Row row = (Row) map.getFromSnapshot(key);
         if (row == null) {
             throw DbException.get(ErrorCode.ROW_NOT_FOUND_IN_PRIMARY_INDEX, getTraceSQL(), String.valueOf(key));
@@ -269,8 +270,8 @@ public class MVPrimaryIndex extends MVIndex<Long, SearchRow> {
 
     @Override
     public double getCost(SessionLocal session, int[] masks,
-            TableFilter[] filters, int filter, SortOrder sortOrder,
-            AllColumnsForPlan allColumnsSet) {
+                          TableFilter[] filters, int filter, SortOrder sortOrder,
+                          AllColumnsForPlan allColumnsSet) {
         try {
             return 10 * getCostRangeIndex(masks, dataMap.sizeAsLongMax(),
                     filters, filter, sortOrder, true, allColumnsSet);
@@ -292,7 +293,7 @@ public class MVPrimaryIndex extends MVIndex<Long, SearchRow> {
 
     @Override
     public void remove(SessionLocal session) {
-        TransactionMap<Long,SearchRow> map = getMap(session);
+        TransactionMap<Long, SearchRow> map = getMap(session);
         if (!map.isClosed()) {
             Transaction t = session.getTransaction();
             t.removeMap(map);
@@ -363,7 +364,7 @@ public class MVPrimaryIndex extends MVIndex<Long, SearchRow> {
     }
 
     private Cursor find(SessionLocal session, Long first, Long last) {
-        TransactionMap<Long,SearchRow> map = getMap(session);
+        TransactionMap<Long, SearchRow> map = getMap(session);
         if (first != null && last != null && first.longValue() == last.longValue()) {
             return new SingleRowCursor(setRowKey((Row) map.getFromSnapshot(first), first));
         }
@@ -381,7 +382,7 @@ public class MVPrimaryIndex extends MVIndex<Long, SearchRow> {
      * @param session the session
      * @return the map
      */
-    TransactionMap<Long,SearchRow> getMap(SessionLocal session) {
+    TransactionMap<Long, SearchRow> getMap(SessionLocal session) {
         if (session == null) {
             return dataMap;
         }
@@ -418,7 +419,7 @@ public class MVPrimaryIndex extends MVIndex<Long, SearchRow> {
         public Row get() {
             if (row == null) {
                 if (current != null) {
-                    row = (Row)current.getValue();
+                    row = (Row) current.getValue();
                     if (row.getKey() == 0) {
                         row.setKey(current.getKey());
                     }

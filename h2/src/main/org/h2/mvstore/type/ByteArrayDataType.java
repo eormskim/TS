@@ -7,6 +7,7 @@ package org.h2.mvstore.type;
 
 import org.h2.mvstore.DataUtils;
 import org.h2.mvstore.WriteBuffer;
+
 import java.nio.ByteBuffer;
 
 /**
@@ -14,11 +15,11 @@ import java.nio.ByteBuffer;
  *
  * @author <a href='mailto:andrei.tokar@gmail.com'>Andrei Tokar</a>
  */
-public final class ByteArrayDataType extends BasicDataType<byte[]>
-{
+public final class ByteArrayDataType extends BasicDataType<byte[]> {
     public static final ByteArrayDataType INSTANCE = new ByteArrayDataType();
 
-    private ByteArrayDataType() {}
+    private ByteArrayDataType() {
+    }
 
     @Override
     public int getMemory(byte[] data) {

@@ -50,16 +50,16 @@ public final class ArrayElementReference extends Operation2 {
         right = right.optimize(session);
         TypeInfo leftType = left.getType();
         switch (leftType.getValueType()) {
-        case Value.NULL:
-            return ValueExpression.NULL;
-        case Value.ARRAY:
-            type = (TypeInfo) leftType.getExtTypeInfo();
-            if (left.isConstant() && right.isConstant()) {
-                return TypedValueExpression.get(getValue(session), type);
-            }
-            break;
-        default:
-            throw DbException.getInvalidExpressionTypeException("Array", left);
+            case Value.NULL:
+                return ValueExpression.NULL;
+            case Value.ARRAY:
+                type = (TypeInfo) leftType.getExtTypeInfo();
+                if (left.isConstant() && right.isConstant()) {
+                    return TypedValueExpression.get(getValue(session), type);
+                }
+                break;
+            default:
+                throw DbException.getInvalidExpressionTypeException("Array", left);
         }
         return this;
     }

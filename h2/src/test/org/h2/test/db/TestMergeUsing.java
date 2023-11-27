@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import org.h2.api.Trigger;
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
@@ -44,19 +45,19 @@ public class TestMergeUsing extends TestDb implements Trigger {
         testMergeUsing(
                 "CREATE TABLE PARENT(ID INT, NAME VARCHAR, PRIMARY KEY(ID) );",
                 "MERGE INTO PARENT AS P USING (SELECT X AS ID, 'Marcy'||X AS NAME " +
-                "FROM SYSTEM_RANGE(1,2) ) AS S ON (P.ID = S.ID AND 1=1 AND S.ID = P.ID) " +
-                "WHEN MATCHED THEN " +
-                "UPDATE SET P.NAME = S.NAME WHERE 2 = 2 WHEN NOT MATCHED THEN INSERT (ID, NAME) VALUES (S.ID, S.NAME)",
+                        "FROM SYSTEM_RANGE(1,2) ) AS S ON (P.ID = S.ID AND 1=1 AND S.ID = P.ID) " +
+                        "WHEN MATCHED THEN " +
+                        "UPDATE SET P.NAME = S.NAME WHERE 2 = 2 WHEN NOT MATCHED THEN INSERT (ID, NAME) VALUES (S.ID, S.NAME)",
                 GATHER_ORDERED_RESULTS_SQL,
                 "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2)", 2);
         // Simple NAME updates, target table missing PK
         testMergeUsing(
                 "CREATE TABLE PARENT AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) );",
                 "MERGE INTO PARENT AS P USING (" +
-                "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) ) AS S " +
-                "ON (P.ID = S.ID AND 1=1 AND S.ID = P.ID) " +
-                "WHEN MATCHED THEN UPDATE SET P.NAME = S.NAME||S.ID WHERE 1 = 1 WHEN NOT MATCHED THEN " +
-                "INSERT (ID, NAME) VALUES (S.ID, S.NAME)",
+                        "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) ) AS S " +
+                        "ON (P.ID = S.ID AND 1=1 AND S.ID = P.ID) " +
+                        "WHEN MATCHED THEN UPDATE SET P.NAME = S.NAME||S.ID WHERE 1 = 1 WHEN NOT MATCHED THEN " +
+                        "INSERT (ID, NAME) VALUES (S.ID, S.NAME)",
                 GATHER_ORDERED_RESULTS_SQL,
                 "SELECT X AS ID, 'Marcy'||X||X AS NAME FROM SYSTEM_RANGE(1,2)",
                 2);
@@ -64,16 +65,16 @@ public class TestMergeUsing extends TestDb implements Trigger {
         testMergeUsing(
                 "CREATE TABLE PARENT AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) );",
                 "MERGE INTO PARENT AS P USING (" +
-                "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) ) AS S ON (P.ID = S.ID) " +
-                "WHEN MATCHED THEN UPDATE SET P.NAME = S.NAME||S.ID WHERE 1 = 2",
+                        "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) ) AS S ON (P.ID = S.ID) " +
+                        "WHEN MATCHED THEN UPDATE SET P.NAME = S.NAME||S.ID WHERE 1 = 2",
                 GATHER_ORDERED_RESULTS_SQL,
                 "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2)", 0);
         // No NAME updates, no WHERE clause, insert clause missing
         testMergeUsing(
                 "CREATE TABLE PARENT AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) );",
                 "MERGE INTO PARENT AS P USING (" +
-                "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) ) AS S ON (P.ID = S.ID) " +
-                "WHEN MATCHED THEN UPDATE SET P.NAME = S.NAME||S.ID",
+                        "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) ) AS S ON (P.ID = S.ID) " +
+                        "WHEN MATCHED THEN UPDATE SET P.NAME = S.NAME||S.ID",
                 GATHER_ORDERED_RESULTS_SQL,
                 "SELECT X AS ID, 'Marcy'||X||X AS NAME FROM SYSTEM_RANGE(1,2)",
                 2);
@@ -81,8 +82,8 @@ public class TestMergeUsing extends TestDb implements Trigger {
         testMergeUsing(
                 "CREATE TABLE PARENT AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) );",
                 "MERGE INTO PARENT AS P USING (" +
-                "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) ) AS S ON (P.ID = S.ID) " +
-                "WHEN MATCHED THEN DELETE",
+                        "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) ) AS S ON (P.ID = S.ID) " +
+                        "WHEN MATCHED THEN DELETE",
                 GATHER_ORDERED_RESULTS_SQL,
                 "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) WHERE 1=0",
                 2);
@@ -90,60 +91,60 @@ public class TestMergeUsing extends TestDb implements Trigger {
         testMergeUsing(
                 "CREATE TABLE PARENT AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) );",
                 "MERGE INTO PARENT AS P USING (" +
-                "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,3) ) AS S ON (P.ID = S.ID) " +
-                "WHEN MATCHED THEN UPDATE SET P.NAME = S.NAME||S.ID WHERE P.ID = 2 " +
-                "WHEN MATCHED THEN DELETE WHERE P.ID = 1 WHEN NOT MATCHED THEN " +
-                "INSERT (ID, NAME) VALUES (S.ID, S.NAME)",
+                        "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,3) ) AS S ON (P.ID = S.ID) " +
+                        "WHEN MATCHED THEN UPDATE SET P.NAME = S.NAME||S.ID WHERE P.ID = 2 " +
+                        "WHEN MATCHED THEN DELETE WHERE P.ID = 1 WHEN NOT MATCHED THEN " +
+                        "INSERT (ID, NAME) VALUES (S.ID, S.NAME)",
                 GATHER_ORDERED_RESULTS_SQL,
                 "SELECT X AS ID, 'Marcy'||X||X AS NAME FROM SYSTEM_RANGE(2,2) UNION ALL " +
-                "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(3,3)",
+                        "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(3,3)",
                 3);
         // One insert, one update one delete happens, target table missing PK
         testMergeUsing(
                 "CREATE TABLE PARENT AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) );" +
-                "CREATE TABLE SOURCE AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,3)  );",
+                        "CREATE TABLE SOURCE AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,3)  );",
                 "MERGE INTO PARENT AS P USING SOURCE AS S ON (P.ID = S.ID) " +
-                "WHEN MATCHED THEN UPDATE SET P.NAME = S.NAME||S.ID WHERE P.ID = 2 " +
-                "WHEN MATCHED THEN DELETE WHERE P.ID = 1 WHEN NOT MATCHED THEN " +
-                "INSERT (ID, NAME) VALUES (S.ID, S.NAME)",
+                        "WHEN MATCHED THEN UPDATE SET P.NAME = S.NAME||S.ID WHERE P.ID = 2 " +
+                        "WHEN MATCHED THEN DELETE WHERE P.ID = 1 WHEN NOT MATCHED THEN " +
+                        "INSERT (ID, NAME) VALUES (S.ID, S.NAME)",
                 GATHER_ORDERED_RESULTS_SQL,
                 "SELECT X AS ID, 'Marcy'||X||X AS NAME FROM SYSTEM_RANGE(2,2) UNION ALL " +
-                "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(3,3)",
+                        "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(3,3)",
                 3);
         // One insert, one update one delete happens, target table missing PK,
         // no source alias
         testMergeUsing(
                 "CREATE TABLE PARENT AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) );" +
-                "CREATE TABLE SOURCE AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,3)  );",
+                        "CREATE TABLE SOURCE AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,3)  );",
                 "MERGE INTO PARENT AS P USING SOURCE ON (P.ID = SOURCE.ID) " +
-                "WHEN MATCHED THEN UPDATE SET P.NAME = SOURCE.NAME||SOURCE.ID WHERE P.ID = 2 " +
-                "WHEN MATCHED THEN DELETE WHERE P.ID = 1 " +
-                "WHEN NOT MATCHED THEN INSERT (ID, NAME) VALUES (SOURCE.ID, SOURCE.NAME)",
+                        "WHEN MATCHED THEN UPDATE SET P.NAME = SOURCE.NAME||SOURCE.ID WHERE P.ID = 2 " +
+                        "WHEN MATCHED THEN DELETE WHERE P.ID = 1 " +
+                        "WHEN NOT MATCHED THEN INSERT (ID, NAME) VALUES (SOURCE.ID, SOURCE.NAME)",
                 GATHER_ORDERED_RESULTS_SQL,
                 "SELECT X AS ID, 'Marcy'||X||X AS NAME FROM SYSTEM_RANGE(2,2) UNION ALL " +
-                "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(3,3)",
+                        "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(3,3)",
                 3);
         // One insert, one update one delete happens, target table missing PK,
         // no source or target alias
         testMergeUsing(
                 "CREATE TABLE PARENT AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2) );" +
-                "CREATE TABLE SOURCE AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,3)  );",
+                        "CREATE TABLE SOURCE AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,3)  );",
                 "MERGE INTO PARENT USING SOURCE ON (PARENT.ID = SOURCE.ID) " +
-                "WHEN MATCHED THEN UPDATE SET PARENT.NAME = SOURCE.NAME||SOURCE.ID WHERE PARENT.ID = 2 " +
-                "WHEN MATCHED THEN DELETE WHERE PARENT.ID = 1 " +
-                "WHEN NOT MATCHED THEN INSERT (ID, NAME) VALUES (SOURCE.ID, SOURCE.NAME)",
+                        "WHEN MATCHED THEN UPDATE SET PARENT.NAME = SOURCE.NAME||SOURCE.ID WHERE PARENT.ID = 2 " +
+                        "WHEN MATCHED THEN DELETE WHERE PARENT.ID = 1 " +
+                        "WHEN NOT MATCHED THEN INSERT (ID, NAME) VALUES (SOURCE.ID, SOURCE.NAME)",
                 GATHER_ORDERED_RESULTS_SQL,
                 "SELECT X AS ID, 'Marcy'||X||X AS NAME FROM SYSTEM_RANGE(2,2) UNION ALL " +
-                "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(3,3)",
+                        "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(3,3)",
                 3);
 
         // Only insert clause, no update or delete clauses
         testMergeUsing(
                 "CREATE TABLE PARENT AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,1) );" +
-                "DELETE FROM PARENT;",
+                        "DELETE FROM PARENT;",
                 "MERGE INTO PARENT AS P USING (" +
-                "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,3) ) AS S ON (P.ID = S.ID) " +
-                "WHEN NOT MATCHED THEN INSERT (ID, NAME) VALUES (S.ID, S.NAME)",
+                        "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,3) ) AS S ON (P.ID = S.ID) " +
+                        "WHEN NOT MATCHED THEN INSERT (ID, NAME) VALUES (S.ID, S.NAME)",
                 GATHER_ORDERED_RESULTS_SQL,
                 "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,3)", 3);
         // no insert, no update, no delete clauses - essentially a no-op
@@ -151,7 +152,7 @@ public class TestMergeUsing extends TestDb implements Trigger {
                 "CREATE TABLE PARENT AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,1) );"
                         + "DELETE FROM PARENT;",
                 "MERGE INTO PARENT AS P USING (" +
-                "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,3) ) AS S ON (P.ID = S.ID)",
+                        "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,3) ) AS S ON (P.ID = S.ID)",
                 GATHER_ORDERED_RESULTS_SQL,
                 "SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,3) WHERE X<0",
                 0,
@@ -163,31 +164,31 @@ public class TestMergeUsing extends TestDb implements Trigger {
                 "CREATE TABLE PARENT AS (SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,2));"
                         + getCreateTriggerSQL(),
                 "MERGE INTO PARENT AS P USING " +
-                "(SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,4) ) AS S ON (P.ID = S.ID) " +
-                "WHEN MATCHED THEN UPDATE SET P.NAME = S.NAME||S.ID WHERE P.ID = 2 " +
-                "WHEN MATCHED THEN DELETE WHERE P.ID = 1 " +
-                "WHEN NOT MATCHED THEN INSERT (ID, NAME) VALUES (S.ID, S.NAME)",
+                        "(SELECT X AS ID, 'Marcy'||X AS NAME FROM SYSTEM_RANGE(1,4) ) AS S ON (P.ID = S.ID) " +
+                        "WHEN MATCHED THEN UPDATE SET P.NAME = S.NAME||S.ID WHERE P.ID = 2 " +
+                        "WHEN MATCHED THEN DELETE WHERE P.ID = 1 " +
+                        "WHEN NOT MATCHED THEN INSERT (ID, NAME) VALUES (S.ID, S.NAME)",
                 GATHER_ORDERED_RESULTS_SQL,
                 "SELECT 2 AS ID, 'Marcy22-updated2' AS NAME UNION ALL " +
-                "SELECT X AS ID, 'Marcy'||X||'-inserted'||X AS NAME FROM SYSTEM_RANGE(3,4)",
+                        "SELECT X AS ID, 'Marcy'||X||'-inserted'||X AS NAME FROM SYSTEM_RANGE(3,4)",
                 4);
     }
 
     /**
      * Run a test case of the merge using syntax
      *
-     * @param setupSQL - one or more SQL statements to setup the case
-     * @param statementUnderTest - the merge statement being tested
-     * @param gatherResultsSQL - a select which gathers the results of the merge
-     *            from the target table
-     * @param expectedResultsSQL - a select which returns the expected results
-     *            in the target table
+     * @param setupSQL               - one or more SQL statements to setup the case
+     * @param statementUnderTest     - the merge statement being tested
+     * @param gatherResultsSQL       - a select which gathers the results of the merge
+     *                               from the target table
+     * @param expectedResultsSQL     - a select which returns the expected results
+     *                               in the target table
      * @param expectedRowUpdateCount - how many updates should be expected from
-     *            the merge using
+     *                               the merge using
      */
     private void testMergeUsing(String setupSQL, String statementUnderTest,
-            String gatherResultsSQL, String expectedResultsSQL,
-            int expectedRowUpdateCount) throws Exception {
+                                String gatherResultsSQL, String expectedResultsSQL,
+                                int expectedRowUpdateCount) throws Exception {
         deleteDb("mergeUsingQueries");
 
         try (Connection conn = getConnection("mergeUsingQueries;MODE=Oracle")) {
@@ -224,20 +225,20 @@ public class TestMergeUsing extends TestDb implements Trigger {
     /**
      * Run a test case of the merge using syntax
      *
-     * @param setupSQL - one or more SQL statements to setup the case
-     * @param statementUnderTest - the merge statement being tested
-     * @param gatherResultsSQL - a select which gathers the results of the merge
-     *            from the target table
-     * @param expectedResultsSQL - a select which returns the expected results
-     *            in the target table
+     * @param setupSQL               - one or more SQL statements to setup the case
+     * @param statementUnderTest     - the merge statement being tested
+     * @param gatherResultsSQL       - a select which gathers the results of the merge
+     *                               from the target table
+     * @param expectedResultsSQL     - a select which returns the expected results
+     *                               in the target table
      * @param expectedRowUpdateCount - how many updates should be expected from
-     *            the merge using
-     * @param exceptionMessage - the exception message expected
+     *                               the merge using
+     * @param exceptionMessage       - the exception message expected
      */
     private void testMergeUsingException(String setupSQL,
-            String statementUnderTest, String gatherResultsSQL,
-            String expectedResultsSQL, int expectedRowUpdateCount,
-            String exceptionMessage) throws Exception {
+                                         String statementUnderTest, String gatherResultsSQL,
+                                         String expectedResultsSQL, int expectedRowUpdateCount,
+                                         String exceptionMessage) throws Exception {
         try {
             testMergeUsing(setupSQL, statementUnderTest, gatherResultsSQL,
                     expectedResultsSQL, expectedRowUpdateCount);
@@ -269,7 +270,7 @@ public class TestMergeUsing extends TestDb implements Trigger {
 
     @Override
     public void init(Connection conn, String schemaName, String trigger,
-            String tableName, boolean before, int type) {
+                     String tableName, boolean before, int type) {
         this.triggerName = trigger;
         if (!"PARENT".equals(tableName)) {
             throw new AssertionError("supposed to be PARENT");

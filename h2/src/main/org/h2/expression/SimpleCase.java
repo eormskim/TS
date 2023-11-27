@@ -26,7 +26,7 @@ public final class SimpleCase extends Expression {
         SimpleWhen next;
 
         public SimpleWhen(Expression operand, Expression result) {
-            this(new Expression[] { operand }, result);
+            this(new Expression[]{operand}, result);
         }
 
         public SimpleWhen(Expression[] operands, Expression result) {

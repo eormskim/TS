@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import org.h2.test.utils.SelfDestructor;
 
 /**
@@ -80,7 +81,7 @@ public class TestHaltApp extends TestHalt {
      * This method is called after a simulated crash. The method should check if
      * the data is transactionally consistent and throw an exception if not.
      *
-     * @throws SQLException  if the data is not consistent.
+     * @throws SQLException if the data is not consistent.
      */
     @Override
     protected void controllerCheckAfterCrash() throws SQLException {

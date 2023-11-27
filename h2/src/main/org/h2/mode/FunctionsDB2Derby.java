@@ -35,8 +35,7 @@ public final class FunctionsDB2Derby extends ModeFunction {
     /**
      * Returns mode-specific function for a given name, or {@code null}.
      *
-     * @param upperName
-     *            the upper-case name of a function
+     * @param upperName the upper-case name of a function
      * @return the function with specified name or {@code null}
      */
     public static FunctionsDB2Derby getFunction(String upperName) {
@@ -51,21 +50,21 @@ public final class FunctionsDB2Derby extends ModeFunction {
     @Override
     public Value getValue(SessionLocal session) {
         switch (info.type) {
-        case IDENTITY_VAL_LOCAL:
-            return session.getLastIdentity().convertTo(type);
-        default:
-            throw DbException.getInternalError("type=" + info.type);
+            case IDENTITY_VAL_LOCAL:
+                return session.getLastIdentity().convertTo(type);
+            default:
+                throw DbException.getInternalError("type=" + info.type);
         }
     }
 
     @Override
     public Expression optimize(SessionLocal session) {
         switch (info.type) {
-        case IDENTITY_VAL_LOCAL:
-            type = IDENTITY_VAL_LOCAL_TYPE;
-            break;
-        default:
-            throw DbException.getInternalError("type=" + info.type);
+            case IDENTITY_VAL_LOCAL:
+                type = IDENTITY_VAL_LOCAL_TYPE;
+                break;
+            default:
+                throw DbException.getInternalError("type=" + info.type);
         }
         return this;
     }

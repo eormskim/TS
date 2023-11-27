@@ -77,7 +77,7 @@ public class TestMVRTree extends TestMVStore {
         String fileName = getBaseDir() + "/" + getTestName();
         FileUtils.delete(fileName);
         try (MVStore s = new MVStore.Builder().fileName(fileName).
-                                pageSplitSize(100).open()) {
+                pageSplitSize(100).open()) {
             MVRTreeMap<String> map = s.openMap("data", new MVRTreeMap.Builder<>());
             Random r = new Random(1);
             for (int i = 0; i < 1000; i++) {
@@ -289,7 +289,7 @@ public class TestMVRTree extends TestMVStore {
         }
         g2d.setColor(Color.red);
         ArrayList<Spatial> list = new ArrayList<>();
-        r.addNodeKeys(list,  r.getRootPage());
+        r.addNodeKeys(list, r.getRootPage());
         for (Spatial x : list) {
             int[] rect = scale(b, x, width, height);
             g2d.drawRect(rect[0], rect[1], rect[2] - rect[0], rect[3] - rect[1]);
@@ -313,7 +313,7 @@ public class TestMVRTree extends TestMVStore {
                         (b.max(0) - b.min(0)) + width * 0.05),
                 (int) ((x.max(1) - b.min(1)) * (height * 0.9) /
                         (b.max(1) - b.min(1)) + height * 0.05),
-                };
+        };
         return rect;
     }
 

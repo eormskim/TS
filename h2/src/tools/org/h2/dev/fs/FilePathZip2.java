@@ -16,6 +16,7 @@ import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
 import org.h2.engine.Constants;
 import org.h2.message.DbException;
 import org.h2.store.fs.FakeFileChannel;
@@ -140,7 +141,7 @@ public class FilePathZip2 extends FilePath {
                 if (n.equals(entryName)) {
                     result = entry.isDirectory();
                     break;
-                } else  if (n.startsWith(entryName)) {
+                } else if (n.startsWith(entryName)) {
                     if (n.length() == entryName.length() + 1) {
                         if (n.equals(entryName + "/")) {
                             result = true;
@@ -422,7 +423,7 @@ class FileZip2 extends FileBase {
 
     @Override
     public synchronized FileLock tryLock(long position, long size,
-            boolean shared) throws IOException {
+                                         boolean shared) throws IOException {
         if (shared) {
             return new FileLock(FakeFileChannel.INSTANCE, position, size, shared) {
 
@@ -434,7 +435,8 @@ class FileZip2 extends FileBase {
                 @Override
                 public void release() throws IOException {
                     // ignore
-                }};
+                }
+            };
         }
         return null;
     }

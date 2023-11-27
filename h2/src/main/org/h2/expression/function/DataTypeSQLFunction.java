@@ -28,8 +28,8 @@ import org.h2.value.ValueVarchar;
 public final class DataTypeSQLFunction extends FunctionN {
 
     public DataTypeSQLFunction(Expression objectSchema, Expression objectName, Expression objectType,
-            Expression typeIdentifier) {
-        super(new Expression[] { objectSchema, objectName, objectType, typeIdentifier });
+                               Expression typeIdentifier) {
+        super(new Expression[]{objectSchema, objectName, objectType, typeIdentifier});
     }
 
     @Override
@@ -46,89 +46,89 @@ public final class DataTypeSQLFunction extends FunctionN {
         }
         TypeInfo t;
         switch (objectType) {
-        case "CONSTANT": {
-            Constant constant = schema.findConstant(objectName);
-            if (constant == null || !typeIdentifier.equals("TYPE")) {
-                return ValueNull.INSTANCE;
+            case "CONSTANT": {
+                Constant constant = schema.findConstant(objectName);
+                if (constant == null || !typeIdentifier.equals("TYPE")) {
+                    return ValueNull.INSTANCE;
+                }
+                t = constant.getValue().getType();
+                break;
             }
-            t = constant.getValue().getType();
-            break;
-        }
-        case "DOMAIN": {
-            Domain domain = schema.findDomain(objectName);
-            if (domain == null || !typeIdentifier.equals("TYPE")) {
-                return ValueNull.INSTANCE;
+            case "DOMAIN": {
+                Domain domain = schema.findDomain(objectName);
+                if (domain == null || !typeIdentifier.equals("TYPE")) {
+                    return ValueNull.INSTANCE;
+                }
+                t = domain.getDataType();
+                break;
             }
-            t = domain.getDataType();
-            break;
-        }
-        case "ROUTINE": {
-            int idx = objectName.lastIndexOf('_');
-            if (idx < 0) {
-                return ValueNull.INSTANCE;
+            case "ROUTINE": {
+                int idx = objectName.lastIndexOf('_');
+                if (idx < 0) {
+                    return ValueNull.INSTANCE;
+                }
+                FunctionAlias function = schema.findFunction(objectName.substring(0, idx));
+                if (function == null) {
+                    return ValueNull.INSTANCE;
+                }
+                int ordinal;
+                try {
+                    ordinal = Integer.parseInt(objectName.substring(idx + 1));
+                } catch (NumberFormatException e) {
+                    return ValueNull.INSTANCE;
+                }
+                JavaMethod[] methods;
+                try {
+                    methods = function.getJavaMethods();
+                } catch (DbException e) {
+                    return ValueNull.INSTANCE;
+                }
+                if (ordinal < 1 || ordinal > methods.length) {
+                    return ValueNull.INSTANCE;
+                }
+                FunctionAlias.JavaMethod method = methods[ordinal - 1];
+                if (typeIdentifier.equals("RESULT")) {
+                    t = method.getDataType();
+                } else {
+                    try {
+                        ordinal = Integer.parseInt(typeIdentifier);
+                    } catch (NumberFormatException e) {
+                        return ValueNull.INSTANCE;
+                    }
+                    if (ordinal < 1) {
+                        return ValueNull.INSTANCE;
+                    }
+                    if (!method.hasConnectionParam()) {
+                        ordinal--;
+                    }
+                    Class<?>[] columnList = method.getColumnClasses();
+                    if (ordinal >= columnList.length) {
+                        return ValueNull.INSTANCE;
+                    }
+                    t = ValueToObjectConverter2.classToType(columnList[ordinal]);
+                }
+                break;
             }
-            FunctionAlias function = schema.findFunction(objectName.substring(0, idx));
-            if (function == null) {
-                return ValueNull.INSTANCE;
-            }
-            int ordinal;
-            try {
-                ordinal = Integer.parseInt(objectName.substring(idx + 1));
-            } catch (NumberFormatException e) {
-                return ValueNull.INSTANCE;
-            }
-            JavaMethod[] methods;
-            try {
-                methods = function.getJavaMethods();
-            } catch (DbException e) {
-                return ValueNull.INSTANCE;
-            }
-            if (ordinal < 1 || ordinal > methods.length) {
-                return ValueNull.INSTANCE;
-            }
-            FunctionAlias.JavaMethod method = methods[ordinal - 1];
-            if (typeIdentifier.equals("RESULT")) {
-                t = method.getDataType();
-            } else {
+            case "TABLE": {
+                Table table = schema.findTableOrView(session, objectName);
+                if (table == null) {
+                    return ValueNull.INSTANCE;
+                }
+                int ordinal;
                 try {
                     ordinal = Integer.parseInt(typeIdentifier);
                 } catch (NumberFormatException e) {
                     return ValueNull.INSTANCE;
                 }
-                if (ordinal < 1) {
+                Column[] columns = table.getColumns();
+                if (ordinal < 1 || ordinal > columns.length) {
                     return ValueNull.INSTANCE;
                 }
-                if (!method.hasConnectionParam()) {
-                    ordinal--;
-                }
-                Class<?>[] columnList = method.getColumnClasses();
-                if (ordinal >= columnList.length) {
-                    return ValueNull.INSTANCE;
-                }
-                t = ValueToObjectConverter2.classToType(columnList[ordinal]);
+                t = columns[ordinal - 1].getType();
+                break;
             }
-            break;
-        }
-        case "TABLE": {
-            Table table = schema.findTableOrView(session, objectName);
-            if (table == null) {
+            default:
                 return ValueNull.INSTANCE;
-            }
-            int ordinal;
-            try {
-                ordinal = Integer.parseInt(typeIdentifier);
-            } catch (NumberFormatException e) {
-                return ValueNull.INSTANCE;
-            }
-            Column[] columns = table.getColumns();
-            if (ordinal < 1 || ordinal > columns.length) {
-                return ValueNull.INSTANCE;
-            }
-            t = columns[ordinal - 1].getType();
-            break;
-        }
-        default:
-            return ValueNull.INSTANCE;
         }
         return ValueVarchar.get(t.getSQL(DEFAULT_SQL_FLAGS));
     }
@@ -148,8 +148,8 @@ public final class DataTypeSQLFunction extends FunctionN {
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-        case ExpressionVisitor.DETERMINISTIC:
-            return false;
+            case ExpressionVisitor.DETERMINISTIC:
+                return false;
         }
         return true;
     }

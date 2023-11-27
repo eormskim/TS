@@ -69,12 +69,9 @@ final class AggregateDataCollecting extends AggregateData implements Iterable<Va
     /**
      * Creates new instance of data for collecting aggregates.
      *
-     * @param distinct
-     *            if distinct is used
-     * @param orderedWithOrder
-     *            if aggregate is an ordered aggregate with ORDER BY clause
-     * @param nullCollectionMode
-     *            NULL values collection mode
+     * @param distinct           if distinct is used
+     * @param orderedWithOrder   if aggregate is an ordered aggregate with ORDER BY clause
+     * @param nullCollectionMode NULL values collection mode
      */
     AggregateDataCollecting(boolean distinct, boolean orderedWithOrder, NullCollectionMode nullCollectionMode) {
         this.distinct = distinct;

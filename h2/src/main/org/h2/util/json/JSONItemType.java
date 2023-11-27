@@ -34,8 +34,7 @@ public enum JSONItemType {
     /**
      * Checks whether this item type includes the specified item type.
      *
-     * @param type
-     *            item type to check
+     * @param type item type to check
      * @return whether this item type includes the specified item type
      */
     public boolean includes(JSONItemType type) {

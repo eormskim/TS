@@ -7,6 +7,7 @@ package org.h2.store;
 
 import java.io.IOException;
 import java.io.InputStream;
+
 import org.h2.engine.SessionRemote;
 import org.h2.message.DbException;
 import org.h2.mvstore.DataUtils;
@@ -51,7 +52,7 @@ public class LobStorageRemoteInputStream extends InputStream {
 
     @Override
     public int read(byte[] buff, int off, int length) throws IOException {
-        assert(length >= 0);
+        assert (length >= 0);
         if (length == 0) {
             return 0;
         }

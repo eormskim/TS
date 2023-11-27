@@ -37,11 +37,9 @@ public final class ExtTypeInfoGeometry extends ExtTypeInfo {
     /**
      * Creates new instance of extended parameters of the GEOMETRY data type.
      *
-     * @param type
-     *            the type and dimension system of geometries, or 0 if not
-     *            constrained
-     * @param srid
-     *            the SRID of geometries, or {@code null} if not constrained
+     * @param type the type and dimension system of geometries, or 0 if not
+     *             constrained
+     * @param srid the SRID of geometries, or {@code null} if not constrained
      */
     public ExtTypeInfoGeometry(int type, Integer srid) {
         this.type = type;
@@ -74,7 +72,7 @@ public final class ExtTypeInfoGeometry extends ExtTypeInfo {
      * Returns the type and dimension system of geometries.
      *
      * @return the type and dimension system of geometries, or 0 if not
-     *         constrained
+     * constrained
      */
     public int getType() {
         return type;

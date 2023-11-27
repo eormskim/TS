@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
 import org.h2.message.DbException;
 import org.h2.store.fs.FilePath;
 import org.h2.store.fs.disk.FilePathDisk;
@@ -96,7 +97,7 @@ public class FilePathZip extends FilePath {
                     String n = entry.getName();
                     if (n.equals(entryName)) {
                         return entry.isDirectory();
-                    } else  if (n.startsWith(entryName)) {
+                    } else if (n.startsWith(entryName)) {
                         if (n.length() == entryName.length() + 1) {
                             if (n.equals(entryName + "/")) {
                                 return true;

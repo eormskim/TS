@@ -36,7 +36,7 @@ public abstract class ModeFunction extends FunctionN {
      * If no function with this name is found, null is returned.
      *
      * @param database the database
-     * @param name the upper case function name
+     * @param name     the upper case function name
      * @return the function object or null
      */
     public static ModeFunction getFunction(Database database, String name) {
@@ -49,21 +49,21 @@ public abstract class ModeFunction extends FunctionN {
 
     private static ModeFunction getCompatibilityModeFunction(String name, ModeEnum modeEnum) {
         switch (modeEnum) {
-        case LEGACY:
-            return FunctionsLegacy.getFunction(name);
-        case DB2:
-        case Derby:
-            return FunctionsDB2Derby.getFunction(name);
-        case MSSQLServer:
-            return FunctionsMSSQLServer.getFunction(name);
-        case MySQL:
-            return FunctionsMySQL.getFunction(name);
-        case Oracle:
-            return FunctionsOracle.getFunction(name);
-        case PostgreSQL:
-            return FunctionsPostgreSQL.getFunction(name);
-        default:
-            return null;
+            case LEGACY:
+                return FunctionsLegacy.getFunction(name);
+            case DB2:
+            case Derby:
+                return FunctionsDB2Derby.getFunction(name);
+            case MSSQLServer:
+                return FunctionsMSSQLServer.getFunction(name);
+            case MySQL:
+                return FunctionsMySQL.getFunction(name);
+            case Oracle:
+                return FunctionsOracle.getFunction(name);
+            case PostgreSQL:
+                return FunctionsPostgreSQL.getFunction(name);
+            default:
+                return null;
         }
     }
 
@@ -83,13 +83,13 @@ public abstract class ModeFunction extends FunctionN {
      * the input value is null.
      *
      * @param session database session
-     * @param args expressions
-     * @param values array of input values
-     * @param i index of value of transform
+     * @param args    expressions
+     * @param values  array of input values
+     * @param i       index of value of transform
      * @return value or null
      */
     static Value getNullOrValue(SessionLocal session, Expression[] args,
-            Value[] values, int i) {
+                                Value[] values, int i) {
         if (i >= args.length) {
             return null;
         }
@@ -108,12 +108,10 @@ public abstract class ModeFunction extends FunctionN {
      * Gets values of arguments and checks them for NULL values if function
      * returns NULL on NULL argument.
      *
-     * @param session
-     *            the session
-     * @param args
-     *            the arguments
+     * @param session the session
+     * @param args    the arguments
      * @return the values, or {@code null} if function should return NULL due to
-     *         NULL argument
+     * NULL argument
      */
     final Value[] getArgumentsValues(SessionLocal session, Expression[] args) {
         Value[] values = new Value[args.length];
@@ -153,8 +151,7 @@ public abstract class ModeFunction extends FunctionN {
     /**
      * Optimizes arguments.
      *
-     * @param session
-     *            the session
+     * @param session the session
      * @return whether all arguments are constants and function is deterministic
      */
     final boolean optimizeArguments(SessionLocal session) {
@@ -172,12 +169,12 @@ public abstract class ModeFunction extends FunctionN {
             return false;
         }
         switch (visitor.getType()) {
-        case ExpressionVisitor.DETERMINISTIC:
-        case ExpressionVisitor.QUERY_COMPARABLE:
-        case ExpressionVisitor.READONLY:
-            return info.deterministic;
-        default:
-            return true;
+            case ExpressionVisitor.DETERMINISTIC:
+            case ExpressionVisitor.QUERY_COMPARABLE:
+            case ExpressionVisitor.READONLY:
+                return info.deterministic;
+            default:
+                return true;
         }
     }
 

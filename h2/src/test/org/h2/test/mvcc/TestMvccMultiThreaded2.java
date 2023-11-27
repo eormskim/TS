@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
+
 import org.h2.message.DbException;
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
@@ -82,7 +83,7 @@ public class TestMvccMultiThreaded2 extends TestDb {
         ArrayList<SelectForUpdate> threads = new ArrayList<>();
         for (int i = 0; i < TEST_THREAD_COUNT; i++) {
             SelectForUpdate sfu = new SelectForUpdate(latch);
-            sfu.setName("Test SelectForUpdate Thread#"+i);
+            sfu.setName("Test SelectForUpdate Thread#" + i);
             threads.add(sfu);
             sfu.start();
         }
@@ -122,10 +123,9 @@ public class TestMvccMultiThreaded2 extends TestDb {
     }
 
     /**
-     *  Worker test thread selecting for update
+     * Worker test thread selecting for update
      */
-    private class SelectForUpdate extends Thread
-    {
+    private class SelectForUpdate extends Thread {
         private final CountDownLatch latch;
         public int iterationsProcessed;
 
@@ -175,10 +175,10 @@ public class TestMvccMultiThreaded2 extends TestDb {
                 ok = true;
             } catch (InterruptedException ignore) {
             } catch (SQLException e) {
-                TestBase.logError("SQL error from thread "+getName(), e);
+                TestBase.logError("SQL error from thread " + getName(), e);
                 throw DbException.convert(e);
             } catch (Exception e) {
-                TestBase.logError("General error from thread "+getName(), e);
+                TestBase.logError("General error from thread " + getName(), e);
                 throw e;
             }
         }

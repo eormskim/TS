@@ -20,7 +20,7 @@ public final class Comment extends DbObject {
     private String commentText;
 
     public Comment(Database database, int id, DbObject obj) {
-        super(database, id,  getKey(obj), Trace.DATABASE);
+        super(database, id, getKey(obj), Trace.DATABASE);
         this.objectType = obj.getType();
         this.quotedObjectName = obj.getSQL(DEFAULT_SQL_FLAGS);
     }
@@ -32,32 +32,32 @@ public final class Comment extends DbObject {
 
     private static String getTypeName(int type) {
         switch (type) {
-        case DbObject.CONSTANT:
-            return "CONSTANT";
-        case DbObject.CONSTRAINT:
-            return "CONSTRAINT";
-        case DbObject.FUNCTION_ALIAS:
-            return "ALIAS";
-        case DbObject.INDEX:
-            return "INDEX";
-        case DbObject.ROLE:
-            return "ROLE";
-        case DbObject.SCHEMA:
-            return "SCHEMA";
-        case DbObject.SEQUENCE:
-            return "SEQUENCE";
-        case DbObject.TABLE_OR_VIEW:
-            return "TABLE";
-        case DbObject.TRIGGER:
-            return "TRIGGER";
-        case DbObject.USER:
-            return "USER";
-        case DbObject.DOMAIN:
-            return "DOMAIN";
-        default:
-            // not supported by parser, but required when trying to find a
-            // comment
-            return "type" + type;
+            case DbObject.CONSTANT:
+                return "CONSTANT";
+            case DbObject.CONSTRAINT:
+                return "CONSTRAINT";
+            case DbObject.FUNCTION_ALIAS:
+                return "ALIAS";
+            case DbObject.INDEX:
+                return "INDEX";
+            case DbObject.ROLE:
+                return "ROLE";
+            case DbObject.SCHEMA:
+                return "SCHEMA";
+            case DbObject.SEQUENCE:
+                return "SEQUENCE";
+            case DbObject.TABLE_OR_VIEW:
+                return "TABLE";
+            case DbObject.TRIGGER:
+                return "TRIGGER";
+            case DbObject.USER:
+                return "USER";
+            case DbObject.DOMAIN:
+                return "DOMAIN";
+            default:
+                // not supported by parser, but required when trying to find a
+                // comment
+                return "type" + type;
         }
     }
 

@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import org.h2.api.ErrorCode;
 import org.h2.message.DbException;
 import org.h2.server.Service;
@@ -304,74 +305,74 @@ public class PgServer implements Service {
     public static String formatType(int pgType) {
         int valueType;
         switch (pgType) {
-        case 0:
-            return "-";
-        case PG_TYPE_BOOL:
-            valueType = Value.BOOLEAN;
-            break;
-        case PG_TYPE_BYTEA:
-            valueType = Value.VARBINARY;
-            break;
-        case 18:
-            return "char";
-        case 19:
-            return "name";
-        case PG_TYPE_INT8:
-            valueType = Value.BIGINT;
-            break;
-        case PG_TYPE_INT2:
-            valueType = Value.SMALLINT;
-            break;
-        case 22:
-            return "int2vector";
-        case PG_TYPE_INT4:
-            valueType = Value.INTEGER;
-            break;
-        case 24:
-            return "regproc";
-        case PG_TYPE_TEXT:
-            valueType = Value.CLOB;
-            break;
-        case PG_TYPE_FLOAT4:
-            valueType = Value.REAL;
-            break;
-        case PG_TYPE_FLOAT8:
-            valueType = Value.DOUBLE;
-            break;
-        case PG_TYPE_INT2_ARRAY:
-            return "smallint[]";
-        case PG_TYPE_INT4_ARRAY:
-            return "integer[]";
-        case PG_TYPE_VARCHAR_ARRAY:
-            return "character varying[]";
-        case PG_TYPE_BPCHAR:
-            valueType = Value.CHAR;
-            break;
-        case PG_TYPE_VARCHAR:
-            valueType = Value.VARCHAR;
-            break;
-        case PG_TYPE_DATE:
-            valueType = Value.DATE;
-            break;
-        case PG_TYPE_TIME:
-            valueType = Value.TIME;
-            break;
-        case PG_TYPE_TIMETZ:
-            valueType = Value.TIME_TZ;
-            break;
-        case PG_TYPE_TIMESTAMP:
-            valueType = Value.TIMESTAMP;
-            break;
-        case PG_TYPE_TIMESTAMPTZ:
-            valueType = Value.TIMESTAMP_TZ;
-            break;
-        case PG_TYPE_NUMERIC:
-            valueType = Value.NUMERIC;
-            break;
-        case 2205:
-            return "regclass";
-        default:
-            return "???";
+            case 0:
+                return "-";
+            case PG_TYPE_BOOL:
+                valueType = Value.BOOLEAN;
+                break;
+            case PG_TYPE_BYTEA:
+                valueType = Value.VARBINARY;
+                break;
+            case 18:
+                return "char";
+            case 19:
+                return "name";
+            case PG_TYPE_INT8:
+                valueType = Value.BIGINT;
+                break;
+            case PG_TYPE_INT2:
+                valueType = Value.SMALLINT;
+                break;
+            case 22:
+                return "int2vector";
+            case PG_TYPE_INT4:
+                valueType = Value.INTEGER;
+                break;
+            case 24:
+                return "regproc";
+            case PG_TYPE_TEXT:
+                valueType = Value.CLOB;
+                break;
+            case PG_TYPE_FLOAT4:
+                valueType = Value.REAL;
+                break;
+            case PG_TYPE_FLOAT8:
+                valueType = Value.DOUBLE;
+                break;
+            case PG_TYPE_INT2_ARRAY:
+                return "smallint[]";
+            case PG_TYPE_INT4_ARRAY:
+                return "integer[]";
+            case PG_TYPE_VARCHAR_ARRAY:
+                return "character varying[]";
+            case PG_TYPE_BPCHAR:
+                valueType = Value.CHAR;
+                break;
+            case PG_TYPE_VARCHAR:
+                valueType = Value.VARCHAR;
+                break;
+            case PG_TYPE_DATE:
+                valueType = Value.DATE;
+                break;
+            case PG_TYPE_TIME:
+                valueType = Value.TIME;
+                break;
+            case PG_TYPE_TIMETZ:
+                valueType = Value.TIME_TZ;
+                break;
+            case PG_TYPE_TIMESTAMP:
+                valueType = Value.TIMESTAMP;
+                break;
+            case PG_TYPE_TIMESTAMPTZ:
+                valueType = Value.TIMESTAMP_TZ;
+                break;
+            case PG_TYPE_NUMERIC:
+                valueType = Value.NUMERIC;
+                break;
+            case 2205:
+                return "regclass";
+            default:
+                return "???";
         }
         return Value.getTypeName(valueType);
     }
@@ -384,56 +385,56 @@ public class PgServer implements Service {
      */
     public static int convertType(TypeInfo type) {
         switch (type.getValueType()) {
-        case Value.BOOLEAN:
-            return PG_TYPE_BOOL;
-        case Value.VARCHAR:
-            return PG_TYPE_VARCHAR;
-        case Value.NULL:
-        case Value.CLOB:
-            return PG_TYPE_TEXT;
-        case Value.CHAR:
-            return PG_TYPE_BPCHAR;
-        case Value.SMALLINT:
-            return PG_TYPE_INT2;
-        case Value.INTEGER:
-            return PG_TYPE_INT4;
-        case Value.BIGINT:
-            return PG_TYPE_INT8;
-        case Value.NUMERIC:
-        case Value.DECFLOAT:
-            return PG_TYPE_NUMERIC;
-        case Value.REAL:
-            return PG_TYPE_FLOAT4;
-        case Value.DOUBLE:
-            return PG_TYPE_FLOAT8;
-        case Value.TIME:
-            return PG_TYPE_TIME;
-        case Value.TIME_TZ:
-            return PG_TYPE_TIMETZ;
-        case Value.DATE:
-            return PG_TYPE_DATE;
-        case Value.TIMESTAMP:
-            return PG_TYPE_TIMESTAMP;
-        case Value.TIMESTAMP_TZ:
-            return PG_TYPE_TIMESTAMPTZ;
-        case Value.BINARY:
-        case Value.VARBINARY:
-            return PG_TYPE_BYTEA;
-        case Value.ARRAY: {
-            type = (TypeInfo) type.getExtTypeInfo();
-            switch (type.getValueType()) {
-            case Value.SMALLINT:
-                return PG_TYPE_INT2_ARRAY;
-            case Value.INTEGER:
-                return PG_TYPE_INT4_ARRAY;
+            case Value.BOOLEAN:
+                return PG_TYPE_BOOL;
             case Value.VARCHAR:
-                return PG_TYPE_VARCHAR_ARRAY;
-            default:
-                return PG_TYPE_VARCHAR_ARRAY;
+                return PG_TYPE_VARCHAR;
+            case Value.NULL:
+            case Value.CLOB:
+                return PG_TYPE_TEXT;
+            case Value.CHAR:
+                return PG_TYPE_BPCHAR;
+            case Value.SMALLINT:
+                return PG_TYPE_INT2;
+            case Value.INTEGER:
+                return PG_TYPE_INT4;
+            case Value.BIGINT:
+                return PG_TYPE_INT8;
+            case Value.NUMERIC:
+            case Value.DECFLOAT:
+                return PG_TYPE_NUMERIC;
+            case Value.REAL:
+                return PG_TYPE_FLOAT4;
+            case Value.DOUBLE:
+                return PG_TYPE_FLOAT8;
+            case Value.TIME:
+                return PG_TYPE_TIME;
+            case Value.TIME_TZ:
+                return PG_TYPE_TIMETZ;
+            case Value.DATE:
+                return PG_TYPE_DATE;
+            case Value.TIMESTAMP:
+                return PG_TYPE_TIMESTAMP;
+            case Value.TIMESTAMP_TZ:
+                return PG_TYPE_TIMESTAMPTZ;
+            case Value.BINARY:
+            case Value.VARBINARY:
+                return PG_TYPE_BYTEA;
+            case Value.ARRAY: {
+                type = (TypeInfo) type.getExtTypeInfo();
+                switch (type.getValueType()) {
+                    case Value.SMALLINT:
+                        return PG_TYPE_INT2_ARRAY;
+                    case Value.INTEGER:
+                        return PG_TYPE_INT4_ARRAY;
+                    case Value.VARCHAR:
+                        return PG_TYPE_VARCHAR_ARRAY;
+                    default:
+                        return PG_TYPE_VARCHAR_ARRAY;
+                }
             }
-        }
-        default:
-            return PG_TYPE_UNKNOWN;
+            default:
+                return PG_TYPE_UNKNOWN;
         }
     }
 

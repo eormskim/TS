@@ -43,8 +43,9 @@ public final class JdbcXid extends TraceObject implements Xid {
 
     /**
      * INTERNAL
+     *
      * @param builder to put result into
-     * @param xid to provide string representation for
+     * @param xid     to provide string representation for
      * @return provided StringBuilder
      */
     static StringBuilder toString(StringBuilder builder, Xid xid) {

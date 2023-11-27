@@ -130,7 +130,7 @@ public class PerfectHash {
     /**
      * Generate the perfect hash function data from the given set of integers.
      *
-     * @param list the set
+     * @param list    the set
      * @param minimal whether the perfect hash function needs to be minimal
      * @return the data
      */
@@ -141,7 +141,7 @@ public class PerfectHash {
     }
 
     private static void generate(Collection<Integer> set, int level,
-            boolean minimal, ByteArrayOutputStream out) {
+                                 boolean minimal, ByteArrayOutputStream out) {
         int size = set.size();
         if (size <= 1) {
             out.write(size);
@@ -197,10 +197,10 @@ public class PerfectHash {
      * Calculate the hash of a key. The result depends on the key, the recursion
      * level, and the offset.
      *
-     * @param x the key
-     * @param level the recursion level
+     * @param x      the key
+     * @param level  the recursion level
      * @param offset the index of the hash function
-     * @param size the size of the bucket
+     * @param size   the size of the bucket
      * @return the hash (a value between 0, including, and the size, excluding)
      */
     private static int hash(int x, int level, int offset, int size) {

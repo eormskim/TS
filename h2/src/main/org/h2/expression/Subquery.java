@@ -60,8 +60,7 @@ public final class Subquery extends Expression {
     /**
      * Evaluates and returns all rows of the subquery.
      *
-     * @param session
-     *            the session
+     * @param session the session
      * @return values in all rows
      */
     public ArrayList<Value> getAllRows(SessionLocal session) {

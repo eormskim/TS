@@ -12,6 +12,7 @@ import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.Random;
+
 import org.h2.api.Aggregate;
 import org.h2.api.ErrorCode;
 import org.h2.message.DbException;
@@ -125,7 +126,7 @@ public class TestSpatial extends TestDb {
         Point p2 = factory.createPoint(c2);
         Point p3 = factory.createPoint(c3);
         try {
-            ValueGeometry.getFromGeometry(new MultiPoint(new Point[] { p2, p3 }, factory));
+            ValueGeometry.getFromGeometry(new MultiPoint(new Point[]{p2, p3}, factory));
             fail("Expected exception");
         } catch (DbException e) {
             assertEquals(ErrorCode.DATA_CONVERSION_ERROR_1, e.getErrorCode());
@@ -161,11 +162,11 @@ public class TestSpatial extends TestDb {
         assertEquals(1, rs.getInt(1));
         assertEquals("POLYGON ((1 1, 1 2, 2 2, 1 1))", rs.getString(2));
         GeometryFactory f = new GeometryFactory();
-        Polygon polygon = f.createPolygon(new Coordinate[] {
+        Polygon polygon = f.createPolygon(new Coordinate[]{
                 new Coordinate(1, 1),
                 new Coordinate(1, 2),
                 new Coordinate(2, 2),
-                new Coordinate(1, 1) });
+                new Coordinate(1, 1)});
         assertTrue(polygon.equals(rs.getObject(2)));
         rs.close();
         rs = stat.executeQuery("select id, cast(polygon as varchar) from test");
@@ -193,16 +194,16 @@ public class TestSpatial extends TestDb {
      * Generate a random line string under the given bounding box.
      *
      * @param geometryRand the random generator
-     * @param minX Bounding box min x
-     * @param maxX Bounding box max x
-     * @param minY Bounding box min y
-     * @param maxY Bounding box max y
-     * @param maxLength LineString maximum length
+     * @param minX         Bounding box min x
+     * @param maxX         Bounding box max x
+     * @param minY         Bounding box min y
+     * @param maxY         Bounding box max y
+     * @param maxLength    LineString maximum length
      * @return A segment within this bounding box
      */
     static Geometry getRandomGeometry(Random geometryRand,
-            double minX, double maxX,
-            double minY, double maxY, double maxLength) {
+                                      double minX, double maxX,
+                                      double minY, double maxY, double maxLength) {
         GeometryFactory factory = new GeometryFactory();
         // Create the start point
         Coordinate start = new Coordinate(
@@ -216,7 +217,7 @@ public class TestSpatial extends TestDb {
         Coordinate end = new Coordinate(
                 start.x + Math.cos(angle) * length,
                 start.y + Math.sin(angle) * length);
-        return factory.createLineString(new Coordinate[] { start, end });
+        return factory.createLineString(new Coordinate[]{start, end});
     }
 
     private void testOverlap() throws SQLException {
@@ -234,13 +235,14 @@ public class TestSpatial extends TestDb {
 
             ResultSet rs = stat.executeQuery(
                     "select * from test " +
-                    "where poly && 'POINT (1.5 1.5)'::Geometry");
+                            "where poly && 'POINT (1.5 1.5)'::Geometry");
             assertTrue(rs.next());
             assertEquals(1, rs.getInt("id"));
             assertFalse(rs.next());
             stat.execute("drop table test");
         }
     }
+
     private void testPersistentSpatialIndex() throws SQLException {
         deleteDb("spatial");
         try (Connection conn = getConnection(URL)) {
@@ -259,7 +261,7 @@ public class TestSpatial extends TestDb {
 
             ResultSet rs = stat.executeQuery(
                     "select * from test " +
-                    "where poly && 'POINT (1.5 1.5)'::Geometry");
+                            "where poly && 'POINT (1.5 1.5)'::Geometry");
             assertTrue(rs.next());
             assertEquals(1, rs.getInt("id"));
             assertFalse(rs.next());
@@ -268,8 +270,8 @@ public class TestSpatial extends TestDb {
             // Test with multiple operator
             rs = stat.executeQuery(
                     "select * from test " +
-                    "where poly && 'POINT (1.5 1.5)'::Geometry " +
-                    "AND poly && 'POINT (1.7 1.75)'::Geometry");
+                            "where poly && 'POINT (1.5 1.5)'::Geometry " +
+                            "AND poly && 'POINT (1.7 1.75)'::Geometry");
             assertTrue(rs.next());
             assertEquals(1, rs.getInt("id"));
             assertFalse(rs.next());
@@ -284,7 +286,7 @@ public class TestSpatial extends TestDb {
             Statement stat = conn.createStatement();
             ResultSet rs = stat.executeQuery(
                     "select * from test " +
-                    "where poly && 'POINT (1.5 1.5)'::Geometry");
+                            "where poly && 'POINT (1.5 1.5)'::Geometry");
             assertTrue(rs.next());
             assertEquals(1, rs.getInt("id"));
             assertFalse(rs.next());
@@ -309,7 +311,7 @@ public class TestSpatial extends TestDb {
 
             ResultSet rs = stat.executeQuery(
                     "select * from test " +
-                    "where NOT poly && 'POINT (1.5 1.5)'::Geometry");
+                            "where NOT poly && 'POINT (1.5 1.5)'::Geometry");
             assertTrue(rs.next());
             assertEquals(3, rs.getInt("id"));
             assertTrue(rs.next());
@@ -319,7 +321,7 @@ public class TestSpatial extends TestDb {
         }
     }
 
-    private static void createTestTable(Statement stat)  throws SQLException {
+    private static void createTestTable(Statement stat) throws SQLException {
         stat.execute("create table area(idArea int primary key, the_geom geometry)");
         stat.execute("create spatial index on area(the_geom)");
         stat.execute("insert into area values(1, " +
@@ -375,12 +377,13 @@ public class TestSpatial extends TestDb {
         }
         deleteDb("spatial");
     }
+
     private void testRoadAndArea(Statement stat) throws SQLException {
         ResultSet rs = stat.executeQuery(
                 "select idArea, COUNT(idRoad) roadCount " +
-                "from area, roads " +
-                "where area.the_geom && roads.the_geom " +
-                "GROUP BY idArea ORDER BY idArea");
+                        "from area, roads " +
+                        "where area.the_geom && roads.the_geom " +
+                        "GROUP BY idArea ORDER BY idArea");
         assertTrue(rs.next());
         assertEquals(1, rs.getInt("idArea"));
         assertEquals(3, rs.getInt("roadCount"));
@@ -402,6 +405,7 @@ public class TestSpatial extends TestDb {
         assertFalse(rs.next());
         rs.close();
     }
+
     private void testIndexTransaction() throws SQLException {
         // Check session management in index
         deleteDb("spatial");
@@ -416,9 +420,9 @@ public class TestSpatial extends TestDb {
             // Check if index is updated
             ResultSet rs = stat.executeQuery(
                     "select idArea, COUNT(idRoad) roadCount " +
-                    "from area, roads " +
-                    "where area.the_geom && roads.the_geom " +
-                    "GROUP BY idArea ORDER BY idArea");
+                            "from area, roads " +
+                            "where area.the_geom && roads.the_geom " +
+                            "GROUP BY idArea ORDER BY idArea");
             assertTrue(rs.next());
             assertEquals(1, rs.getInt("idArea"));
             assertEquals(3, rs.getInt("roadCount"));
@@ -467,7 +471,7 @@ public class TestSpatial extends TestDb {
 
         rs = stat.executeQuery(
                 "explain select * from test " +
-                "where polygon && 'POLYGON ((1 1, 1 2, 2 2, 1 1))'::Geometry");
+                        "where polygon && 'POLYGON ((1 1, 1 2, 2 2, 1 1))'::Geometry");
         rs.next();
         assertContains(rs.getString(1), "/* PUBLIC.IDX_TEST_POLYGON: POLYGON &&");
 
@@ -488,17 +492,17 @@ public class TestSpatial extends TestDb {
 
         rs = stat.executeQuery(
                 "select * from test " +
-                "where intersects(polygon, 'POLYGON ((1 1, 1 2, 2 2, 1 1))')");
+                        "where intersects(polygon, 'POLYGON ((1 1, 1 2, 2 2, 1 1))')");
         assertTrue(rs.next());
 
         rs = stat.executeQuery(
                 "select * from test " +
-                "where intersects(polygon, 'POINT (1 1)')");
+                        "where intersects(polygon, 'POINT (1 1)')");
         assertTrue(rs.next());
 
         rs = stat.executeQuery(
                 "select * from test " +
-                "where intersects(polygon, 'POINT (0 0)')");
+                        "where intersects(polygon, 'POINT (0 0)')");
         assertFalse(rs.next());
 
         stat.execute("drop table test");
@@ -539,7 +543,7 @@ public class TestSpatial extends TestDb {
                     TestSpatial.class.getName() + ".getRandomGeometryTable'");
             stat.execute(
                     "create table test as " +
-                    "select * from T_RANDOM_GEOM_TABLE(42,20,-100,100,-100,100,4)");
+                            "select * from T_RANDOM_GEOM_TABLE(42,20,-100,100,-100,100,4)");
             stat.execute("DROP ALIAS T_RANDOM_GEOM_TABLE");
             ResultSet rs = stat.executeQuery("select count(*) from test");
             assertTrue(rs.next());
@@ -552,12 +556,12 @@ public class TestSpatial extends TestDb {
      * Generate a result set with random geometry data.
      * Used as an ALIAS function.
      *
-     * @param seed the random seed
-     * @param rowCount the number of rows
-     * @param minX the smallest x
-     * @param maxX the largest x
-     * @param minY the smallest y
-     * @param maxY the largest y
+     * @param seed      the random seed
+     * @param rowCount  the number of rows
+     * @param minX      the smallest x
+     * @param maxX      the largest x
+     * @param minY      the smallest y
+     * @param maxY      the largest y
      * @param maxLength the maximum length
      * @return a result set
      */
@@ -574,9 +578,9 @@ public class TestSpatial extends TestDb {
             @Override
             public Object[] readRow() throws SQLException {
                 if (currentRow++ < rowCount) {
-                    return new Object[] {
+                    return new Object[]{
                             getRandomGeometry(random,
-                                    minX, maxX, minY, maxY, maxLength) };
+                                    minX, maxX, minY, maxY, maxLength)};
                 }
                 return null;
             }
@@ -923,8 +927,8 @@ public class TestSpatial extends TestDb {
             stat.execute("drop table if exists pt_cloud;");
             stat.execute("CREATE TABLE PT_CLOUD(id serial, the_geom geometry)");
             stat.execute("INSERT INTO PT_CLOUD(the_geom) " +
-                "SELECT 'POINT(' || A.X || ' ' || B.X || ')' " +
-                "from system_range(0,120) A,system_range(0,10) B;");
+                    "SELECT 'POINT(' || A.X || ' ' || B.X || ')' " +
+                    "from system_range(0,120) A,system_range(0,10) B;");
             stat.execute("create spatial index on pt_cloud(the_geom);");
             try (ResultSet rs = stat.executeQuery(
                     "explain select * from  PT_CLOUD " +
@@ -988,8 +992,8 @@ public class TestSpatial extends TestDb {
 
         rs = stat.executeQuery(
                 "select * from test " +
-                "where intersects(the_geom, " +
-                "'POLYGON ((1000 1000, 1000 2000, 2000 2000, 1000 1000))')");
+                        "where intersects(the_geom, " +
+                        "'POLYGON ((1000 1000, 1000 2000, 2000 2000, 1000 1000))')");
 
         conn.close();
         if (!config.memory) {
@@ -1057,7 +1061,7 @@ public class TestSpatial extends TestDb {
                 + "(id int primary key, the_geom geometry, description varchar2(32))");
         stat.execute("create spatial index on test(the_geom)");
         for (int i = 0; i < 1000; i++) {
-            stat.execute("insert into test values("+ (i + 1) +", null, null)");
+            stat.execute("insert into test values(" + (i + 1) + ", null, null)");
         }
         ResultSet rs = stat.executeQuery("select * from test");
         assertTrue(rs.next());
@@ -1113,73 +1117,73 @@ public class TestSpatial extends TestDb {
         try (Connection conn = getConnection(URL)) {
             Statement stat = conn.createStatement();
             stat.execute("\n" +
-                "drop table if exists PUBLIC.DUMMY_12;\n" +
-                "CREATE TABLE PUBLIC.DUMMY_12 (\n" +
-                "    \"fid\" serial,\n" +
-                "    Z_ID INTEGER,\n" +
-                "    GEOM GEOMETRY,\n" +
-                "    CONSTRAINT CONSTRAINT_DUMMY_12 PRIMARY KEY (\"fid\")\n" +
-                ");\n" +
-                "CREATE INDEX PRIMARY_KEY_DUMMY_12 ON PUBLIC.DUMMY_12 (\"fid\");\n" +
-                "CREATE spatial INDEX PUBLIC_DUMMY_12_SPATIAL_INDEX_ ON PUBLIC.DUMMY_12 (GEOM);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (123,3125163,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (124,3125164,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (125,3125173,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (126,3125174,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (127,3125175,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (128,3125176,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (129,3125177,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (130,3125178,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (131,3125179,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (132,3125180,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (133,3125335,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (134,3125336,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (135,3125165,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (136,3125337,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (137,3125338,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (138,3125339,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (139,3125340,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (140,3125341,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (141,3125342,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (142,3125343,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (143,3125344,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (144,3125345,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (145,3125346,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (146,3125166,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (147,3125347,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (148,3125348,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (149,3125349,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (150,3125350,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (151,3125351,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (152,3125352,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (153,3125353,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (154,3125354,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (155,3125355,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (156,3125356,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (157,3125167,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (158,3125357,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (159,3125358,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (160,3125359,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (161,3125360,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (162,3125361,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (163,3125362,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (164,3125363,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (165,3125364,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (166,3125365,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (167,3125366,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (168,3125168,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (169,3125367,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (170,3125368,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (171,3125369,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (172,3125370,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (173,3125169,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (174,3125170,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (175,3125171,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (176,3125172,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (177,-2,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (178,-1,NULL);\n" +
-                "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (179," +
-                "-1,NULL);");
+                    "drop table if exists PUBLIC.DUMMY_12;\n" +
+                    "CREATE TABLE PUBLIC.DUMMY_12 (\n" +
+                    "    \"fid\" serial,\n" +
+                    "    Z_ID INTEGER,\n" +
+                    "    GEOM GEOMETRY,\n" +
+                    "    CONSTRAINT CONSTRAINT_DUMMY_12 PRIMARY KEY (\"fid\")\n" +
+                    ");\n" +
+                    "CREATE INDEX PRIMARY_KEY_DUMMY_12 ON PUBLIC.DUMMY_12 (\"fid\");\n" +
+                    "CREATE spatial INDEX PUBLIC_DUMMY_12_SPATIAL_INDEX_ ON PUBLIC.DUMMY_12 (GEOM);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (123,3125163,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (124,3125164,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (125,3125173,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (126,3125174,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (127,3125175,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (128,3125176,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (129,3125177,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (130,3125178,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (131,3125179,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (132,3125180,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (133,3125335,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (134,3125336,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (135,3125165,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (136,3125337,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (137,3125338,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (138,3125339,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (139,3125340,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (140,3125341,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (141,3125342,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (142,3125343,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (143,3125344,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (144,3125345,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (145,3125346,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (146,3125166,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (147,3125347,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (148,3125348,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (149,3125349,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (150,3125350,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (151,3125351,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (152,3125352,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (153,3125353,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (154,3125354,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (155,3125355,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (156,3125356,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (157,3125167,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (158,3125357,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (159,3125358,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (160,3125359,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (161,3125360,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (162,3125361,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (163,3125362,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (164,3125363,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (165,3125364,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (166,3125365,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (167,3125366,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (168,3125168,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (169,3125367,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (170,3125368,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (171,3125369,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (172,3125370,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (173,3125169,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (174,3125170,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (175,3125171,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (176,3125172,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (177,-2,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (178,-1,NULL);\n" +
+                    "INSERT INTO PUBLIC.DUMMY_12 (\"fid\",Z_ID,GEOM) VALUES (179," +
+                    "-1,NULL);");
             try (ResultSet rs = stat.executeQuery("select * from DUMMY_12")) {
                 assertTrue(rs.next());
             }

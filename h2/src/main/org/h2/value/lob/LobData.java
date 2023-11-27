@@ -20,6 +20,7 @@ public abstract class LobData {
 
     /**
      * Get stream to read LOB data from
+     *
      * @param precision octet length of the stream, or -1 if unknown
      * @return stream to read LOB data from
      */
@@ -36,6 +37,7 @@ public abstract class LobData {
     /**
      * Remove the underlying resource, if any. For values that are kept fully in
      * memory this method has no effect.
+     *
      * @param value to remove
      */
     public void remove(ValueLob value) {

@@ -73,7 +73,7 @@ public class TestViewDropView extends TestDb {
         if (dropRestrict) {
             // should fail because have dependencies
             assertThrows(ErrorCode.CANNOT_DROP_2, stat).
-                execute("drop view v1");
+                    execute("drop view v1");
         } else {
             stat.execute("drop view v1");
             checkViewRemainsValid();
@@ -84,7 +84,7 @@ public class TestViewDropView extends TestDb {
         createTestData();
         // should fail because have dependencies
         assertThrows(ErrorCode.CANNOT_DROP_2, stat).
-            execute("drop view v1 restrict");
+                execute("drop view v1 restrict");
         checkViewRemainsValid();
     }
 

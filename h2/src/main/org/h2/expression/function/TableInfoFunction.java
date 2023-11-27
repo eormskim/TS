@@ -50,27 +50,28 @@ public final class TableInfoFunction extends Function1_2 {
     @Override
     public Value getValue(SessionLocal session, Value v1, Value v2) {
         Table table = new Parser(session).parseTableName(v1.getString());
-        l: switch (function) {
-        case DISK_SPACE_USED:
-            v1 = ValueBigint.get(table.getDiskSpaceUsed());
-            break;
-        case ESTIMATED_ENVELOPE: {
-            Column column = table.getColumn(v2.getString());
-            ArrayList<Index> indexes = table.getIndexes();
-            if (indexes != null) {
-                for (int i = 1, size = indexes.size(); i < size; i++) {
-                    Index index = indexes.get(i);
-                    if (index instanceof MVSpatialIndex && index.isFirstColumn(column)) {
-                        v1 = ((MVSpatialIndex) index).getEstimatedBounds(session);
-                        break l;
+        l:
+        switch (function) {
+            case DISK_SPACE_USED:
+                v1 = ValueBigint.get(table.getDiskSpaceUsed());
+                break;
+            case ESTIMATED_ENVELOPE: {
+                Column column = table.getColumn(v2.getString());
+                ArrayList<Index> indexes = table.getIndexes();
+                if (indexes != null) {
+                    for (int i = 1, size = indexes.size(); i < size; i++) {
+                        Index index = indexes.get(i);
+                        if (index instanceof MVSpatialIndex && index.isFirstColumn(column)) {
+                            v1 = ((MVSpatialIndex) index).getEstimatedBounds(session);
+                            break l;
+                        }
                     }
                 }
+                v1 = ValueNull.INSTANCE;
+                break;
             }
-            v1 = ValueNull.INSTANCE;
-            break;
-        }
-        default:
-            throw DbException.getInternalError("function=" + function);
+            default:
+                throw DbException.getInternalError("function=" + function);
         }
         return v1;
     }
@@ -82,14 +83,14 @@ public final class TableInfoFunction extends Function1_2 {
             right = right.optimize(session);
         }
         switch (function) {
-        case DISK_SPACE_USED:
-            type = TypeInfo.TYPE_BIGINT;
-            break;
-        case ESTIMATED_ENVELOPE:
-            type = TypeInfo.TYPE_GEOMETRY;
-            break;
-        default:
-            throw DbException.getInternalError("function=" + function);
+            case DISK_SPACE_USED:
+                type = TypeInfo.TYPE_BIGINT;
+                break;
+            case ESTIMATED_ENVELOPE:
+                type = TypeInfo.TYPE_GEOMETRY;
+                break;
+            default:
+                throw DbException.getInternalError("function=" + function);
         }
         return this;
     }
@@ -97,8 +98,8 @@ public final class TableInfoFunction extends Function1_2 {
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-        case ExpressionVisitor.DETERMINISTIC:
-            return false;
+            case ExpressionVisitor.DETERMINISTIC:
+                return false;
         }
         return super.isEverything(visitor);
     }

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+
 import org.h2.message.DbException;
 import org.h2.mvstore.DataUtils;
 import org.h2.store.fs.FileBaseDefault;
@@ -26,7 +27,7 @@ class FileSplit extends FileBaseDefault {
     private volatile long length;
 
     FileSplit(FilePathSplit file, String mode, FileChannel[] list, long length,
-            long maxLength) {
+              long maxLength) {
         this.filePath = file;
         this.mode = mode;
         this.list = list;
@@ -144,7 +145,7 @@ class FileSplit extends FileBaseDefault {
 
     @Override
     public synchronized FileLock tryLock(long position, long size,
-            boolean shared) throws IOException {
+                                         boolean shared) throws IOException {
         return list[0].tryLock(position, size, shared);
     }
 

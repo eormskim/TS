@@ -79,7 +79,7 @@ public class ParameterRemote implements ParameterInterface {
      * Write the parameter meta data to the transfer object.
      *
      * @param transfer the transfer object
-     * @param p the parameter
+     * @param p        the parameter
      * @throws IOException on failure
      */
     public static void writeMetaData(Transfer transfer, ParameterInterface p) throws IOException {

@@ -29,10 +29,11 @@ public final class JdbcClob extends JdbcLob implements NClob {
 
     /**
      * INTERNAL
-     * @param conn it belongs to
+     *
+     * @param conn  it belongs to
      * @param value of
      * @param state of the LOB
-     * @param id of the trace object
+     * @param id    of the trace object
      */
     public JdbcClob(JdbcConnection conn, Value value, State state, int id) {
         super(conn, value, state, TraceObject.CLOB, id);
@@ -128,7 +129,7 @@ public final class JdbcClob extends JdbcLob implements NClob {
     /**
      * Returns a substring.
      *
-     * @param pos the position (the first character is at position 1)
+     * @param pos    the position (the first character is at position 1)
      * @param length the number of characters
      * @return the string
      */
@@ -191,10 +192,10 @@ public final class JdbcClob extends JdbcLob implements NClob {
      * were created with Connection.createClob() or createNClob(). The position
      * must be 1, meaning the whole Clob data is set.
      *
-     * @param pos where to start writing (the first character is at position 1)
-     * @param str the string to add
+     * @param pos    where to start writing (the first character is at position 1)
+     * @param str    the string to add
      * @param offset the string offset
-     * @param len the number of characters to read
+     * @param len    the number of characters to read
      * @return the length of the added text
      */
     @Override
@@ -236,7 +237,7 @@ public final class JdbcClob extends JdbcLob implements NClob {
     /**
      * Returns the reader, starting from an offset.
      *
-     * @param pos 1-based offset
+     * @param pos    1-based offset
      * @param length length of requested area
      * @return the reader
      */

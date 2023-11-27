@@ -12,6 +12,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.h2.store.fs.disk.FilePathDisk;
 import org.h2.util.MathUtils;
 
@@ -42,7 +43,7 @@ public abstract class FilePath {
     static {
         FilePath def = null;
         ConcurrentHashMap<String, FilePath> map = new ConcurrentHashMap<>();
-        for (String c : new String[] {
+        for (String c : new String[]{
                 "org.h2.store.fs.disk.FilePathDisk",
                 "org.h2.store.fs.mem.FilePathMem",
                 "org.h2.store.fs.mem.FilePathMemLZF",
@@ -123,9 +124,9 @@ public abstract class FilePath {
     /**
      * Rename a file if this is allowed.
      *
-     * @param newName the new fully qualified file name
+     * @param newName       the new fully qualified file name
      * @param atomicReplace whether the move should be atomic, and the target
-     *            file should be replaced if it exists and replacing is possible
+     *                      file should be replaced if it exists and replacing is possible
      */
     public abstract void moveTo(FilePath newName, boolean atomicReplace);
 
@@ -217,7 +218,7 @@ public abstract class FilePath {
      * Create an output stream to write into the file.
      *
      * @param append if true, the file will grow, if false, the file will be
-     *            truncated first
+     *               truncated first
      * @return the output stream
      * @throws IOException If an I/O error occurs
      */
@@ -229,7 +230,7 @@ public abstract class FilePath {
      * Create a new output stream from the channel.
      *
      * @param channel the file channel
-     * @param append true for append mode, false for truncate and overwrite
+     * @param append  true for append mode, false for truncate and overwrite
      * @return the output stream
      * @throws IOException on I/O exception
      */
@@ -273,7 +274,7 @@ public abstract class FilePath {
     /**
      * Create a new temporary file.
      *
-     * @param suffix the suffix
+     * @param suffix    the suffix
      * @param inTempDir if the file should be stored in the temporary directory
      * @return the name of the created file
      * @throws IOException on failure

@@ -11,6 +11,7 @@ import java.sql.DriverPropertyInfo;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Logger;
+
 import org.h2.api.ErrorCode;
 import org.h2.engine.Constants;
 import org.h2.jdbc.JdbcConnection;
@@ -46,7 +47,7 @@ public class Driver implements java.sql.Driver, JdbcDriverBackwardsCompat {
      * This method should not be called by an application.
      * Instead, the method DriverManager.getConnection should be used.
      *
-     * @param url the database URL
+     * @param url  the database URL
      * @param info the connection properties
      * @return the new connection or null if the URL is not supported
      * @throws SQLException on connection exception or if URL is {@code null}
@@ -111,7 +112,7 @@ public class Driver implements java.sql.Driver, JdbcDriverBackwardsCompat {
      * Get the list of supported properties.
      * This method should not be called by an application.
      *
-     * @param url the database URL
+     * @param url  the database URL
      * @param info the connection properties
      * @return a zero length array
      */
@@ -141,6 +142,7 @@ public class Driver implements java.sql.Driver, JdbcDriverBackwardsCompat {
 
     /**
      * INTERNAL
+     *
      * @return instance of the driver registered with the DriverManager
      */
     public static synchronized Driver load() {
@@ -173,6 +175,7 @@ public class Driver implements java.sql.Driver, JdbcDriverBackwardsCompat {
      * INTERNAL
      * Sets, on a per-thread basis, the default-connection for
      * user-defined functions.
+     *
      * @param c to set default to
      */
     public static void setDefaultConnection(Connection c) {
@@ -185,6 +188,7 @@ public class Driver implements java.sql.Driver, JdbcDriverBackwardsCompat {
 
     /**
      * INTERNAL
+     *
      * @param thread to set context class loader for
      */
     public static void setThreadContextClassLoader(Thread thread) {

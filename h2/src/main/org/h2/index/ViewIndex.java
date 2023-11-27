@@ -55,13 +55,13 @@ public class ViewIndex extends Index implements SpatialIndex {
     /**
      * Constructor for the original index in {@link TableView}.
      *
-     * @param view the table view
-     * @param querySQL the query SQL
+     * @param view               the table view
+     * @param querySQL           the query SQL
      * @param originalParameters the original parameters
-     * @param recursive if the view is recursive
+     * @param recursive          if the view is recursive
      */
     public ViewIndex(TableView view, String querySQL,
-            ArrayList<Parameter> originalParameters, boolean recursive) {
+                     ArrayList<Parameter> originalParameters, boolean recursive) {
         super(view, 0, null, null, 0, IndexType.createNonUnique(false));
         this.view = view;
         this.querySQL = querySQL;
@@ -79,16 +79,16 @@ public class ViewIndex extends Index implements SpatialIndex {
      * Constructor for plan item generation. Over this index the query will be
      * executed.
      *
-     * @param view the table view
-     * @param index the view index
-     * @param session the session
-     * @param masks the masks
-     * @param filters table filters
-     * @param filter current filter
+     * @param view      the table view
+     * @param index     the view index
+     * @param session   the session
+     * @param masks     the masks
+     * @param filters   table filters
+     * @param filter    current filter
      * @param sortOrder sort order
      */
     public ViewIndex(TableView view, ViewIndex index, SessionLocal session,
-            int[] masks, TableFilter[] filters, int filter, SortOrder sortOrder) {
+                     int[] masks, TableFilter[] filters, int filter, SortOrder sortOrder) {
         super(view, 0, null, null, 0, IndexType.createNonUnique(false));
         this.view = view;
         this.querySQL = index.querySQL;
@@ -143,8 +143,8 @@ public class ViewIndex extends Index implements SpatialIndex {
 
     @Override
     public double getCost(SessionLocal session, int[] masks,
-            TableFilter[] filters, int filter, SortOrder sortOrder,
-            AllColumnsForPlan allColumnsSet) {
+                          TableFilter[] filters, int filter, SortOrder sortOrder,
+                          AllColumnsForPlan allColumnsSet) {
         return recursive ? 1000 : query.getCost();
     }
 
@@ -216,13 +216,13 @@ public class ViewIndex extends Index implements SpatialIndex {
     /**
      * Set the query parameters.
      *
-     * @param session the session
-     * @param first the lower bound
-     * @param last the upper bound
+     * @param session      the session
+     * @param first        the lower bound
+     * @param last         the upper bound
      * @param intersection the intersection
      */
     public void setupQueryParameters(SessionLocal session, SearchRow first, SearchRow last,
-            SearchRow intersection) {
+                                     SearchRow intersection) {
         ArrayList<Parameter> paramList = query.getParameters();
         if (originalParameters != null) {
             for (Parameter orig : originalParameters) {
@@ -262,7 +262,7 @@ public class ViewIndex extends Index implements SpatialIndex {
     }
 
     private Cursor find(SessionLocal session, SearchRow first, SearchRow last,
-            SearchRow intersection) {
+                        SearchRow intersection) {
         if (recursive) {
             return findRecursive(first, last);
         }
@@ -272,7 +272,7 @@ public class ViewIndex extends Index implements SpatialIndex {
     }
 
     private static void setParameter(ArrayList<Parameter> paramList, int x,
-            Value v) {
+                                     Value v) {
         if (x >= paramList.size()) {
             // the parameter may be optimized away as in
             // select * from (select null as x) where x=1;
@@ -316,7 +316,7 @@ public class ViewIndex extends Index implements SpatialIndex {
         }
         int len = paramColumnIndex.size();
         ArrayList<Column> columnList = new ArrayList<>(len);
-        for (int i = 0; i < len;) {
+        for (int i = 0; i < len; ) {
             int idx = paramColumnIndex.get(i);
             columnList.add(table.getColumn(idx));
             int mask = masks[idx];

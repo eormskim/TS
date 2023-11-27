@@ -68,12 +68,10 @@ public abstract class OperationN extends Expression implements ExpressionWithVar
     /**
      * Optimizes arguments.
      *
-     * @param session
-     *            the session
-     * @param allConst
-     *            whether operation is deterministic
+     * @param session  the session
+     * @param allConst whether operation is deterministic
      * @return whether operation is deterministic and all arguments are
-     *         constants
+     * constants
      */
     protected boolean optimizeArguments(SessionLocal session, boolean allConst) {
         for (int i = 0, l = args.length; i < l; i++) {

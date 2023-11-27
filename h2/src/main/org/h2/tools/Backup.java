@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
 import org.h2.command.dml.BackupCommand;
 import org.h2.engine.Constants;
 import org.h2.message.DbException;
@@ -23,7 +24,7 @@ import org.h2.util.Tool;
 
 /**
  * Creates a backup of a database.
- *
+ * <p>
  * This tool copies all database files. The database must be closed before using
  * this tool. To create a backup while the database is in use, run the BACKUP
  * SQL statement. In an emergency, for example if the application is not
@@ -90,14 +91,14 @@ public class Backup extends Tool {
      * Backs up database files.
      *
      * @param zipFileName the name of the target backup file (including path)
-     * @param directory the source directory name
-     * @param db the source database name (null if there is only one database,
-     *            and empty string to backup all files in this directory)
-     * @param quiet don't print progress information
+     * @param directory   the source directory name
+     * @param db          the source database name (null if there is only one database,
+     *                    and empty string to backup all files in this directory)
+     * @param quiet       don't print progress information
      * @throws SQLException on failure
      */
     public static void execute(String zipFileName, String directory, String db,
-            boolean quiet) throws SQLException {
+                               boolean quiet) throws SQLException {
         try {
             new Backup().process(zipFileName, directory, db, quiet);
         } catch (Exception e) {
@@ -106,7 +107,7 @@ public class Backup extends Tool {
     }
 
     private void process(String zipFileName, String directory, String db,
-            boolean quiet) throws SQLException {
+                         boolean quiet) throws SQLException {
         List<String> list;
         boolean allFiles = db != null && db.isEmpty();
         if (allFiles) {

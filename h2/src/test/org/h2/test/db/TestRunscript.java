@@ -179,7 +179,7 @@ public class TestRunscript extends TestDb implements Trigger {
         rs = stat.getResultSet();
         while (rs.next()) {
             assertFalse("The function alias 'int_decode' " +
-                    "should not be present in the script",
+                            "should not be present in the script",
                     rs.getString(1).contains("int_decode".toUpperCase()));
         }
         rs.close();
@@ -202,7 +202,7 @@ public class TestRunscript extends TestDb implements Trigger {
         rs = stat.getResultSet();
         while (rs.next()) {
             assertFalse("The constant 'default_email' " +
-                    "should not be present in the script",
+                            "should not be present in the script",
                     rs.getString(1).contains("default_email".toUpperCase()));
         }
         rs.close();
@@ -245,7 +245,7 @@ public class TestRunscript extends TestDb implements Trigger {
         rs = stat.getResultSet();
         while (rs.next()) {
             assertFalse("The sequence 'unique_constraint' " +
-                    "should not be present in the script",
+                            "should not be present in the script",
                     rs.getString(1).contains("unique_constraint".toUpperCase()));
         }
         rs.close();
@@ -254,7 +254,7 @@ public class TestRunscript extends TestDb implements Trigger {
         rs = stat.getResultSet();
         while (rs.next()) {
             assertFalse("The sequence 'unique_constraint' " +
-                    "should not be present in the script",
+                            "should not be present in the script",
                     rs.getString(1).contains("unique_constraint".toUpperCase()));
         }
         rs.close();
@@ -349,8 +349,8 @@ public class TestRunscript extends TestDb implements Trigger {
         final Statement stat = conn.createStatement();
         stat.execute("create table test(id int primary key) as " +
                 "select x from system_range(1, 20000)");
-        stat.execute("script simple drop to '"+
-                getBaseDir()+"/backup.sql'");
+        stat.execute("script simple drop to '" +
+                getBaseDir() + "/backup.sql'");
         stat.execute("set throttle 1000");
         // need to wait a bit (throttle is only used every 50 ms)
         Thread.sleep(200);
@@ -359,7 +359,7 @@ public class TestRunscript extends TestDb implements Trigger {
         task = new Task() {
             @Override
             public void call() throws SQLException {
-                stat.execute("script simple drop to '"+dir+"/backup2.sql'");
+                stat.execute("script simple drop to '" + dir + "/backup2.sql'");
             }
         };
         task.execute();
@@ -376,7 +376,7 @@ public class TestRunscript extends TestDb implements Trigger {
         task = new Task() {
             @Override
             public void call() throws SQLException {
-                stat.execute("runscript from '"+dir+"/backup.sql'");
+                stat.execute("runscript from '" + dir + "/backup.sql'");
             }
         };
         task.execute();
@@ -398,17 +398,17 @@ public class TestRunscript extends TestDb implements Trigger {
         conn = getConnection("runscript");
         stat = conn.createStatement();
         stat.execute("create table \"t\u00f6\"(id int)");
-        stat.execute("script to '"+
-                getBaseDir()+"/backup.sql'");
+        stat.execute("script to '" +
+                getBaseDir() + "/backup.sql'");
         stat.execute("drop all objects");
-        stat.execute("runscript from '"+
-                getBaseDir()+"/backup.sql'");
+        stat.execute("runscript from '" +
+                getBaseDir() + "/backup.sql'");
         stat.execute("select * from \"t\u00f6\"");
-        stat.execute("script to '"+
-                getBaseDir()+"/backup.sql' charset 'UTF-8'");
+        stat.execute("script to '" +
+                getBaseDir() + "/backup.sql' charset 'UTF-8'");
         stat.execute("drop all objects");
-        stat.execute("runscript from '"+
-                getBaseDir()+"/backup.sql' charset 'UTF-8'");
+        stat.execute("runscript from '" +
+                getBaseDir() + "/backup.sql' charset 'UTF-8'");
         stat.execute("select * from \"t\u00f6\"");
         conn.close();
         FileUtils.delete(getBaseDir() + "/backup.sql");
@@ -598,7 +598,7 @@ public class TestRunscript extends TestDb implements Trigger {
 
     @Override
     public void init(Connection conn, String schemaName, String triggerName,
-            String tableName, boolean before, int type) {
+                     String tableName, boolean before, int type) {
         if (!before) {
             throw new InternalError("before:" + before);
         }

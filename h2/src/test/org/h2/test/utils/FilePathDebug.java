@@ -13,6 +13,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.util.List;
+
 import org.h2.store.fs.FileBase;
 import org.h2.store.fs.FilePath;
 import org.h2.store.fs.FilePathWrapper;
@@ -200,8 +201,8 @@ public class FilePathDebug extends FilePathWrapper {
      * Print a debug message.
      *
      * @param fileName the (wrapped) file name
-     * @param method the method name
-     * @param params parameters if any
+     * @param method   the method name
+     * @param params   parameters if any
      */
     void trace(String fileName, String method, Object... params) {
         if (isTrace()) {
@@ -323,7 +324,7 @@ class FileDebug extends FileBase {
 
     @Override
     public synchronized FileLock tryLock(long position, long size,
-            boolean shared) throws IOException {
+                                         boolean shared) throws IOException {
         debug("tryLock");
         return channel.tryLock(position, size, shared);
     }

@@ -14,6 +14,7 @@ import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Random;
+
 import org.h2.api.ErrorCode;
 import org.h2.engine.Constants;
 import org.h2.test.TestBase;
@@ -196,14 +197,14 @@ public class TestTransaction extends TestDb {
     }
 
     private void testForUpdate2(Connection conn1, Statement stat1, Connection conn2, boolean forUpdate,
-            boolean window) throws Exception {
+                                boolean window) throws Exception {
         testForUpdate2(conn1, stat1, conn2, forUpdate, window, false, false);
         testForUpdate2(conn1, stat1, conn2, forUpdate, window, false, true);
         testForUpdate2(conn1, stat1, conn2, forUpdate, window, true, false);
     }
 
     private void testForUpdate2(Connection conn1, Statement stat1, final Connection conn2, boolean forUpdate,
-            boolean window, boolean deleted, boolean excluded) throws Exception {
+                                boolean window, boolean deleted, boolean excluded) throws Exception {
         stat1.execute("MERGE INTO TEST KEY(ID) VALUES (1, 1)");
         conn1.commit();
         stat1.execute(deleted ? "DELETE FROM TEST WHERE ID = 1" : "UPDATE TEST SET V = 2 WHERE ID = 1");
@@ -369,8 +370,8 @@ public class TestTransaction extends TestDb {
                 try {
                     PreparedStatement prep = conn1.prepareStatement(
                             "MERGE INTO TEST T USING (SELECT ?1::INT X) S ON T.ID = S.X AND NOT T.\"VALUE\""
-                            + " WHEN MATCHED THEN UPDATE SET T.\"VALUE\" = TRUE"
-                            + " WHEN NOT MATCHED THEN INSERT VALUES (10000 + ?1, FALSE)");
+                                    + " WHEN MATCHED THEN UPDATE SET T.\"VALUE\" = TRUE"
+                                    + " WHEN NOT MATCHED THEN INSERT VALUES (10000 + ?1, FALSE)");
                     for (int i = 1; i <= count; i++) {
                         prep.setInt(1, i);
                         prep.addBatch();
@@ -390,8 +391,8 @@ public class TestTransaction extends TestDb {
         int sum = 0;
         PreparedStatement prep = conn2.prepareStatement(
                 "MERGE INTO TEST T USING (SELECT ?1::INT X) S ON T.ID = S.X AND NOT T.\"VALUE\""
-                + " WHEN MATCHED THEN UPDATE SET T.\"VALUE\" = TRUE"
-                + " WHEN NOT MATCHED THEN INSERT VALUES (10000 + ?1, FALSE)");
+                        + " WHEN MATCHED THEN UPDATE SET T.\"VALUE\" = TRUE"
+                        + " WHEN NOT MATCHED THEN INSERT VALUES (10000 + ?1, FALSE)");
         for (int i = 1; i <= count; i++) {
             prep.setInt(1, i);
             prep.addBatch();
@@ -659,44 +660,44 @@ public class TestTransaction extends TestDb {
             String table = "TEST" + tableId;
             int op = random.nextInt(6);
             switch (op) {
-            case 0:
-                stat.execute("INSERT INTO " + table + "(NAME) VALUES('op" + i + "')");
-                count[tableId]++;
-                break;
-            case 1:
-                if (count[tableId] > 0) {
-                    int updateCount = stat.executeUpdate(
-                            "DELETE FROM " + table +
-                            " WHERE ID=SELECT MIN(ID) FROM " + table);
-                    assertEquals(1, updateCount);
-                    count[tableId]--;
-                }
-                break;
-            case 2:
-                sp = conn.setSavepoint();
-                countSave[0] = count[0];
-                countSave[1] = count[1];
-                break;
-            case 3:
-                if (sp != null) {
-                    conn.rollback(sp);
-                    count[0] = countSave[0];
-                    count[1] = countSave[1];
-                }
-                break;
-            case 4:
-                conn.commit();
-                sp = null;
-                countCommitted[0] = count[0];
-                countCommitted[1] = count[1];
-                break;
-            case 5:
-                conn.rollback();
-                sp = null;
-                count[0] = countCommitted[0];
-                count[1] = countCommitted[1];
-                break;
-            default:
+                case 0:
+                    stat.execute("INSERT INTO " + table + "(NAME) VALUES('op" + i + "')");
+                    count[tableId]++;
+                    break;
+                case 1:
+                    if (count[tableId] > 0) {
+                        int updateCount = stat.executeUpdate(
+                                "DELETE FROM " + table +
+                                        " WHERE ID=SELECT MIN(ID) FROM " + table);
+                        assertEquals(1, updateCount);
+                        count[tableId]--;
+                    }
+                    break;
+                case 2:
+                    sp = conn.setSavepoint();
+                    countSave[0] = count[0];
+                    countSave[1] = count[1];
+                    break;
+                case 3:
+                    if (sp != null) {
+                        conn.rollback(sp);
+                        count[0] = countSave[0];
+                        count[1] = countSave[1];
+                    }
+                    break;
+                case 4:
+                    conn.commit();
+                    sp = null;
+                    countCommitted[0] = count[0];
+                    countCommitted[1] = count[1];
+                    break;
+                case 5:
+                    conn.rollback();
+                    sp = null;
+                    count[0] = countCommitted[0];
+                    count[1] = countCommitted[1];
+                    break;
+                default:
             }
             checkTableCount(stat, "TEST0", count[0]);
             checkTableCount(stat, "TEST1", count[1]);
@@ -744,11 +745,11 @@ public class TestTransaction extends TestDb {
     }
 
     private void testIsolationLevels() throws SQLException {
-        for (int isolationLevel : new int[] { Connection.TRANSACTION_REPEATABLE_READ, Constants.TRANSACTION_SNAPSHOT,
-                Connection.TRANSACTION_SERIALIZABLE }) {
+        for (int isolationLevel : new int[]{Connection.TRANSACTION_REPEATABLE_READ, Constants.TRANSACTION_SNAPSHOT,
+                Connection.TRANSACTION_SERIALIZABLE}) {
             deleteDb("transaction");
             try (Connection conn1 = getConnection("transaction"); Connection conn2 = getConnection("transaction");
-                    Connection conn3 = getConnection("transaction")) {
+                 Connection conn3 = getConnection("transaction")) {
                 conn3.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
                 Statement stat1 = conn1.createStatement();
                 Statement stat2 = conn2.createStatement();
@@ -854,7 +855,7 @@ public class TestTransaction extends TestDb {
             assertEquals(expected, rs.getLong(1));
         }
         try (ResultSet rs = stat.executeQuery("SELECT ID FROM TEST" + table + " ORDER BY ID")) {
-            for (int i = 0; ++i <= expected;) {
+            for (int i = 0; ++i <= expected; ) {
                 assertTrue(rs.next());
                 assertEquals(i, rs.getInt(1));
             }
@@ -944,9 +945,9 @@ public class TestTransaction extends TestDb {
     }
 
     private void testIsolationLevels2() throws SQLException {
-        for (int isolationLevel : new int[] { Connection.TRANSACTION_READ_UNCOMMITTED,
+        for (int isolationLevel : new int[]{Connection.TRANSACTION_READ_UNCOMMITTED,
                 Connection.TRANSACTION_READ_COMMITTED, Connection.TRANSACTION_REPEATABLE_READ,
-                Constants.TRANSACTION_SNAPSHOT, Connection.TRANSACTION_SERIALIZABLE }) {
+                Constants.TRANSACTION_SNAPSHOT, Connection.TRANSACTION_SERIALIZABLE}) {
             deleteDb("transaction");
             try (Connection conn1 = getConnection("transaction"); Connection conn2 = getConnection("transaction")) {
                 conn1.setTransactionIsolation(isolationLevel);
@@ -998,9 +999,9 @@ public class TestTransaction extends TestDb {
     }
 
     private void testIsolationLevels3() throws SQLException {
-        for (int isolationLevel : new int[] { Connection.TRANSACTION_READ_UNCOMMITTED,
+        for (int isolationLevel : new int[]{Connection.TRANSACTION_READ_UNCOMMITTED,
                 Connection.TRANSACTION_READ_COMMITTED, Connection.TRANSACTION_REPEATABLE_READ,
-                Constants.TRANSACTION_SNAPSHOT, Connection.TRANSACTION_SERIALIZABLE }) {
+                Constants.TRANSACTION_SNAPSHOT, Connection.TRANSACTION_SERIALIZABLE}) {
             deleteDb("transaction");
             try (Connection conn1 = getConnection("transaction"); Connection conn2 = getConnection("transaction")) {
                 conn1.setTransactionIsolation(isolationLevel);
@@ -1077,9 +1078,9 @@ public class TestTransaction extends TestDb {
     }
 
     private void testIsolationLevels4(boolean primaryKey) throws SQLException {
-        for (int isolationLevel : new int[] { Connection.TRANSACTION_READ_UNCOMMITTED,
+        for (int isolationLevel : new int[]{Connection.TRANSACTION_READ_UNCOMMITTED,
                 Connection.TRANSACTION_READ_COMMITTED, Connection.TRANSACTION_REPEATABLE_READ,
-                Constants.TRANSACTION_SNAPSHOT, Connection.TRANSACTION_SERIALIZABLE }) {
+                Constants.TRANSACTION_SNAPSHOT, Connection.TRANSACTION_SERIALIZABLE}) {
             deleteDb("transaction");
             try (Connection conn1 = getConnection("transaction"); Connection conn2 = getConnection("transaction")) {
                 Statement stat1 = conn1.createStatement();
@@ -1157,7 +1158,7 @@ public class TestTransaction extends TestDb {
     }
 
     private void testIsolationLevelsCountAggregate(int isolationLevel, long uncommitted1, long uncommitted2,
-            long committed, long committedOther) throws SQLException {
+                                                   long committed, long committedOther) throws SQLException {
         deleteDb("transaction");
         try (Connection conn1 = getConnection("transaction"); Connection conn2 = getConnection("transaction")) {
             Statement stat1 = conn1.createStatement();
@@ -1236,7 +1237,7 @@ public class TestTransaction extends TestDb {
             conn2.commit();
             // Own uncommitted and concurrent committed changes
             testIsolationLevelCountAggregate2(prep,
-                    isolationLevel <= Connection.TRANSACTION_READ_COMMITTED ? 98L: 99L);
+                    isolationLevel <= Connection.TRANSACTION_READ_COMMITTED ? 98L : 99L);
             conn1.commit();
             // Everything is committed
             testIsolationLevelCountAggregate2(prep, 98L);
@@ -1249,7 +1250,7 @@ public class TestTransaction extends TestDb {
             conn2.commit();
             // Concurrent committed changes
             testIsolationLevelCountAggregate2(prep,
-                    isolationLevel <= Connection.TRANSACTION_READ_COMMITTED ? 97L: 98L);
+                    isolationLevel <= Connection.TRANSACTION_READ_COMMITTED ? 97L : 98L);
             conn1.commit();
             // Everything is committed again
             testIsolationLevelCountAggregate2(prep, 97L);

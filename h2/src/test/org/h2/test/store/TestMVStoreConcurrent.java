@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import org.h2.mvstore.Chunk;
 import org.h2.mvstore.DataUtils;
 import org.h2.mvstore.MVMap;
@@ -154,10 +155,10 @@ public class TestMVStoreConcurrent extends TestMVStore {
                 1,
                 10,
                 "Hello",
-                new Object[]{ new byte[]{(byte) -1, (byte) 1}, null},
-                new Object[]{ new byte[]{(byte) 1, (byte) -1}, 10},
-                new Object[]{ new byte[]{(byte) -1, (byte) 1}, 20L},
-                new Object[]{ new byte[]{(byte) 1, (byte) -1}, 5},
+                new Object[]{new byte[]{(byte) -1, (byte) 1}, null},
+                new Object[]{new byte[]{(byte) 1, (byte) -1}, 10},
+                new Object[]{new byte[]{(byte) -1, (byte) 1}, 20L},
+                new Object[]{new byte[]{(byte) 1, (byte) -1}, 5},
         };
         Arrays.sort(data, type::compare);
         Task[] tasks = new Task[2];
@@ -203,8 +204,8 @@ public class TestMVStoreConcurrent extends TestMVStore {
         String fileName = "memFS:" + getTestName();
         FileUtils.delete(fileName);
         MVStore.Builder builder = new MVStore.Builder()
-                                    .fileName(fileName)
-                                    .pageSplitSize(1000);
+                .fileName(fileName)
+                .pageSplitSize(1000);
         try (MVStore s = builder.open()) {
             s.setRetentionTime(1000);
             s.setAutoCommitDelay(1);
@@ -552,7 +553,7 @@ public class TestMVStoreConcurrent extends TestMVStore {
                             m.higherKey(5);
                             m.lowerKey(5);
                             for (Iterator<Integer> it = m.keyIterator(null);
-                                    it.hasNext();) {
+                                 it.hasNext(); ) {
                                 it.next();
                             }
                         }
@@ -702,7 +703,7 @@ public class TestMVStoreConcurrent extends TestMVStore {
     }
 
     private static void testConcurrentWrite(final AtomicInteger detected,
-            final AtomicInteger notDetected) throws InterruptedException {
+                                            final AtomicInteger notDetected) throws InterruptedException {
         try (final MVStore s = openStore(null)) {
             final MVMap<Integer, Integer> m = s.openMap("data");
             final int size = 20;

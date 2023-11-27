@@ -53,8 +53,8 @@ public class TriggerPassData implements Trigger {
 
     @Override
     public void init(Connection conn, String schemaName,
-            String triggerName, String tableName, boolean before,
-            int type) throws SQLException {
+                     String triggerName, String tableName, boolean before,
+                     int type) throws SQLException {
         TRIGGERS.put(getPrefix(conn) + triggerName, this);
     }
 
@@ -66,13 +66,13 @@ public class TriggerPassData implements Trigger {
     /**
      * Call this method to change a specific trigger.
      *
-     * @param conn the connection
+     * @param conn    the connection
      * @param trigger the trigger name
-     * @param data the data
+     * @param data    the data
      * @throws SQLException on failure
      */
     public static void setTriggerData(Connection conn, String trigger,
-            String data) throws SQLException {
+                                      String data) throws SQLException {
         TRIGGERS.get(getPrefix(conn) + trigger).triggerData = data;
     }
 

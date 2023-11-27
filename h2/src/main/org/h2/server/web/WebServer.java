@@ -53,27 +53,27 @@ import org.h2.util.Utils;
 public class WebServer implements Service {
 
     static final String[][] LANGUAGES = {
-        { "cs", "\u010ce\u0161tina" },
-        { "de", "Deutsch" },
-        { "en", "English" },
-        { "es", "Espa\u00f1ol" },
-        { "fr", "Fran\u00e7ais" },
-        { "hi", "Hindi \u0939\u093f\u0902\u0926\u0940" },
-        { "hu", "Magyar"},
-        { "ko", "\ud55c\uad6d\uc5b4"},
-        { "in", "Indonesia"},
-        { "it", "Italiano"},
-        { "ja", "\u65e5\u672c\u8a9e"},
-        { "nl", "Nederlands"},
-        { "pl", "Polski"},
-        { "pt_BR", "Portugu\u00eas (Brasil)"},
-        { "pt_PT", "Portugu\u00eas (Europeu)"},
-        { "ru", "\u0440\u0443\u0441\u0441\u043a\u0438\u0439"},
-        { "sk", "Slovensky"},
-        { "tr", "T\u00fcrk\u00e7e"},
-        { "uk", "\u0423\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u0430"},
-        { "zh_CN", "\u4e2d\u6587 (\u7b80\u4f53)"},
-        { "zh_TW", "\u4e2d\u6587 (\u7e41\u9ad4)"},
+            {"cs", "\u010ce\u0161tina"},
+            {"de", "Deutsch"},
+            {"en", "English"},
+            {"es", "Espa\u00f1ol"},
+            {"fr", "Fran\u00e7ais"},
+            {"hi", "Hindi \u0939\u093f\u0902\u0926\u0940"},
+            {"hu", "Magyar"},
+            {"ko", "\ud55c\uad6d\uc5b4"},
+            {"in", "Indonesia"},
+            {"it", "Italiano"},
+            {"ja", "\u65e5\u672c\u8a9e"},
+            {"nl", "Nederlands"},
+            {"pl", "Polski"},
+            {"pt_BR", "Portugu\u00eas (Brasil)"},
+            {"pt_PT", "Portugu\u00eas (Europeu)"},
+            {"ru", "\u0440\u0443\u0441\u0441\u043a\u0438\u0439"},
+            {"sk", "Slovensky"},
+            {"tr", "T\u00fcrk\u00e7e"},
+            {"uk", "\u0423\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u0430"},
+            {"zh_CN", "\u4e2d\u6587 (\u7b80\u4f53)"},
+            {"zh_TW", "\u4e2d\u6587 (\u7e41\u9ad4)"},
     };
 
     private static final String COMMAND_HISTORY = "commandHistory";
@@ -81,51 +81,51 @@ public class WebServer implements Service {
     private static final String DEFAULT_LANGUAGE = "en";
 
     private static final String[] GENERIC = {
-        "Generic JNDI Data Source|javax.naming.InitialContext|" +
-                "java:comp/env/jdbc/Test|sa",
-        "Generic Teradata|com.teradata.jdbc.TeraDriver|" +
-                "jdbc:teradata://whomooz/|",
-        "Generic Snowflake|com.snowflake.client.jdbc.SnowflakeDriver|" +
-                "jdbc:snowflake://accountName.snowflakecomputing.com|",
-        "Generic Redshift|com.amazon.redshift.jdbc42.Driver|" +
-                "jdbc:redshift://endpoint:5439/database|",
-        "Generic Impala|org.cloudera.impala.jdbc41.Driver|" +
-                "jdbc:impala://clustername:21050/default|",
-        "Generic Hive 2|org.apache.hive.jdbc.HiveDriver|" +
-                "jdbc:hive2://clustername:10000/default|",
-        "Generic Hive|org.apache.hadoop.hive.jdbc.HiveDriver|" +
-                "jdbc:hive://clustername:10000/default|",
-        "Generic Azure SQL|com.microsoft.sqlserver.jdbc.SQLServerDriver|" +
-                "jdbc:sqlserver://name.database.windows.net:1433|",
-        "Generic Firebird Server|org.firebirdsql.jdbc.FBDriver|" +
-                "jdbc:firebirdsql:localhost:c:/temp/firebird/test|sysdba",
-        "Generic SQLite|org.sqlite.JDBC|" +
-                "jdbc:sqlite:test|sa",
-        "Generic DB2|com.ibm.db2.jcc.DB2Driver|" +
-                "jdbc:db2://localhost/test|" ,
-        "Generic Oracle|oracle.jdbc.driver.OracleDriver|" +
-                    "jdbc:oracle:thin:@localhost:1521:XE|sa" ,
-        "Generic MS SQL Server 2000|com.microsoft.jdbc.sqlserver.SQLServerDriver|" +
-                "jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=sqlexpress|sa",
-        "Generic MS SQL Server 2005|com.microsoft.sqlserver.jdbc.SQLServerDriver|" +
-                "jdbc:sqlserver://localhost;DatabaseName=test|sa",
-        "Generic PostgreSQL|org.postgresql.Driver|" +
-                "jdbc:postgresql:test|" ,
-        "Generic MySQL|com.mysql.cj.jdbc.Driver|" +
-                "jdbc:mysql://localhost:3306/test|" ,
-        "Generic MariaDB|org.mariadb.jdbc.Driver|" +
-                "jdbc:mariadb://localhost:3306/test|" ,
-        "Generic HSQLDB|org.hsqldb.jdbcDriver|" +
-                "jdbc:hsqldb:test;hsqldb.default_table_type=cached|sa" ,
-        "Generic Derby (Server)|org.apache.derby.client.ClientAutoloadedDriver|" +
-                "jdbc:derby://localhost:1527/test;create=true|sa",
-        "Generic Derby (Embedded)|org.apache.derby.iapi.jdbc.AutoloadedDriver|" +
-                "jdbc:derby:test;create=true|sa",
-        "Generic H2 (Server)|org.h2.Driver|" +
-                "jdbc:h2:tcp://localhost/~/test|sa",
-        // this will be listed on top for new installations
-        "Generic H2 (Embedded)|org.h2.Driver|" +
-                "jdbc:h2:~/test|sa",
+            "Generic JNDI Data Source|javax.naming.InitialContext|" +
+                    "java:comp/env/jdbc/Test|sa",
+            "Generic Teradata|com.teradata.jdbc.TeraDriver|" +
+                    "jdbc:teradata://whomooz/|",
+            "Generic Snowflake|com.snowflake.client.jdbc.SnowflakeDriver|" +
+                    "jdbc:snowflake://accountName.snowflakecomputing.com|",
+            "Generic Redshift|com.amazon.redshift.jdbc42.Driver|" +
+                    "jdbc:redshift://endpoint:5439/database|",
+            "Generic Impala|org.cloudera.impala.jdbc41.Driver|" +
+                    "jdbc:impala://clustername:21050/default|",
+            "Generic Hive 2|org.apache.hive.jdbc.HiveDriver|" +
+                    "jdbc:hive2://clustername:10000/default|",
+            "Generic Hive|org.apache.hadoop.hive.jdbc.HiveDriver|" +
+                    "jdbc:hive://clustername:10000/default|",
+            "Generic Azure SQL|com.microsoft.sqlserver.jdbc.SQLServerDriver|" +
+                    "jdbc:sqlserver://name.database.windows.net:1433|",
+            "Generic Firebird Server|org.firebirdsql.jdbc.FBDriver|" +
+                    "jdbc:firebirdsql:localhost:c:/temp/firebird/test|sysdba",
+            "Generic SQLite|org.sqlite.JDBC|" +
+                    "jdbc:sqlite:test|sa",
+            "Generic DB2|com.ibm.db2.jcc.DB2Driver|" +
+                    "jdbc:db2://localhost/test|",
+            "Generic Oracle|oracle.jdbc.driver.OracleDriver|" +
+                    "jdbc:oracle:thin:@localhost:1521:XE|sa",
+            "Generic MS SQL Server 2000|com.microsoft.jdbc.sqlserver.SQLServerDriver|" +
+                    "jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=sqlexpress|sa",
+            "Generic MS SQL Server 2005|com.microsoft.sqlserver.jdbc.SQLServerDriver|" +
+                    "jdbc:sqlserver://localhost;DatabaseName=test|sa",
+            "Generic PostgreSQL|org.postgresql.Driver|" +
+                    "jdbc:postgresql:test|",
+            "Generic MySQL|com.mysql.cj.jdbc.Driver|" +
+                    "jdbc:mysql://localhost:3306/test|",
+            "Generic MariaDB|org.mariadb.jdbc.Driver|" +
+                    "jdbc:mariadb://localhost:3306/test|",
+            "Generic HSQLDB|org.hsqldb.jdbcDriver|" +
+                    "jdbc:hsqldb:test;hsqldb.default_table_type=cached|sa",
+            "Generic Derby (Server)|org.apache.derby.client.ClientAutoloadedDriver|" +
+                    "jdbc:derby://localhost:1527/test;create=true|sa",
+            "Generic Derby (Embedded)|org.apache.derby.iapi.jdbc.AutoloadedDriver|" +
+                    "jdbc:derby:test;create=true|sa",
+            "Generic H2 (Server)|org.h2.Driver|" +
+                    "jdbc:h2:tcp://localhost/~/test|sa",
+            // this will be listed on top for new installations
+            "Generic H2 (Embedded)|org.h2.Driver|" +
+                    "jdbc:h2:~/test|sa",
     };
 
     private static int ticker;
@@ -271,7 +271,7 @@ public class WebServer implements Service {
     String getStartDateTime() {
         if (startDateTime == null) {
             startDateTime = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss z", Locale.ENGLISH)
-                .format(ZonedDateTime.now(ZoneId.of("UTC")));
+                    .format(ZonedDateTime.now(ZoneId.of("UTC")));
         }
         return startDateTime;
     }
@@ -297,8 +297,7 @@ public class WebServer implements Service {
     }
 
     /**
-     * @param allowSecureCreation
-     *            whether creation of databases using the key should be allowed
+     * @param allowSecureCreation whether creation of databases using the key should be allowed
      */
     public void setAllowSecureCreation(boolean allowSecureCreation) {
         if (!allowOthers) {
@@ -332,7 +331,7 @@ public class WebServer implements Service {
                 ssl = true;
             } else if (Tool.isOption(a, "-webAllowOthers")) {
                 allowOthers = true;
-            }  else if (Tool.isOption(a, "-webExternalNames")) {
+            } else if (Tool.isOption(a, "-webExternalNames")) {
                 setExternalNames(args[++i]);
             } else if (Tool.isOption(a, "-webDaemon")) {
                 isDaemon = true;
@@ -514,15 +513,15 @@ public class WebServer implements Service {
      * Read the translation for this language and save them in the 'text'
      * property of this session.
      *
-     * @param session the session
+     * @param session  the session
      * @param language the language
      */
     void readTranslations(WebSession session, String language) {
         Properties text = new Properties();
         try {
-            trace("translation: "+language);
-            byte[] trans = getFile("_text_"+language+".prop");
-            trace("  "+new String(trans));
+            trace("translation: " + language);
+            byte[] trans = getFile("_text_" + language + ".prop");
+            trace("  " + new String(trans));
             text = SortedProperties.fromLines(new String(trans, StandardCharsets.UTF_8));
             // remove starting # (if not translated yet)
             for (Entry<Object, Object> entry : text.entrySet()) {
@@ -615,7 +614,7 @@ public class WebServer implements Service {
         // Split the commandHistoryString on non-escaped semicolons
         // and unescape it.
         StringBuilder sb = new StringBuilder();
-        for (int end = 0;; end++) {
+        for (int end = 0; ; end++) {
             if (end == commandHistoryString.length() ||
                     commandHistoryString.charAt(end) == ';') {
                 if (sb.length() > 0) {
@@ -724,7 +723,7 @@ public class WebServer implements Service {
                     updateSetting(info);
                 }
             } else {
-                for (int i = 0;; i++) {
+                for (int i = 0; ; i++) {
                     String data = prop.getProperty(Integer.toString(i));
                     if (data == null) {
                         break;
@@ -789,17 +788,17 @@ public class WebServer implements Service {
     /**
      * Open a database connection.
      *
-     * @param driver the driver class name
-     * @param databaseUrl the database URL
-     * @param user the user name
-     * @param password the password
-     * @param userKey the key of privileged user
+     * @param driver                the driver class name
+     * @param databaseUrl           the database URL
+     * @param user                  the user name
+     * @param password              the password
+     * @param userKey               the key of privileged user
      * @param networkConnectionInfo the network connection information
      * @return the database connection
      * @throws SQLException on failure
      */
     Connection getConnection(String driver, String databaseUrl, String user,
-            String password, String userKey, NetworkConnectionInfo networkConnectionInfo) throws SQLException {
+                             String password, String userKey, NetworkConnectionInfo networkConnectionInfo) throws SQLException {
         driver = driver.trim();
         databaseUrl = databaseUrl.trim();
         // do not trim the password, otherwise an
@@ -929,7 +928,8 @@ public class WebServer implements Service {
             try {
                 adminPassword = StringUtils.convertHexToBytes(password);
                 return;
-            } catch (Exception ex) {}
+            } catch (Exception ex) {
+            }
         }
         byte[] salt = MathUtils.secureRandomBytes(32);
         byte[] hash = SHA256.getHashWithSalt(password.getBytes(StandardCharsets.UTF_8), salt);

@@ -15,6 +15,7 @@ import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import org.h2.bnf.Bnf;
 import org.h2.build.BuildBase;
 import org.h2.build.doc.BnfRailroad;
@@ -61,7 +62,7 @@ public class Railroads {
         Path inFile = Paths.get(source + fileName);
         Path outFile = Paths.get(target + fileName);
         Files.createDirectories(outFile.getParent());
-        byte[] bytes = Files.readAllBytes(inFile) ;
+        byte[] bytes = Files.readAllBytes(inFile);
         if (fileName.endsWith(".html")) {
             String page = new String(bytes);
             page = PageParser.parse(page, session);

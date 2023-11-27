@@ -130,7 +130,7 @@ public class FilePathDisk extends FilePath {
                 throw DbException.get(ErrorCode.FILE_RENAME_FAILED_2, ex, name, newName.name);
             }
         }
-        CopyOption[] copyOptions = atomicReplace ? new CopyOption[] { StandardCopyOption.REPLACE_EXISTING }
+        CopyOption[] copyOptions = atomicReplace ? new CopyOption[]{StandardCopyOption.REPLACE_EXISTING}
                 : new CopyOption[0];
         IOException cause;
         try {
@@ -245,12 +245,12 @@ public class FilePathDisk extends FilePath {
                 HashSet<PosixFilePermission> permissions = new HashSet<>();
                 for (PosixFilePermission p : Files.getPosixFilePermissions(f)) {
                     switch (p) {
-                    case OWNER_WRITE:
-                    case GROUP_WRITE:
-                    case OTHERS_WRITE:
-                        break;
-                    default:
-                        permissions.add(p);
+                        case OWNER_WRITE:
+                        case GROUP_WRITE:
+                        case OTHERS_WRITE:
+                            break;
+                        default:
+                            permissions.add(p);
                     }
                 }
                 Files.setPosixFilePermissions(f, permissions);
@@ -348,7 +348,7 @@ public class FilePathDisk extends FilePath {
     public OutputStream newOutputStream(boolean append) throws IOException {
         Path file = Paths.get(name);
         OpenOption[] options = append //
-                ? new OpenOption[] { StandardOpenOption.CREATE, StandardOpenOption.APPEND }
+                ? new OpenOption[]{StandardOpenOption.CREATE, StandardOpenOption.APPEND}
                 : new OpenOption[0];
         try {
             Path parent = file.getParent();

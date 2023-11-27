@@ -133,7 +133,7 @@ public class TestCluster extends TestDb {
         assertEquals(5, rs.getInt(1));
 
         server2 = org.h2.tools.Server.createTcpServer("-ifNotExists", "-tcpPort",
-                "" + port2 , "-baseDir", getBaseDir() + "/node2").start();
+                "" + port2, "-baseDir", getBaseDir() + "/node2").start();
         CreateCluster.main("-urlSource", url1, "-urlTarget", url2,
                 "-user", user, "-password", password, "-serverList",
                 serverList);
@@ -435,7 +435,7 @@ public class TestCluster extends TestDb {
 
         // test a cluster connection
         conn = getConnection("jdbc:h2:tcp://" + serverList + "/test", user, password);
-        check(conn, len, "'"+serverList+"'");
+        check(conn, len, "'" + serverList + "'");
         conn.close();
 
         // stop server 2, and test if only one server is available
@@ -448,8 +448,8 @@ public class TestCluster extends TestDb {
         conn.close();
 
         // disable the cluster
-        conn = getConnection("jdbc:h2:tcp://localhost:"+
-                port1+"/test;CLUSTER=''", user, password);
+        conn = getConnection("jdbc:h2:tcp://localhost:" +
+                port1 + "/test;CLUSTER=''", user, password);
         conn.close();
         n1.stop();
 
@@ -475,8 +475,8 @@ public class TestCluster extends TestDb {
 
         n1 = org.h2.tools.Server.createTcpServer("-tcpPort", "" +
                 port1, "-baseDir", getBaseDir() + "/node1").start();
-        conn = getConnection("jdbc:h2:tcp://localhost:"+
-                port1+"/test;CLUSTER=''", user, password);
+        conn = getConnection("jdbc:h2:tcp://localhost:" +
+                port1 + "/test;CLUSTER=''", user, password);
         check(conn, len, "''");
         conn.close();
         n1.stop();

@@ -37,8 +37,7 @@ public final class ValueBlob extends ValueLob {
     /**
      * Creates a small BLOB value that can be stored in the row directly.
      *
-     * @param data
-     *            the data
+     * @param data the data
      * @return the BLOB
      */
     public static ValueBlob createSmall(byte[] data) {
@@ -48,12 +47,9 @@ public final class ValueBlob extends ValueLob {
     /**
      * Create a temporary BLOB value from a stream.
      *
-     * @param in
-     *            the input stream
-     * @param length
-     *            the number of characters to read, or -1 for no limit
-     * @param handler
-     *            the data handler
+     * @param in      the input stream
+     * @param length  the number of characters to read, or -1 for no limit
+     * @param handler the data handler
      * @return the lob value
      */
     public static ValueBlob createTempBlob(InputStream in, long length, DataHandler handler) {
@@ -193,10 +189,8 @@ public final class ValueBlob extends ValueLob {
     /**
      * Compares two BLOB values directly.
      *
-     * @param v1
-     *            first BLOB value
-     * @param v2
-     *            second BLOB value
+     * @param v1 first BLOB value
+     * @param v2 second BLOB value
      * @return result of comparison
      */
     private static int compare(ValueBlob v1, ValueBlob v2) {
@@ -214,7 +208,7 @@ public final class ValueBlob extends ValueLob {
                     return cmp;
                 }
             }
-            for (;;) {
+            for (; ; ) {
                 int c1 = is1.read(), c2 = is2.read();
                 if (c1 < 0) {
                     return c2 < 0 ? 0 : -1;
@@ -255,8 +249,7 @@ public final class ValueBlob extends ValueLob {
     /**
      * Convert the precision to the requested value.
      *
-     * @param precision
-     *            the new precision
+     * @param precision the new precision
      * @return the truncated or this value
      */
     ValueBlob convertPrecision(long precision) {
@@ -305,7 +298,7 @@ public final class ValueBlob extends ValueLob {
             } else {
                 try (Reader r = getReader()) {
                     p = 0L;
-                    for (;;) {
+                    for (; ; ) {
                         p += r.skip(Long.MAX_VALUE);
                         if (r.read() < 0) {
                             break;

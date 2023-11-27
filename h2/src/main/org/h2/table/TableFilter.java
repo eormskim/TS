@@ -142,16 +142,16 @@ public class TableFilter implements ColumnResolver {
     /**
      * Create a new table filter object.
      *
-     * @param session the session
-     * @param table the table from where to read data
-     * @param alias the alias name
+     * @param session       the session
+     * @param table         the table from where to read data
+     * @param alias         the alias name
      * @param rightsChecked true if rights are already checked
-     * @param select the select statement
-     * @param orderInFrom original order number (index) of this table filter in
-     * @param indexHints the index hints to be used by the query planner
+     * @param select        the select statement
+     * @param orderInFrom   original order number (index) of this table filter in
+     * @param indexHints    the index hints to be used by the query planner
      */
     public TableFilter(SessionLocal session, Table table, String alias,
-            boolean rightsChecked, Select select, int orderInFrom, IndexHints indexHints) {
+                       boolean rightsChecked, Select select, int orderInFrom, IndexHints indexHints) {
         this.session = session;
         this.table = table;
         this.alias = alias;
@@ -204,14 +204,14 @@ public class TableFilter implements ColumnResolver {
      * Get the best plan item (index, cost) to use for the current join
      * order.
      *
-     * @param s the session
-     * @param filters all joined table filters
-     * @param filter the current table filter index
+     * @param s             the session
+     * @param filters       all joined table filters
+     * @param filter        the current table filter index
      * @param allColumnsSet the set of all columns
      * @return the best plan item
      */
     public PlanItem getBestPlanItem(SessionLocal s, TableFilter[] filters, int filter,
-            AllColumnsForPlan allColumnsSet) {
+                                    AllColumnsForPlan allColumnsSet) {
         PlanItem item1 = null;
         SortOrder sortOrder = null;
         if (select != null) {
@@ -554,7 +554,7 @@ public class TableFilter implements ColumnResolver {
      * Add a filter condition.
      *
      * @param condition the condition
-     * @param isJoin if this is in fact a join condition
+     * @param isJoin    if this is in fact a join condition
      */
     public void addFilterCondition(Expression condition, boolean isJoin) {
         if (isJoin) {
@@ -578,8 +578,8 @@ public class TableFilter implements ColumnResolver {
      * Add a joined table.
      *
      * @param filter the joined table filter
-     * @param outer if this is an outer join
-     * @param on the join condition
+     * @param outer  if this is an outer join
+     * @param on     the join condition
      */
     public void addJoin(TableFilter filter, boolean outer, Expression on) {
         if (on != null) {
@@ -675,8 +675,8 @@ public class TableFilter implements ColumnResolver {
      * Get the query execution plan text to use for this table filter and append
      * it to the specified builder.
      *
-     * @param builder string builder to append to
-     * @param isJoin if this is a joined table
+     * @param builder  string builder to append to
+     * @param isJoin   if this is a joined table
      * @param sqlFlags formatting flags
      * @return the specified builder
      */
@@ -893,7 +893,7 @@ public class TableFilter implements ColumnResolver {
      * return rows or not.
      *
      * @param filter the table filter
-     * @param b the new flag
+     * @param b      the new flag
      */
     public void setEvaluatable(TableFilter filter, boolean b) {
         filter.setEvaluatable(b);
@@ -961,14 +961,11 @@ public class TableFilter implements ColumnResolver {
     /**
      * Get the column with the given name.
      *
-     * @param columnName
-     *            the column name
-     * @param ifExists
-     *            if (@code true) return {@code null} if column does not exist
+     * @param columnName the column name
+     * @param ifExists   if (@code true) return {@code null} if column does not exist
      * @return the column
-     * @throws DbException
-     *             if the column was not found and {@code ifExists} is
-     *             {@code false}
+     * @throws DbException if the column was not found and {@code ifExists} is
+     *                     {@code false}
      */
     public Column getColumn(String columnName, boolean ifExists) {
         HashMap<Column, String> map = derivedColumnMap;
@@ -1040,16 +1037,16 @@ public class TableFilter implements ColumnResolver {
     private Value getDelegatedValue(Column column) {
         long key = currentSearchRow.getKey();
         switch (column.getType().getValueType()) {
-        case Value.TINYINT:
-            return ValueTinyint.get((byte) key);
-        case Value.SMALLINT:
-            return ValueSmallint.get((short) key);
-        case Value.INTEGER:
-            return ValueInteger.get((int) key);
-        case Value.BIGINT:
-            return ValueBigint.get(key);
-        default:
-            throw DbException.getInternalError();
+            case Value.TINYINT:
+                return ValueTinyint.get((byte) key);
+            case Value.SMALLINT:
+                return ValueSmallint.get((short) key);
+            case Value.INTEGER:
+                return ValueInteger.get((int) key);
+            case Value.BIGINT:
+                return ValueBigint.get(key);
+            default:
+                throw DbException.getInternalError();
         }
     }
 
@@ -1094,13 +1091,10 @@ public class TableFilter implements ColumnResolver {
     /**
      * Add a column to the common join column list for a left table filter.
      *
-     * @param leftColumn
-     *            the column on the left side
-     * @param replacementColumn
-     *            the column to use instead, may be the same as column on the
-     *            left side
-     * @param replacementFilter
-     *            the table filter for replacement columns
+     * @param leftColumn        the column on the left side
+     * @param replacementColumn the column to use instead, may be the same as column on the
+     *                          left side
+     * @param replacementFilter the table filter for replacement columns
      */
     public void addCommonJoinColumns(Column leftColumn, Column replacementColumn, TableFilter replacementFilter) {
         if (commonJoinColumns == null) {
@@ -1115,8 +1109,7 @@ public class TableFilter implements ColumnResolver {
     /**
      * Add an excluded column to the common join column list.
      *
-     * @param columnToExclude
-     *            the column to exclude
+     * @param columnToExclude the column to exclude
      */
     public void addCommonJoinColumnToExclude(Column columnToExclude) {
         if (commonJoinColumnsToExclude == null) {
@@ -1146,8 +1139,7 @@ public class TableFilter implements ColumnResolver {
     /**
      * Check if the given column is an excluded common join column.
      *
-     * @param c
-     *            the column to check
+     * @param c the column to check
      * @return true if this is an excluded common join column
      */
     public boolean isCommonJoinColumnToExclude(Column c) {

@@ -119,8 +119,7 @@ public class RunScriptCommand extends ScriptBase {
     /**
      * Enables or disables the quirks mode.
      *
-     * @param quirksMode
-     *            whether quirks mode should be enabled
+     * @param quirksMode whether quirks mode should be enabled
      */
     public void setQuirksMode(boolean quirksMode) {
         this.quirksMode = quirksMode;
@@ -129,9 +128,8 @@ public class RunScriptCommand extends ScriptBase {
     /**
      * Changes parsing of a BINARY data type.
      *
-     * @param variableBinary
-     *            {@code true} to parse BINARY as VARBINARY, {@code false} to
-     *            parse it as is
+     * @param variableBinary {@code true} to parse BINARY as VARBINARY, {@code false} to
+     *                       parse it as is
      */
     public void setVariableBinary(boolean variableBinary) {
         this.variableBinary = variableBinary;

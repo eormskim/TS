@@ -6,12 +6,14 @@
 package org.h2.mode;
 
 import static java.lang.String.format;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.h2.api.ErrorCode;
 import org.h2.expression.function.ToCharFunction;
 import org.h2.message.DbException;
@@ -120,12 +122,12 @@ final class ToDateTokenizer {
         /**
          * Parse a date part.
          *
-         * @param params the parameters that contains the string
+         * @param params          the parameters that contains the string
          * @param formatTokenEnum the format
-         * @param formatTokenStr the format string
+         * @param formatTokenStr  the format string
          */
         void parse(ToDateParser params, FormatTokenEnum formatTokenEnum,
-                String formatTokenStr);
+                   String formatTokenStr);
     }
 
     /**
@@ -135,105 +137,105 @@ final class ToDateTokenizer {
 
         @Override
         public void parse(ToDateParser params, FormatTokenEnum formatTokenEnum,
-                String formatTokenStr) {
+                          String formatTokenStr) {
             String inputFragmentStr = null;
             int dateNr = 0;
             switch (formatTokenEnum) {
-            case SYYYY:
-            case YYYY:
-                inputFragmentStr = matchStringOrThrow(PATTERN_FOUR_DIGITS,
-                        params, formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                // Gregorian calendar does not have a year 0.
-                // 0 = 0001 BC, -1 = 0002 BC, ... so we adjust
-                if (dateNr == 0) {
-                    throwException(params, "Year may not be zero");
-                }
-                params.setYear(dateNr >= 0 ? dateNr : dateNr + 1);
-                break;
-            case YYY:
-                inputFragmentStr = matchStringOrThrow(PATTERN_THREE_DIGITS,
-                        params, formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                if (dateNr > 999) {
-                    throwException(params, "Year may have only three digits with specified format");
-                }
-                dateNr += (params.getCurrentYear() / 1_000) * 1_000;
-                // Gregorian calendar does not have a year 0.
-                // 0 = 0001 BC, -1 = 0002 BC, ... so we adjust
-                params.setYear(dateNr >= 0 ? dateNr : dateNr + 1);
-                break;
-            case RRRR:
-                inputFragmentStr = matchStringOrThrow(
-                        PATTERN_TWO_TO_FOUR_DIGITS, params, formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                if (inputFragmentStr.length() < 4) {
-                    if (dateNr < 50) {
-                        dateNr += 2000;
-                    } else if (dateNr < 100) {
-                        dateNr += 1900;
+                case SYYYY:
+                case YYYY:
+                    inputFragmentStr = matchStringOrThrow(PATTERN_FOUR_DIGITS,
+                            params, formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    // Gregorian calendar does not have a year 0.
+                    // 0 = 0001 BC, -1 = 0002 BC, ... so we adjust
+                    if (dateNr == 0) {
+                        throwException(params, "Year may not be zero");
                     }
-                }
-                if (dateNr == 0) {
-                    throwException(params, "Year may not be zero");
-                }
-                params.setYear(dateNr);
-                break;
-            case RR:
-                int cc = params.getCurrentYear() / 100;
-                inputFragmentStr = matchStringOrThrow(PATTERN_TWO_DIGITS,
-                        params, formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr) + cc * 100;
-                params.setYear(dateNr);
-                break;
-            case EE /* NOT supported yet */:
-                throwException(params, format("token '%s' not supported yet.",
-                        formatTokenEnum.name()));
-                break;
-            case E /* NOT supported yet */:
-                throwException(params, format("token '%s' not supported yet.",
-                        formatTokenEnum.name()));
-                break;
-            case YY:
-                inputFragmentStr = matchStringOrThrow(PATTERN_TWO_DIGITS,
-                        params, formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                if (dateNr > 99) {
-                    throwException(params, "Year may have only two digits with specified format");
-                }
-                dateNr += (params.getCurrentYear() / 100) * 100;
-                // Gregorian calendar does not have a year 0.
-                // 0 = 0001 BC, -1 = 0002 BC, ... so we adjust
-                params.setYear(dateNr >= 0 ? dateNr : dateNr + 1);
-                break;
-            case SCC:
-            case CC:
-                inputFragmentStr = matchStringOrThrow(PATTERN_TWO_DIGITS,
-                        params, formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr) * 100;
-                params.setYear(dateNr);
-                break;
-            case Y:
-                inputFragmentStr = matchStringOrThrow(PATTERN_ONE_DIGIT, params,
-                        formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                if (dateNr > 9) {
-                    throwException(params, "Year may have only two digits with specified format");
-                }
-                dateNr += (params.getCurrentYear() / 10) * 10;
-                // Gregorian calendar does not have a year 0.
-                // 0 = 0001 BC, -1 = 0002 BC, ... so we adjust
-                params.setYear(dateNr >= 0 ? dateNr : dateNr + 1);
-                break;
-            case BC_AD:
-                inputFragmentStr = matchStringOrThrow(PATTERN_BC_AD, params,
-                        formatTokenEnum);
-                params.setBC(inputFragmentStr.toUpperCase().startsWith("B"));
-                break;
-            default:
-                throw new IllegalArgumentException(format(
-                        "%s: Internal Error. Unhandled case: %s",
-                        this.getClass().getSimpleName(), formatTokenEnum));
+                    params.setYear(dateNr >= 0 ? dateNr : dateNr + 1);
+                    break;
+                case YYY:
+                    inputFragmentStr = matchStringOrThrow(PATTERN_THREE_DIGITS,
+                            params, formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    if (dateNr > 999) {
+                        throwException(params, "Year may have only three digits with specified format");
+                    }
+                    dateNr += (params.getCurrentYear() / 1_000) * 1_000;
+                    // Gregorian calendar does not have a year 0.
+                    // 0 = 0001 BC, -1 = 0002 BC, ... so we adjust
+                    params.setYear(dateNr >= 0 ? dateNr : dateNr + 1);
+                    break;
+                case RRRR:
+                    inputFragmentStr = matchStringOrThrow(
+                            PATTERN_TWO_TO_FOUR_DIGITS, params, formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    if (inputFragmentStr.length() < 4) {
+                        if (dateNr < 50) {
+                            dateNr += 2000;
+                        } else if (dateNr < 100) {
+                            dateNr += 1900;
+                        }
+                    }
+                    if (dateNr == 0) {
+                        throwException(params, "Year may not be zero");
+                    }
+                    params.setYear(dateNr);
+                    break;
+                case RR:
+                    int cc = params.getCurrentYear() / 100;
+                    inputFragmentStr = matchStringOrThrow(PATTERN_TWO_DIGITS,
+                            params, formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr) + cc * 100;
+                    params.setYear(dateNr);
+                    break;
+                case EE /* NOT supported yet */:
+                    throwException(params, format("token '%s' not supported yet.",
+                            formatTokenEnum.name()));
+                    break;
+                case E /* NOT supported yet */:
+                    throwException(params, format("token '%s' not supported yet.",
+                            formatTokenEnum.name()));
+                    break;
+                case YY:
+                    inputFragmentStr = matchStringOrThrow(PATTERN_TWO_DIGITS,
+                            params, formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    if (dateNr > 99) {
+                        throwException(params, "Year may have only two digits with specified format");
+                    }
+                    dateNr += (params.getCurrentYear() / 100) * 100;
+                    // Gregorian calendar does not have a year 0.
+                    // 0 = 0001 BC, -1 = 0002 BC, ... so we adjust
+                    params.setYear(dateNr >= 0 ? dateNr : dateNr + 1);
+                    break;
+                case SCC:
+                case CC:
+                    inputFragmentStr = matchStringOrThrow(PATTERN_TWO_DIGITS,
+                            params, formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr) * 100;
+                    params.setYear(dateNr);
+                    break;
+                case Y:
+                    inputFragmentStr = matchStringOrThrow(PATTERN_ONE_DIGIT, params,
+                            formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    if (dateNr > 9) {
+                        throwException(params, "Year may have only two digits with specified format");
+                    }
+                    dateNr += (params.getCurrentYear() / 10) * 10;
+                    // Gregorian calendar does not have a year 0.
+                    // 0 = 0001 BC, -1 = 0002 BC, ... so we adjust
+                    params.setYear(dateNr >= 0 ? dateNr : dateNr + 1);
+                    break;
+                case BC_AD:
+                    inputFragmentStr = matchStringOrThrow(PATTERN_BC_AD, params,
+                            formatTokenEnum);
+                    params.setBC(inputFragmentStr.toUpperCase().startsWith("B"));
+                    break;
+                default:
+                    throw new IllegalArgumentException(format(
+                            "%s: Internal Error. Unhandled case: %s",
+                            this.getClass().getSimpleName(), formatTokenEnum));
             }
             params.remove(inputFragmentStr, formatTokenStr);
         }
@@ -243,57 +245,57 @@ final class ToDateTokenizer {
      * Parslet responsible for parsing month parameter
      */
     static class MonthParslet implements ToDateParslet {
-        private static final String[] ROMAN_MONTH = { "I", "II", "III", "IV",
-                "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII" };
+        private static final String[] ROMAN_MONTH = {"I", "II", "III", "IV",
+                "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"};
 
         @Override
         public void parse(ToDateParser params, FormatTokenEnum formatTokenEnum,
-                String formatTokenStr) {
+                          String formatTokenStr) {
             String s = params.getInputStr();
             String inputFragmentStr = null;
             int dateNr = 0;
             switch (formatTokenEnum) {
-            case MONTH:
-                inputFragmentStr = setByName(params, ToCharFunction.MONTHS);
-                break;
-            case Q /* NOT supported yet */:
-                throwException(params, format("token '%s' not supported yet.",
-                        formatTokenEnum.name()));
-                break;
-            case MON:
-                inputFragmentStr = setByName(params, ToCharFunction.SHORT_MONTHS);
-                break;
-            case MM:
-                // Note: In Calendar Month go from 0 - 11
-                inputFragmentStr = matchStringOrThrow(
-                        PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                params.setMonth(dateNr);
-                break;
-            case RM:
-                dateNr = 0;
-                for (String monthName : ROMAN_MONTH) {
-                    dateNr++;
-                    int len = monthName.length();
-                    if (s.length() >= len && monthName
-                            .equalsIgnoreCase(s.substring(0, len))) {
-                        params.setMonth(dateNr + 1);
-                        inputFragmentStr = monthName;
-                        break;
+                case MONTH:
+                    inputFragmentStr = setByName(params, ToCharFunction.MONTHS);
+                    break;
+                case Q /* NOT supported yet */:
+                    throwException(params, format("token '%s' not supported yet.",
+                            formatTokenEnum.name()));
+                    break;
+                case MON:
+                    inputFragmentStr = setByName(params, ToCharFunction.SHORT_MONTHS);
+                    break;
+                case MM:
+                    // Note: In Calendar Month go from 0 - 11
+                    inputFragmentStr = matchStringOrThrow(
+                            PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    params.setMonth(dateNr);
+                    break;
+                case RM:
+                    dateNr = 0;
+                    for (String monthName : ROMAN_MONTH) {
+                        dateNr++;
+                        int len = monthName.length();
+                        if (s.length() >= len && monthName
+                                .equalsIgnoreCase(s.substring(0, len))) {
+                            params.setMonth(dateNr + 1);
+                            inputFragmentStr = monthName;
+                            break;
+                        }
                     }
-                }
-                if (inputFragmentStr == null || inputFragmentStr.isEmpty()) {
-                    throwException(params,
-                            format("Issue happened when parsing token '%s'. "
-                                    + "Expected one of: %s",
-                                    formatTokenEnum.name(),
-                                    Arrays.toString(ROMAN_MONTH)));
-                }
-                break;
-            default:
-                throw new IllegalArgumentException(format(
-                        "%s: Internal Error. Unhandled case: %s",
-                        this.getClass().getSimpleName(), formatTokenEnum));
+                    if (inputFragmentStr == null || inputFragmentStr.isEmpty()) {
+                        throwException(params,
+                                format("Issue happened when parsing token '%s'. "
+                                                + "Expected one of: %s",
+                                        formatTokenEnum.name(),
+                                        Arrays.toString(ROMAN_MONTH)));
+                    }
+                    break;
+                default:
+                    throw new IllegalArgumentException(format(
+                            "%s: Internal Error. Unhandled case: %s",
+                            this.getClass().getSimpleName(), formatTokenEnum));
             }
             params.remove(inputFragmentStr, formatTokenStr);
         }
@@ -305,44 +307,44 @@ final class ToDateTokenizer {
     static class DayParslet implements ToDateParslet {
         @Override
         public void parse(ToDateParser params, FormatTokenEnum formatTokenEnum,
-                String formatTokenStr) {
+                          String formatTokenStr) {
             String inputFragmentStr = null;
             int dateNr = 0;
             switch (formatTokenEnum) {
-            case DDD:
-                inputFragmentStr = matchStringOrThrow(PATTERN_NUMBER, params,
-                        formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                params.setDayOfYear(dateNr);
-                break;
-            case DD:
-                inputFragmentStr = matchStringOrThrow(
-                        PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                params.setDay(dateNr);
-                break;
-            case D:
-                inputFragmentStr = matchStringOrThrow(PATTERN_ONE_DIGIT, params,
-                        formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                params.setDay(dateNr);
-                break;
-            case DAY:
-                inputFragmentStr = setByName(params, ToCharFunction.WEEKDAYS);
-                break;
-            case DY:
-                inputFragmentStr = setByName(params, ToCharFunction.SHORT_WEEKDAYS);
-                break;
-            case J:
-                inputFragmentStr = matchStringOrThrow(PATTERN_NUMBER, params,
-                        formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                params.setAbsoluteDay(dateNr + ToCharFunction.JULIAN_EPOCH);
-                break;
-            default:
-                throw new IllegalArgumentException(format(
-                        "%s: Internal Error. Unhandled case: %s",
-                        this.getClass().getSimpleName(), formatTokenEnum));
+                case DDD:
+                    inputFragmentStr = matchStringOrThrow(PATTERN_NUMBER, params,
+                            formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    params.setDayOfYear(dateNr);
+                    break;
+                case DD:
+                    inputFragmentStr = matchStringOrThrow(
+                            PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    params.setDay(dateNr);
+                    break;
+                case D:
+                    inputFragmentStr = matchStringOrThrow(PATTERN_ONE_DIGIT, params,
+                            formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    params.setDay(dateNr);
+                    break;
+                case DAY:
+                    inputFragmentStr = setByName(params, ToCharFunction.WEEKDAYS);
+                    break;
+                case DY:
+                    inputFragmentStr = setByName(params, ToCharFunction.SHORT_WEEKDAYS);
+                    break;
+                case J:
+                    inputFragmentStr = matchStringOrThrow(PATTERN_NUMBER, params,
+                            formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    params.setAbsoluteDay(dateNr + ToCharFunction.JULIAN_EPOCH);
+                    break;
+                default:
+                    throw new IllegalArgumentException(format(
+                            "%s: Internal Error. Unhandled case: %s",
+                            this.getClass().getSimpleName(), formatTokenEnum));
             }
             params.remove(inputFragmentStr, formatTokenStr);
         }
@@ -355,89 +357,89 @@ final class ToDateTokenizer {
 
         @Override
         public void parse(ToDateParser params, FormatTokenEnum formatTokenEnum,
-                String formatTokenStr) {
+                          String formatTokenStr) {
             String inputFragmentStr = null;
             int dateNr = 0;
             switch (formatTokenEnum) {
-            case HH24:
-                inputFragmentStr = matchStringOrThrow(
-                        PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                params.setHour(dateNr);
-                break;
-            case HH12:
-            case HH:
-                inputFragmentStr = matchStringOrThrow(
-                        PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                params.setHour12(dateNr);
-                break;
-            case MI:
-                inputFragmentStr = matchStringOrThrow(
-                        PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                params.setMinute(dateNr);
-                break;
-            case SS:
-                inputFragmentStr = matchStringOrThrow(
-                        PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                params.setSecond(dateNr);
-                break;
-            case SSSSS: {
-                inputFragmentStr = matchStringOrThrow(PATTERN_NUMBER, params,
-                        formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                int second = dateNr % 60;
-                dateNr /= 60;
-                int minute = dateNr % 60;
-                dateNr /= 60;
-                int hour = dateNr % 24;
-                params.setHour(hour);
-                params.setMinute(minute);
-                params.setSecond(second);
-                break;
-            }
-            case FF:
-                inputFragmentStr = matchStringOrThrow(PATTERN_NUMBER, params,
-                        formatTokenEnum);
-                String paddedRightNrStr = format("%-9s", inputFragmentStr)
-                        .replace(' ', '0');
-                paddedRightNrStr = paddedRightNrStr.substring(0, 9);
-                double nineDigits = Double.parseDouble(paddedRightNrStr);
-                params.setNanos((int) nineDigits);
-                break;
-            case AM_PM:
-                inputFragmentStr = matchStringOrThrow(PATTERN_AM_PM, params,
-                        formatTokenEnum);
-                if (inputFragmentStr.toUpperCase().startsWith("A")) {
-                    params.setAmPm(true);
-                } else {
-                    params.setAmPm(false);
+                case HH24:
+                    inputFragmentStr = matchStringOrThrow(
+                            PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    params.setHour(dateNr);
+                    break;
+                case HH12:
+                case HH:
+                    inputFragmentStr = matchStringOrThrow(
+                            PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    params.setHour12(dateNr);
+                    break;
+                case MI:
+                    inputFragmentStr = matchStringOrThrow(
+                            PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    params.setMinute(dateNr);
+                    break;
+                case SS:
+                    inputFragmentStr = matchStringOrThrow(
+                            PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    params.setSecond(dateNr);
+                    break;
+                case SSSSS: {
+                    inputFragmentStr = matchStringOrThrow(PATTERN_NUMBER, params,
+                            formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    int second = dateNr % 60;
+                    dateNr /= 60;
+                    int minute = dateNr % 60;
+                    dateNr /= 60;
+                    int hour = dateNr % 24;
+                    params.setHour(hour);
+                    params.setMinute(minute);
+                    params.setSecond(second);
+                    break;
                 }
-                break;
-            case TZH:
-                inputFragmentStr = matchStringOrThrow(
-                        PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                params.setTimeZoneHour(dateNr);
-                break;
-            case TZM:
-                inputFragmentStr = matchStringOrThrow(
-                        PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
-                dateNr = Integer.parseInt(inputFragmentStr);
-                params.setTimeZoneMinute(dateNr);
-                break;
-            case TZR:
-            case TZD:
-                String tzName = params.getInputStr();
-                params.setTimeZone(TimeZoneProvider.ofId(tzName));
-                inputFragmentStr = tzName;
-                break;
-            default:
-                throw new IllegalArgumentException(format(
-                        "%s: Internal Error. Unhandled case: %s",
-                        this.getClass().getSimpleName(), formatTokenEnum));
+                case FF:
+                    inputFragmentStr = matchStringOrThrow(PATTERN_NUMBER, params,
+                            formatTokenEnum);
+                    String paddedRightNrStr = format("%-9s", inputFragmentStr)
+                            .replace(' ', '0');
+                    paddedRightNrStr = paddedRightNrStr.substring(0, 9);
+                    double nineDigits = Double.parseDouble(paddedRightNrStr);
+                    params.setNanos((int) nineDigits);
+                    break;
+                case AM_PM:
+                    inputFragmentStr = matchStringOrThrow(PATTERN_AM_PM, params,
+                            formatTokenEnum);
+                    if (inputFragmentStr.toUpperCase().startsWith("A")) {
+                        params.setAmPm(true);
+                    } else {
+                        params.setAmPm(false);
+                    }
+                    break;
+                case TZH:
+                    inputFragmentStr = matchStringOrThrow(
+                            PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    params.setTimeZoneHour(dateNr);
+                    break;
+                case TZM:
+                    inputFragmentStr = matchStringOrThrow(
+                            PATTERN_TWO_DIGITS_OR_LESS, params, formatTokenEnum);
+                    dateNr = Integer.parseInt(inputFragmentStr);
+                    params.setTimeZoneMinute(dateNr);
+                    break;
+                case TZR:
+                case TZD:
+                    String tzName = params.getInputStr();
+                    params.setTimeZone(TimeZoneProvider.ofId(tzName));
+                    inputFragmentStr = tzName;
+                    break;
+                default:
+                    throw new IllegalArgumentException(format(
+                            "%s: Internal Error. Unhandled case: %s",
+                            this.getClass().getSimpleName(), formatTokenEnum));
             }
             params.remove(inputFragmentStr, formatTokenStr);
         }
@@ -449,16 +451,16 @@ final class ToDateTokenizer {
     static class InlineParslet implements ToDateParslet {
         @Override
         public void parse(ToDateParser params, FormatTokenEnum formatTokenEnum,
-                String formatTokenStr) {
+                          String formatTokenStr) {
             String inputFragmentStr = null;
             switch (formatTokenEnum) {
-            case INLINE:
-                inputFragmentStr = formatTokenStr.replace("\"", "");
-                break;
-            default:
-                throw new IllegalArgumentException(format(
-                        "%s: Internal Error. Unhandled case: %s",
-                        this.getClass().getSimpleName(), formatTokenEnum));
+                case INLINE:
+                    inputFragmentStr = formatTokenStr.replace("\"", "");
+                    break;
+                default:
+                    throw new IllegalArgumentException(format(
+                            "%s: Internal Error. Unhandled case: %s",
+                            this.getClass().getSimpleName(), formatTokenEnum));
             }
             params.remove(inputFragmentStr, formatTokenStr);
         }
@@ -468,13 +470,13 @@ final class ToDateTokenizer {
     /**
      * Match the pattern, or if not possible throw an exception.
      *
-     * @param p the pattern
+     * @param p      the pattern
      * @param params the parameters with the input string
-     * @param aEnum the pattern name
+     * @param aEnum  the pattern name
      * @return the matched value
      */
     static String matchStringOrThrow(Pattern p, ToDateParser params,
-            Enum<?> aEnum) {
+                                     Enum<?> aEnum) {
         String s = params.getInputStr();
         Matcher matcher = p.matcher(s);
         if (!matcher.find()) {
@@ -488,7 +490,7 @@ final class ToDateTokenizer {
      * Set the given field in the calendar.
      *
      * @param params the parameters with the input string
-     * @param field the field to set
+     * @param field  the field to set
      * @return the matched value
      */
     static String setByName(ToDateParser params, int field) {
@@ -503,16 +505,16 @@ final class ToDateTokenizer {
             int len = dayName.length();
             if (dayName.equalsIgnoreCase(s.substring(0, len))) {
                 switch (field) {
-                case ToCharFunction.MONTHS:
-                case ToCharFunction.SHORT_MONTHS:
-                    params.setMonth(i + 1);
-                    break;
-                case ToCharFunction.WEEKDAYS:
-                case ToCharFunction.SHORT_WEEKDAYS:
-                    // TODO
-                    break;
-                default:
-                    throw new IllegalArgumentException();
+                    case ToCharFunction.MONTHS:
+                    case ToCharFunction.SHORT_MONTHS:
+                        params.setMonth(i + 1);
+                        break;
+                    case ToCharFunction.WEEKDAYS:
+                    case ToCharFunction.SHORT_WEEKDAYS:
+                        // TODO
+                        break;
+                    default:
+                        throw new IllegalArgumentException();
                 }
                 inputFragmentStr = dayName;
                 break;
@@ -529,7 +531,7 @@ final class ToDateTokenizer {
     /**
      * Throw a parse exception.
      *
-     * @param params the parameters with the input string
+     * @param params   the parameters with the input string
      * @param errorStr the error string
      */
     static void throwException(ToDateParser params, String errorStr) {
@@ -625,7 +627,7 @@ final class ToDateTokenizer {
          * Construct a format token.
          *
          * @param toDateParslet the date parslet
-         * @param patternToUse the pattern
+         * @param patternToUse  the pattern
          */
         FormatTokenEnum(ToDateParslet toDateParslet, Pattern patternToUse) {
             this.toDateParslet = toDateParslet;

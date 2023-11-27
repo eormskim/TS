@@ -47,10 +47,10 @@ public final class Variable extends Operation0 {
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-        case ExpressionVisitor.DETERMINISTIC:
-            return false;
-        default:
-            return true;
+            case ExpressionVisitor.DETERMINISTIC:
+                return false;
+            default:
+                return true;
         }
     }
 

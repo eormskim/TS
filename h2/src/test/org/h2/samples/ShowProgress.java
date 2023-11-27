@@ -83,7 +83,7 @@ public class ShowProgress implements DatabaseEventListener {
         time = System.nanoTime();
         conn = DriverManager.getConnection(
                 "jdbc:h2:./test;DATABASE_EVENT_LISTENER='" +
-                getClass().getName() + "'", "sa", "");
+                        getClass().getName() + "'", "sa", "");
         time = System.nanoTime() - time;
         System.out.println("Done after " + TimeUnit.NANOSECONDS.toMillis(time) + " ms");
         prep.close();
@@ -95,7 +95,7 @@ public class ShowProgress implements DatabaseEventListener {
     /**
      * This method is called if an exception occurs in the database.
      *
-     * @param e the exception
+     * @param e   the exception
      * @param sql the SQL statement
      */
     @Override
@@ -108,10 +108,10 @@ public class ShowProgress implements DatabaseEventListener {
      * This method is called when opening the database to notify about the
      * progress.
      *
-     * @param state the current state
-     * @param name the object name (depends on the state)
+     * @param state   the current state
+     * @param name    the object name (depends on the state)
      * @param current the current progress
-     * @param max the 100% mark
+     * @param max     the 100% mark
      */
     @Override
     public void setProgress(int state, String name, long current, long max) {
@@ -122,17 +122,17 @@ public class ShowProgress implements DatabaseEventListener {
         lastNs = time;
         String stateName = "?";
         switch (state) {
-        case STATE_SCAN_FILE:
-            stateName = "Scan " + name;
-            break;
-        case STATE_CREATE_INDEX:
-            stateName = "Create Index " + name;
-            break;
-        case STATE_RECOVER:
-            stateName = "Recover";
-            break;
-        default:
-            return;
+            case STATE_SCAN_FILE:
+                stateName = "Scan " + name;
+                break;
+            case STATE_CREATE_INDEX:
+                stateName = "Create Index " + name;
+                break;
+            case STATE_RECOVER:
+                stateName = "Recover";
+                break;
+            default:
+                return;
         }
         try {
             Thread.sleep(1);

@@ -92,7 +92,7 @@ public abstract class Query extends Prepared {
     ArrayList<QueryOrderBy> orderList;
 
     /**
-     *  A sort order represents an ORDER BY clause in a query.
+     * A sort order represents an ORDER BY clause in a query.
      */
     SortOrder sort;
 
@@ -182,7 +182,7 @@ public abstract class Query extends Prepared {
      * the results are written to it, and the method returns null. If no target
      * is specified, a new LocalResult is created and returned.
      *
-     * @param limit the limit as specified in the JDBC method call
+     * @param limit  the limit as specified in the JDBC method call
      * @param target the target to write results to
      * @return the result
      */
@@ -293,11 +293,9 @@ public abstract class Query extends Prepared {
     /**
      * Map the columns to the given column resolver.
      *
-     * @param resolver
-     *            the resolver
-     * @param level
-     *            the subquery level (0 is the top level query, 1 is the first
-     *            subquery level)
+     * @param resolver the resolver
+     * @param level    the subquery level (0 is the top level query, 1 is the first
+     *                 subquery level)
      */
     public abstract void mapColumns(ColumnResolver resolver, int level);
 
@@ -306,19 +304,19 @@ public abstract class Query extends Prepared {
      * plan.
      *
      * @param tableFilter the table filter
-     * @param b the new value
+     * @param b           the new value
      */
     public abstract void setEvaluatable(TableFilter tableFilter, boolean b);
 
     /**
      * Add a condition to the query. This is used for views.
      *
-     * @param param the parameter
-     * @param columnId the column index (0 meaning the first column)
+     * @param param          the parameter
+     * @param columnId       the column index (0 meaning the first column)
      * @param comparisonType the comparison type
      */
     public abstract void addGlobalCondition(Parameter param, int columnId,
-            int comparisonType);
+                                            int comparisonType);
 
     /**
      * Check whether adding condition to the query is allowed. This is not
@@ -346,7 +344,7 @@ public abstract class Query extends Prepared {
     /**
      * Update all aggregate function values.
      *
-     * @param s the session
+     * @param s     the session
      * @param stage select stage
      */
     public abstract void updateAggregate(SessionLocal s, int stage);
@@ -375,7 +373,7 @@ public abstract class Query extends Prepared {
 
     /**
      * @return whether this query is a {@code DISTINCT} or
-     *         {@code DISTINCT ON (...)} query
+     * {@code DISTINCT ON (...)} query
      */
     public boolean isAnyDistinct() {
         return distinct;
@@ -438,7 +436,7 @@ public abstract class Query extends Prepared {
         return getMaxDataModificationId() <= lastEval;
     }
 
-    private  Value[] getParameterValues() {
+    private Value[] getParameterValues() {
         ArrayList<Parameter> list = getParameters();
         if (list == null) {
             return Value.EMPTY_VALUES;
@@ -460,7 +458,7 @@ public abstract class Query extends Prepared {
     /**
      * Execute the query, writing the result to the target result.
      *
-     * @param limit the maximum number of rows to return
+     * @param limit  the maximum number of rows to return
      * @param target the target result (null will return the result)
      * @return the result set (if the target is not set).
      */
@@ -547,14 +545,14 @@ public abstract class Query extends Prepared {
     /**
      * Initialize the order by list. This call may extend the expressions list.
      *
-     * @param expressionSQL the select list SQL snippets
+     * @param expressionSQL  the select list SQL snippets
      * @param mustBeInResult all order by expressions must be in the select list
-     * @param filters the table filters
+     * @param filters        the table filters
      * @return {@code true} if ORDER BY clause is preserved, {@code false}
-     *         otherwise
+     * otherwise
      */
     boolean initOrder(ArrayList<String> expressionSQL, boolean mustBeInResult, ArrayList<TableFilter> filters) {
-        for (Iterator<QueryOrderBy> i = orderList.iterator(); i.hasNext();) {
+        for (Iterator<QueryOrderBy> i = orderList.iterator(); i.hasNext(); ) {
             QueryOrderBy o = i.next();
             Expression e = o.expression;
             if (e == null) {
@@ -578,14 +576,14 @@ public abstract class Query extends Prepared {
     /**
      * Initialize the 'ORDER BY' or 'DISTINCT' expressions.
      *
-     * @param expressionSQL the select list SQL snippets
-     * @param e the expression.
+     * @param expressionSQL  the select list SQL snippets
+     * @param e              the expression.
      * @param mustBeInResult all order by expressions must be in the select list
-     * @param filters the table filters.
+     * @param filters        the table filters.
      * @return index on the expression in the {@link #expressions} list.
      */
     int initExpression(ArrayList<String> expressionSQL, Expression e, boolean mustBeInResult,
-            ArrayList<TableFilter> filters) {
+                       ArrayList<TableFilter> filters) {
         Database db = session.getDatabase();
         // special case: SELECT 1 AS A FROM DUAL ORDER BY A
         // (oracle supports it, but only in order by, not in group by and
@@ -646,7 +644,7 @@ public abstract class Query extends Prepared {
         }
         if (expressionSQL == null
                 || mustBeInResult && !db.getMode().allowUnrelatedOrderByExpressionsInDistinctQueries
-                        && !checkOrderOther(session, e, expressionSQL)) {
+                && !checkOrderOther(session, e, expressionSQL)) {
             throw DbException.get(ErrorCode.ORDER_BY_NOT_IN_RESULT, e.getTraceSQL());
         }
         int idx = expressions.size();
@@ -661,11 +659,11 @@ public abstract class Query extends Prepared {
      * method allows expressions based only on selected expressions in different
      * complicated ways with functions, comparisons, or operators.
      *
-     * @param session session
-     * @param expr expression to check
+     * @param session       session
+     * @param expr          expression to check
      * @param expressionSQL SQL of allowed expressions
      * @return whether the specified expression should be allowed in ORDER BY
-     *         list of DISTINCT select
+     * list of DISTINCT select
      */
     private static boolean checkOrderOther(SessionLocal session, Expression expr, ArrayList<String> expressionSQL) {
         if (expr == null || expr.isConstant()) {
@@ -673,7 +671,7 @@ public abstract class Query extends Prepared {
             return true;
         }
         String exprSQL = expr.getSQL(DEFAULT_SQL_FLAGS, WITHOUT_PARENTHESES);
-        for (String sql: expressionSQL) {
+        for (String sql : expressionSQL) {
             if (session.getDatabase().equalsIdentifiers(exprSQL, sql)) {
                 return true;
             }
@@ -698,7 +696,7 @@ public abstract class Query extends Prepared {
      * Create a {@link SortOrder} object given the list of {@link QueryOrderBy}
      * objects.
      *
-     * @param orderList a list of {@link QueryOrderBy} elements
+     * @param orderList       a list of {@link QueryOrderBy} elements
      * @param expressionCount the number of columns in the query
      */
     void prepareOrder(ArrayList<QueryOrderBy> orderList, int expressionCount) {
@@ -738,7 +736,7 @@ public abstract class Query extends Prepared {
 
     /**
      * Removes constant expressions from the sort order.
-     *
+     * <p>
      * Some constants are detected only after optimization of expressions, this
      * method removes them from the sort order only. They are currently
      * preserved in the list of expressions.
@@ -834,8 +832,8 @@ public abstract class Query extends Prepared {
     /**
      * Appends ORDER BY, OFFSET, and FETCH clauses to the plan.
      *
-     * @param builder query plan string builder.
-     * @param sqlFlags formatting flags
+     * @param builder     query plan string builder.
+     * @param sqlFlags    formatting flags
      * @param expressions the array of expressions
      */
     void appendEndOfQueryToSQL(StringBuilder builder, int sqlFlags, Expression[] expressions) {
@@ -872,8 +870,7 @@ public abstract class Query extends Prepared {
     /**
      * Evaluates OFFSET and FETCH expressions.
      *
-     * @param maxRows
-     *            additional limit
+     * @param maxRows additional limit
      * @return the evaluated values
      */
     OffsetFetch getOffsetFetch(long maxRows) {
@@ -912,16 +909,11 @@ public abstract class Query extends Prepared {
      * Applies limits, if any, to a result and makes it ready for value
      * retrieval.
      *
-     * @param result
-     *            the result
-     * @param offset
-     *            OFFSET value
-     * @param fetch
-     *            FETCH value
-     * @param fetchPercent
-     *            whether FETCH value is a PERCENT value
-     * @param target
-     *            target result or null
+     * @param result       the result
+     * @param offset       OFFSET value
+     * @param fetch        FETCH value
+     * @param fetchPercent whether FETCH value is a PERCENT value
+     * @param target       target result or null
      * @return the result or null
      */
     LocalResult finishResult(LocalResult result, long offset, long fetch, boolean fetchPercent, ResultTarget target) {
@@ -970,15 +962,15 @@ public abstract class Query extends Prepared {
     /**
      * Converts this query to a table or a view.
      *
-     * @param alias alias name for the view
+     * @param alias           alias name for the view
      * @param columnTemplates column templates, or {@code null}
-     * @param parameters the parameters
-     * @param forCreateView if true, a system session will be used for the view
-     * @param topQuery the top level query
+     * @param parameters      the parameters
+     * @param forCreateView   if true, a system session will be used for the view
+     * @param topQuery        the top level query
      * @return the table or the view
      */
     public Table toTable(String alias, Column[] columnTemplates, ArrayList<Parameter> parameters,
-            boolean forCreateView, Query topQuery) {
+                         boolean forCreateView, Query topQuery) {
         setParameterList(new ArrayList<>(parameters));
         if (!checkInit) {
             init();
@@ -998,7 +990,7 @@ public abstract class Query extends Prepared {
      * effects.
      *
      * @return if this query will always return the same value and has no side
-     *         effects.
+     * effects.
      */
     public boolean isConstantQuery() {
         return !hasOrder() && (offsetExpr == null || offsetExpr.isConstant())

@@ -24,8 +24,7 @@ public abstract class CommandWithValues extends DataChangeStatement {
     /**
      * Creates new instance of command with VALUES clause.
      *
-     * @param session
-     *            the session
+     * @param session the session
      */
     protected CommandWithValues(SessionLocal session) {
         super(session);
@@ -34,8 +33,7 @@ public abstract class CommandWithValues extends DataChangeStatement {
     /**
      * Add a row to this command.
      *
-     * @param expr
-     *            the list of values
+     * @param expr the list of values
      */
     public void addRow(Expression[] expr) {
         valuesExpressionList.add(expr);

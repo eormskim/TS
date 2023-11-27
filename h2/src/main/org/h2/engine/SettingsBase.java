@@ -29,7 +29,7 @@ public class SettingsBase {
     /**
      * Get the setting for the given key.
      *
-     * @param key the key
+     * @param key          the key
      * @param defaultValue the default value
      * @return the setting
      */
@@ -46,7 +46,7 @@ public class SettingsBase {
     /**
      * Set an entry in the key-value pair.
      *
-     * @param key the key
+     * @param key   the key
      * @param value the value
      */
     void set(String key, boolean value) {
@@ -56,7 +56,7 @@ public class SettingsBase {
     /**
      * Get the setting for the given key.
      *
-     * @param key the key
+     * @param key          the key
      * @param defaultValue the default value
      * @return the setting
      */
@@ -73,7 +73,7 @@ public class SettingsBase {
     /**
      * Get the setting for the given key.
      *
-     * @param key the key
+     * @param key          the key
      * @param defaultValue the default value
      * @return the setting
      */

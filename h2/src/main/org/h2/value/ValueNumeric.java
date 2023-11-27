@@ -175,8 +175,7 @@ public final class ValueNumeric extends ValueBigDecimalBase {
      * Get or create a NUMERIC value for the given big decimal with possibly
      * negative scale. If scale is negative, it is normalized to 0.
      *
-     * @param dec
-     *            the big decimal
+     * @param dec the big decimal
      * @return the value
      */
     public static ValueNumeric getAnyScale(BigDecimal dec) {
@@ -204,7 +203,7 @@ public final class ValueNumeric extends ValueBigDecimalBase {
     /**
      * Set the scale of a BigDecimal value.
      *
-     * @param bd the BigDecimal value
+     * @param bd    the BigDecimal value
      * @param scale the new scale
      * @return the scaled value
      */

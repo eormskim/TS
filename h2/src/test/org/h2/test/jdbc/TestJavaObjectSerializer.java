@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Types;
+
 import org.h2.api.JavaObjectSerializer;
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
@@ -50,12 +51,12 @@ public class TestJavaObjectSerializer extends TestDb {
             public byte[] serialize(Object obj) throws Exception {
                 assertEquals(100500, ((Integer) obj).intValue());
 
-                return new byte[] { 1, 2, 3 };
+                return new byte[]{1, 2, 3};
             }
 
             @Override
             public Object deserialize(byte[] bytes) throws Exception {
-                assertEquals(new byte[] { 1, 2, 3 }, bytes);
+                assertEquals(new byte[]{1, 2, 3}, bytes);
 
                 return 100500;
             }
@@ -79,7 +80,7 @@ public class TestJavaObjectSerializer extends TestDb {
             assertTrue(rs.next());
 
             assertEquals(100500, ((Integer) rs.getObject(1)).intValue());
-            assertEquals(new byte[] { 1, 2, 3 }, rs.getBytes(1));
+            assertEquals(new byte[]{1, 2, 3}, rs.getBytes(1));
 
             conn.close();
             deleteDb("javaSerializer");
@@ -99,8 +100,8 @@ public class TestJavaObjectSerializer extends TestDb {
             deleteDb("javaSerializer");
             Connection conn = getConnection("javaSerializer");
 
-            conn.createStatement().execute("SET JAVA_OBJECT_SERIALIZER '"+
-                    DbLevelJavaObjectSerializer.class.getName()+"'");
+            conn.createStatement().execute("SET JAVA_OBJECT_SERIALIZER '" +
+                    DbLevelJavaObjectSerializer.class.getName() + "'");
 
             Statement stat = conn.createStatement();
             stat.execute("create table t1(id identity, val other)");
@@ -116,7 +117,7 @@ public class TestJavaObjectSerializer extends TestDb {
             assertTrue(rs.next());
 
             assertEquals(100500, ((Integer) rs.getObject(1)).intValue());
-            assertEquals(new byte[] { 1, 2, 3 }, rs.getBytes(1));
+            assertEquals(new byte[]{1, 2, 3}, rs.getBytes(1));
 
             conn.close();
             deleteDb("javaSerializer");
@@ -140,12 +141,12 @@ public class TestJavaObjectSerializer extends TestDb {
         public byte[] serialize(Object obj) throws Exception {
             testBaseRef.assertEquals(100500, ((Integer) obj).intValue());
 
-            return new byte[] { 1, 2, 3 };
+            return new byte[]{1, 2, 3};
         }
 
         @Override
         public Object deserialize(byte[] bytes) throws Exception {
-            testBaseRef.assertEquals(new byte[] { 1, 2, 3 }, bytes);
+            testBaseRef.assertEquals(new byte[]{1, 2, 3}, bytes);
 
             return 100500;
         }

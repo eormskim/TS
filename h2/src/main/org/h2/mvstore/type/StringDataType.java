@@ -6,6 +6,7 @@
 package org.h2.mvstore.type;
 
 import java.nio.ByteBuffer;
+
 import org.h2.mvstore.DataUtils;
 import org.h2.mvstore.WriteBuffer;
 
@@ -53,6 +54,7 @@ public class StringDataType extends BasicDataType<String> {
         }
         return -(low + 1);
     }
+
     @Override
     public int getMemory(String obj) {
         return 24 + 2 * obj.length();

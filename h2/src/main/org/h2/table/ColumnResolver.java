@@ -35,9 +35,8 @@ public interface ColumnResolver {
     /**
      * Get the column with the specified name.
      *
-     * @param name
-     *            the column name, must be a derived name if this column
-     *            resolver has a derived column list
+     * @param name the column name, must be a derived name if this column
+     *             resolver has a derived column list
      * @return the column with the specified name, or {@code null}
      */
     Column findColumn(String name);
@@ -56,7 +55,7 @@ public interface ColumnResolver {
      * Returns whether this column resolver has a derived column list.
      *
      * @return {@code true} if this column resolver has a derived column list,
-     *         {@code false} otherwise
+     * {@code false} otherwise
      */
     default boolean hasDerivedColumnList() {
         return false;
@@ -119,7 +118,7 @@ public interface ColumnResolver {
      * Get the expression that represents this column.
      *
      * @param expressionColumn the expression column
-     * @param column the column
+     * @param column           the column
      * @return the optimized expression
      */
     default Expression optimize(ExpressionColumn expressionColumn, Column column) {

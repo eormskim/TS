@@ -74,7 +74,7 @@ public class CompareMode implements Comparator<Value> {
      * returned. A cache is used to speed up comparison when using a collator;
      * CollationKey objects are cached.
      *
-     * @param name the collation name or null
+     * @param name     the collation name or null
      * @param strength the collation strength
      * @return the compare mode
      */
@@ -111,9 +111,8 @@ public class CompareMode implements Comparator<Value> {
     /**
      * Returns available locales for collations.
      *
-     * @param onlyIfInitialized
-     *            if {@code true}, returns {@code null} when locales are not yet
-     *            initialized
+     * @param onlyIfInitialized if {@code true}, returns {@code null} when locales are not yet
+     *                          initialized
      * @return available locales for collations.
      */
     public static Locale[] getCollationLocales(boolean onlyIfInitialized) {
@@ -127,10 +126,10 @@ public class CompareMode implements Comparator<Value> {
     /**
      * Compare two characters in a string.
      *
-     * @param a the first string
-     * @param ai the character index in the first string
-     * @param b the second string
-     * @param bi the character index in the second string
+     * @param a          the first string
+     * @param ai         the character index in the first string
+     * @param b          the second string
+     * @param bi         the character index in the second string
      * @param ignoreCase true if a case-insensitive comparison should be made
      * @return true if the characters are equals
      */
@@ -152,11 +151,11 @@ public class CompareMode implements Comparator<Value> {
     /**
      * Compare two strings.
      *
-     * @param a the first string
-     * @param b the second string
+     * @param a          the first string
+     * @param b          the second string
      * @param ignoreCase true if a case-insensitive comparison should be made
      * @return -1 if the first string is 'smaller', 1 if the second string is
-     *         smaller, and 0 if they are equal
+     * smaller, and 0 if they are equal
      */
     public int compareString(String a, String b, boolean ignoreCase) {
         if (ignoreCase) {
@@ -184,7 +183,7 @@ public class CompareMode implements Comparator<Value> {
      * is ignored.
      *
      * @param locale the locale
-     * @param name the name
+     * @param name   the name
      * @return true if they match
      */
     static boolean compareLocaleNames(Locale locale, String name) {

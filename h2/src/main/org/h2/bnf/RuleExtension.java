@@ -34,6 +34,7 @@ public class RuleExtension implements Rule {
             mapSet = true;
         }
     }
+
     @Override
     public boolean autoComplete(Sentence sentence) {
         sentence.stopIfRequired();

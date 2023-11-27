@@ -111,8 +111,8 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
     private static final ValueSmallint TABLE_INDEX_OTHER = ValueSmallint.get(DatabaseMetaData.tableIndexOther);
 
     // This list must be ordered
-    private static final String[] TABLE_TYPES = { "BASE TABLE", "GLOBAL TEMPORARY", "LOCAL TEMPORARY", "SYNONYM",
-            "VIEW" };
+    private static final String[] TABLE_TYPES = {"BASE TABLE", "GLOBAL TEMPORARY", "LOCAL TEMPORARY", "SYNONYM",
+            "VIEW"};
 
     private static final ValueSmallint TYPE_NULLABLE = ValueSmallint.get((short) DatabaseMetaData.typeNullable);
 
@@ -258,12 +258,12 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
             }
         }
         // PROCEDURE_CAT, PROCEDURE_SCHEM, PROCEDURE_NAME, SPECIFIC_ NAME
-        result.sortRows(new SortOrder(session, new int[] { 1, 2, 8 }));
+        result.sortRows(new SortOrder(session, new int[]{1, 2, 8}));
         return result;
     }
 
     private void getProceduresAdd(SimpleResult result, Value catalogValue, Value schemaValue, Value procedureNameValue,
-            String comment, ValueSmallint procedureType, Value specificNameValue) {
+                                  String comment, ValueSmallint procedureType, Value specificNameValue) {
         result.addRow(
                 // PROCEDURE_CAT
                 catalogValue,
@@ -287,7 +287,7 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
 
     @Override
     public ResultInterface getProcedureColumns(String catalog, String schemaPattern, String procedureNamePattern,
-            String columnNamePattern) {
+                                               String columnNamePattern) {
         checkClosed();
         SimpleResult result = new SimpleResult();
         result.addColumn("PROCEDURE_CAT", TypeInfo.TYPE_VARCHAR);
@@ -352,12 +352,12 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
         }
         // PROCEDURE_CAT, PROCEDURE_SCHEM, PROCEDURE_NAME, SPECIFIC_NAME, return
         // value first
-        result.sortRows(new SortOrder(session, new int[] { 1, 2, 19 }));
+        result.sortRows(new SortOrder(session, new int[]{1, 2, 19}));
         return result;
     }
 
     private void getProcedureColumnAdd(SimpleResult result, Value catalogValue, Value schemaValue,
-            Value procedureNameValue, Value specificNameValue, TypeInfo type, boolean notNull, int ordinal) {
+                                       Value procedureNameValue, Value specificNameValue, TypeInfo type, boolean notNull, int ordinal) {
         int valueType = type.getValueType();
         DataType dt = DataType.getDataType(valueType);
         ValueInteger precisionValue = ValueInteger.get(MathUtils.convertLongToInt(type.getPrecision()));
@@ -458,12 +458,12 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
             }
         }
         // TABLE_TYPE, TABLE_CAT, TABLE_SCHEM, TABLE_NAME
-        result.sortRows(new SortOrder(session, new int[] { 3, 1, 2 }));
+        result.sortRows(new SortOrder(session, new int[]{3, 1, 2}));
         return result;
     }
 
     private void getTablesAdd(SimpleResult result, Value catalogValue, Value schemaValue, Value tableName, Table t,
-            boolean synonym, HashSet<String> typesSet) {
+                              boolean synonym, HashSet<String> typesSet) {
         String type = synonym ? "SYNONYM" : t.getSQLTableType();
         if (typesSet != null && !typesSet.contains(type)) {
             return;
@@ -520,7 +520,7 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
 
     @Override
     public ResultInterface getColumns(String catalog, String schemaPattern, String tableNamePattern,
-            String columnNamePattern) {
+                                      String columnNamePattern) {
         SimpleResult result = new SimpleResult();
         result.addColumn("TABLE_CAT", TypeInfo.TYPE_VARCHAR);
         result.addColumn("TABLE_SCHEM", TypeInfo.TYPE_VARCHAR);
@@ -569,12 +569,12 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
             }
         }
         // TABLE_CAT, TABLE_SCHEM, TABLE_NAME, ORDINAL_POSITION
-        result.sortRows(new SortOrder(session, new int[] { 1, 2, 16 }));
+        result.sortRows(new SortOrder(session, new int[]{1, 2, 16}));
         return result;
     }
 
     private void getColumnsAdd(SimpleResult result, Value catalogValue, Value schemaValue, Value tableName, Table t,
-            CompareLike columnLike) {
+                               CompareLike columnLike) {
         int ordinal = 0;
         for (Column c : t.getColumns()) {
             if (!c.getVisible()) {
@@ -682,7 +682,7 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
                     t.getColumns());
         }
         // COLUMN_NAME, PRIVILEGE
-        result.sortRows(new SortOrder(session, new int[] { 3, 6 }));
+        result.sortRows(new SortOrder(session, new int[]{3, 6}));
         return result;
     }
 
@@ -733,12 +733,12 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
             addPrivileges(result, catalogValue, schemaName, tableName, r.getGrantee(), r.getRightMask(), null, null);
         }
         // TABLE_CAT, TABLE_SCHEM, TABLE_NAME, PRIVILEGE
-        result.sortRows(new SortOrder(session, new int[] { 1, 2, 5 }));
+        result.sortRows(new SortOrder(session, new int[]{1, 2, 5}));
         return result;
     }
 
     private void addPrivileges(SimpleResult result, Value catalogValue, String schemaName, String tableName,
-            DbObject grantee, int rightMask, CompareLike columnLike, Column[] columns) {
+                               DbObject grantee, int rightMask, CompareLike columnLike, Column[] columns) {
         Value schemaValue = getString(schemaName);
         Value tableValue = getString(tableName);
         Value granteeValue = getString(grantee.getName());
@@ -762,7 +762,7 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
     }
 
     private void addPrivilege(SimpleResult result, Value catalogValue, Value schemaValue, Value tableValue,
-            Value granteeValue, String right, boolean isAdmin, CompareLike columnLike, Column[] columns) {
+                              Value granteeValue, String right, boolean isAdmin, CompareLike columnLike, Column[] columns) {
         if (columns == null) {
             result.addRow(
                     // TABLE_CAT
@@ -808,7 +808,7 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
 
     @Override
     public ResultInterface getBestRowIdentifier(String catalog, String schema, String table, int scope,
-            boolean nullable) {
+                                                boolean nullable) {
         if (table == null) {
             throw DbException.getInvalidValueException("table", null);
         }
@@ -908,7 +908,7 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
                 Value tableValue = getString(t.getName());
                 Value pkValue = getString(constraint.getName());
                 IndexColumn[] columns = ((ConstraintUnique) constraint).getColumns();
-                for (int i = 0, l = columns.length; i < l;) {
+                for (int i = 0, l = columns.length; i < l; ) {
                     result.addRow(
                             // TABLE_CAT
                             catalogValue,
@@ -926,7 +926,7 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
             }
         }
         // COLUMN_NAME
-        result.sortRows(new SortOrder(session, new int[] { 3 }));
+        result.sortRows(new SortOrder(session, new int[]{3}));
         return result;
     }
 
@@ -965,7 +965,7 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
             }
         }
         // PKTABLE_CAT, PKTABLE_SCHEM, PKTABLE_NAME, KEY_SEQ
-        result.sortRows(new SortOrder(session, new int[] { 1, 2, 8 }));
+        result.sortRows(new SortOrder(session, new int[]{1, 2, 8}));
         return result;
     }
 
@@ -1004,13 +1004,13 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
             }
         }
         // FKTABLE_CAT FKTABLE_SCHEM, FKTABLE_NAME, KEY_SEQ
-        result.sortRows(new SortOrder(session, new int[] { 5, 6, 8 }));
+        result.sortRows(new SortOrder(session, new int[]{5, 6, 8}));
         return result;
     }
 
     @Override
     public ResultInterface getCrossReference(String primaryCatalog, String primarySchema, String primaryTable,
-            String foreignCatalog, String foreignSchema, String foreignTable) {
+                                             String foreignCatalog, String foreignSchema, String foreignTable) {
         if (primaryTable == null) {
             throw DbException.getInvalidValueException("primaryTable", null);
         }
@@ -1054,7 +1054,7 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
             }
         }
         // FKTABLE_CAT FKTABLE_SCHEM, FKTABLE_NAME, KEY_SEQ
-        result.sortRows(new SortOrder(session, new int[] { 5, 6, 8 }));
+        result.sortRows(new SortOrder(session, new int[]{5, 6, 8}));
         return result;
     }
 
@@ -1079,7 +1079,7 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
     }
 
     private void addCrossReferenceResult(SimpleResult result, Value catalog, String pkSchema, Table pkTable,
-            String fkSchema, Table fkTable, ConstraintReferential fk) {
+                                         String fkSchema, Table fkTable, ConstraintReferential fk) {
         Value pkSchemaValue = getString(pkSchema);
         Value pkTableValue = getString(pkTable.getName());
         Value fkSchemaValue = getString(fkSchema);
@@ -1125,16 +1125,16 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
 
     private static ValueSmallint getRefAction(ConstraintActionType action) {
         switch (action) {
-        case CASCADE:
-            return IMPORTED_KEY_CASCADE;
-        case RESTRICT:
-            return IMPORTED_KEY_RESTRICT;
-        case SET_DEFAULT:
-            return IMPORTED_KEY_DEFAULT;
-        case SET_NULL:
-            return IMPORTED_KEY_SET_NULL;
-        default:
-            throw DbException.getInternalError("action=" + action);
+            case CASCADE:
+                return IMPORTED_KEY_CASCADE;
+            case RESTRICT:
+                return IMPORTED_KEY_RESTRICT;
+            case SET_DEFAULT:
+                return IMPORTED_KEY_DEFAULT;
+            case SET_NULL:
+                return IMPORTED_KEY_SET_NULL;
+            default:
+                throw DbException.getInternalError("action=" + action);
         }
     }
 
@@ -1202,7 +1202,7 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
                     getRadix(t.type, false));
         }
         // DATA_TYPE, better types first
-        result.sortRows(new SortOrder(session, new int[] { 1 }));
+        result.sortRows(new SortOrder(session, new int[]{1}));
         return result;
     }
 
@@ -1216,7 +1216,7 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
 
     @Override
     public ResultInterface getIndexInfo(String catalog, String schema, String table, boolean unique,
-            boolean approximate) {
+                                        boolean approximate) {
         if (table == null) {
             throw DbException.getInvalidValueException("table", null);
         }
@@ -1248,12 +1248,12 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
             getIndexInfo(catalogValue, getString(s.getName()), t, unique, approximate, result, db);
         }
         // NON_UNIQUE, TYPE, INDEX_NAME, ORDINAL_POSITION
-        result.sortRows(new SortOrder(session, new int[] { 3, 6, 5, 7 }));
+        result.sortRows(new SortOrder(session, new int[]{3, 6, 5, 7}));
         return result;
     }
 
     private void getIndexInfo(Value catalogValue, Value schemaValue, Table table, boolean unique, boolean approximate,
-            SimpleResult result, Database db) {
+                              SimpleResult result, Database db) {
         ArrayList<Index> indexes = table.getIndexes();
         if (indexes != null) {
             for (Index index : indexes) {
@@ -1333,13 +1333,13 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
             }
         }
         // TABLE_CATALOG, TABLE_SCHEM
-        result.sortRows(new SortOrder(session, new int[] { 0 }));
+        result.sortRows(new SortOrder(session, new int[]{0}));
         return result;
     }
 
     @Override
     public ResultInterface getPseudoColumns(String catalog, String schemaPattern, String tableNamePattern,
-            String columnNamePattern) {
+                                            String columnNamePattern) {
         SimpleResult result = getPseudoColumnsResult();
         if (!checkCatalogName(catalog)) {
             return result;
@@ -1364,12 +1364,12 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
             }
         }
         // TABLE_CAT, TABLE_SCHEM, TABLE_NAME, COLUMN_NAME
-        result.sortRows(new SortOrder(session, new int[] { 1, 2, 3 }));
+        result.sortRows(new SortOrder(session, new int[]{1, 2, 3}));
         return result;
     }
 
     private void getPseudoColumnsAdd(SimpleResult result, Value catalogValue, Value schemaValue, Value tableName,
-            Table t, CompareLike columnLike) {
+                                     Table t, CompareLike columnLike) {
         Column rowId = t.getRowIdColumn();
         if (rowId != null) {
             getPseudoColumnsAdd(result, catalogValue, schemaValue, tableName, columnLike, rowId);
@@ -1382,7 +1382,7 @@ public final class DatabaseMetaLocal extends DatabaseMetaLocalBase {
     }
 
     private void getPseudoColumnsAdd(SimpleResult result, Value catalogValue, Value schemaValue, Value tableName,
-            CompareLike columnLike, Column c) {
+                                     CompareLike columnLike, Column c) {
         String name = c.getName();
         if (columnLike != null && !columnLike.test(name)) {
             return;

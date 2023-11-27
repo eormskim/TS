@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import org.h2.api.ErrorCode;
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
@@ -110,7 +111,7 @@ public class TestViewAlterTable extends TestDb {
         // each individual column that was in 'test' when the view was
         // originally created. This is consistent with PostgreSQL.
         assertThrows(ErrorCode.COLUMN_NOT_FOUND_1, stat).
-            executeQuery("select d from v4");
+                executeQuery("select d from v4");
         checkViewRemainsValid();
     }
 
@@ -200,7 +201,7 @@ public class TestViewAlterTable extends TestDb {
     }
 
     // original error: table "XX_COPY_xx_xx" not found
-    private void testAlterTableDropColumnInViewWithDoubleQuotes() throws SQLException{
+    private void testAlterTableDropColumnInViewWithDoubleQuotes() throws SQLException {
         // simple
         stat.execute("create table \"test\"(id identity, name varchar) " +
                 "as select 1, 'Hello' from dual");

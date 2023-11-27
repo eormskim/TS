@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
+
 import org.h2.api.ErrorCode;
 import org.h2.api.Trigger;
 import org.h2.engine.Constants;
@@ -63,12 +64,12 @@ import org.h2.value.ValueRow;
 
 /**
  * This class represents a simple SELECT statement.
- *
+ * <p>
  * For each select statement,
  * visibleColumnCount &lt;= distinctColumnCount &lt;= expressionCount.
  * The expression list count could include ORDER BY and GROUP BY expressions
  * that are not in the select list.
- *
+ * <p>
  * The call sequence is init(), mapColumns() if it's a subquery, prepare().
  *
  * @author Thomas Mueller
@@ -170,7 +171,7 @@ public class Select extends Query {
      * Add a table to the query.
      *
      * @param filter the table to add
-     * @param isTop if the table can be the first table in the query plan
+     * @param isTop  if the table can be the first table in the query plan
      */
     public void addTableFilter(TableFilter filter, boolean isTop) {
         // Oracle doesn't check on duplicate aliases
@@ -273,7 +274,7 @@ public class Select extends Query {
     /**
      * Adds a named window definition.
      *
-     * @param name name
+     * @param name   name
      * @param window window definition
      * @return true if a new definition was added, false if old definition was replaced
      */
@@ -326,7 +327,7 @@ public class Select extends Query {
     /**
      * Create a row with the current values, for queries with group-sort.
      *
-     * @param keyValues the key values
+     * @param keyValues   the key values
      * @param columnCount the number of columns
      * @return the row
      */
@@ -341,10 +342,8 @@ public class Select extends Query {
     /**
      * Removes HAVING and QUALIFY columns from the row.
      *
-     * @param row
-     *            the complete row
-     * @param columnCount
-     *            the number of columns to keep
+     * @param row         the complete row
+     * @param columnCount the number of columns to keep
      * @return the same or the truncated row
      */
     private Value[] rowForResult(Value[] row, int columnCount) {
@@ -528,8 +527,9 @@ public class Select extends Query {
 
     /**
      * Update any aggregate expressions with the query stage.
+     *
      * @param columnCount number of columns
-     * @param stage see STAGE_RESET/STAGE_GROUP/STAGE_WINDOW in DataAnalysisOperation
+     * @param stage       see STAGE_RESET/STAGE_GROUP/STAGE_WINDOW in DataAnalysisOperation
      */
     void updateAgg(int columnCount, int stage) {
         for (int i = 0; i < columnCount; i++) {
@@ -542,8 +542,8 @@ public class Select extends Query {
     }
 
     private void processGroupResult(int columnCount, LocalResult result, long offset, boolean quickOffset,
-            boolean withHaving) {
-        for (ValueRow currentGroupsKey; (currentGroupsKey = groupData.next()) != null;) {
+                                    boolean withHaving) {
+        for (ValueRow currentGroupsKey; (currentGroupsKey = groupData.next()) != null; ) {
             Value[] row = constructGroupResultRow(currentGroupsKey.getList(), columnCount);
             if (withHaving && isHavingNullOrFalse(row)) {
                 continue;
@@ -627,7 +627,8 @@ public class Select extends Query {
         if (list != null) {
             int[] sortTypes = sort.getSortTypesWithNullOrdering();
             DefaultNullOrdering defaultNullOrdering = session.getDatabase().getDefaultNullOrdering();
-            loop: for (Index index : list) {
+            loop:
+            for (Index index : list) {
                 if (index.getCreateSQL() == null) {
                     // can't use the scan index
                     continue;
@@ -668,7 +669,7 @@ public class Select extends Query {
     }
 
     private void queryDistinct(ResultTarget result, long offset, long limitRows, boolean withTies,
-            boolean quickOffset) {
+                               boolean quickOffset) {
         if (limitRows > 0 && offset > 0) {
             limitRows += offset;
             if (limitRows < 0) {
@@ -708,7 +709,7 @@ public class Select extends Query {
     }
 
     private LazyResult queryFlat(int columnCount, ResultTarget result, long offset, long limitRows, boolean withTies,
-            boolean quickOffset) {
+                                 boolean quickOffset) {
         if (limitRows > 0 && offset > 0 && !quickOffset) {
             limitRows += offset;
             if (limitRows < 0) {
@@ -872,7 +873,7 @@ public class Select extends Query {
 
     private void expandColumnList() {
         // the expressions may change within the loop
-        for (int i = 0; i < expressions.size();) {
+        for (int i = 0; i < expressions.size(); ) {
             Expression expr = expressions.get(i);
             if (!(expr instanceof Wildcard)) {
                 i++;
@@ -918,7 +919,7 @@ public class Select extends Query {
     }
 
     private int expandColumnList(TableFilter filter, int index, boolean forAlias,
-            HashMap<Column, ExpressionColumn> except) {
+                                 HashMap<Column, ExpressionColumn> except) {
         String schema = filter.getSchemaName();
         String alias = filter.getTableAlias();
         if (forAlias) {
@@ -965,7 +966,7 @@ public class Select extends Query {
     }
 
     private int addExpandedColumn(TableFilter filter, int index, HashMap<Column, ExpressionColumn> except,
-            String schema, String alias, Column c) {
+                                  String schema, String alias, Column c) {
         if ((except == null || except.remove(c) == null) && c.getVisible()) {
             ExpressionColumn ec = new ExpressionColumn(session.getDatabase(), schema, alias, filter.getColumnName(c));
             expressions.add(index++, ec);
@@ -1081,7 +1082,8 @@ public class Select extends Query {
                     groupIndex[i] = found;
                 }
             }
-            checkUsed: if (groupByCopies != null) {
+            checkUsed:
+            if (groupByCopies != null) {
                 for (int i : groupByCopies) {
                     if (i >= 0) {
                         break checkUsed;
@@ -1113,7 +1115,7 @@ public class Select extends Query {
     }
 
     private int mergeGroupByExpressions(Database db, int index, ArrayList<String> expressionSQL, //
-            boolean scanPrevious) {
+                                        boolean scanPrevious) {
 
         /*
          * -1: uniqueness of expression is not known yet
@@ -1237,7 +1239,7 @@ public class Select extends Query {
                     }
                 } else if (index.getIndexColumns() != null
                         && index.getIndexColumns().length >= current
-                                .getIndexColumns().length) {
+                        .getIndexColumns().length) {
                     IndexColumn[] sortColumns = index.getIndexColumns();
                     IndexColumn[] currentColumns = current.getIndexColumns();
                     boolean swapIndex = false;
@@ -1439,7 +1441,7 @@ public class Select extends Query {
                     }
                     group.get(i).getUnenclosedSQL(builder, sqlFlags);
                 }
-            } else emptyGroupingSet: if (isGroupQuery && having == null && havingIndex < 0) {
+            } else emptyGroupingSet:if (isGroupQuery && having == null && havingIndex < 0) {
                 for (int i = 0; i < visibleColumnCount; i++) {
                     if (containsAggregate(exprList[i])) {
                         break emptyGroupingSet;
@@ -1486,7 +1488,7 @@ public class Select extends Query {
     }
 
     private static void getFilterSQL(StringBuilder builder, String sql, Expression[] exprList, Expression condition,
-            int conditionIndex, int sqlFlags) {
+                                     int conditionIndex, int sqlFlags) {
         if (condition != null) {
             getFilterSQL(builder, sql, condition, sqlFlags);
         } else if (conditionIndex >= 0) {
@@ -1665,39 +1667,39 @@ public class Select extends Query {
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-        case ExpressionVisitor.DETERMINISTIC: {
-            if (isForUpdate) {
-                return false;
-            }
-            for (TableFilter f : filters) {
-                if (!f.getTable().isDeterministic()) {
+            case ExpressionVisitor.DETERMINISTIC: {
+                if (isForUpdate) {
                     return false;
                 }
+                for (TableFilter f : filters) {
+                    if (!f.getTable().isDeterministic()) {
+                        return false;
+                    }
+                }
+                break;
             }
-            break;
-        }
-        case ExpressionVisitor.SET_MAX_DATA_MODIFICATION_ID: {
-            for (TableFilter f : filters) {
-                long m = f.getTable().getMaxDataModificationId();
-                visitor.addDataModificationId(m);
+            case ExpressionVisitor.SET_MAX_DATA_MODIFICATION_ID: {
+                for (TableFilter f : filters) {
+                    long m = f.getTable().getMaxDataModificationId();
+                    visitor.addDataModificationId(m);
+                }
+                break;
             }
-            break;
-        }
-        case ExpressionVisitor.EVALUATABLE: {
-            if (!session.getDatabase().getSettings().optimizeEvaluatableSubqueries) {
-                return false;
+            case ExpressionVisitor.EVALUATABLE: {
+                if (!session.getDatabase().getSettings().optimizeEvaluatableSubqueries) {
+                    return false;
+                }
+                break;
             }
-            break;
-        }
-        case ExpressionVisitor.GET_DEPENDENCIES: {
-            for (TableFilter f : filters) {
-                Table table = f.getTable();
-                visitor.addDependency(table);
-                table.addDependencies(visitor.getDependencies());
+            case ExpressionVisitor.GET_DEPENDENCIES: {
+                for (TableFilter f : filters) {
+                    Table table = f.getTable();
+                    visitor.addDependency(table);
+                    table.addDependencies(visitor.getDependencies());
+                }
+                break;
             }
-            break;
-        }
-        default:
+            default:
         }
         ExpressionVisitor v2 = visitor.incrementQueryLevel(1);
         for (Expression e : expressions) {

@@ -28,7 +28,7 @@ class DbConnection implements DbInterface {
     private final boolean useSentinel;
 
     DbConnection(TestSynth config, String driver, String url, String user,
-            String password, int id, boolean useSentinel) {
+                 String password, int id, boolean useSentinel) {
         this.config = config;
         this.driver = driver;
         this.url = url;
@@ -45,7 +45,7 @@ class DbConnection implements DbInterface {
         DatabaseMetaData meta = conn.getMetaData();
         Statement stat = conn.createStatement();
         ArrayList<String> tables = new ArrayList<>();
-        ResultSet rs = meta.getTables(null, null, null, new String[] { "TABLE" });
+        ResultSet rs = meta.getTables(null, null, null, new String[]{"TABLE"});
         while (rs.next()) {
             String schemaName = rs.getString("TABLE_SCHEM");
             if (!"INFORMATION_SCHEMA".equals(schemaName)) {
@@ -162,7 +162,7 @@ class DbConnection implements DbInterface {
 
     @Override
     public Result update(Table table, Column[] columns, Value[] values,
-            String condition) throws SQLException {
+                         String condition) throws SQLException {
         String sql = "UPDATE " + table.getName() + " SET ";
         for (int i = 0; i < columns.length; i++) {
             if (i > 0) {

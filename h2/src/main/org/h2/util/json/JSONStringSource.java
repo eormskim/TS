@@ -17,12 +17,9 @@ public final class JSONStringSource extends JSONTextSource {
     /**
      * Parses source string to a specified target.
      *
-     * @param string
-     *            source
-     * @param target
-     *            target
-     * @param <R>
-     *            the type of the result
+     * @param string source
+     * @param target target
+     * @param <R>    the type of the result
      * @return the result of the target
      */
     public static <R> R parse(String string, JSONTarget<R> target) {
@@ -33,8 +30,7 @@ public final class JSONStringSource extends JSONTextSource {
     /**
      * Normalizes textual JSON representation.
      *
-     * @param string
-     *            source representation
+     * @param string source representation
      * @return normalized representation
      */
     public static byte[] normalize(String string) {
@@ -66,14 +62,14 @@ public final class JSONStringSource extends JSONTextSource {
         while (index < length) {
             char ch = string.charAt(index++);
             switch (ch) {
-            case '\t':
-            case '\n':
-            case '\r':
-            case ' ':
-                break;
-            default:
-                this.index = index;
-                return ch;
+                case '\t':
+                case '\n':
+                case '\r':
+                case ' ':
+                    break;
+                default:
+                    this.index = index;
+                    return ch;
             }
         }
         return -1;
@@ -93,7 +89,8 @@ public final class JSONStringSource extends JSONTextSource {
         int index = this.index;
         int start = index - 1;
         index = skipInt(index, positive);
-        l: if (index < length) {
+        l:
+        if (index < length) {
             char ch = string.charAt(index);
             if (ch == '.') {
                 index = skipInt(index + 1, false);

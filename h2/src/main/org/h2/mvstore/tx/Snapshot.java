@@ -12,19 +12,19 @@ import org.h2.mvstore.RootReference;
 /**
  * Snapshot of the map root and committing transactions.
  */
-final class Snapshot<K,V> {
+final class Snapshot<K, V> {
 
     /**
      * The root reference.
      */
-    final RootReference<K,V> root;
+    final RootReference<K, V> root;
 
     /**
      * The committing transactions (see also TransactionStore.committingTransactions).
      */
     final BitSet committingTransactions;
 
-    Snapshot(RootReference<K,V> root, BitSet committingTransactions) {
+    Snapshot(RootReference<K, V> root, BitSet committingTransactions) {
         this.root = root;
         this.committingTransactions = committingTransactions;
     }
@@ -47,7 +47,7 @@ final class Snapshot<K,V> {
         if (!(obj instanceof Snapshot)) {
             return false;
         }
-        Snapshot<K,V> other = (Snapshot<K,V>) obj;
+        Snapshot<K, V> other = (Snapshot<K, V>) obj;
         return committingTransactions == other.committingTransactions && root == other.root;
     }
 

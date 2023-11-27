@@ -92,7 +92,7 @@ public final class FunctionsMySQL extends ModeFunction {
      * https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_unix-timestamp
      *
      * @param session the session
-     * @param value the timestamp
+     * @param value   the timestamp
      * @return the timestamp in seconds since EPOCH
      */
     public static int unixTimestamp(SessionLocal session, Value value) {
@@ -128,7 +128,7 @@ public final class FunctionsMySQL extends ModeFunction {
      * https://dev.mysql.com/doc/refman/5.1/en/date-and-time-functions.html#function_from-unixtime
      *
      * @param seconds The current timestamp in seconds.
-     * @param format The format of the date/time String to return.
+     * @param format  The format of the date/time String to return.
      * @return a formatted date/time String in the given format.
      */
     public static String fromUnixTime(int seconds, String format) {
@@ -148,8 +148,7 @@ public final class FunctionsMySQL extends ModeFunction {
     /**
      * Returns mode-specific function for a given name, or {@code null}.
      *
-     * @param upperName
-     *            the upper-case name of a function
+     * @param upperName the upper-case name of a function
      * @return the function with specified name or {@code null}
      */
     public static FunctionsMySQL getFunction(String upperName) {
@@ -165,24 +164,24 @@ public final class FunctionsMySQL extends ModeFunction {
     protected void checkParameterCount(int len) {
         int min, max;
         switch (info.type) {
-        case UNIX_TIMESTAMP:
-            min = 0;
-            max = 1;
-            break;
-        case FROM_UNIXTIME:
-            min = 1;
-            max = 2;
-            break;
-        case DATE:
-            min = 1;
-            max = 1;
-            break;
-        case LAST_INSERT_ID:
-            min = 0;
-            max = 1;
-            break;
-        default:
-            throw DbException.getInternalError("type=" + info.type);
+            case UNIX_TIMESTAMP:
+                min = 0;
+                max = 1;
+                break;
+            case FROM_UNIXTIME:
+                min = 1;
+                max = 2;
+                break;
+            case DATE:
+                min = 1;
+                max = 1;
+                break;
+            case LAST_INSERT_ID:
+                min = 0;
+                max = 1;
+                break;
+            default:
+                throw DbException.getInternalError("type=" + info.type);
         }
         if (len < min || len > max) {
             throw DbException.get(ErrorCode.INVALID_PARAMETER_COUNT_2, info.name, min + ".." + max);
@@ -206,51 +205,51 @@ public final class FunctionsMySQL extends ModeFunction {
         Value v1 = getNullOrValue(session, args, values, 1);
         Value result;
         switch (info.type) {
-        case UNIX_TIMESTAMP:
-            result = ValueInteger.get(unixTimestamp(session, v0 == null ? session.currentTimestamp() : v0));
-            break;
-        case FROM_UNIXTIME:
-            result = ValueVarchar.get(
-                    v1 == null ? fromUnixTime(v0.getInt()) : fromUnixTime(v0.getInt(), v1.getString()));
-            break;
-        case DATE:
-            switch (v0.getValueType()) {
-            case Value.NULL:
-            case Value.DATE:
-                result = v0;
+            case UNIX_TIMESTAMP:
+                result = ValueInteger.get(unixTimestamp(session, v0 == null ? session.currentTimestamp() : v0));
+                break;
+            case FROM_UNIXTIME:
+                result = ValueVarchar.get(
+                        v1 == null ? fromUnixTime(v0.getInt()) : fromUnixTime(v0.getInt(), v1.getString()));
+                break;
+            case DATE:
+                switch (v0.getValueType()) {
+                    case Value.NULL:
+                    case Value.DATE:
+                        result = v0;
+                        break;
+                    default:
+                        try {
+                            v0 = v0.convertTo(TypeInfo.TYPE_TIMESTAMP, session);
+                        } catch (DbException ex) {
+                            result = ValueNull.INSTANCE;
+                            break;
+                        }
+                        //$FALL-THROUGH$
+                    case Value.TIMESTAMP:
+                    case Value.TIMESTAMP_TZ:
+                        result = v0.convertToDate(session);
+                }
+                break;
+            case LAST_INSERT_ID:
+                if (args.length == 0) {
+                    result = session.getLastIdentity();
+                    if (result == ValueNull.INSTANCE) {
+                        result = ValueBigint.get(0L);
+                    } else {
+                        result = result.convertToBigint(null);
+                    }
+                } else {
+                    result = v0;
+                    if (result == ValueNull.INSTANCE) {
+                        session.setLastIdentity(ValueNull.INSTANCE);
+                    } else {
+                        session.setLastIdentity(result = result.convertToBigint(null));
+                    }
+                }
                 break;
             default:
-                try {
-                    v0 = v0.convertTo(TypeInfo.TYPE_TIMESTAMP, session);
-                } catch (DbException ex) {
-                    result = ValueNull.INSTANCE;
-                    break;
-                }
-                //$FALL-THROUGH$
-            case Value.TIMESTAMP:
-            case Value.TIMESTAMP_TZ:
-                result = v0.convertToDate(session);
-            }
-            break;
-        case LAST_INSERT_ID:
-            if (args.length == 0) {
-                result = session.getLastIdentity();
-                if (result == ValueNull.INSTANCE) {
-                    result = ValueBigint.get(0L);
-                } else {
-                    result = result.convertToBigint(null);
-                }
-            } else {
-                result = v0;
-                if (result == ValueNull.INSTANCE) {
-                    session.setLastIdentity(ValueNull.INSTANCE);
-                } else {
-                    session.setLastIdentity(result = result.convertToBigint(null));
-                }
-            }
-            break;
-        default:
-            throw DbException.getInternalError("type=" + info.type);
+                throw DbException.getInternalError("type=" + info.type);
         }
         return result;
     }

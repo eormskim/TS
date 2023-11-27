@@ -55,10 +55,8 @@ public final class ExpressionColumn extends Expression {
      * Creates a new column reference for metadata of queries; should not be
      * used as normal expression.
      *
-     * @param database
-     *            the database
-     * @param column
-     *            the column
+     * @param database the database
+     * @param column   the column
      */
     public ExpressionColumn(Database database, Column column) {
         this.database = database;
@@ -72,14 +70,10 @@ public final class ExpressionColumn extends Expression {
      * Creates a new instance of column reference for regular columns as normal
      * expression.
      *
-     * @param database
-     *            the database
-     * @param schemaName
-     *            the schema name, or {@code null}
-     * @param tableAlias
-     *            the table alias name, table name, or {@code null}
-     * @param columnName
-     *            the column name
+     * @param database   the database
+     * @param schemaName the schema name, or {@code null}
+     * @param tableAlias the table alias name, table name, or {@code null}
+     * @param columnName the column name
      */
     public ExpressionColumn(Database database, String schemaName, String tableAlias, String columnName) {
         this(database, schemaName, tableAlias, columnName, true);
@@ -89,19 +83,14 @@ public final class ExpressionColumn extends Expression {
      * Creates a new instance of column reference for regular columns as normal
      * expression.
      *
-     * @param database
-     *            the database
-     * @param schemaName
-     *            the schema name, or {@code null}
-     * @param tableAlias
-     *            the table alias name, table name, or {@code null}
-     * @param columnName
-     *            the column name
-     * @param quotedName
-     *            whether name was quoted
+     * @param database   the database
+     * @param schemaName the schema name, or {@code null}
+     * @param tableAlias the table alias name, table name, or {@code null}
+     * @param columnName the column name
+     * @param quotedName whether name was quoted
      */
     public ExpressionColumn(Database database, String schemaName, String tableAlias, String columnName,
-            boolean quotedName) {
+                            boolean quotedName) {
         this.database = database;
         this.schemaName = schemaName;
         this.tableAlias = tableAlias;
@@ -114,12 +103,9 @@ public final class ExpressionColumn extends Expression {
      * Creates a new instance of column reference for {@code _ROWID_} column as
      * normal expression.
      *
-     * @param database
-     *            the database
-     * @param schemaName
-     *            the schema name, or {@code null}
-     * @param tableAlias
-     *            the table alias name, table name, or {@code null}
+     * @param database   the database
+     * @param schemaName the schema name, or {@code null}
+     * @param tableAlias the table alias name, table name, or {@code null}
      */
     public ExpressionColumn(Database database, String schemaName, String tableAlias) {
         this.database = database;
@@ -218,13 +204,13 @@ public final class ExpressionColumn extends Expression {
     private Expression optimizeOther() {
         if (tableAlias == null && !quotedName) {
             switch (StringUtils.toUpperEnglish(columnName)) {
-            case "SYSDATE":
-            case "TODAY":
-                return new CurrentDateTimeValueFunction(CurrentDateTimeValueFunction.CURRENT_DATE, -1);
-            case "SYSTIME":
-                return new CurrentDateTimeValueFunction(CurrentDateTimeValueFunction.LOCALTIME, -1);
-            case "SYSTIMESTAMP":
-                return new CurrentDateTimeValueFunction(CurrentDateTimeValueFunction.CURRENT_TIMESTAMP, -1);
+                case "SYSDATE":
+                case "TODAY":
+                    return new CurrentDateTimeValueFunction(CurrentDateTimeValueFunction.CURRENT_DATE, -1);
+                case "SYSTIME":
+                    return new CurrentDateTimeValueFunction(CurrentDateTimeValueFunction.LOCALTIME, -1);
+                case "SYSTIMESTAMP":
+                    return new CurrentDateTimeValueFunction(CurrentDateTimeValueFunction.CURRENT_TIMESTAMP, -1);
             }
         }
         throw getColumnException(ErrorCode.COLUMN_NOT_FOUND_1);
@@ -374,61 +360,61 @@ public final class ExpressionColumn extends Expression {
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-        case ExpressionVisitor.OPTIMIZABLE_AGGREGATE:
-            return false;
-        case ExpressionVisitor.INDEPENDENT:
-            return this.queryLevel < visitor.getQueryLevel();
-        case ExpressionVisitor.EVALUATABLE:
-            // if this column belongs to a 'higher level' query and is
-            // therefore just a parameter
-            if (visitor.getQueryLevel() < this.queryLevel) {
-                return true;
-            }
-            if (getTableFilter() == null) {
+            case ExpressionVisitor.OPTIMIZABLE_AGGREGATE:
                 return false;
-            }
-            return getTableFilter().isEvaluatable();
-        case ExpressionVisitor.SET_MAX_DATA_MODIFICATION_ID:
-            visitor.addDataModificationId(column.getTable().getMaxDataModificationId());
-            return true;
-        case ExpressionVisitor.NOT_FROM_RESOLVER:
-            return columnResolver != visitor.getResolver();
-        case ExpressionVisitor.GET_DEPENDENCIES:
-            if (column != null) {
-                visitor.addDependency(column.getTable());
-            }
-            return true;
-        case ExpressionVisitor.GET_COLUMNS1:
-            if (column == null) {
-                throw DbException.get(ErrorCode.COLUMN_NOT_FOUND_1, getTraceSQL());
-            }
-            visitor.addColumn1(column);
-            return true;
-        case ExpressionVisitor.GET_COLUMNS2:
-            if (column == null) {
-                throw DbException.get(ErrorCode.COLUMN_NOT_FOUND_1, getTraceSQL());
-            }
-            visitor.addColumn2(column);
-            return true;
-        case ExpressionVisitor.DECREMENT_QUERY_LEVEL: {
-            if (column == null) {
-                throw DbException.get(ErrorCode.COLUMN_NOT_FOUND_1, getTraceSQL());
-            }
-            if (visitor.getColumnResolvers().contains(columnResolver)) {
-                int decrement = visitor.getQueryLevel();
-                if (decrement > 0) {
-                    if (queryLevel > 0) {
-                        queryLevel--;
-                        return true;
-                    }
-                    throw DbException.getInternalError("queryLevel=0");
+            case ExpressionVisitor.INDEPENDENT:
+                return this.queryLevel < visitor.getQueryLevel();
+            case ExpressionVisitor.EVALUATABLE:
+                // if this column belongs to a 'higher level' query and is
+                // therefore just a parameter
+                if (visitor.getQueryLevel() < this.queryLevel) {
+                    return true;
                 }
-                return queryLevel > 0;
+                if (getTableFilter() == null) {
+                    return false;
+                }
+                return getTableFilter().isEvaluatable();
+            case ExpressionVisitor.SET_MAX_DATA_MODIFICATION_ID:
+                visitor.addDataModificationId(column.getTable().getMaxDataModificationId());
+                return true;
+            case ExpressionVisitor.NOT_FROM_RESOLVER:
+                return columnResolver != visitor.getResolver();
+            case ExpressionVisitor.GET_DEPENDENCIES:
+                if (column != null) {
+                    visitor.addDependency(column.getTable());
+                }
+                return true;
+            case ExpressionVisitor.GET_COLUMNS1:
+                if (column == null) {
+                    throw DbException.get(ErrorCode.COLUMN_NOT_FOUND_1, getTraceSQL());
+                }
+                visitor.addColumn1(column);
+                return true;
+            case ExpressionVisitor.GET_COLUMNS2:
+                if (column == null) {
+                    throw DbException.get(ErrorCode.COLUMN_NOT_FOUND_1, getTraceSQL());
+                }
+                visitor.addColumn2(column);
+                return true;
+            case ExpressionVisitor.DECREMENT_QUERY_LEVEL: {
+                if (column == null) {
+                    throw DbException.get(ErrorCode.COLUMN_NOT_FOUND_1, getTraceSQL());
+                }
+                if (visitor.getColumnResolvers().contains(columnResolver)) {
+                    int decrement = visitor.getQueryLevel();
+                    if (decrement > 0) {
+                        if (queryLevel > 0) {
+                            queryLevel--;
+                            return true;
+                        }
+                        throw DbException.getInternalError("queryLevel=0");
+                    }
+                    return queryLevel > 0;
+                }
             }
-        }
-        //$FALL-THROUGH$
-        default:
-            return true;
+            //$FALL-THROUGH$
+            default:
+                return true;
         }
     }
 
@@ -453,40 +439,40 @@ public final class ExpressionColumn extends Expression {
         }
         Value v;
         switch (column.getType().getValueType()) {
-        case Value.BOOLEAN:
-            v = ValueBoolean.FALSE;
-            break;
-        case Value.TINYINT:
-            v = ValueTinyint.get((byte) 0);
-            break;
-        case Value.SMALLINT:
-            v = ValueSmallint.get((short) 0);
-            break;
-        case Value.INTEGER:
-            v = ValueInteger.get(0);
-            break;
-        case Value.BIGINT:
-            v = ValueBigint.get(0L);
-            break;
-        case Value.NUMERIC:
-            v = ValueNumeric.ZERO;
-            break;
-        case Value.REAL:
-            v = ValueReal.ZERO;
-            break;
-        case Value.DOUBLE:
-            v = ValueDouble.ZERO;
-            break;
-        case Value.DECFLOAT:
-            v = ValueDecfloat.ZERO;
-            break;
-        default:
-            /*
-             * Can be replaced with CAST(column AS BOOLEAN) = FALSE, but this
-             * replacement can't be optimized further, so it's better to leave
-             * NOT (column) as is.
-             */
-            return null;
+            case Value.BOOLEAN:
+                v = ValueBoolean.FALSE;
+                break;
+            case Value.TINYINT:
+                v = ValueTinyint.get((byte) 0);
+                break;
+            case Value.SMALLINT:
+                v = ValueSmallint.get((short) 0);
+                break;
+            case Value.INTEGER:
+                v = ValueInteger.get(0);
+                break;
+            case Value.BIGINT:
+                v = ValueBigint.get(0L);
+                break;
+            case Value.NUMERIC:
+                v = ValueNumeric.ZERO;
+                break;
+            case Value.REAL:
+                v = ValueReal.ZERO;
+                break;
+            case Value.DOUBLE:
+                v = ValueDouble.ZERO;
+                break;
+            case Value.DECFLOAT:
+                v = ValueDecfloat.ZERO;
+                break;
+            default:
+                /*
+                 * Can be replaced with CAST(column AS BOOLEAN) = FALSE, but this
+                 * replacement can't be optimized further, so it's better to leave
+                 * NOT (column) as is.
+                 */
+                return null;
         }
         return new Comparison(Comparison.EQUAL, this, ValueExpression.get(v), false);
     }

@@ -65,12 +65,12 @@ public final class XMLFunction extends FunctionN {
     @Override
     public Value getValue(SessionLocal session) {
         switch (function) {
-        case XMLNODE:
-            return xmlNode(session);
-        case XMLSTARTDOC:
-            return ValueVarchar.get(StringUtils.xmlStartDoc(), session);
-        default:
-            return super.getValue(session);
+            case XMLNODE:
+                return xmlNode(session);
+            case XMLSTARTDOC:
+                return ValueVarchar.get(StringUtils.xmlStartDoc(), session);
+            default:
+                return super.getValue(session);
         }
     }
 
@@ -98,20 +98,20 @@ public final class XMLFunction extends FunctionN {
     @Override
     protected Value getValue(SessionLocal session, Value v1, Value v2, Value v3) {
         switch (function) {
-        case XMLATTR:
-            v1 = ValueVarchar.get(StringUtils.xmlAttr(v1.getString(), v2.getString()), session);
-            break;
-        case XMLCDATA:
-            v1 = ValueVarchar.get(StringUtils.xmlCData(v1.getString()), session);
-            break;
-        case XMLCOMMENT:
-            v1 = ValueVarchar.get(StringUtils.xmlComment(v1.getString()), session);
-            break;
-        case XMLTEXT:
-            v1 = ValueVarchar.get(StringUtils.xmlText(v1.getString(), v2 != null && v2.getBoolean()), session);
-            break;
-        default:
-            throw DbException.getInternalError("function=" + function);
+            case XMLATTR:
+                v1 = ValueVarchar.get(StringUtils.xmlAttr(v1.getString(), v2.getString()), session);
+                break;
+            case XMLCDATA:
+                v1 = ValueVarchar.get(StringUtils.xmlCData(v1.getString()), session);
+                break;
+            case XMLCOMMENT:
+                v1 = ValueVarchar.get(StringUtils.xmlComment(v1.getString()), session);
+                break;
+            case XMLTEXT:
+                v1 = ValueVarchar.get(StringUtils.xmlText(v1.getString(), v2 != null && v2.getBoolean()), session);
+                break;
+            default:
+                throw DbException.getInternalError("function=" + function);
         }
         return v1;
     }
@@ -121,26 +121,26 @@ public final class XMLFunction extends FunctionN {
         boolean allConst = optimizeArguments(session, true);
         int min, max;
         switch (function) {
-        case XMLATTR:
-            max = min = 2;
-            break;
-        case XMLNODE:
-            min = 1;
-            max = 4;
-            break;
-        case XMLCDATA:
-        case XMLCOMMENT:
-            max = min = 1;
-            break;
-        case XMLSTARTDOC:
-            max = min = 0;
-            break;
-        case XMLTEXT:
-            min = 1;
-            max = 2;
-            break;
-        default:
-            throw DbException.getInternalError("function=" + function);
+            case XMLATTR:
+                max = min = 2;
+                break;
+            case XMLNODE:
+                min = 1;
+                max = 4;
+                break;
+            case XMLCDATA:
+            case XMLCOMMENT:
+                max = min = 1;
+                break;
+            case XMLSTARTDOC:
+                max = min = 0;
+                break;
+            case XMLTEXT:
+                min = 1;
+                max = 2;
+                break;
+            default:
+                throw DbException.getInternalError("function=" + function);
         }
         int len = args.length;
         if (len < min || len > max) {

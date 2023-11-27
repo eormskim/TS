@@ -12,7 +12,7 @@ public abstract class JSONValidationTarget extends JSONTarget<JSONItemType> {
 
     /**
      * @return JSON item type of the top-level item, may not return
-     *         {@link JSONItemType#VALUE}
+     * {@link JSONItemType#VALUE}
      */
     @Override
     public abstract JSONItemType getResult();

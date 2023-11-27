@@ -6,6 +6,7 @@
 package org.h2.value;
 
 import java.nio.charset.StandardCharsets;
+
 import org.h2.engine.Constants;
 import org.h2.engine.SysProperties;
 import org.h2.message.DbException;

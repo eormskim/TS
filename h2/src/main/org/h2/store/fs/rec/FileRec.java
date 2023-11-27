@@ -10,6 +10,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.util.Arrays;
+
 import org.h2.store.fs.FileBase;
 import org.h2.store.fs.Recorder;
 
@@ -99,7 +100,7 @@ class FileRec extends FileBase {
 
     @Override
     public synchronized FileLock tryLock(long position, long size,
-            boolean shared) throws IOException {
+                                         boolean shared) throws IOException {
         return channel.tryLock(position, size, shared);
     }
 

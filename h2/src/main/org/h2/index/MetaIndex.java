@@ -55,8 +55,8 @@ public class MetaIndex extends Index {
 
     @Override
     public double getCost(SessionLocal session, int[] masks,
-            TableFilter[] filters, int filter, SortOrder sortOrder,
-            AllColumnsForPlan allColumnsSet) {
+                          TableFilter[] filters, int filter, SortOrder sortOrder,
+                          AllColumnsForPlan allColumnsSet) {
         if (scan) {
             return 10 * MetaTable.ROW_COUNT_APPROXIMATION;
         }

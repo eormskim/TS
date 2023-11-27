@@ -35,8 +35,8 @@ public abstract class TestDb extends TestBase {
     /**
      * Open a database connection.
      *
-     * @param name the database name
-     * @param user the user name to use
+     * @param name     the database name
+     * @param user     the user name to use
      * @param password the password to use
      * @return the connection
      */
@@ -49,7 +49,7 @@ public abstract class TestDb extends TestBase {
      * Get the database URL for the given database name using the current
      * configuration options.
      *
-     * @param name the database name
+     * @param name  the database name
      * @param admin true if the current user is an admin
      * @return the database URL
      */
@@ -74,9 +74,9 @@ public abstract class TestDb extends TestBase {
         }
         if (config.networked) {
             if (config.ssl) {
-                url = "ssl://localhost:"+config.getPort()+"/" + name;
+                url = "ssl://localhost:" + config.getPort() + "/" + name;
             } else {
-                url = "tcp://localhost:"+config.getPort()+"/" + name;
+                url = "tcp://localhost:" + config.getPort() + "/" + name;
             }
         } else if (config.googleAppEngine) {
             url = "gae://" + name +
@@ -138,7 +138,7 @@ public abstract class TestDb extends TestBase {
     }
 
     private static Connection getConnectionInternal(String url, String user,
-            String password) throws SQLException {
+                                                    String password) throws SQLException {
         org.h2.Driver.load();
         // url += ";DEFAULT_TABLE_TYPE=1";
         // Class.forName("org.hsqldb.jdbcDriver");
@@ -158,7 +158,7 @@ public abstract class TestDb extends TestBase {
     /**
      * Delete all database files for a database.
      *
-     * @param dir the directory where the database files are located
+     * @param dir  the directory where the database files are located
      * @param name the database name
      */
     protected void deleteDb(String dir, String name) {
@@ -173,27 +173,27 @@ public abstract class TestDb extends TestBase {
     /**
      * Build a child process.
      *
-     * @param name the name
+     * @param name       the name
      * @param childClass the class
-     * @param jvmArgs the argument list
+     * @param jvmArgs    the argument list
      * @return the process builder
      */
     public ProcessBuilder buildChild(String name, Class<? extends TestDb> childClass,
-            String... jvmArgs) {
+                                     String... jvmArgs) {
         List<String> args = new ArrayList<>(16);
         args.add(getJVM());
         Collections.addAll(args, jvmArgs);
         Collections.addAll(args, "-cp", getClassPath(),
-                        SelfDestructor.getPropertyString(1),
-                        childClass.getName(),
-                        "-url", getURL(name, true),
-                        "-user", getUser(),
-                        "-password", getPassword());
+                SelfDestructor.getPropertyString(1),
+                childClass.getName(),
+                "-url", getURL(name, true),
+                "-user", getUser(),
+                "-password", getPassword());
         ProcessBuilder processBuilder = new ProcessBuilder()
 //                            .redirectError(ProcessBuilder.Redirect.INHERIT)
-                            .redirectErrorStream(true)
-                            .redirectOutput(ProcessBuilder.Redirect.INHERIT)
-                            .command(args);
+                .redirectErrorStream(true)
+                .redirectOutput(ProcessBuilder.Redirect.INHERIT)
+                .command(args);
         return processBuilder;
     }
 

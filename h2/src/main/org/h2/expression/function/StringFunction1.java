@@ -112,53 +112,53 @@ public final class StringFunction1 extends Function1 {
             return ValueNull.INSTANCE;
         }
         switch (function) {
-        case UPPER:
-            // TODO this is locale specific, need to document or provide a way
-            // to set the locale
-            v = ValueVarchar.get(v.getString().toUpperCase(), session);
-            break;
-        case LOWER:
-            // TODO this is locale specific, need to document or provide a way
-            // to set the locale
-            v = ValueVarchar.get(v.getString().toLowerCase(), session);
-            break;
-        case ASCII: {
-            String s = v.getString();
-            v = s.isEmpty() ? ValueNull.INSTANCE : ValueInteger.get(s.charAt(0));
-            break;
-        }
-        case CHAR:
-            v = ValueVarchar.get(String.valueOf((char) v.getInt()), session);
-            break;
-        case STRINGENCODE:
-            v = ValueVarchar.get(StringUtils.javaEncode(v.getString()), session);
-            break;
-        case STRINGDECODE:
-            v = ValueVarchar.get(StringUtils.javaDecode(v.getString()), session);
-            break;
-        case STRINGTOUTF8:
-            v = ValueVarbinary.getNoCopy(v.getString().getBytes(StandardCharsets.UTF_8));
-            break;
-        case UTF8TOSTRING:
-            v = ValueVarchar.get(new String(v.getBytesNoCopy(), StandardCharsets.UTF_8), session);
-            break;
-        case HEXTORAW:
-            v = hexToRaw(v.getString(), session);
-            break;
-        case RAWTOHEX:
-            v = ValueVarchar.get(rawToHex(v, session.getMode()), session);
-            break;
-        case SPACE: {
-            byte[] chars = new byte[Math.max(0, v.getInt())];
-            Arrays.fill(chars, (byte) ' ');
-            v = ValueVarchar.get(new String(chars, StandardCharsets.ISO_8859_1), session);
-            break;
-        }
-        case QUOTE_IDENT:
-            v = ValueVarchar.get(StringUtils.quoteIdentifier(v.getString()), session);
-            break;
-        default:
-            throw DbException.getInternalError("function=" + function);
+            case UPPER:
+                // TODO this is locale specific, need to document or provide a way
+                // to set the locale
+                v = ValueVarchar.get(v.getString().toUpperCase(), session);
+                break;
+            case LOWER:
+                // TODO this is locale specific, need to document or provide a way
+                // to set the locale
+                v = ValueVarchar.get(v.getString().toLowerCase(), session);
+                break;
+            case ASCII: {
+                String s = v.getString();
+                v = s.isEmpty() ? ValueNull.INSTANCE : ValueInteger.get(s.charAt(0));
+                break;
+            }
+            case CHAR:
+                v = ValueVarchar.get(String.valueOf((char) v.getInt()), session);
+                break;
+            case STRINGENCODE:
+                v = ValueVarchar.get(StringUtils.javaEncode(v.getString()), session);
+                break;
+            case STRINGDECODE:
+                v = ValueVarchar.get(StringUtils.javaDecode(v.getString()), session);
+                break;
+            case STRINGTOUTF8:
+                v = ValueVarbinary.getNoCopy(v.getString().getBytes(StandardCharsets.UTF_8));
+                break;
+            case UTF8TOSTRING:
+                v = ValueVarchar.get(new String(v.getBytesNoCopy(), StandardCharsets.UTF_8), session);
+                break;
+            case HEXTORAW:
+                v = hexToRaw(v.getString(), session);
+                break;
+            case RAWTOHEX:
+                v = ValueVarchar.get(rawToHex(v, session.getMode()), session);
+                break;
+            case SPACE: {
+                byte[] chars = new byte[Math.max(0, v.getInt())];
+                Arrays.fill(chars, (byte) ' ');
+                v = ValueVarchar.get(new String(chars, StandardCharsets.ISO_8859_1), session);
+                break;
+            }
+            case QUOTE_IDENT:
+                v = ValueVarchar.get(StringUtils.quoteIdentifier(v.getString()), session);
+                break;
+            default:
+                throw DbException.getInternalError("function=" + function);
         }
         return v;
     }
@@ -206,68 +206,68 @@ public final class StringFunction1 extends Function1 {
     public Expression optimize(SessionLocal session) {
         arg = arg.optimize(session);
         switch (function) {
-        /*
-         * UPPER and LOWER may return string of different length for some
-         * characters.
-         */
-        case UPPER:
-        case LOWER:
-        case STRINGENCODE:
-        case SPACE:
-        case QUOTE_IDENT:
-            type = TypeInfo.TYPE_VARCHAR;
-            break;
-        case ASCII:
-            type = TypeInfo.TYPE_INTEGER;
-            break;
-        case CHAR:
-            type = TypeInfo.getTypeInfo(Value.VARCHAR, 1L, 0, null);
-            break;
-        case STRINGDECODE: {
-            TypeInfo t = arg.getType();
-            type = DataType.isCharacterStringType(t.getValueType())
-                    ? TypeInfo.getTypeInfo(Value.VARCHAR, t.getPrecision(), 0, null)
-                    : TypeInfo.TYPE_VARCHAR;
-            break;
-        }
-        case STRINGTOUTF8:
-            type = TypeInfo.TYPE_VARBINARY;
-            break;
-        case UTF8TOSTRING: {
-            TypeInfo t = arg.getType();
-            type = DataType.isBinaryStringType(t.getValueType())
-                    ? TypeInfo.getTypeInfo(Value.VARCHAR, t.getPrecision(), 0, null)
-                    : TypeInfo.TYPE_VARCHAR;
-            break;
-        }
-        case HEXTORAW: {
-            TypeInfo t = arg.getType();
-            if (session.getMode().getEnum() == ModeEnum.Oracle) {
-                if (DataType.isCharacterStringType(t.getValueType())) {
-                    type = TypeInfo.getTypeInfo(Value.VARBINARY, t.getPrecision() / 2, 0, null);
-                } else {
-                    type = TypeInfo.TYPE_VARBINARY;
-                }
-            } else {
-                if (DataType.isCharacterStringType(t.getValueType())) {
-                    type = TypeInfo.getTypeInfo(Value.VARCHAR, t.getPrecision() / 4, 0, null);
-                } else {
-                    type = TypeInfo.TYPE_VARCHAR;
-                }
+            /*
+             * UPPER and LOWER may return string of different length for some
+             * characters.
+             */
+            case UPPER:
+            case LOWER:
+            case STRINGENCODE:
+            case SPACE:
+            case QUOTE_IDENT:
+                type = TypeInfo.TYPE_VARCHAR;
+                break;
+            case ASCII:
+                type = TypeInfo.TYPE_INTEGER;
+                break;
+            case CHAR:
+                type = TypeInfo.getTypeInfo(Value.VARCHAR, 1L, 0, null);
+                break;
+            case STRINGDECODE: {
+                TypeInfo t = arg.getType();
+                type = DataType.isCharacterStringType(t.getValueType())
+                        ? TypeInfo.getTypeInfo(Value.VARCHAR, t.getPrecision(), 0, null)
+                        : TypeInfo.TYPE_VARCHAR;
+                break;
             }
-            break;
-        }
-        case RAWTOHEX: {
-            TypeInfo t = arg.getType();
-            long precision = t.getPrecision();
-            int mul = DataType.isBinaryStringOrSpecialBinaryType(t.getValueType()) ? 2
-                    : session.getMode().getEnum() == ModeEnum.Oracle ? 6 : 4;
-            type = TypeInfo.getTypeInfo(Value.VARCHAR,
-                    precision <= Long.MAX_VALUE / mul ? precision * mul : Long.MAX_VALUE, 0, null);
-            break;
-        }
-        default:
-            throw DbException.getInternalError("function=" + function);
+            case STRINGTOUTF8:
+                type = TypeInfo.TYPE_VARBINARY;
+                break;
+            case UTF8TOSTRING: {
+                TypeInfo t = arg.getType();
+                type = DataType.isBinaryStringType(t.getValueType())
+                        ? TypeInfo.getTypeInfo(Value.VARCHAR, t.getPrecision(), 0, null)
+                        : TypeInfo.TYPE_VARCHAR;
+                break;
+            }
+            case HEXTORAW: {
+                TypeInfo t = arg.getType();
+                if (session.getMode().getEnum() == ModeEnum.Oracle) {
+                    if (DataType.isCharacterStringType(t.getValueType())) {
+                        type = TypeInfo.getTypeInfo(Value.VARBINARY, t.getPrecision() / 2, 0, null);
+                    } else {
+                        type = TypeInfo.TYPE_VARBINARY;
+                    }
+                } else {
+                    if (DataType.isCharacterStringType(t.getValueType())) {
+                        type = TypeInfo.getTypeInfo(Value.VARCHAR, t.getPrecision() / 4, 0, null);
+                    } else {
+                        type = TypeInfo.TYPE_VARCHAR;
+                    }
+                }
+                break;
+            }
+            case RAWTOHEX: {
+                TypeInfo t = arg.getType();
+                long precision = t.getPrecision();
+                int mul = DataType.isBinaryStringOrSpecialBinaryType(t.getValueType()) ? 2
+                        : session.getMode().getEnum() == ModeEnum.Oracle ? 6 : 4;
+                type = TypeInfo.getTypeInfo(Value.VARCHAR,
+                        precision <= Long.MAX_VALUE / mul ? precision * mul : Long.MAX_VALUE, 0, null);
+                break;
+            }
+            default:
+                throw DbException.getInternalError("function=" + function);
         }
         if (arg.isConstant()) {
             return TypedValueExpression.getTypedIfNull(getValue(session), type);

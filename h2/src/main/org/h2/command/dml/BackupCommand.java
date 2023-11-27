@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
 import org.h2.api.ErrorCode;
 import org.h2.command.CommandInterface;
 import org.h2.command.Prepared;
@@ -93,7 +94,7 @@ public class BackupCommand extends Prepared {
     }
 
     private static void backupFile(ZipOutputStream out, String base, String fn,
-            InputStream in) throws IOException {
+                                   InputStream in) throws IOException {
         String f = FileUtils.toRealPath(fn);
         base = FileUtils.toRealPath(base);
         if (!f.startsWith(base)) {

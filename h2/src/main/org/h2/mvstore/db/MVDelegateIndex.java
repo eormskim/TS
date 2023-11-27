@@ -30,7 +30,7 @@ public class MVDelegateIndex extends MVIndex<Long, SearchRow> {
     private final MVPrimaryIndex mainIndex;
 
     public MVDelegateIndex(MVTable table, int id, String name, MVPrimaryIndex mainIndex, IndexType indexType) {
-        super(table, id, name, IndexColumn.wrap(new Column[] { table.getColumn(mainIndex.getMainIndexColumn()) }),
+        super(table, id, name, IndexColumn.wrap(new Column[]{table.getColumn(mainIndex.getMainIndexColumn())}),
                 1, indexType);
         this.mainIndex = mainIndex;
         if (id < 0) {
@@ -54,7 +54,7 @@ public class MVDelegateIndex extends MVIndex<Long, SearchRow> {
     }
 
     @Override
-    public MVMap<Long,VersionedValue<SearchRow>> getMVMap() {
+    public MVMap<Long, VersionedValue<SearchRow>> getMVMap() {
         return mainIndex.getMVMap();
     }
 
@@ -108,8 +108,8 @@ public class MVDelegateIndex extends MVIndex<Long, SearchRow> {
 
     @Override
     public double getCost(SessionLocal session, int[] masks,
-            TableFilter[] filters, int filter, SortOrder sortOrder,
-            AllColumnsForPlan allColumnsSet) {
+                          TableFilter[] filters, int filter, SortOrder sortOrder,
+                          AllColumnsForPlan allColumnsSet) {
         return 10 * getCostRangeIndex(masks, mainIndex.getRowCountApproximation(session),
                 filters, filter, sortOrder, true, allColumnsSet);
     }

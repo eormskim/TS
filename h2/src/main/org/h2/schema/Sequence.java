@@ -46,7 +46,7 @@ public final class Sequence extends SchemaObject {
          * Return whether sequence is cycled.
          *
          * @return {@code true} if sequence is cycled, {@code false} if sequence
-         *         is not cycled
+         * is not cycled
          */
         public boolean isCycle() {
             return this == CYCLE;
@@ -76,22 +76,16 @@ public final class Sequence extends SchemaObject {
     /**
      * Creates a new sequence.
      *
-     * @param session
-     *            the session
-     * @param schema
-     *            the schema
-     * @param id
-     *            the object id
-     * @param name
-     *            the sequence name
-     * @param options
-     *            the sequence options
-     * @param belongsToTable
-     *            whether this sequence belongs to a table (for generated
-     *            columns)
+     * @param session        the session
+     * @param schema         the schema
+     * @param id             the object id
+     * @param name           the sequence name
+     * @param options        the sequence options
+     * @param belongsToTable whether this sequence belongs to a table (for generated
+     *                       columns)
      */
     public Sequence(SessionLocal session, Schema schema, int id, String name, SequenceOptions options,
-            boolean belongsToTable) {
+                    boolean belongsToTable) {
         super(schema, id, name, Trace.SEQUENCE);
         dataType = options.getDataType();
         if (dataType == null) {
@@ -142,23 +136,17 @@ public final class Sequence extends SchemaObject {
      * because setting these attributes one after the other could otherwise
      * result in an invalid sequence state (e.g. min value &gt; max value, start
      * value &lt; min value, etc).
-     * @param baseValue
-     *            the base value ({@code null} if restart is not requested)
-     * @param startValue
-     *            the new start value ({@code null} if no change)
-     * @param minValue
-     *            the new min value ({@code null} if no change)
-     * @param maxValue
-     *            the new max value ({@code null} if no change)
-     * @param increment
-     *            the new increment ({@code null} if no change)
-     * @param cycle
-     *            the new cycle value, or {@code null} if no change
-     * @param cacheSize
-     *            the new cache size ({@code null} if no change)
+     *
+     * @param baseValue  the base value ({@code null} if restart is not requested)
+     * @param startValue the new start value ({@code null} if no change)
+     * @param minValue   the new min value ({@code null} if no change)
+     * @param maxValue   the new max value ({@code null} if no change)
+     * @param increment  the new increment ({@code null} if no change)
+     * @param cycle      the new cycle value, or {@code null} if no change
+     * @param cacheSize  the new cache size ({@code null} if no change)
      */
     public synchronized void modify(Long baseValue, Long startValue, Long minValue, Long maxValue, Long increment,
-            Cycle cycle, Long cacheSize) {
+                                    Cycle cycle, Long cacheSize) {
         long baseValueAsLong = baseValue != null ? baseValue : this.baseValue;
         long startValueAsLong = startValue != null ? startValue : this.startValue;
         long minValueAsLong = minValue != null ? minValue : this.minValue;
@@ -198,25 +186,18 @@ public final class Sequence extends SchemaObject {
      * of their respective validities are contingent on the values of the other
      * parameters.
      *
-     * @param baseValue
-     *            the prospective base value
-     * @param startValue
-     *            the prospective start value
-     * @param minValue
-     *            the prospective min value
-     * @param maxValue
-     *            the prospective max value
-     * @param increment
-     *            the prospective increment
-     * @param cacheSize
-     *            the prospective cache size
-     * @param mayAdjustCacheSize
-     *            whether cache size may be adjusted, cache size 0 is adjusted
-     *            unconditionally to 1
+     * @param baseValue          the prospective base value
+     * @param startValue         the prospective start value
+     * @param minValue           the prospective min value
+     * @param maxValue           the prospective max value
+     * @param increment          the prospective increment
+     * @param cacheSize          the prospective cache size
+     * @param mayAdjustCacheSize whether cache size may be adjusted, cache size 0 is adjusted
+     *                           unconditionally to 1
      * @return the prospective or adjusted cache size
      */
     private long checkOptions(long baseValue, long startValue, long minValue, long maxValue, long increment,
-            long cacheSize, boolean mayAdjustCacheSize) {
+                              long cacheSize, boolean mayAdjustCacheSize) {
         if (minValue <= baseValue && baseValue <= maxValue //
                 && minValue <= startValue && startValue <= maxValue //
                 && minValue < maxValue && increment != 0L) {
@@ -267,8 +248,8 @@ public final class Sequence extends SchemaObject {
      * Calculates default min value.
      *
      * @param startValue the start value of the sequence.
-     * @param increment the increment of the sequence value.
-     * @param bounds min and max bounds of data type of the sequence
+     * @param increment  the increment of the sequence value.
+     * @param bounds     min and max bounds of data type of the sequence
      * @return min value.
      */
     public static long getDefaultMinValue(Long startValue, long increment, long[] bounds) {
@@ -283,8 +264,8 @@ public final class Sequence extends SchemaObject {
      * Calculates default max value.
      *
      * @param startValue the start value of the sequence.
-     * @param increment the increment of the sequence value.
-     * @param bounds min and max bounds of data type of the sequence
+     * @param increment  the increment of the sequence value.
+     * @param bounds     min and max bounds of data type of the sequence
      * @return min value.
      */
     public static long getDefaultMaxValue(Long startValue, long increment, long[] bounds) {
@@ -306,18 +287,18 @@ public final class Sequence extends SchemaObject {
     public int getEffectivePrecision() {
         TypeInfo dataType = this.dataType;
         switch (dataType.getValueType()) {
-        case Value.NUMERIC: {
-            int p = (int) dataType.getPrecision();
-            int s = dataType.getScale();
-            if (p - s > ValueBigint.DECIMAL_PRECISION) {
-                return ValueBigint.DECIMAL_PRECISION + s;
+            case Value.NUMERIC: {
+                int p = (int) dataType.getPrecision();
+                int s = dataType.getScale();
+                if (p - s > ValueBigint.DECIMAL_PRECISION) {
+                    return ValueBigint.DECIMAL_PRECISION + s;
+                }
+                return p;
             }
-            return p;
-        }
-        case Value.DECFLOAT:
-            return Math.min((int) dataType.getPrecision(), ValueBigint.DECIMAL_PRECISION);
-        default:
-            return (int) dataType.getPrecision();
+            case Value.DECFLOAT:
+                return Math.min((int) dataType.getPrecision(), ValueBigint.DECIMAL_PRECISION);
+            default:
+                return (int) dataType.getPrecision();
         }
     }
 

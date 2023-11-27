@@ -76,7 +76,7 @@ class OnExitDatabaseCloser extends Thread {
     }
 
     private static void onShutdown() {
-        synchronized(OnExitDatabaseCloser.class) {
+        synchronized (OnExitDatabaseCloser.class) {
             terminated = true;
         }
         RuntimeException root = null;

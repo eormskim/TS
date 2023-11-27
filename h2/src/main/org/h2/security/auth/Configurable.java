@@ -11,6 +11,7 @@ package org.h2.security.auth;
 public interface Configurable {
     /**
      * configure the component
+     *
      * @param configProperties = configuration properties
      */
     void configure(ConfigProperties configProperties);

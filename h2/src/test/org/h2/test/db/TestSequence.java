@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.h2.api.Trigger;
 import org.h2.engine.Constants;
 import org.h2.test.TestBase;
@@ -198,7 +199,7 @@ public class TestSequence extends TestDb {
         test("create sequence s; alter sequence s restart with 5 cache 2",
                 null, 5, 6, 7, 8);
         test("create sequence s; alter sequence s restart with 9 " +
-                "maxvalue 12 nocycle nocache",
+                        "maxvalue 12 nocycle nocache",
                 "Sequence \"S\" has run out of numbers", 9, 10, 11, 12);
     }
 
@@ -331,33 +332,33 @@ public class TestSequence extends TestDb {
                 stat,
                 "create sequence a minvalue 5 start with 2",
                 "Unable to create or alter sequence \"A\" because of " +
-                "invalid attributes (base value \"2\", start value \"2\", " +
-                "min value \"5\", max value \"" + Long.MAX_VALUE +
-                "\", increment \"1\", cache size \"32\")");
+                        "invalid attributes (base value \"2\", start value \"2\", " +
+                        "min value \"5\", max value \"" + Long.MAX_VALUE +
+                        "\", increment \"1\", cache size \"32\")");
         expectError(
                 stat,
                 "create sequence b maxvalue 5 start with 7",
                 "Unable to create or alter sequence \"B\" because of " +
-                "invalid attributes (base value \"7\", start value \"7\", " +
+                        "invalid attributes (base value \"7\", start value \"7\", " +
                         "min value \"1\", max value \"5\", increment \"1\", cache size \"32\")");
         expectError(
                 stat,
                 "create sequence c minvalue 5 maxvalue 2",
                 "Unable to create or alter sequence \"C\" because of " +
-                "invalid attributes (base value \"5\", start value \"5\", " +
-                "min value \"5\", max value \"2\", increment \"1\", cache size \"32\")");
+                        "invalid attributes (base value \"5\", start value \"5\", " +
+                        "min value \"5\", max value \"2\", increment \"1\", cache size \"32\")");
         expectError(
                 stat,
                 "create sequence d increment by 0",
                 "Unable to create or alter sequence \"D\" because of " +
-                "invalid attributes (base value \"1\", start value \"1\", " +
-                "min value \"1\", max value \"" +
-                Long.MAX_VALUE + "\", increment \"0\", cache size \"32\")");
+                        "invalid attributes (base value \"1\", start value \"1\", " +
+                        "min value \"1\", max value \"" +
+                        Long.MAX_VALUE + "\", increment \"0\", cache size \"32\")");
         expectError(stat,
                 "create sequence e minvalue 1 maxvalue 5 increment 99",
                 "Unable to create or alter sequence \"E\" because of " +
-                "invalid attributes (base value \"1\", start value \"1\", " +
-                "min value \"1\", max value \"5\", increment \"99\", cache size \"32\")");
+                        "invalid attributes (base value \"1\", start value \"1\", " +
+                        "min value \"1\", max value \"5\", increment \"99\", cache size \"32\")");
         conn.close();
     }
 
@@ -384,7 +385,7 @@ public class TestSequence extends TestDb {
                 "WITH 5 INCREMENT BY 2 " +
                 "MINVALUE 3 MAXVALUE 7 CYCLE NO CACHE;", script.get(2));
         assertEquals("CREATE SEQUENCE \"PUBLIC\".\"C\" START " +
-                "WITH 3 MINVALUE 2 MAXVALUE 9 CACHE 2;",
+                        "WITH 3 MINVALUE 2 MAXVALUE 9 CACHE 2;",
                 script.get(3));
         assertEquals("CREATE SEQUENCE \"PUBLIC\".\"D\" START " +
                 "WITH 1 NO CACHE;", script.get(4));
@@ -484,7 +485,7 @@ public class TestSequence extends TestDb {
 
         @Override
         public void init(Connection conn, String schemaName,
-                String triggerName, String tableName, boolean before, int type)
+                         String triggerName, String tableName, boolean before, int type)
                 throws SQLException {
             conn.createStatement().executeQuery("call next value for test_seq");
         }

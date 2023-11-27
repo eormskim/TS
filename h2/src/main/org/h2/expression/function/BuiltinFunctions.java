@@ -120,10 +120,8 @@ public final class BuiltinFunctions {
     /**
      * Returns whether specified function is a non-keyword built-in function.
      *
-     * @param database
-     *            the database
-     * @param upperName
-     *            the name of the function in upper case
+     * @param database  the database
+     * @param upperName the name of the function in upper case
      * @return {@code true} if it is
      */
     public static boolean isBuiltinFunction(Database database, String upperName) {

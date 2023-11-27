@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import org.h2.compress.CompressLZF;
 import org.h2.util.MathUtils;
 
@@ -29,7 +30,9 @@ class FileNioMemData {
 
     private static final ThreadLocal<CompressLZF> LZF_THREAD_LOCAL = ThreadLocal.withInitial(CompressLZF::new);
 
-    /** the output buffer when compressing */
+    /**
+     * the output buffer when compressing
+     */
     private static final ThreadLocal<byte[]> COMPRESS_OUT_BUF_THREAD_LOCAL = ThreadLocal
             .withInitial(() -> new byte[BLOCK_SIZE * 2]);
 
@@ -39,7 +42,7 @@ class FileNioMemData {
     final int nameHashCode;
 
     private final CompressLaterCache<CompressItem, CompressItem> compressLaterCache =
-        new CompressLaterCache<>(CACHE_MIN_SIZE);
+            new CompressLaterCache<>(CACHE_MIN_SIZE);
 
     private String name;
     private final boolean compress;
@@ -288,10 +291,10 @@ class FileNioMemData {
     /**
      * Read or write.
      *
-     * @param pos the position
-     * @param b the byte array
-     * @param off the offset within the byte array
-     * @param len the number of bytes
+     * @param pos   the position
+     * @param b     the byte array
+     * @param off   the offset within the byte array
+     * @param len   the number of bytes
      * @param write true for writing
      * @return the new position
      */

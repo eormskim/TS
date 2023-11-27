@@ -33,9 +33,8 @@ public final class JsonConstructorFunction extends OperationN implements Express
     /**
      * Creates a new instance of JSON constructor function.
      *
-     * @param array
-     *            {@code false} for {@code JSON_OBJECT}, {@code true} for
-     *            {@code JSON_ARRAY}.
+     * @param array {@code false} for {@code JSON_OBJECT}, {@code true} for
+     *              {@code JSON_ARRAY}.
      */
     public JsonConstructorFunction(boolean array) {
         super(new Expression[4]);
@@ -60,7 +59,7 @@ public final class JsonConstructorFunction extends OperationN implements Express
     private Value jsonObject(SessionLocal session, Expression[] args) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         baos.write('{');
-        for (int i = 0, l = args.length; i < l;) {
+        for (int i = 0, l = args.length; i < l; ) {
             String name = args[i++].getValue(session).getString();
             if (name == null) {
                 throw DbException.getInvalidValueException("JSON_OBJECT key", "NULL");
@@ -82,7 +81,8 @@ public final class JsonConstructorFunction extends OperationN implements Express
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         baos.write('[');
         int l = args.length;
-        evaluate: {
+        evaluate:
+        {
             if (l == 1) {
                 Expression arg0 = args[0];
                 if (arg0 instanceof Subquery) {
@@ -103,7 +103,7 @@ public final class JsonConstructorFunction extends OperationN implements Express
                     }
                 }
             }
-            for (int i = 0; i < l;) {
+            for (int i = 0; i < l; ) {
                 JsonConstructorUtils.jsonArrayAppend(baos, args[i++].getValue(session), flags);
             }
         }
@@ -127,7 +127,7 @@ public final class JsonConstructorFunction extends OperationN implements Express
         if (array) {
             writeExpressions(builder, args, sqlFlags);
         } else {
-            for (int i = 0, l = args.length; i < l;) {
+            for (int i = 0, l = args.length; i < l; ) {
                 if (i > 0) {
                     builder.append(", ");
                 }
@@ -141,12 +141,9 @@ public final class JsonConstructorFunction extends OperationN implements Express
     /**
      * Appends flags of a JSON function to the specified string builder.
      *
-     * @param builder
-     *            string builder to append to
-     * @param flags
-     *            flags to append
-     * @param forArray
-     *            whether the function is an array function
+     * @param builder  string builder to append to
+     * @param flags    flags to append
+     * @param forArray whether the function is an array function
      * @return the specified string builder
      */
     public static StringBuilder getJsonFunctionFlagsSQL(StringBuilder builder, int flags, boolean forArray) {

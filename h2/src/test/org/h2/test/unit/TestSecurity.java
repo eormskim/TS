@@ -67,21 +67,21 @@ public class TestSecurity extends TestBase {
         assertEquals(
                 "120fb6cffcf8b32c43e7225256c4f837a86548c92ccc35480805987cb70be17b",
                 StringUtils.convertBytesToHex(
-                SHA256.getPBKDF2(
-                "password".getBytes(),
-                "salt".getBytes(), 1, 32)));
+                        SHA256.getPBKDF2(
+                                "password".getBytes(),
+                                "salt".getBytes(), 1, 32)));
         assertEquals(
                 "ae4d0c95af6b46d32d0adff928f06dd02a303f8ef3c251dfd6e2d85a95474c43",
                 StringUtils.convertBytesToHex(
-                SHA256.getPBKDF2(
-                "password".getBytes(),
-                "salt".getBytes(), 2, 32)));
+                        SHA256.getPBKDF2(
+                                "password".getBytes(),
+                                "salt".getBytes(), 2, 32)));
         assertEquals(
                 "c5e478d59288c841aa530db6845c4c8d962893a001ce4e11a4963873aa98134a",
                 StringUtils.convertBytesToHex(
-                SHA256.getPBKDF2(
-                "password".getBytes(),
-                "salt".getBytes(), 4096, 32)));
+                        SHA256.getPBKDF2(
+                                "password".getBytes(),
+                                "salt".getBytes(), 4096, 32)));
         // take a very long time to calculate
         // assertEquals(
         //         "cf81c66fe8cfc04d1f31ecb65dab4089f7f179e" +
@@ -92,18 +92,18 @@ public class TestSecurity extends TestBase {
         //         "salt".getBytes(), 16777216, 32)));
         assertEquals(
                 "348c89dbcbd32b2f32d814b8116e84cf2b17347e" +
-                "bc1800181c4e2a1fb8dd53e1c635518c7dac47e9",
+                        "bc1800181c4e2a1fb8dd53e1c635518c7dac47e9",
                 StringUtils.convertBytesToHex(
-                SHA256.getPBKDF2(
-                ("password" + "PASSWORD" + "password").getBytes(),
-                ("salt"+ "SALT"+ "salt"+ "SALT"+ "salt"+
-                "SALT"+ "salt"+ "SALT"+ "salt").getBytes(), 4096, 40)));
+                        SHA256.getPBKDF2(
+                                ("password" + "PASSWORD" + "password").getBytes(),
+                                ("salt" + "SALT" + "salt" + "SALT" + "salt" +
+                                        "SALT" + "salt" + "SALT" + "salt").getBytes(), 4096, 40)));
         assertEquals(
                 "89b69d0516f829893c696226650a8687",
                 StringUtils.convertBytesToHex(
-                SHA256.getPBKDF2(
-                "pass\0word".getBytes(),
-                "sa\0lt".getBytes(), 4096, 16)));
+                        SHA256.getPBKDF2(
+                                "pass\0word".getBytes(),
+                                "sa\0lt".getBytes(), 4096, 16)));
 
         // the password is filled with zeroes
         byte[] password = "Test".getBytes();
@@ -120,9 +120,9 @@ public class TestSecurity extends TestBase {
         assertEquals(
                 "f7bc83f430538424b13298e6aa6fb143ef4d59a14946175997479dbc2d1a3cd8",
                 StringUtils.convertBytesToHex(
-                SHA256.getHMAC(
-                "key".getBytes(),
-                "The quick brown fox jumps over the lazy dog".getBytes())));
+                        SHA256.getHMAC(
+                                "key".getBytes(),
+                                "The quick brown fox jumps over the lazy dog".getBytes())));
     }
 
     private String getHashString(byte[] data) {
@@ -136,17 +136,17 @@ public class TestSecurity extends TestBase {
     private void testOneSHA() {
         assertEquals(
                 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-                getHashString(new byte[] {}));
+                getHashString(new byte[]{}));
         assertEquals(
                 "68aa2e2ee5dff96e3355e6c7ee373e3d6a4e17f75f9518d843709c0c9bc3e3d4",
-                getHashString(new byte[] { 0x19 }));
+                getHashString(new byte[]{0x19}));
         assertEquals(
                 "175ee69b02ba9b58e2b0a5fd13819cea573f3940a94f825128cf4209beabb4e8",
                 getHashString(
-                        new byte[] { (byte) 0xe3, (byte) 0xd7, 0x25,
-                        0x70, (byte) 0xdc, (byte) 0xdd, 0x78, 0x7c,
-                        (byte) 0xe3, (byte) 0x88, 0x7a, (byte) 0xb2,
-                        (byte) 0xcd, 0x68, 0x46, 0x52 }));
+                        new byte[]{(byte) 0xe3, (byte) 0xd7, 0x25,
+                                0x70, (byte) 0xdc, (byte) 0xdd, 0x78, 0x7c,
+                                (byte) 0xe3, (byte) 0x88, 0x7a, (byte) 0xb2,
+                                (byte) 0xcd, 0x68, 0x46, 0x52}));
         checkSHA256(
                 "",
                 "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855");
@@ -215,7 +215,7 @@ public class TestSecurity extends TestBase {
     }
 
     private void testBlockCiphers() {
-        for (String algorithm : new String[] { "AES", "FOG" }) {
+        for (String algorithm : new String[]{"AES", "FOG"}) {
             byte[] test = new byte[4096];
             BlockCipher cipher = CipherFactory.getBlockCipher(algorithm);
             cipher.setKey("abcdefghijklmnop".getBytes());
@@ -321,7 +321,7 @@ public class TestSecurity extends TestBase {
     private void testResetLegacyAlgorithms() {
         String legacyAlgorithmsBefore = CipherFactory.getLegacyAlgorithmsSilently();
         assertEquals("Failed assumption: jdk.tls.legacyAlgorithms" +
-                " has been modified from its initial setting",
+                        " has been modified from its initial setting",
                 CipherFactory.DEFAULT_LEGACY_ALGORITHMS, legacyAlgorithmsBefore);
         CipherFactory.removeAnonFromLegacyAlgorithms();
         CipherFactory.resetDefaultLegacyAlgorithms();

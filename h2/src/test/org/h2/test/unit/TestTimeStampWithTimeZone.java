@@ -30,6 +30,7 @@ import org.h2.value.ValueTimestamp;
 import org.h2.value.ValueTimestampTimeZone;
 
 /**
+ *
  */
 public class TestTimeStampWithTimeZone extends TestDb {
 
@@ -156,8 +157,8 @@ public class TestTimeStampWithTimeZone extends TestDb {
         stat.execute("insert into test5(t1) values('2017-04-20 00:00:00.000000001+00:01')");
 
         PreparedStatement preparedStatement = conn.prepareStatement("select id"
-                        + " from test5"
-                        + " where (t1 < ?)");
+                + " from test5"
+                + " where (t1 < ?)");
         Value value = ValueTimestampTimeZone.parse("2016-12-24 00:00:00.000000001+00:01", null);
         preparedStatement.setObject(1, JSR310Utils.valueToOffsetDateTime(value, null));
 
@@ -198,10 +199,10 @@ public class TestTimeStampWithTimeZone extends TestDb {
         if (testReverse) {
             assertEquals(0, tstz.compareTo(ts.convertTo(TypeInfo.TYPE_TIMESTAMP_TZ, provider), null, null));
             assertEquals(d.convertTo(TypeInfo.TYPE_TIMESTAMP, provider)
-                    .convertTo(TypeInfo.TYPE_TIMESTAMP_TZ, provider),
+                            .convertTo(TypeInfo.TYPE_TIMESTAMP_TZ, provider),
                     d.convertTo(TypeInfo.TYPE_TIMESTAMP_TZ, provider));
             assertEquals(t.convertTo(TypeInfo.TYPE_TIMESTAMP, provider)
-                    .convertTo(TypeInfo.TYPE_TIMESTAMP_TZ, provider),
+                            .convertTo(TypeInfo.TYPE_TIMESTAMP_TZ, provider),
                     t.convertTo(TypeInfo.TYPE_TIMESTAMP_TZ, provider));
         }
     }

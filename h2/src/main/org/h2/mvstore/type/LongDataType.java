@@ -6,6 +6,7 @@
 package org.h2.mvstore.type;
 
 import java.nio.ByteBuffer;
+
 import org.h2.mvstore.DataUtils;
 import org.h2.mvstore.WriteBuffer;
 
@@ -23,7 +24,8 @@ public class LongDataType extends BasicDataType<Long> {
 
     private static final Long[] EMPTY_LONG_ARR = new Long[0];
 
-    private LongDataType() {}
+    private LongDataType() {
+    }
 
     @Override
     public int getMemory(Long obj) {

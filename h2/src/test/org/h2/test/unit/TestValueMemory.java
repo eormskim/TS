@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.Random;
+
 import org.h2.api.IntervalQualifier;
 import org.h2.engine.Constants;
 import org.h2.store.DataHandler;
@@ -168,93 +169,94 @@ public class TestValueMemory extends TestBase implements DataHandler {
             }
         }
     }
+
     private Value create(int type) throws SQLException {
         switch (type) {
-        case Value.NULL:
-            return ValueNull.INSTANCE;
-        case Value.BOOLEAN:
-            return ValueBoolean.FALSE;
-        case Value.TINYINT:
-            return ValueTinyint.get((byte) random.nextInt());
-        case Value.SMALLINT:
-            return ValueSmallint.get((short) random.nextInt());
-        case Value.INTEGER:
-            return ValueInteger.get(random.nextInt());
-        case Value.BIGINT:
-            return ValueBigint.get(random.nextLong());
-        case Value.NUMERIC:
-            return ValueNumeric.get(new BigDecimal(random.nextInt()));
+            case Value.NULL:
+                return ValueNull.INSTANCE;
+            case Value.BOOLEAN:
+                return ValueBoolean.FALSE;
+            case Value.TINYINT:
+                return ValueTinyint.get((byte) random.nextInt());
+            case Value.SMALLINT:
+                return ValueSmallint.get((short) random.nextInt());
+            case Value.INTEGER:
+                return ValueInteger.get(random.nextInt());
+            case Value.BIGINT:
+                return ValueBigint.get(random.nextLong());
+            case Value.NUMERIC:
+                return ValueNumeric.get(new BigDecimal(random.nextInt()));
             // + "12123344563456345634565234523451312312"
-        case Value.DOUBLE:
-            return ValueDouble.get(random.nextDouble());
-        case Value.REAL:
-            return ValueReal.get(random.nextFloat());
-        case Value.DECFLOAT:
-            return ValueDecfloat.get(new BigDecimal(random.nextInt()));
-        case Value.TIME:
-            return ValueTime.fromNanos(randomTimeNanos());
-        case Value.TIME_TZ:
-            return ValueTimeTimeZone.fromNanos(randomTimeNanos(), randomZoneOffset());
-        case Value.DATE:
-            return ValueDate.fromDateValue(randomDateValue());
-        case Value.TIMESTAMP:
-            return ValueTimestamp.fromDateValueAndNanos(randomDateValue(), randomTimeNanos());
-        case Value.TIMESTAMP_TZ:
-            return ValueTimestampTimeZone.fromDateValueAndNanos(
-                    randomDateValue(), randomTimeNanos(), randomZoneOffset());
-        case Value.VARBINARY:
-            return ValueVarbinary.get(randomBytes(random.nextInt(1000)));
-        case Value.VARCHAR:
-            return ValueVarchar.get(randomString(random.nextInt(100)));
-        case Value.VARCHAR_IGNORECASE:
-            return ValueVarcharIgnoreCase.get(randomString(random.nextInt(100)));
-        case Value.BLOB: {
-            int len = (int) Math.abs(random.nextGaussian() * 10);
-            byte[] data = randomBytes(len);
-            return getLobStorage().createBlob(new ByteArrayInputStream(data), len);
-        }
-        case Value.CLOB: {
-            int len = (int) Math.abs(random.nextGaussian() * 10);
-            String s = randomString(len);
-            return getLobStorage().createClob(new StringReader(s), len);
-        }
-        case Value.ARRAY:
-            return ValueArray.get(createArray(), null);
-        case Value.ROW:
-            return ValueRow.get(createArray());
-        case Value.JAVA_OBJECT:
-            return ValueJavaObject.getNoCopy(randomBytes(random.nextInt(100)));
-        case Value.UUID:
-            return ValueUuid.get(random.nextLong(), random.nextLong());
-        case Value.CHAR:
-            return ValueChar.get(randomString(random.nextInt(100)));
-        case Value.GEOMETRY:
-            return ValueGeometry.get("POINT (" + random.nextInt(100) + ' ' + random.nextInt(100) + ')');
-        case Value.INTERVAL_YEAR:
-        case Value.INTERVAL_MONTH:
-        case Value.INTERVAL_DAY:
-        case Value.INTERVAL_HOUR:
-        case Value.INTERVAL_MINUTE:
-            return ValueInterval.from(IntervalQualifier.valueOf(type - Value.INTERVAL_YEAR),
-                    random.nextBoolean(), random.nextInt(Integer.MAX_VALUE), 0);
-        case Value.INTERVAL_SECOND:
-        case Value.INTERVAL_DAY_TO_SECOND:
-        case Value.INTERVAL_HOUR_TO_SECOND:
-        case Value.INTERVAL_MINUTE_TO_SECOND:
-            return ValueInterval.from(IntervalQualifier.valueOf(type - Value.INTERVAL_YEAR),
-                    random.nextBoolean(), random.nextInt(Integer.MAX_VALUE), random.nextInt(1_000_000_000));
-        case Value.INTERVAL_YEAR_TO_MONTH:
-        case Value.INTERVAL_DAY_TO_HOUR:
-        case Value.INTERVAL_DAY_TO_MINUTE:
-        case Value.INTERVAL_HOUR_TO_MINUTE:
-            return ValueInterval.from(IntervalQualifier.valueOf(type - Value.INTERVAL_YEAR),
-                    random.nextBoolean(), random.nextInt(Integer.MAX_VALUE), random.nextInt(12));
-        case Value.JSON:
-            return ValueJson.fromJson("{\"key\":\"value\"}");
-        case Value.BINARY:
-            return ValueBinary.get(randomBytes(random.nextInt(1000)));
-        default:
-            throw new AssertionError("type=" + type);
+            case Value.DOUBLE:
+                return ValueDouble.get(random.nextDouble());
+            case Value.REAL:
+                return ValueReal.get(random.nextFloat());
+            case Value.DECFLOAT:
+                return ValueDecfloat.get(new BigDecimal(random.nextInt()));
+            case Value.TIME:
+                return ValueTime.fromNanos(randomTimeNanos());
+            case Value.TIME_TZ:
+                return ValueTimeTimeZone.fromNanos(randomTimeNanos(), randomZoneOffset());
+            case Value.DATE:
+                return ValueDate.fromDateValue(randomDateValue());
+            case Value.TIMESTAMP:
+                return ValueTimestamp.fromDateValueAndNanos(randomDateValue(), randomTimeNanos());
+            case Value.TIMESTAMP_TZ:
+                return ValueTimestampTimeZone.fromDateValueAndNanos(
+                        randomDateValue(), randomTimeNanos(), randomZoneOffset());
+            case Value.VARBINARY:
+                return ValueVarbinary.get(randomBytes(random.nextInt(1000)));
+            case Value.VARCHAR:
+                return ValueVarchar.get(randomString(random.nextInt(100)));
+            case Value.VARCHAR_IGNORECASE:
+                return ValueVarcharIgnoreCase.get(randomString(random.nextInt(100)));
+            case Value.BLOB: {
+                int len = (int) Math.abs(random.nextGaussian() * 10);
+                byte[] data = randomBytes(len);
+                return getLobStorage().createBlob(new ByteArrayInputStream(data), len);
+            }
+            case Value.CLOB: {
+                int len = (int) Math.abs(random.nextGaussian() * 10);
+                String s = randomString(len);
+                return getLobStorage().createClob(new StringReader(s), len);
+            }
+            case Value.ARRAY:
+                return ValueArray.get(createArray(), null);
+            case Value.ROW:
+                return ValueRow.get(createArray());
+            case Value.JAVA_OBJECT:
+                return ValueJavaObject.getNoCopy(randomBytes(random.nextInt(100)));
+            case Value.UUID:
+                return ValueUuid.get(random.nextLong(), random.nextLong());
+            case Value.CHAR:
+                return ValueChar.get(randomString(random.nextInt(100)));
+            case Value.GEOMETRY:
+                return ValueGeometry.get("POINT (" + random.nextInt(100) + ' ' + random.nextInt(100) + ')');
+            case Value.INTERVAL_YEAR:
+            case Value.INTERVAL_MONTH:
+            case Value.INTERVAL_DAY:
+            case Value.INTERVAL_HOUR:
+            case Value.INTERVAL_MINUTE:
+                return ValueInterval.from(IntervalQualifier.valueOf(type - Value.INTERVAL_YEAR),
+                        random.nextBoolean(), random.nextInt(Integer.MAX_VALUE), 0);
+            case Value.INTERVAL_SECOND:
+            case Value.INTERVAL_DAY_TO_SECOND:
+            case Value.INTERVAL_HOUR_TO_SECOND:
+            case Value.INTERVAL_MINUTE_TO_SECOND:
+                return ValueInterval.from(IntervalQualifier.valueOf(type - Value.INTERVAL_YEAR),
+                        random.nextBoolean(), random.nextInt(Integer.MAX_VALUE), random.nextInt(1_000_000_000));
+            case Value.INTERVAL_YEAR_TO_MONTH:
+            case Value.INTERVAL_DAY_TO_HOUR:
+            case Value.INTERVAL_DAY_TO_MINUTE:
+            case Value.INTERVAL_HOUR_TO_MINUTE:
+                return ValueInterval.from(IntervalQualifier.valueOf(type - Value.INTERVAL_YEAR),
+                        random.nextBoolean(), random.nextInt(Integer.MAX_VALUE), random.nextInt(12));
+            case Value.JSON:
+                return ValueJson.fromJson("{\"key\":\"value\"}");
+            case Value.BINARY:
+                return ValueBinary.get(randomBytes(random.nextInt(1000)));
+            default:
+                throw new AssertionError("type=" + type);
         }
     }
 
@@ -350,7 +352,7 @@ public class TestValueMemory extends TestBase implements DataHandler {
 
     @Override
     public int readLob(long lobId, byte[] hmac, long offset, byte[] buff,
-            int off, int length) {
+                       int off, int length) {
         return -1;
     }
 
@@ -372,14 +374,14 @@ public class TestValueMemory extends TestBase implements DataHandler {
 
         @Override
         public InputStream getInputStream(long lobId,
-                long byteCount) throws IOException {
+                                          long byteCount) throws IOException {
             // this method is only implemented on the server side of a TCP connection
             throw new IllegalStateException();
         }
 
         @Override
         public InputStream getInputStream(long lobId, int tableId,
-                long byteCount) throws IOException {
+                                          long byteCount) throws IOException {
             // this method is only implemented on the server side of a TCP connection
             throw new IllegalStateException();
         }
@@ -410,7 +412,7 @@ public class TestValueMemory extends TestBase implements DataHandler {
         /**
          * Create a CLOB object.
          *
-         * @param reader the reader
+         * @param reader    the reader
          * @param maxLength the maximum length (-1 if not known)
          * @return the LOB
          */

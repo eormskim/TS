@@ -28,8 +28,8 @@ public class IntPerfectHash {
      * The maximum offset for hash functions of small buckets. At most that many
      * hash functions are tried for the given size.
      */
-    private static final int[] MAX_OFFSETS = { 0, 0, 8, 18, 47, 123, 319, 831, 2162,
-            5622, 14617, 38006, 98815 };
+    private static final int[] MAX_OFFSETS = {0, 0, 8, 18, 47, 123, 319, 831, 2162,
+            5622, 14617, 38006, 98815};
 
     /**
      * The output value to split the bucket into many (more than 2) smaller
@@ -89,8 +89,8 @@ public class IntPerfectHash {
      * Get the hash value for the given key, starting at a certain position and
      * level.
      *
-     * @param pos the start position
-     * @param x the key
+     * @param pos   the start position
+     * @param x     the key
      * @param level the level
      * @return the hash value
      */
@@ -150,12 +150,12 @@ public class IntPerfectHash {
      * The sum of the sizes between the start and end position.
      *
      * @param start the start position
-     * @param end the end position (excluding)
+     * @param end   the end position (excluding)
      * @return the sizes
      */
     private int getSizeSum(int start, int end) {
         int s = 0;
-        for (int pos = start; pos < end;) {
+        for (int pos = start; pos < end; ) {
             int n = readVarInt(data, pos);
             pos += getVarIntLength(data, pos);
             if (n < 2) {
@@ -170,7 +170,7 @@ public class IntPerfectHash {
     }
 
     private static void writeSizeOffset(ByteStream out, int size,
-            int offset) {
+                                        int offset) {
         writeVarInt(out, SIZE_OFFSETS[size] + offset);
     }
 
@@ -360,8 +360,8 @@ public class IntPerfectHash {
         /**
          * Set a bit in the array.
          *
-         * @param data the array
-         * @param x the bit index
+         * @param data  the array
+         * @param x     the bit index
          * @param value the new value
          * @return the bit array (if the passed one was too small)
          */
@@ -382,7 +382,7 @@ public class IntPerfectHash {
          * Get a bit in a bit array.
          *
          * @param data the array
-         * @param x the bit index
+         * @param x    the bit index
          * @return the value
          */
         public static boolean getBit(byte[] data, int x) {

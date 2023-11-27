@@ -69,13 +69,13 @@ public class TestGeometryUtils extends TestBase {
             StringUtils.convertHexToBytes("0040000001" //
                     + "0000000000000000" //
                     + "0000000000000000" //
-                    + "7ff8000000000000") };
+                    + "7ff8000000000000")};
 
     private static final int[] NON_FINITE_DIMENSIONS = { //
             DIMENSION_SYSTEM_XY, //
             DIMENSION_SYSTEM_XY, //
             DIMENSION_SYSTEM_XYZ, //
-            DIMENSION_SYSTEM_XYM };
+            DIMENSION_SYSTEM_XYM};
 
     private static final String MIXED_WKT = "LINESTRING (1 2, 3 4 5)";
 
@@ -102,8 +102,7 @@ public class TestGeometryUtils extends TestBase {
     /**
      * Run just this test.
      *
-     * @param a
-     *            ignored
+     * @param a ignored
      */
     public static void main(String... a) throws Exception {
         TestBase.createCaller().init().testFromMain();
@@ -398,18 +397,18 @@ public class TestGeometryUtils extends TestBase {
                 .formatGeometryTypeAndDimensionSystem(new StringBuilder(), vg.getTypeAndDimensionSystem()).toString();
         assertTrue(EWKTUtils.ewkb2ewkt(ewkb).startsWith(formattedType));
         switch (dimensionSystem) {
-        case DIMENSION_SYSTEM_XY:
-            assertTrue(formattedType.indexOf(' ') < 0);
-            break;
-        case DIMENSION_SYSTEM_XYZ:
-            assertTrue(formattedType.endsWith(" Z"));
-            break;
-        case DIMENSION_SYSTEM_XYM:
-            assertTrue(formattedType.endsWith(" M"));
-            break;
-        case DIMENSION_SYSTEM_XYZM:
-            assertTrue(formattedType.endsWith(" ZM"));
-            break;
+            case DIMENSION_SYSTEM_XY:
+                assertTrue(formattedType.indexOf(' ') < 0);
+                break;
+            case DIMENSION_SYSTEM_XYZ:
+                assertTrue(formattedType.endsWith(" Z"));
+                break;
+            case DIMENSION_SYSTEM_XYM:
+                assertTrue(formattedType.endsWith(" M"));
+                break;
+            case DIMENSION_SYSTEM_XYZM:
+                assertTrue(formattedType.endsWith(" ZM"));
+                break;
         }
         assertEquals(vg.getTypeAndDimensionSystem(), vg.getGeometryType() + vg.getDimensionSystem() * 1_000);
         assertEquals(0, vg.getSRID());
@@ -511,7 +510,7 @@ public class TestGeometryUtils extends TestBase {
             minY = maxY;
             maxY = t;
         }
-        return new double[] { minX, maxX, minY, maxY };
+        return new double[]{minX, maxX, minY, maxY};
     }
 
     private void testMixedGeometries() throws Exception {

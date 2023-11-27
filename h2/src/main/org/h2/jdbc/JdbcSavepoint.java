@@ -28,7 +28,7 @@ public final class JdbcSavepoint extends TraceObject implements Savepoint {
     private JdbcConnection conn;
 
     JdbcSavepoint(JdbcConnection conn, int savepointId, String name,
-            Trace trace, int id) {
+                  Trace trace, int id) {
         setTrace(trace, TraceObject.SAVEPOINT, id);
         this.conn = conn;
         this.savepointId = savepointId;
@@ -48,7 +48,7 @@ public final class JdbcSavepoint extends TraceObject implements Savepoint {
      * If the name is null, the id is used.
      *
      * @param name the name (may be null)
-     * @param id the id
+     * @param id   the id
      * @return the savepoint name
      */
     static String getName(String name, int id) {
@@ -77,6 +77,7 @@ public final class JdbcSavepoint extends TraceObject implements Savepoint {
 
     /**
      * Get the generated id of this savepoint.
+     *
      * @return the id
      */
     @Override
@@ -95,6 +96,7 @@ public final class JdbcSavepoint extends TraceObject implements Savepoint {
 
     /**
      * Get the name of this savepoint.
+     *
      * @return the name
      */
     @Override

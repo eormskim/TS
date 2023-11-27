@@ -25,15 +25,14 @@ class VersionedValueCommitted<T> extends VersionedValue<T> {
     /**
      * Either cast to VersionedValue, or wrap in VersionedValueCommitted
      *
-     * @param <X> type of the value to get the VersionedValue for
-     *
+     * @param <X>   type of the value to get the VersionedValue for
      * @param value the object to cast/wrap
      * @return VersionedValue instance
      */
     @SuppressWarnings("unchecked")
     static <X> VersionedValue<X> getInstance(X value) {
         assert value != null;
-        return value instanceof VersionedValue ? (VersionedValue<X>)value : new VersionedValueCommitted<>(value);
+        return value instanceof VersionedValue ? (VersionedValue<X>) value : new VersionedValueCommitted<>(value);
     }
 
     @Override

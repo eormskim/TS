@@ -193,308 +193,308 @@ public final class PgServerThread implements Runnable {
         dataInRaw.readFully(data, 0, len);
         dataIn = new DataInputStream(new ByteArrayInputStream(data, 0, len));
         switch (x) {
-        case 0:
-            server.trace("Init");
-            int version = readInt();
-            if (version == 80877102) {
-                server.trace("CancelRequest");
-                int pid = readInt();
-                int key = readInt();
-                PgServerThread c = server.getThread(pid);
-                if (c != null && key == c.secret) {
-                    c.cancelRequest();
-                } else {
-                    // According to the PostgreSQL documentation, when canceling
-                    // a request, if an invalid secret is provided then no
-                    // exception should be sent back to the client.
-                    server.trace("Invalid CancelRequest: pid=" + pid + ", key=" + key);
-                }
-                close();
-            } else if (version == 80877103) {
-                server.trace("SSLRequest");
-                out.write('N');
-            } else {
-                server.trace("StartupMessage");
-                server.trace(" version " + version +
-                        " (" + (version >> 16) + "." + (version & 0xff) + ")");
-                while (true) {
-                    String param = readString();
-                    if (param.isEmpty()) {
-                        break;
-                    }
-                    String value = readString();
-                    switch (param) {
-                    case "user":
-                        this.userName = value;
-                        break;
-                    case "database":
-                        this.databaseName = server.checkKeyAndGetDatabaseName(value);
-                        break;
-                    case "client_encoding":
-                        // node-postgres will send "'utf-8'"
-                        int length = value.length();
-                        if (length >= 2 && value.charAt(0) == '\''
-                                && value.charAt(length - 1) == '\'') {
-                            value = value.substring(1, length - 1);
-                        }
-                        // UTF8
-                        clientEncoding = value;
-                        break;
-                    case "DateStyle":
-                        if (value.indexOf(',') < 0) {
-                            value += ", MDY";
-                        }
-                        dateStyle = value;
-                        break;
-                    case "TimeZone":
-                        try {
-                            timeZone = TimeZoneProvider.ofId(pgTimeZone(value));
-                        } catch (Exception e) {
-                            server.trace("Unknown TimeZone: " + value);
-                        }
-                        break;
-                    }
-                    // extra_float_digits 2
-                    // geqo on (Genetic Query Optimization)
-                    server.trace(" param " + param + "=" + value);
-                }
-                sendAuthenticationCleartextPassword();
-                initDone = true;
-            }
-            break;
-        case 'p': {
-            server.trace("PasswordMessage");
-            String password = readString();
-            try {
-                Properties info = new Properties();
-                info.put("MODE", "PostgreSQL");
-                info.put("DATABASE_TO_LOWER", "TRUE");
-                info.put("DEFAULT_NULL_ORDERING", "HIGH");
-                String url = "jdbc:h2:" + databaseName;
-                ConnectionInfo ci = new ConnectionInfo(url, info, userName, password);
-                String baseDir = server.getBaseDir();
-                if (baseDir == null) {
-                    baseDir = SysProperties.getBaseDir();
-                }
-                if (baseDir != null) {
-                    ci.setBaseDir(baseDir);
-                }
-                if (server.getIfExists()) {
-                    ci.setProperty("FORBID_CREATION", "TRUE");
-                }
-                ci.setNetworkConnectionInfo(new NetworkConnectionInfo( //
-                        NetUtils.ipToShortForm(new StringBuilder("pg://"), //
-                                socket.getLocalAddress().getAddress(), true) //
-                                .append(':').append(socket.getLocalPort()).toString(), //
-                        socket.getInetAddress().getAddress(), socket.getPort(), null));
-                session = Engine.createSession(ci);
-                initDb();
-                sendAuthenticationOk();
-            } catch (Exception e) {
-                e.printStackTrace();
-                stop = true;
-            }
-            break;
-        }
-        case 'P': {
-            server.trace("Parse");
-            Prepared p = new Prepared();
-            p.name = readString();
-            p.sql = getSQL(readString());
-            int paramTypesCount = readShort();
-            int[] paramTypes = null;
-            if (paramTypesCount > 0) {
-                paramTypes = new int[paramTypesCount];
-                for (int i = 0; i < paramTypesCount; i++) {
-                    paramTypes[i] = readInt();
-                }
-            }
-            try {
-                p.prep = session.prepareLocal(p.sql);
-                ArrayList<? extends ParameterInterface> parameters = p.prep.getParameters();
-                int count = parameters.size();
-                p.paramType = new int[count];
-                for (int i = 0; i < count; i++) {
-                    int type;
-                    if (i < paramTypesCount && paramTypes[i] != 0) {
-                        type = paramTypes[i];
-                        server.checkType(type);
+            case 0:
+                server.trace("Init");
+                int version = readInt();
+                if (version == 80877102) {
+                    server.trace("CancelRequest");
+                    int pid = readInt();
+                    int key = readInt();
+                    PgServerThread c = server.getThread(pid);
+                    if (c != null && key == c.secret) {
+                        c.cancelRequest();
                     } else {
-                        type = PgServer.convertType(parameters.get(i).getType());
+                        // According to the PostgreSQL documentation, when canceling
+                        // a request, if an invalid secret is provided then no
+                        // exception should be sent back to the client.
+                        server.trace("Invalid CancelRequest: pid=" + pid + ", key=" + key);
                     }
-                    p.paramType[i] = type;
-                }
-                prepared.put(p.name, p);
-                sendParseComplete();
-            } catch (Exception e) {
-                sendErrorResponse(e);
-            }
-            break;
-        }
-        case 'B': {
-            server.trace("Bind");
-            Portal portal = new Portal();
-            portal.name = readString();
-            String prepName = readString();
-            Prepared prep = prepared.get(prepName);
-            if (prep == null) {
-                sendErrorResponse("Prepared not found");
-                break;
-            }
-            portal.prep = prep;
-            portals.put(portal.name, portal);
-            int formatCodeCount = readShort();
-            int[] formatCodes = new int[formatCodeCount];
-            for (int i = 0; i < formatCodeCount; i++) {
-                formatCodes[i] = readShort();
-            }
-            int paramCount = readShort();
-            try {
-                ArrayList<? extends ParameterInterface> parameters = prep.prep.getParameters();
-                for (int i = 0; i < paramCount; i++) {
-                    setParameter(parameters, prep.paramType[i], i, formatCodes);
-                }
-            } catch (Exception e) {
-                sendErrorResponse(e);
-                break;
-            }
-            int resultCodeCount = readShort();
-            portal.resultColumnFormat = new int[resultCodeCount];
-            for (int i = 0; i < resultCodeCount; i++) {
-                portal.resultColumnFormat[i] = readShort();
-            }
-            sendBindComplete();
-            break;
-        }
-        case 'C': {
-            char type = (char) readByte();
-            String name = readString();
-            server.trace("Close");
-            if (type == 'S') {
-                Prepared p = prepared.remove(name);
-                if (p != null) {
-                    p.close();
-                }
-            } else if (type == 'P') {
-                Portal p = portals.remove(name);
-                if (p != null) {
-                    p.prep.closeResult();
-                }
-            } else {
-                server.trace("expected S or P, got " + type);
-                sendErrorResponse("expected S or P");
-                break;
-            }
-            sendCloseComplete();
-            break;
-        }
-        case 'D': {
-            char type = (char) readByte();
-            String name = readString();
-            server.trace("Describe");
-            if (type == 'S') {
-                Prepared p = prepared.get(name);
-                if (p == null) {
-                    sendErrorResponse("Prepared not found: " + name);
+                    close();
+                } else if (version == 80877103) {
+                    server.trace("SSLRequest");
+                    out.write('N');
                 } else {
-                    try {
-                        sendParameterDescription(p.prep.getParameters(), p.paramType);
-                        sendRowDescription(p.prep.getMetaData(), null);
-                    } catch (Exception e) {
-                        sendErrorResponse(e);
+                    server.trace("StartupMessage");
+                    server.trace(" version " + version +
+                            " (" + (version >> 16) + "." + (version & 0xff) + ")");
+                    while (true) {
+                        String param = readString();
+                        if (param.isEmpty()) {
+                            break;
+                        }
+                        String value = readString();
+                        switch (param) {
+                            case "user":
+                                this.userName = value;
+                                break;
+                            case "database":
+                                this.databaseName = server.checkKeyAndGetDatabaseName(value);
+                                break;
+                            case "client_encoding":
+                                // node-postgres will send "'utf-8'"
+                                int length = value.length();
+                                if (length >= 2 && value.charAt(0) == '\''
+                                        && value.charAt(length - 1) == '\'') {
+                                    value = value.substring(1, length - 1);
+                                }
+                                // UTF8
+                                clientEncoding = value;
+                                break;
+                            case "DateStyle":
+                                if (value.indexOf(',') < 0) {
+                                    value += ", MDY";
+                                }
+                                dateStyle = value;
+                                break;
+                            case "TimeZone":
+                                try {
+                                    timeZone = TimeZoneProvider.ofId(pgTimeZone(value));
+                                } catch (Exception e) {
+                                    server.trace("Unknown TimeZone: " + value);
+                                }
+                                break;
+                        }
+                        // extra_float_digits 2
+                        // geqo on (Genetic Query Optimization)
+                        server.trace(" param " + param + "=" + value);
+                    }
+                    sendAuthenticationCleartextPassword();
+                    initDone = true;
+                }
+                break;
+            case 'p': {
+                server.trace("PasswordMessage");
+                String password = readString();
+                try {
+                    Properties info = new Properties();
+                    info.put("MODE", "PostgreSQL");
+                    info.put("DATABASE_TO_LOWER", "TRUE");
+                    info.put("DEFAULT_NULL_ORDERING", "HIGH");
+                    String url = "jdbc:h2:" + databaseName;
+                    ConnectionInfo ci = new ConnectionInfo(url, info, userName, password);
+                    String baseDir = server.getBaseDir();
+                    if (baseDir == null) {
+                        baseDir = SysProperties.getBaseDir();
+                    }
+                    if (baseDir != null) {
+                        ci.setBaseDir(baseDir);
+                    }
+                    if (server.getIfExists()) {
+                        ci.setProperty("FORBID_CREATION", "TRUE");
+                    }
+                    ci.setNetworkConnectionInfo(new NetworkConnectionInfo( //
+                            NetUtils.ipToShortForm(new StringBuilder("pg://"), //
+                                    socket.getLocalAddress().getAddress(), true) //
+                                    .append(':').append(socket.getLocalPort()).toString(), //
+                            socket.getInetAddress().getAddress(), socket.getPort(), null));
+                    session = Engine.createSession(ci);
+                    initDb();
+                    sendAuthenticationOk();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    stop = true;
+                }
+                break;
+            }
+            case 'P': {
+                server.trace("Parse");
+                Prepared p = new Prepared();
+                p.name = readString();
+                p.sql = getSQL(readString());
+                int paramTypesCount = readShort();
+                int[] paramTypes = null;
+                if (paramTypesCount > 0) {
+                    paramTypes = new int[paramTypesCount];
+                    for (int i = 0; i < paramTypesCount; i++) {
+                        paramTypes[i] = readInt();
                     }
                 }
-            } else if (type == 'P') {
+                try {
+                    p.prep = session.prepareLocal(p.sql);
+                    ArrayList<? extends ParameterInterface> parameters = p.prep.getParameters();
+                    int count = parameters.size();
+                    p.paramType = new int[count];
+                    for (int i = 0; i < count; i++) {
+                        int type;
+                        if (i < paramTypesCount && paramTypes[i] != 0) {
+                            type = paramTypes[i];
+                            server.checkType(type);
+                        } else {
+                            type = PgServer.convertType(parameters.get(i).getType());
+                        }
+                        p.paramType[i] = type;
+                    }
+                    prepared.put(p.name, p);
+                    sendParseComplete();
+                } catch (Exception e) {
+                    sendErrorResponse(e);
+                }
+                break;
+            }
+            case 'B': {
+                server.trace("Bind");
+                Portal portal = new Portal();
+                portal.name = readString();
+                String prepName = readString();
+                Prepared prep = prepared.get(prepName);
+                if (prep == null) {
+                    sendErrorResponse("Prepared not found");
+                    break;
+                }
+                portal.prep = prep;
+                portals.put(portal.name, portal);
+                int formatCodeCount = readShort();
+                int[] formatCodes = new int[formatCodeCount];
+                for (int i = 0; i < formatCodeCount; i++) {
+                    formatCodes[i] = readShort();
+                }
+                int paramCount = readShort();
+                try {
+                    ArrayList<? extends ParameterInterface> parameters = prep.prep.getParameters();
+                    for (int i = 0; i < paramCount; i++) {
+                        setParameter(parameters, prep.paramType[i], i, formatCodes);
+                    }
+                } catch (Exception e) {
+                    sendErrorResponse(e);
+                    break;
+                }
+                int resultCodeCount = readShort();
+                portal.resultColumnFormat = new int[resultCodeCount];
+                for (int i = 0; i < resultCodeCount; i++) {
+                    portal.resultColumnFormat[i] = readShort();
+                }
+                sendBindComplete();
+                break;
+            }
+            case 'C': {
+                char type = (char) readByte();
+                String name = readString();
+                server.trace("Close");
+                if (type == 'S') {
+                    Prepared p = prepared.remove(name);
+                    if (p != null) {
+                        p.close();
+                    }
+                } else if (type == 'P') {
+                    Portal p = portals.remove(name);
+                    if (p != null) {
+                        p.prep.closeResult();
+                    }
+                } else {
+                    server.trace("expected S or P, got " + type);
+                    sendErrorResponse("expected S or P");
+                    break;
+                }
+                sendCloseComplete();
+                break;
+            }
+            case 'D': {
+                char type = (char) readByte();
+                String name = readString();
+                server.trace("Describe");
+                if (type == 'S') {
+                    Prepared p = prepared.get(name);
+                    if (p == null) {
+                        sendErrorResponse("Prepared not found: " + name);
+                    } else {
+                        try {
+                            sendParameterDescription(p.prep.getParameters(), p.paramType);
+                            sendRowDescription(p.prep.getMetaData(), null);
+                        } catch (Exception e) {
+                            sendErrorResponse(e);
+                        }
+                    }
+                } else if (type == 'P') {
+                    Portal p = portals.get(name);
+                    if (p == null) {
+                        sendErrorResponse("Portal not found: " + name);
+                    } else {
+                        CommandInterface prep = p.prep.prep;
+                        try {
+                            sendRowDescription(prep.getMetaData(), p.resultColumnFormat);
+                        } catch (Exception e) {
+                            sendErrorResponse(e);
+                        }
+                    }
+                } else {
+                    server.trace("expected S or P, got " + type);
+                    sendErrorResponse("expected S or P");
+                }
+                break;
+            }
+            case 'E': {
+                String name = readString();
+                server.trace("Execute");
                 Portal p = portals.get(name);
                 if (p == null) {
                     sendErrorResponse("Portal not found: " + name);
-                } else {
-                    CommandInterface prep = p.prep.prep;
-                    try {
-                        sendRowDescription(prep.getMetaData(), p.resultColumnFormat);
-                    } catch (Exception e) {
-                        sendErrorResponse(e);
-                    }
-                }
-            } else {
-                server.trace("expected S or P, got " + type);
-                sendErrorResponse("expected S or P");
-            }
-            break;
-        }
-        case 'E': {
-            String name = readString();
-            server.trace("Execute");
-            Portal p = portals.get(name);
-            if (p == null) {
-                sendErrorResponse("Portal not found: " + name);
-                break;
-            }
-            int maxRows = readInt();
-            Prepared prepared = p.prep;
-            CommandInterface prep = prepared.prep;
-            server.trace(prepared.sql);
-            try {
-                setActiveRequest(prep);
-                if (prep.isQuery()) {
-                    executeQuery(prepared, prep, p.resultColumnFormat, maxRows);
-                } else {
-                    sendCommandComplete(prep, prep.executeUpdate(null).getUpdateCount());
-                }
-            } catch (Exception e) {
-                sendErrorOrCancelResponse(e);
-            } finally {
-                setActiveRequest(null);
-            }
-            break;
-        }
-        case 'S': {
-            server.trace("Sync");
-            sendReadyForQuery();
-            break;
-        }
-        case 'Q': {
-            server.trace("Query");
-            String query = readString();
-            @SuppressWarnings("resource")
-            ScriptReader reader = new ScriptReader(new StringReader(query));
-            while (true) {
-                String s = reader.readStatement();
-                if (s == null) {
                     break;
                 }
-                s = getSQL(s);
-                try (CommandInterface command = session.prepareLocal(s)) {
-                    setActiveRequest(command);
-                    if (command.isQuery()) {
-                        try (ResultInterface result = command.executeQuery(0, false)) {
-                            sendRowDescription(result, null);
-                            while (result.next()) {
-                                sendDataRow(result, null);
-                            }
-                            sendCommandComplete(command, 0);
-                        }
+                int maxRows = readInt();
+                Prepared prepared = p.prep;
+                CommandInterface prep = prepared.prep;
+                server.trace(prepared.sql);
+                try {
+                    setActiveRequest(prep);
+                    if (prep.isQuery()) {
+                        executeQuery(prepared, prep, p.resultColumnFormat, maxRows);
                     } else {
-                        sendCommandComplete(command, command.executeUpdate(null).getUpdateCount());
+                        sendCommandComplete(prep, prep.executeUpdate(null).getUpdateCount());
                     }
                 } catch (Exception e) {
                     sendErrorOrCancelResponse(e);
-                    break;
                 } finally {
                     setActiveRequest(null);
                 }
+                break;
             }
-            sendReadyForQuery();
-            break;
-        }
-        case 'X': {
-            server.trace("Terminate");
-            close();
-            break;
-        }
-        default:
-            server.trace("Unsupported: " + x + " (" + (char) x + ")");
-            break;
+            case 'S': {
+                server.trace("Sync");
+                sendReadyForQuery();
+                break;
+            }
+            case 'Q': {
+                server.trace("Query");
+                String query = readString();
+                @SuppressWarnings("resource")
+                ScriptReader reader = new ScriptReader(new StringReader(query));
+                while (true) {
+                    String s = reader.readStatement();
+                    if (s == null) {
+                        break;
+                    }
+                    s = getSQL(s);
+                    try (CommandInterface command = session.prepareLocal(s)) {
+                        setActiveRequest(command);
+                        if (command.isQuery()) {
+                            try (ResultInterface result = command.executeQuery(0, false)) {
+                                sendRowDescription(result, null);
+                                while (result.next()) {
+                                    sendDataRow(result, null);
+                                }
+                                sendCommandComplete(command, 0);
+                            }
+                        } else {
+                            sendCommandComplete(command, command.executeUpdate(null).getUpdateCount());
+                        }
+                    } catch (Exception e) {
+                        sendErrorOrCancelResponse(e);
+                        break;
+                    } finally {
+                        setActiveRequest(null);
+                    }
+                }
+                sendReadyForQuery();
+                break;
+            }
+            case 'X': {
+                server.trace("Terminate");
+                close();
+                break;
+            }
+            default:
+                server.trace("Unsupported: " + x + " (" + (char) x + ")");
+                break;
         }
     }
 
@@ -545,29 +545,29 @@ public final class PgServerThread implements Runnable {
     private void sendCommandComplete(CommandInterface command, long updateCount) throws IOException {
         startMessage('C');
         switch (command.getCommandType()) {
-        case CommandInterface.INSERT:
-            writeStringPart("INSERT 0 ");
-            writeString(Long.toString(updateCount));
-            break;
-        case CommandInterface.UPDATE:
-            writeStringPart("UPDATE ");
-            writeString(Long.toString(updateCount));
-            break;
-        case CommandInterface.DELETE:
-            writeStringPart("DELETE ");
-            writeString(Long.toString(updateCount));
-            break;
-        case CommandInterface.SELECT:
-        case CommandInterface.CALL:
-            writeString("SELECT");
-            break;
-        case CommandInterface.BEGIN:
-            writeString("BEGIN");
-            break;
-        default:
-            server.trace("check CommandComplete tag for command " + command);
-            writeStringPart("UPDATE ");
-            writeString(Long.toString(updateCount));
+            case CommandInterface.INSERT:
+                writeStringPart("INSERT 0 ");
+                writeString(Long.toString(updateCount));
+                break;
+            case CommandInterface.UPDATE:
+                writeStringPart("UPDATE ");
+                writeString(Long.toString(updateCount));
+                break;
+            case CommandInterface.DELETE:
+                writeStringPart("DELETE ");
+                writeString(Long.toString(updateCount));
+                break;
+            case CommandInterface.SELECT:
+            case CommandInterface.CALL:
+                writeString("SELECT");
+                break;
+            case CommandInterface.BEGIN:
+                writeString("BEGIN");
+                break;
+            default:
+                server.trace("check CommandComplete tag for command " + command);
+                writeStringPart("UPDATE ");
+                writeString(Long.toString(updateCount));
         }
         sendMessage();
     }
@@ -602,140 +602,141 @@ public final class PgServerThread implements Runnable {
         if (text) {
             // plain text
             switch (pgType) {
-            case PgServer.PG_TYPE_BOOL:
-                writeInt(1);
-                dataOut.writeByte(v.getBoolean() ? 't' : 'f');
-                break;
-            case PgServer.PG_TYPE_BYTEA: {
-                byte[] bytes = v.getBytesNoCopy();
-                int length = bytes.length;
-                int cnt = length;
-                for (int i = 0; i < length; i++) {
-                    byte b = bytes[i];
-                    if (b < 32 || b > 126) {
-                        cnt += 3;
-                    } else if (b == 92) {
-                        cnt++;
-                    }
-                }
-                byte[] data = new byte[cnt];
-                for (int i = 0, j = 0; i < length; i++) {
-                    byte b = bytes[i];
-                    if (b < 32 || b > 126) {
-                        data[j++] = '\\';
-                        data[j++] = (byte) (((b >>> 6) & 3) + '0');
-                        data[j++] = (byte) (((b >>> 3) & 7) + '0');
-                        data[j++] = (byte) ((b & 7) + '0');
-                    } else if (b == 92) {
-                        data[j++] = '\\';
-                        data[j++] = '\\';
-                    } else {
-                        data[j++] = b;
-                    }
-                }
-                writeInt(data.length);
-                write(data);
-                break;
-            }
-            case PgServer.PG_TYPE_INT2_ARRAY:
-            case PgServer.PG_TYPE_INT4_ARRAY:
-            case PgServer.PG_TYPE_VARCHAR_ARRAY:
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                baos.write('{');
-                Value[] values = ((ValueArray) v).getList();
-                Charset encoding = getEncoding();
-                for (int i = 0; i < values.length; i++) {
-                    if (i > 0) {
-                        baos.write(',');
-                    }
-                    String s = values[i].getString();
-                    if (SHOULD_QUOTE.matcher(s).matches()) {
-                        List<String> ss = new ArrayList<>();
-                        for (String s0 : s.split("\\\\")) {
-                            ss.add(s0.replace("\"", "\\\""));
+                case PgServer.PG_TYPE_BOOL:
+                    writeInt(1);
+                    dataOut.writeByte(v.getBoolean() ? 't' : 'f');
+                    break;
+                case PgServer.PG_TYPE_BYTEA: {
+                    byte[] bytes = v.getBytesNoCopy();
+                    int length = bytes.length;
+                    int cnt = length;
+                    for (int i = 0; i < length; i++) {
+                        byte b = bytes[i];
+                        if (b < 32 || b > 126) {
+                            cnt += 3;
+                        } else if (b == 92) {
+                            cnt++;
                         }
-                        s = "\"" + String.join("\\\\", ss) + "\"";
                     }
-                    baos.write(s.getBytes(encoding));
+                    byte[] data = new byte[cnt];
+                    for (int i = 0, j = 0; i < length; i++) {
+                        byte b = bytes[i];
+                        if (b < 32 || b > 126) {
+                            data[j++] = '\\';
+                            data[j++] = (byte) (((b >>> 6) & 3) + '0');
+                            data[j++] = (byte) (((b >>> 3) & 7) + '0');
+                            data[j++] = (byte) ((b & 7) + '0');
+                        } else if (b == 92) {
+                            data[j++] = '\\';
+                            data[j++] = '\\';
+                        } else {
+                            data[j++] = b;
+                        }
+                    }
+                    writeInt(data.length);
+                    write(data);
+                    break;
                 }
-                baos.write('}');
-                writeInt(baos.size());
-                write(baos);
-                break;
-            default:
-                byte[] data = v.getString().getBytes(getEncoding());
-                writeInt(data.length);
-                write(data);
+                case PgServer.PG_TYPE_INT2_ARRAY:
+                case PgServer.PG_TYPE_INT4_ARRAY:
+                case PgServer.PG_TYPE_VARCHAR_ARRAY:
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    baos.write('{');
+                    Value[] values = ((ValueArray) v).getList();
+                    Charset encoding = getEncoding();
+                    for (int i = 0; i < values.length; i++) {
+                        if (i > 0) {
+                            baos.write(',');
+                        }
+                        String s = values[i].getString();
+                        if (SHOULD_QUOTE.matcher(s).matches()) {
+                            List<String> ss = new ArrayList<>();
+                            for (String s0 : s.split("\\\\")) {
+                                ss.add(s0.replace("\"", "\\\""));
+                            }
+                            s = "\"" + String.join("\\\\", ss) + "\"";
+                        }
+                        baos.write(s.getBytes(encoding));
+                    }
+                    baos.write('}');
+                    writeInt(baos.size());
+                    write(baos);
+                    break;
+                default:
+                    byte[] data = v.getString().getBytes(getEncoding());
+                    writeInt(data.length);
+                    write(data);
             }
         } else {
             // binary
             switch (pgType) {
-            case PgServer.PG_TYPE_BOOL:
-                writeInt(1);
-                dataOut.writeByte(v.getBoolean() ? 1 : 0);
-                break;
-            case PgServer.PG_TYPE_INT2:
-                writeInt(2);
-                writeShort(v.getShort());
-                break;
-            case PgServer.PG_TYPE_INT4:
-                writeInt(4);
-                writeInt(v.getInt());
-                break;
-            case PgServer.PG_TYPE_INT8:
-                writeInt(8);
-                dataOut.writeLong(v.getLong());
-                break;
-            case PgServer.PG_TYPE_FLOAT4:
-                writeInt(4);
-                dataOut.writeFloat(v.getFloat());
-                break;
-            case PgServer.PG_TYPE_FLOAT8:
-                writeInt(8);
-                dataOut.writeDouble(v.getDouble());
-                break;
-            case PgServer.PG_TYPE_NUMERIC:
-                writeNumericBinary(v.getBigDecimal());
-                break;
-            case PgServer.PG_TYPE_BYTEA: {
-                byte[] data = v.getBytesNoCopy();
-                writeInt(data.length);
-                write(data);
-                break;
-            }
-            case PgServer.PG_TYPE_DATE:
-                writeInt(4);
-                writeInt((int) (toPostgreDays(((ValueDate) v).getDateValue())));
-                break;
-            case PgServer.PG_TYPE_TIME:
-                writeTimeBinary(((ValueTime) v).getNanos(), 8);
-                break;
-            case PgServer.PG_TYPE_TIMETZ: {
-                ValueTimeTimeZone t = (ValueTimeTimeZone) v;
-                long m = t.getNanos();
-                writeTimeBinary(m, 12);
-                dataOut.writeInt(-t.getTimeZoneOffsetSeconds());
-                break;
-            }
-            case PgServer.PG_TYPE_TIMESTAMP: {
-                ValueTimestamp t = (ValueTimestamp) v;
-                long m = toPostgreDays(t.getDateValue()) * 86_400;
-                long nanos = t.getTimeNanos();
-                writeTimestampBinary(m, nanos);
-                break;
-            }
-            case PgServer.PG_TYPE_TIMESTAMPTZ: {
-                ValueTimestampTimeZone t = (ValueTimestampTimeZone) v;
-                long m = toPostgreDays(t.getDateValue()) * 86_400;
-                long nanos = t.getTimeNanos() - t.getTimeZoneOffsetSeconds() * 1_000_000_000L;
-                if (nanos < 0L) {
-                    m--;
-                    nanos += DateTimeUtils.NANOS_PER_DAY;
+                case PgServer.PG_TYPE_BOOL:
+                    writeInt(1);
+                    dataOut.writeByte(v.getBoolean() ? 1 : 0);
+                    break;
+                case PgServer.PG_TYPE_INT2:
+                    writeInt(2);
+                    writeShort(v.getShort());
+                    break;
+                case PgServer.PG_TYPE_INT4:
+                    writeInt(4);
+                    writeInt(v.getInt());
+                    break;
+                case PgServer.PG_TYPE_INT8:
+                    writeInt(8);
+                    dataOut.writeLong(v.getLong());
+                    break;
+                case PgServer.PG_TYPE_FLOAT4:
+                    writeInt(4);
+                    dataOut.writeFloat(v.getFloat());
+                    break;
+                case PgServer.PG_TYPE_FLOAT8:
+                    writeInt(8);
+                    dataOut.writeDouble(v.getDouble());
+                    break;
+                case PgServer.PG_TYPE_NUMERIC:
+                    writeNumericBinary(v.getBigDecimal());
+                    break;
+                case PgServer.PG_TYPE_BYTEA: {
+                    byte[] data = v.getBytesNoCopy();
+                    writeInt(data.length);
+                    write(data);
+                    break;
                 }
-                writeTimestampBinary(m, nanos);
-                break;
-            }
-            default: throw new IllegalStateException("output binary format is undefined");
+                case PgServer.PG_TYPE_DATE:
+                    writeInt(4);
+                    writeInt((int) (toPostgreDays(((ValueDate) v).getDateValue())));
+                    break;
+                case PgServer.PG_TYPE_TIME:
+                    writeTimeBinary(((ValueTime) v).getNanos(), 8);
+                    break;
+                case PgServer.PG_TYPE_TIMETZ: {
+                    ValueTimeTimeZone t = (ValueTimeTimeZone) v;
+                    long m = t.getNanos();
+                    writeTimeBinary(m, 12);
+                    dataOut.writeInt(-t.getTimeZoneOffsetSeconds());
+                    break;
+                }
+                case PgServer.PG_TYPE_TIMESTAMP: {
+                    ValueTimestamp t = (ValueTimestamp) v;
+                    long m = toPostgreDays(t.getDateValue()) * 86_400;
+                    long nanos = t.getTimeNanos();
+                    writeTimestampBinary(m, nanos);
+                    break;
+                }
+                case PgServer.PG_TYPE_TIMESTAMPTZ: {
+                    ValueTimestampTimeZone t = (ValueTimestampTimeZone) v;
+                    long m = toPostgreDays(t.getDateValue()) * 86_400;
+                    long nanos = t.getTimeNanos() - t.getTimeZoneOffsetSeconds() * 1_000_000_000L;
+                    if (nanos < 0L) {
+                        m--;
+                        nanos += DateTimeUtils.NANOS_PER_DAY;
+                    }
+                    writeTimestampBinary(m, nanos);
+                    break;
+                }
+                default:
+                    throw new IllegalStateException("output binary format is undefined");
             }
         }
     }
@@ -851,60 +852,60 @@ public final class PgServerThread implements Runnable {
             readFully(data);
             String str = new String(data, getEncoding());
             switch (pgType) {
-            case PgServer.PG_TYPE_DATE: {
-                // Strip timezone offset
-                int idx = str.indexOf(' ');
-                if (idx > 0) {
-                    str = str.substring(0, idx);
+                case PgServer.PG_TYPE_DATE: {
+                    // Strip timezone offset
+                    int idx = str.indexOf(' ');
+                    if (idx > 0) {
+                        str = str.substring(0, idx);
+                    }
+                    break;
                 }
-                break;
-            }
-            case PgServer.PG_TYPE_TIME: {
-                // Strip timezone offset
-                int idx = str.indexOf('+');
-                if (idx <= 0) {
-                    idx = str.indexOf('-');
+                case PgServer.PG_TYPE_TIME: {
+                    // Strip timezone offset
+                    int idx = str.indexOf('+');
+                    if (idx <= 0) {
+                        idx = str.indexOf('-');
+                    }
+                    if (idx > 0) {
+                        str = str.substring(0, idx);
+                    }
+                    break;
                 }
-                if (idx > 0) {
-                    str = str.substring(0, idx);
-                }
-                break;
-            }
             }
             value = ValueVarchar.get(str, session);
         } else {
             // binary
             switch (pgType) {
-            case PgServer.PG_TYPE_INT2:
-                checkParamLength(2, paramLen);
-                value = ValueSmallint.get(readShort());
-                break;
-            case PgServer.PG_TYPE_INT4:
-                checkParamLength(4, paramLen);
-                value = ValueInteger.get(readInt());
-                break;
-            case PgServer.PG_TYPE_INT8:
-                checkParamLength(8, paramLen);
-                value = ValueBigint.get(dataIn.readLong());
-                break;
-            case PgServer.PG_TYPE_FLOAT4:
-                checkParamLength(4, paramLen);
-                value = ValueReal.get(dataIn.readFloat());
-                break;
-            case PgServer.PG_TYPE_FLOAT8:
-                checkParamLength(8, paramLen);
-                value = ValueDouble.get(dataIn.readDouble());
-                break;
-            case PgServer.PG_TYPE_BYTEA:
-                byte[] d1 = Utils.newBytes(paramLen);
-                readFully(d1);
-                value = ValueVarbinary.getNoCopy(d1);
-                break;
-            default:
-                server.trace("Binary format for type: "+pgType+" is unsupported");
-                byte[] d2 = Utils.newBytes(paramLen);
-                readFully(d2);
-                value = ValueVarchar.get(new String(d2, getEncoding()), session);
+                case PgServer.PG_TYPE_INT2:
+                    checkParamLength(2, paramLen);
+                    value = ValueSmallint.get(readShort());
+                    break;
+                case PgServer.PG_TYPE_INT4:
+                    checkParamLength(4, paramLen);
+                    value = ValueInteger.get(readInt());
+                    break;
+                case PgServer.PG_TYPE_INT8:
+                    checkParamLength(8, paramLen);
+                    value = ValueBigint.get(dataIn.readLong());
+                    break;
+                case PgServer.PG_TYPE_FLOAT4:
+                    checkParamLength(4, paramLen);
+                    value = ValueReal.get(dataIn.readFloat());
+                    break;
+                case PgServer.PG_TYPE_FLOAT8:
+                    checkParamLength(8, paramLen);
+                    value = ValueDouble.get(dataIn.readDouble());
+                    break;
+                case PgServer.PG_TYPE_BYTEA:
+                    byte[] d1 = Utils.newBytes(paramLen);
+                    readFully(d1);
+                    value = ValueVarbinary.getNoCopy(d1);
+                    break;
+                default:
+                    server.trace("Binary format for type: " + pgType + " is unsupported");
+                    byte[] d2 = Utils.newBytes(paramLen);
+                    readFully(d2);
+                    value = ValueVarchar.get(new String(d2, getEncoding()), session);
             }
         }
         parameters.get(i).setValue(value, true);
@@ -1040,9 +1041,9 @@ public final class PgServerThread implements Runnable {
     /**
      * Check whether the given type should be formatted as text.
      *
-     * @param pgType data type
+     * @param pgType      data type
      * @param formatCodes format codes, or {@code null}
-     * @param column 0-based column number
+     * @param column      0-based column number
      * @return true for text
      */
     private static boolean formatAsText(int pgType, int[] formatCodes, int column) {
@@ -1059,12 +1060,12 @@ public final class PgServerThread implements Runnable {
 
     private static int getTypeSize(int pgType, int precision) {
         switch (pgType) {
-        case PgServer.PG_TYPE_BOOL:
-            return 1;
-        case PgServer.PG_TYPE_VARCHAR:
-            return Math.max(255, precision + 10);
-        default:
-            return precision + 4;
+            case PgServer.PG_TYPE_BOOL:
+                return 1;
+            case PgServer.PG_TYPE_VARCHAR:
+                return Math.max(255, precision + 10);
+            default:
+                return precision + 4;
         }
     }
 
@@ -1104,7 +1105,7 @@ public final class PgServerThread implements Runnable {
         HashSet<Integer> typeSet = server.getTypeSet();
         if (typeSet.isEmpty()) {
             try (CommandInterface command = session.prepareLocal("select oid from pg_catalog.pg_type");
-                    ResultInterface result = command.executeQuery(0, false)) {
+                 ResultInterface result = command.executeQuery(0, false)) {
                 while (result.next()) {
                     typeSet.add(result.currentRow()[0].getInt());
                 }

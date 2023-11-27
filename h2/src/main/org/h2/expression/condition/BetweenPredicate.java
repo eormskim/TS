@@ -33,7 +33,7 @@ public final class BetweenPredicate extends Condition {
     private Expression a, b;
 
     public BetweenPredicate(Expression left, boolean not, boolean whenOperand, boolean symmetric, Expression a,
-            Expression b) {
+                            Expression b) {
         this.left = left;
         this.not = not;
         this.whenOperand = whenOperand;
@@ -193,14 +193,14 @@ public final class BetweenPredicate extends Condition {
     @Override
     public Expression getSubexpression(int index) {
         switch (index) {
-        case 0:
-            return left;
-        case 1:
-            return a;
-        case 2:
-            return b;
-        default:
-            throw new IndexOutOfBoundsException();
+            case 0:
+                return left;
+            case 1:
+                return a;
+            case 2:
+                return b;
+            default:
+                throw new IndexOutOfBoundsException();
         }
     }
 

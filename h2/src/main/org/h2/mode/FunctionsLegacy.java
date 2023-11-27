@@ -33,8 +33,7 @@ public class FunctionsLegacy extends ModeFunction {
     /**
      * Returns mode-specific function for a given name, or {@code null}.
      *
-     * @param upperName
-     *            the upper-case name of a function
+     * @param upperName the upper-case name of a function
      * @return the function with specified name or {@code null}
      */
     public static FunctionsLegacy getFunction(String upperName) {
@@ -52,11 +51,11 @@ public class FunctionsLegacy extends ModeFunction {
     @Override
     public Value getValue(SessionLocal session) {
         switch (info.type) {
-        case IDENTITY:
-        case SCOPE_IDENTITY:
-            return session.getLastIdentity().convertTo(type);
-        default:
-            throw DbException.getInternalError("type=" + info.type);
+            case IDENTITY:
+            case SCOPE_IDENTITY:
+                return session.getLastIdentity().convertTo(type);
+            default:
+                throw DbException.getInternalError("type=" + info.type);
         }
     }
 

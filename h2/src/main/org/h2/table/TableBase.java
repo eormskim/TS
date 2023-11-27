@@ -7,6 +7,7 @@ package org.h2.table;
 
 import java.util.Collections;
 import java.util.List;
+
 import org.h2.command.ddl.CreateTableData;
 import org.h2.engine.Database;
 import org.h2.index.IndexType;
@@ -27,7 +28,9 @@ public abstract class TableBase extends Table {
      * The table engine used (null for regular tables).
      */
     private final String tableEngine;
-    /** Provided table parameters */
+    /**
+     * Provided table parameters
+     */
     private final List<String> tableEngineParams;
 
     private final boolean globalTemporary;
@@ -37,7 +40,7 @@ public abstract class TableBase extends Table {
      * one column with _ROWID_ compatible data type.
      *
      * @param indexType type of an index
-     * @param cols columns of the index
+     * @param cols      columns of the index
      * @return main index column or {@link SearchRow#ROWID_INDEX}
      */
     public static int getMainIndexColumn(IndexType indexType, IndexColumn[] cols) {
@@ -49,13 +52,13 @@ public abstract class TableBase extends Table {
             return SearchRow.ROWID_INDEX;
         }
         switch (first.column.getType().getValueType()) {
-        case Value.TINYINT:
-        case Value.SMALLINT:
-        case Value.INTEGER:
-        case Value.BIGINT:
-            return first.column.getColumnId();
-        default:
-            return SearchRow.ROWID_INDEX;
+            case Value.TINYINT:
+            case Value.SMALLINT:
+            case Value.INTEGER:
+            case Value.BIGINT:
+                return first.column.getColumnId();
+            default:
+                return SearchRow.ROWID_INDEX;
         }
     }
 

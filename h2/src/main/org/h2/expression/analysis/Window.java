@@ -38,18 +38,14 @@ public final class Window {
     /**
      * Appends ORDER BY clause to the specified builder.
      *
-     * @param builder
-     *            string builder
-     * @param orderBy
-     *            ORDER BY clause, or null
-     * @param sqlFlags
-     *            formatting flags
-     * @param forceOrderBy
-     *            whether synthetic ORDER BY clause should be generated when it
-     *            is missing
+     * @param builder      string builder
+     * @param orderBy      ORDER BY clause, or null
+     * @param sqlFlags     formatting flags
+     * @param forceOrderBy whether synthetic ORDER BY clause should be generated when it
+     *                     is missing
      */
     public static void appendOrderBy(StringBuilder builder, ArrayList<QueryOrderBy> orderBy, int sqlFlags,
-            boolean forceOrderBy) {
+                                     boolean forceOrderBy) {
         if (orderBy != null && !orderBy.isEmpty()) {
             appendOrderByStart(builder);
             for (int i = 0; i < orderBy.size(); i++) {
@@ -76,17 +72,13 @@ public final class Window {
     /**
      * Creates a new instance of window clause.
      *
-     * @param parent
-     *            name of the parent window
-     * @param partitionBy
-     *            PARTITION BY clause, or null
-     * @param orderBy
-     *            ORDER BY clause, or null
-     * @param frame
-     *            window frame clause, or null
+     * @param parent      name of the parent window
+     * @param partitionBy PARTITION BY clause, or null
+     * @param orderBy     ORDER BY clause, or null
+     * @param frame       window frame clause, or null
      */
     public Window(String parent, ArrayList<Expression> partitionBy, ArrayList<QueryOrderBy> orderBy,
-            WindowFrame frame) {
+                  WindowFrame frame) {
         this.parent = parent;
         this.partitionBy = partitionBy;
         this.orderBy = orderBy;
@@ -96,10 +88,8 @@ public final class Window {
     /**
      * Map the columns of the resolver to expression columns.
      *
-     * @param resolver
-     *            the column resolver
-     * @param level
-     *            the subquery nesting level
+     * @param resolver the column resolver
+     * @param level    the subquery nesting level
      * @see Expression#mapColumns(ColumnResolver, int, int)
      */
     public void mapColumns(ColumnResolver resolver, int level) {
@@ -146,12 +136,11 @@ public final class Window {
     /**
      * Try to optimize the window conditions.
      *
-     * @param session
-     *            the session
+     * @param session the session
      */
     public void optimize(SessionLocal session) {
         if (partitionBy != null) {
-            for (ListIterator<Expression> i = partitionBy.listIterator(); i.hasNext();) {
+            for (ListIterator<Expression> i = partitionBy.listIterator(); i.hasNext(); ) {
                 Expression e = i.next().optimize(session);
                 if (e.isConstant()) {
                     i.remove();
@@ -164,7 +153,7 @@ public final class Window {
             }
         }
         if (orderBy != null) {
-            for (Iterator<QueryOrderBy> i = orderBy.iterator(); i.hasNext();) {
+            for (Iterator<QueryOrderBy> i = orderBy.iterator(); i.hasNext(); ) {
                 QueryOrderBy o = i.next();
                 Expression e = o.expression.optimize(session);
                 if (e.isConstant()) {
@@ -186,10 +175,8 @@ public final class Window {
      * Tell the expression columns whether the table filter can return values
      * now. This is used when optimizing the query.
      *
-     * @param tableFilter
-     *            the table filter
-     * @param value
-     *            true if the table filter can return value
+     * @param tableFilter the table filter
+     * @param value       true if the table filter can return value
      * @see Expression#setEvaluatable(TableFilter, boolean)
      */
     public void setEvaluatable(TableFilter tableFilter, boolean value) {
@@ -228,7 +215,7 @@ public final class Window {
      * is used.
      *
      * @return {@code true} if window ordering clause is specified or ROWS unit
-     *         is used
+     * is used
      */
     public boolean isOrdered() {
         if (orderBy != null) {
@@ -249,8 +236,7 @@ public final class Window {
     /**
      * Returns the key for the current group.
      *
-     * @param session
-     *            session
+     * @param session session
      * @return key for the current group, or null
      */
     public Value getCurrentKey(SessionLocal session) {
@@ -274,13 +260,10 @@ public final class Window {
     /**
      * Appends SQL representation to the specified builder.
      *
-     * @param builder
-     *            string builder
-     * @param sqlFlags
-     *            formatting flags
-     * @param forceOrderBy
-     *            whether synthetic ORDER BY clause should be generated when it
-     *            is missing
+     * @param builder      string builder
+     * @param sqlFlags     formatting flags
+     * @param forceOrderBy whether synthetic ORDER BY clause should be generated when it
+     *                     is missing
      * @return the specified string builder
      * @see Expression#getSQL(StringBuilder, int, int)
      */
@@ -308,10 +291,8 @@ public final class Window {
     /**
      * Update an aggregate value.
      *
-     * @param session
-     *            the session
-     * @param stage
-     *            select stage
+     * @param session the session
+     * @param stage   select stage
      * @see Expression#updateAggregate(SessionLocal, int)
      */
     public void updateAggregate(SessionLocal session, int stage) {

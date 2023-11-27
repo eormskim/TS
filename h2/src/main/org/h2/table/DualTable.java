@@ -23,8 +23,7 @@ public class DualTable extends VirtualTable {
     /**
      * Create a new range with the given start and end expressions.
      *
-     * @param database
-     *            the database
+     * @param database the database
      */
     public DualTable(Database database) {
         super(database.getMainSchema(), 0, NAME);

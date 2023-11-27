@@ -12,6 +12,7 @@ import java.util.Properties;
 import javax.sql.ConnectionPoolDataSource;
 import javax.sql.DataSource;
 import javax.sql.XADataSource;
+
 import org.h2.engine.Constants;
 import org.h2.jdbcx.JdbcDataSource;
 import org.osgi.framework.BundleContext;
@@ -47,9 +48,9 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
      * Creates a basic data source.
      *
      * @param properties the properties for the data source.
-     * @throws SQLException if unsupported properties are supplied, or if data
-     *             source can not be created.
      * @return a new data source.
+     * @throws SQLException if unsupported properties are supplied, or if data
+     *                      source can not be created.
      */
     @Override
     public DataSource createDataSource(Properties properties)
@@ -77,9 +78,9 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
      * Creates a pooled data source.
      *
      * @param properties the properties for the data source.
-     * @throws SQLException if unsupported properties are supplied, or if data
-     *             source can not be created.
      * @return a new data source.
+     * @throws SQLException if unsupported properties are supplied, or if data
+     *                      source can not be created.
      */
     @Override
     public ConnectionPoolDataSource createConnectionPoolDataSource(
@@ -107,9 +108,9 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
      * Creates a pooled XA data source.
      *
      * @param properties the properties for the data source.
-     * @throws SQLException if unsupported properties are supplied, or if data
-     *             source can not be created.
      * @return a new data source.
+     * @throws SQLException if unsupported properties are supplied, or if data
+     *                      source can not be created.
      */
     @Override
     public XADataSource createXADataSource(Properties properties)
@@ -137,8 +138,8 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
      * Returns a driver. The H2 driver does not support any properties.
      *
      * @param properties must be null or empty list.
-     * @throws SQLException if any property is supplied.
      * @return a driver.
+     * @throws SQLException if any property is supplied.
      */
     @Override
     public java.sql.Driver createDriver(Properties properties)
@@ -156,7 +157,7 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
      *
      * @param p the properties to check
      * @throws SQLFeatureNotSupportedException if unsupported properties are
-     *             present
+     *                                         present
      */
     private static void rejectUnsupportedOptions(Properties p)
             throws SQLFeatureNotSupportedException {
@@ -178,10 +179,10 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
      * properties will be applied as H2 options.
      *
      * @param dataSource the data source to configure
-     * @param p the properties to apply to the data source
+     * @param p          the properties to apply to the data source
      */
     private static void setupH2DataSource(JdbcDataSource dataSource,
-            Properties p) {
+                                          Properties p) {
         // Setting user and password
         if (p.containsKey(DataSourceFactory.JDBC_USER)) {
             dataSource.setUser((String) p.remove(DataSourceFactory.JDBC_USER));
@@ -266,7 +267,7 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
      *
      * @param p the properties to check
      * @throws SQLFeatureNotSupportedException if unsupported properties are
-     *             present
+     *                                         present
      */
     private static void rejectPoolingOptions(Properties p)
             throws SQLFeatureNotSupportedException {
@@ -285,10 +286,10 @@ public class OsgiDataSourceFactory implements DataSourceFactory {
      * Register the H2 JDBC driver service.
      *
      * @param bundleContext the bundle context
-     * @param driver the driver
+     * @param driver        the driver
      */
     static void registerService(BundleContext bundleContext,
-            org.h2.Driver driver) {
+                                org.h2.Driver driver) {
         Hashtable<String, String> properties = new Hashtable<>();
         properties.put(
                 DataSourceFactory.OSGI_JDBC_DRIVER_CLASS,

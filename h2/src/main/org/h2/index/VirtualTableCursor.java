@@ -31,17 +31,13 @@ class VirtualTableCursor implements Cursor {
     Row row;
 
     /**
-     * @param index
-     *            index
-     * @param first
-     *            first row
-     * @param last
-     *            last row
-     * @param result
-     *            the result
+     * @param index  index
+     * @param first  first row
+     * @param last   last row
+     * @param result the result
      */
     VirtualTableCursor(VirtualTableIndex index, SearchRow first, SearchRow last,
-            ResultInterface result) {
+                       ResultInterface result) {
         this.index = index;
         this.first = first;
         this.last = last;

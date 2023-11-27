@@ -15,7 +15,7 @@ import org.h2.util.Tool;
 
 /**
  * Deletes all files belonging to a database.
- *
+ * <p>
  * The database must be closed before calling this tool.
  */
 public class DeleteDbFiles extends Tool {
@@ -67,8 +67,8 @@ public class DeleteDbFiles extends Tool {
     /**
      * Deletes the database files.
      *
-     * @param dir the directory
-     * @param db the database name (null for all databases)
+     * @param dir   the directory
+     * @param db    the database name (null for all databases)
      * @param quiet don't print progress information
      */
     public static void execute(String dir, String db, boolean quiet) {
@@ -78,8 +78,8 @@ public class DeleteDbFiles extends Tool {
     /**
      * Deletes the database files.
      *
-     * @param dir the directory
-     * @param db the database name (null for all databases)
+     * @param dir   the directory
+     * @param db    the database name (null for all databases)
      * @param quiet don't print progress information
      */
     private void process(String dir, String db, boolean quiet) {

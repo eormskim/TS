@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
+
 import org.h2.store.fs.FileUtils;
 import org.h2.test.TestBase;
 import org.h2.util.JdbcUtils;
@@ -58,8 +59,8 @@ public class TestPerformance implements Database.DatabaseTest {
             stat = conn.createStatement();
             stat.execute(
                     "CREATE TABLE IF NOT EXISTS RESULTS(" +
-                    "TESTID INT, TEST VARCHAR, " +
-                    "UNIT VARCHAR, DBID INT, DB VARCHAR, RESULT VARCHAR)");
+                            "TESTID INT, TEST VARCHAR, " +
+                            "UNIT VARCHAR, DBID INT, DB VARCHAR, RESULT VARCHAR)");
         } finally {
             JdbcUtils.closeSilently(stat);
             JdbcUtils.closeSilently(conn);
@@ -118,8 +119,8 @@ public class TestPerformance implements Database.DatabaseTest {
         try (Connection conn = getResultConnection()) {
             openResults();
             try (PreparedStatement prep = conn.prepareStatement(
-                        "INSERT INTO RESULTS(TESTID, TEST, " +
-                        "UNIT, DBID, DB, RESULT) VALUES(?, ?, ?, ?, ?, ?)")) {
+                    "INSERT INTO RESULTS(TESTID, TEST, " +
+                            "UNIT, DBID, DB, RESULT) VALUES(?, ?, ?, ?, ?, ?)")) {
                 for (int i = 0; i < results.size(); i++) {
                     Database.Measurement res = results.get(i);
                     prep.setInt(1, i);
@@ -136,21 +137,21 @@ public class TestPerformance implements Database.DatabaseTest {
             }
 
             try (Statement stat = conn.createStatement();
-                PrintWriter writer = new PrintWriter(new FileWriter(out));
-                ResultSet rs = stat.executeQuery(
-                    "CALL '<table><tr><th>Test Case</th><th>Unit</th>' " +
-                    "|| (SELECT GROUP_CONCAT('<th>' || DB || '</th>' " +
-                    "ORDER BY DBID SEPARATOR '') FROM " +
-                    "(SELECT DISTINCT DBID, DB FROM RESULTS))" +
-                    "|| '</tr>' || CHAR(10) " +
-                    "|| (SELECT GROUP_CONCAT('<tr><td>' || TEST || " +
-                    "'</td><td>' || UNIT || '</td>' || ( " +
-                    "SELECT GROUP_CONCAT('<td>' || RESULT || '</td>' " +
-                    "ORDER BY DBID SEPARATOR '') FROM RESULTS R2 WHERE " +
-                    "R2.TESTID = R1.TESTID) || '</tr>' " +
-                    "ORDER BY TESTID SEPARATOR CHAR(10)) FROM " +
-                    "(SELECT DISTINCT TESTID, TEST, UNIT FROM RESULTS) R1)" +
-                    "|| '</table>'")) {
+                 PrintWriter writer = new PrintWriter(new FileWriter(out));
+                 ResultSet rs = stat.executeQuery(
+                         "CALL '<table><tr><th>Test Case</th><th>Unit</th>' " +
+                                 "|| (SELECT GROUP_CONCAT('<th>' || DB || '</th>' " +
+                                 "ORDER BY DBID SEPARATOR '') FROM " +
+                                 "(SELECT DISTINCT DBID, DB FROM RESULTS))" +
+                                 "|| '</tr>' || CHAR(10) " +
+                                 "|| (SELECT GROUP_CONCAT('<tr><td>' || TEST || " +
+                                 "'</td><td>' || UNIT || '</td>' || ( " +
+                                 "SELECT GROUP_CONCAT('<td>' || RESULT || '</td>' " +
+                                 "ORDER BY DBID SEPARATOR '') FROM RESULTS R2 WHERE " +
+                                 "R2.TESTID = R1.TESTID) || '</tr>' " +
+                                 "ORDER BY TESTID SEPARATOR CHAR(10)) FROM " +
+                                 "(SELECT DISTINCT TESTID, TEST, UNIT FROM RESULTS) R1)" +
+                                 "|| '</table>'")) {
                 rs.next();
                 String result = rs.getString(1);
                 writer.println(result);
@@ -163,7 +164,7 @@ public class TestPerformance implements Database.DatabaseTest {
     }
 
     private void testAll(ArrayList<Database> dbs, ArrayList<Bench> tests,
-            int size) throws Exception {
+                         int size) throws Exception {
         for (int i = 0; i < dbs.size(); i++) {
             if (i > 0) {
                 Thread.sleep(1000);
@@ -197,7 +198,7 @@ public class TestPerformance implements Database.DatabaseTest {
     }
 
     private static void runDatabase(Database db, ArrayList<Bench> tests,
-            int size) throws Exception {
+                                    int size) throws Exception {
         for (Bench bench : tests) {
             runTest(db, bench, size);
         }

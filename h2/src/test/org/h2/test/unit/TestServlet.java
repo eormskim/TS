@@ -29,6 +29,7 @@ import javax.servlet.ServletRegistration;
 import javax.servlet.SessionCookieConfig;
 import javax.servlet.SessionTrackingMode;
 import javax.servlet.descriptor.JspConfigDescriptor;
+
 import org.h2.api.ErrorCode;
 import org.h2.server.web.DbStarter;
 import org.h2.test.TestBase;

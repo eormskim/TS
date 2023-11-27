@@ -27,7 +27,7 @@ public final class UserAggregate extends UserDefinedFunction {
     private Class<?> javaClass;
 
     public UserAggregate(Schema schema, int id, String name, String className,
-            boolean force) {
+                         boolean force) {
         super(schema, id, name, Trace.FUNCTION);
         this.className = className;
         if (!force) {
@@ -102,7 +102,7 @@ public final class UserAggregate extends UserDefinedFunction {
             for (int i = 0; i < inputTypes.length; i++) {
                 sqlTypes[i] = DataType.convertTypeToSQLType(TypeInfo.getTypeInfo(inputTypes[i]));
             }
-            return  DataType.convertSQLTypeToValueType(aggregateFunction.getType(sqlTypes));
+            return DataType.convertSQLTypeToValueType(aggregateFunction.getType(sqlTypes));
         }
 
         @Override

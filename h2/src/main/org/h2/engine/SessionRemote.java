@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import org.h2.api.DatabaseEventListener;
 import org.h2.api.ErrorCode;
 import org.h2.api.JavaObjectSerializer;
@@ -460,8 +461,8 @@ public final class SessionRemote extends Session implements DataHandler {
      * Remove a server from the list of cluster nodes and disables the cluster
      * mode.
      *
-     * @param e the exception (used for debugging)
-     * @param i the index of the server to remove
+     * @param e     the exception (used for debugging)
+     * @param i     the index of the server to remove
      * @param count the retry count index
      */
     public void removeServer(IOException e, int i, int count) {
@@ -596,37 +597,35 @@ public final class SessionRemote extends Session implements DataHandler {
      * @param transfer the transfer object
      * @throws DbException if the server sent an exception
      * @throws IOException if there is a communication problem between client
-     *             and server
+     *                     and server
      */
     public void done(Transfer transfer) throws IOException {
         transfer.flush();
         int status = transfer.readInt();
         switch (status) {
-        case STATUS_ERROR:
-            throw readException(transfer);
-        case STATUS_OK:
-            break;
-        case STATUS_CLOSED:
-            transferList = null;
-            break;
-        case STATUS_OK_STATE_CHANGED:
-            sessionStateChanged = true;
-            currentSchemaName = null;
-            dynamicSettings = null;
-            break;
-        default:
-            throw DbException.get(ErrorCode.CONNECTION_BROKEN_1, "unexpected status " + status);
+            case STATUS_ERROR:
+                throw readException(transfer);
+            case STATUS_OK:
+                break;
+            case STATUS_CLOSED:
+                transferList = null;
+                break;
+            case STATUS_OK_STATE_CHANGED:
+                sessionStateChanged = true;
+                currentSchemaName = null;
+                dynamicSettings = null;
+                break;
+            default:
+                throw DbException.get(ErrorCode.CONNECTION_BROKEN_1, "unexpected status " + status);
         }
     }
 
     /**
      * Reads an exception.
      *
-     * @param transfer
-     *            the transfer object
+     * @param transfer the transfer object
      * @return the exception
-     * @throws IOException
-     *             on I/O exception
+     * @throws IOException on I/O exception
      */
     public static DbException readException(Transfer transfer) throws IOException {
         String sqlstate = transfer.readString();
@@ -660,7 +659,7 @@ public final class SessionRemote extends Session implements DataHandler {
      * Write the operation to the trace system if debug trace is enabled.
      *
      * @param operation the operation performed
-     * @param id the id of the operation
+     * @param id        the id of the operation
      */
     public void traceOperation(String operation, int id) {
         if (trace.isDebugEnabled()) {
@@ -746,7 +745,7 @@ public final class SessionRemote extends Session implements DataHandler {
 
     @Override
     public synchronized int readLob(long lobId, byte[] hmac, long offset,
-            byte[] buff, int off, int length) {
+                                    byte[] buff, int off, int length) {
         checkClosed();
         for (int i = 0, count = 0; i < transferList.size(); i++) {
             Transfer transfer = transferList.get(i);
@@ -801,7 +800,7 @@ public final class SessionRemote extends Session implements DataHandler {
         if (schema == null) {
             synchronized (this) {
                 try (CommandInterface command = prepareCommand("CALL SCHEMA()", 1);
-                        ResultInterface result = command.executeQuery(1, false)) {
+                     ResultInterface result = command.executeQuery(1, false)) {
                     result.next();
                     currentSchemaName = schema = result.currentRow()[0].getString();
                 }
@@ -831,13 +830,13 @@ public final class SessionRemote extends Session implements DataHandler {
             try (CommandInterface command = prepareCommand(!isOldInformationSchema()
                     ? "SELECT ISOLATION_LEVEL FROM INFORMATION_SCHEMA.SESSIONS WHERE SESSION_ID = SESSION_ID()"
                     : "SELECT ISOLATION_LEVEL FROM INFORMATION_SCHEMA.SESSIONS WHERE ID = SESSION_ID()", 1);
-                    ResultInterface result = command.executeQuery(1, false)) {
+                 ResultInterface result = command.executeQuery(1, false)) {
                 result.next();
                 return IsolationLevel.fromSql(result.currentRow()[0].getString());
             }
         } else {
             try (CommandInterface command = prepareCommand("CALL LOCK_MODE()", 1);
-                    ResultInterface result = command.executeQuery(1, false)) {
+                 ResultInterface result = command.executeQuery(1, false)) {
                 result.next();
                 return IsolationLevel.fromLockMode(result.currentRow()[0].getInt());
             }
@@ -874,14 +873,14 @@ public final class SessionRemote extends Session implements DataHandler {
                         Value[] row = result.currentRow();
                         String value = row[1].getString();
                         switch (row[0].getString()) {
-                        case "DATABASE_TO_UPPER":
-                            databaseToUpper = Boolean.valueOf(value);
-                            break;
-                        case "DATABASE_TO_LOWER":
-                            databaseToLower = Boolean.valueOf(value);
-                            break;
-                        case "CASE_INSENSITIVE_IDENTIFIERS":
-                            caseInsensitiveIdentifiers = Boolean.valueOf(value);
+                            case "DATABASE_TO_UPPER":
+                                databaseToUpper = Boolean.valueOf(value);
+                                break;
+                            case "DATABASE_TO_LOWER":
+                                databaseToLower = Boolean.valueOf(value);
+                                break;
+                            case "CASE_INSENSITIVE_IDENTIFIERS":
+                                caseInsensitiveIdentifiers = Boolean.valueOf(value);
                         }
                     }
                 }
@@ -912,14 +911,14 @@ public final class SessionRemote extends Session implements DataHandler {
                         Value[] row = result.currentRow();
                         String value = row[1].getString();
                         switch (row[0].getString()) {
-                        case "MODE":
-                            modeName = value;
-                            break;
-                        case "TIME ZONE":
-                            timeZone = TimeZoneProvider.ofId(value);
-                            break;
-                        case "JAVA_OBJECT_SERIALIZER":
-                            javaObjectSerializerName = value;
+                            case "MODE":
+                                modeName = value;
+                                break;
+                            case "TIME ZONE":
+                                timeZone = TimeZoneProvider.ofId(value);
+                                break;
+                            case "JAVA_OBJECT_SERIALIZER":
+                                javaObjectSerializerName = value;
                         }
                     }
                 }

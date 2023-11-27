@@ -75,7 +75,7 @@ public class DbState implements DbInterface {
 
     @Override
     public Result update(Table table, Column[] columns, Value[] values,
-            String condition) {
+                         String condition) {
         return null;
     }
 

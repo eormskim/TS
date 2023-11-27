@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import org.h2.engine.Constants;
 import org.h2.engine.DbObject;
 import org.h2.engine.MetaRecord;
@@ -138,59 +139,61 @@ public class Recover extends Tool implements DataHandler {
 
     /**
      * INTERNAL
-     * @param conn to use
-     * @param lobId id of the LOB stream
+     *
+     * @param conn      to use
+     * @param lobId     id of the LOB stream
      * @param precision not used
      * @return InputStream to read LOB content from
      * @throws SQLException on failure
      */
     public static InputStream readBlobMap(Connection conn, long lobId,
-            long precision) throws SQLException {
+                                          long precision) throws SQLException {
         final PreparedStatement prep = conn.prepareStatement(
                 "SELECT DATA FROM INFORMATION_SCHEMA.LOB_BLOCKS " +
-                "WHERE LOB_ID = ? AND SEQ = ? AND ? > 0");
+                        "WHERE LOB_ID = ? AND SEQ = ? AND ? > 0");
         prep.setLong(1, lobId);
         // precision is currently not really used,
         // it is just to improve readability of the script
         prep.setLong(3, precision);
         return new SequenceInputStream(
-            new Enumeration<InputStream>() {
+                new Enumeration<InputStream>() {
 
-                private int seq;
-                private byte[] data = fetch();
+                    private int seq;
+                    private byte[] data = fetch();
 
-                private byte[] fetch() {
-                    try {
-                        prep.setInt(2, seq++);
-                        ResultSet rs = prep.executeQuery();
-                        if (rs.next()) {
-                            return rs.getBytes(1);
+                    private byte[] fetch() {
+                        try {
+                            prep.setInt(2, seq++);
+                            ResultSet rs = prep.executeQuery();
+                            if (rs.next()) {
+                                return rs.getBytes(1);
+                            }
+                            return null;
+                        } catch (SQLException e) {
+                            throw DbException.convert(e);
                         }
-                        return null;
-                    } catch (SQLException e) {
-                        throw DbException.convert(e);
+                    }
+
+                    @Override
+                    public boolean hasMoreElements() {
+                        return data != null;
+                    }
+
+                    @Override
+                    public InputStream nextElement() {
+                        ByteArrayInputStream in = new ByteArrayInputStream(data);
+                        data = fetch();
+                        return in;
                     }
                 }
-
-                @Override
-                public boolean hasMoreElements() {
-                    return data != null;
-                }
-
-                @Override
-                public InputStream nextElement() {
-                    ByteArrayInputStream in = new ByteArrayInputStream(data);
-                    data = fetch();
-                    return in;
-                }
-            }
         );
     }
 
     /**
      * INTERNAL
-     * @param conn to use
-     * @param lobId id of the LOB stream
+     *
+     * @param conn      to use
+     * @param lobId     id of the LOB stream
      * @param precision not used
      * @return Reader to read LOB content from
      * @throws SQLException on failure
@@ -218,7 +221,7 @@ public class Recover extends Tool implements DataHandler {
      * Dumps the contents of a database to a SQL script file.
      *
      * @param dir the directory
-     * @param db the database name (null for all databases)
+     * @param db  the database name (null for all databases)
      * @throws SQLException on failure
      */
     public static void execute(String dir, String db) throws SQLException {
@@ -354,7 +357,7 @@ public class Recover extends Tool implements DataHandler {
                 if (Integer.parseInt(tableId) == 0) {
                     continue;
                 }
-                TransactionMap<?,?> dataMap = store.begin().openMap(mapName);
+                TransactionMap<?, ?> dataMap = store.begin().openMap(mapName);
                 Iterator<?> dataIt = dataMap.keyIterator(null);
                 boolean init = false;
                 while (dataIt.hasNext()) {
@@ -419,10 +422,10 @@ public class Recover extends Tool implements DataHandler {
 
     private static void dumpTypes(PrintWriter writer, MVStore mv) {
         MVMap.Builder<String, DataType<?>> builder = new MVMap.Builder<String, DataType<?>>()
-                                                .keyType(StringDataType.INSTANCE)
-                                                .valueType(new MetaType<>(null, null));
-        MVMap<String,DataType<?>> map = mv.openMap("_", builder);
-        for (Entry<String,?> e : map.entrySet()) {
+                .keyType(StringDataType.INSTANCE)
+                .valueType(new MetaType<>(null, null));
+        MVMap<String, DataType<?>> map = mv.openMap("_", builder);
+        for (Entry<String, ?> e : map.entrySet()) {
             writer.println("-- " + e.getKey() + " = " + e.getValue());
         }
     }
@@ -450,7 +453,7 @@ public class Recover extends Tool implements DataHandler {
             int len = 8 * 1024;
             byte[] block = new byte[len];
             try {
-                for (int seq = 0;; seq++) {
+                for (int seq = 0; ; seq++) {
                     int l = IOUtils.readFully(in, block, block.length);
                     if (l > 0) {
                         writer.print("INSERT INTO INFORMATION_SCHEMA.LOB_BLOCKS " +
@@ -596,10 +599,10 @@ public class Recover extends Tool implements DataHandler {
 
     private static boolean isSchemaObjectTypeDelayed(MetaRecord m) {
         switch (m.getObjectType()) {
-        case DbObject.INDEX:
-        case DbObject.CONSTRAINT:
-        case DbObject.TRIGGER:
-            return true;
+            case DbObject.INDEX:
+            case DbObject.CONSTRAINT:
+            case DbObject.TRIGGER:
+                return true;
         }
         return false;
     }

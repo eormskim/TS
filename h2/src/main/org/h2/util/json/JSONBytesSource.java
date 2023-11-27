@@ -17,12 +17,9 @@ public final class JSONBytesSource extends JSONTextSource {
     /**
      * Parses source bytes to a specified target.
      *
-     * @param bytes
-     *            source
-     * @param target
-     *            target
-     * @param <R>
-     *            the type of the result
+     * @param bytes  source
+     * @param target target
+     * @param <R>    the type of the result
      * @return the result of the target
      */
     public static <R> R parse(byte[] bytes, JSONTarget<R> target) {
@@ -34,36 +31,36 @@ public final class JSONBytesSource extends JSONTextSource {
             byte b2 = bytes[2];
             byte b3 = bytes[3];
             switch (b0) {
-            case -2:
-                if (b1 == -1) {
-                    charset = StandardCharsets.UTF_16BE;
-                }
-                break;
-            case -1:
-                if (b1 == -2) {
-                    if (b2 == 0 && b3 == 0) {
-                        charset = Charset.forName("UTF-32LE");
-                    } else {
-                        charset = StandardCharsets.UTF_16LE;
+                case -2:
+                    if (b1 == -1) {
+                        charset = StandardCharsets.UTF_16BE;
                     }
-                }
-                break;
-            case 0:
-                if (b1 != 0) {
-                    charset = StandardCharsets.UTF_16BE;
-                } else if (b2 == 0 && b3 != 0 || b2 == -2 && b3 == -1) {
-                    charset = Charset.forName("UTF-32BE");
-                }
-                break;
-            default:
-                if (b1 == 0) {
-                    if (b2 == 0 && b3 == 0) {
-                        charset = Charset.forName("UTF-32LE");
-                    } else {
-                        charset = StandardCharsets.UTF_16LE;
+                    break;
+                case -1:
+                    if (b1 == -2) {
+                        if (b2 == 0 && b3 == 0) {
+                            charset = Charset.forName("UTF-32LE");
+                        } else {
+                            charset = StandardCharsets.UTF_16LE;
+                        }
                     }
-                }
-                break;
+                    break;
+                case 0:
+                    if (b1 != 0) {
+                        charset = StandardCharsets.UTF_16BE;
+                    } else if (b2 == 0 && b3 != 0 || b2 == -2 && b3 == -1) {
+                        charset = Charset.forName("UTF-32BE");
+                    }
+                    break;
+                default:
+                    if (b1 == 0) {
+                        if (b2 == 0 && b3 == 0) {
+                            charset = Charset.forName("UTF-32LE");
+                        } else {
+                            charset = StandardCharsets.UTF_16LE;
+                        }
+                    }
+                    break;
             }
         } else if (length >= 2) {
             byte b0 = bytes[0];
@@ -84,8 +81,7 @@ public final class JSONBytesSource extends JSONTextSource {
     /**
      * Converts bytes into normalized JSON representation.
      *
-     * @param bytes
-     *            source representation
+     * @param bytes source representation
      * @return normalized representation
      */
     public static byte[] normalize(byte[] bytes) {
@@ -114,17 +110,17 @@ public final class JSONBytesSource extends JSONTextSource {
         while (index < length) {
             byte ch = bytes[index++];
             switch (ch) {
-            case '\t':
-            case '\n':
-            case '\r':
-            case ' ':
-                break;
-            default:
-                if (ch < 0) {
-                    throw new IllegalArgumentException();
-                }
-                this.index = index;
-                return ch;
+                case '\t':
+                case '\n':
+                case '\r':
+                case ' ':
+                    break;
+                default:
+                    if (ch < 0) {
+                        throw new IllegalArgumentException();
+                    }
+                    this.index = index;
+                    return ch;
             }
         }
         return -1;
@@ -149,7 +145,8 @@ public final class JSONBytesSource extends JSONTextSource {
         int index = this.index;
         int start = index - 1;
         index = skipInt(index, positive);
-        l: if (index < length) {
+        l:
+        if (index < length) {
             byte ch = bytes[index];
             if (ch == '.') {
                 index = skipInt(index + 1, false);

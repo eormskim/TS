@@ -23,8 +23,8 @@ public class AbbaDetector {
 
     /**
      * Map of (object A) -> (
-     *      map of (object locked before object A) ->
-     *      (stack trace where locked) )
+     * map of (object locked before object A) ->
+     * (stack trace where locked) )
      */
     private static final Map<Object, Map<Object, Exception>> LOCK_ORDERING =
             new WeakHashMap<>();

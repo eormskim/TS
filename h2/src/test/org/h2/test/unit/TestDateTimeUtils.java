@@ -41,10 +41,9 @@ public class TestDateTimeUtils extends TestBase {
     /**
      * Run just this test.
      *
-     * @param a
-     *            if {@code "testUtc2Value"} only {@link #testUTC2Value(boolean)}
-     *            will be executed with all time zones (slow). Otherwise all tests
-     *            in this test unit will be executed with local time zone.
+     * @param a if {@code "testUtc2Value"} only {@link #testUTC2Value(boolean)}
+     *          will be executed with all time zones (slow). Otherwise all tests
+     *          in this test unit will be executed with local time zone.
      */
     public static void main(String... a) throws Exception {
         if (a.length == 1) {
@@ -100,7 +99,7 @@ public class TestDateTimeUtils extends TestBase {
             assertEquals(isoDow, DateTimeUtils.getIsoDayOfWeek(dateValue));
             assertEquals(gc.get(Calendar.WEEK_OF_YEAR),
                     DateTimeUtils.getWeekOfYear(dateValue, gc.getFirstDayOfWeek() - 1,
-                    gc.getMinimalDaysInFirstWeek()));
+                            gc.getMinimalDaysInFirstWeek()));
         }
     }
 
@@ -143,9 +142,9 @@ public class TestDateTimeUtils extends TestBase {
         TimeZone def = TimeZone.getDefault();
         GregorianCalendar gc = new GregorianCalendar();
         String[] ids = allTimeZones ? TimeZone.getAvailableIDs()
-                : new String[] { def.getID(), "+10",
-                        // Any time zone with DST in the future (JDK-8073446)
-                        "America/New_York" };
+                : new String[]{def.getID(), "+10",
+                // Any time zone with DST in the future (JDK-8073446)
+                "America/New_York"};
         try {
             for (String id : ids) {
                 if (allTimeZones) {
@@ -293,7 +292,7 @@ public class TestDateTimeUtils extends TestBase {
     }
 
     private void testParseIntervalImpl(IntervalQualifier qualifier, boolean negative, long leading, long remaining,
-            String s, String full) {
+                                       String s, String full) {
         ValueInterval expected = ValueInterval.from(qualifier, negative, leading, remaining);
         assertEquals(expected, IntervalUtils.parseInterval(qualifier, negative, s));
         StringBuilder b = new StringBuilder();

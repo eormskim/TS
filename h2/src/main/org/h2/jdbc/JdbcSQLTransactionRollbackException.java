@@ -27,15 +27,15 @@ public final class JdbcSQLTransactionRollbackException extends SQLTransactionRol
     /**
      * Creates a SQLTransactionRollbackException.
      *
-     * @param message the reason
-     * @param sql the SQL statement
-     * @param state the SQL state
-     * @param errorCode the error code
-     * @param cause the exception that was the reason for this exception
+     * @param message    the reason
+     * @param sql        the SQL statement
+     * @param state      the SQL state
+     * @param errorCode  the error code
+     * @param cause      the exception that was the reason for this exception
      * @param stackTrace the stack trace
      */
     public JdbcSQLTransactionRollbackException(String message, String sql, String state,
-            int errorCode, Throwable cause, String stackTrace) {
+                                               int errorCode, Throwable cause, String stackTrace) {
         super(message, state, errorCode);
         this.originalMessage = message;
         this.stackTrace = stackTrace;

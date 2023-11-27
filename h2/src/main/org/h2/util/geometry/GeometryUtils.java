@@ -21,8 +21,7 @@ public final class GeometryUtils {
         /**
          * Initializes top-level target.
          *
-         * @param srid
-         *            SRID
+         * @param srid SRID
          */
         protected void init(int srid) {
         }
@@ -30,8 +29,7 @@ public final class GeometryUtils {
         /**
          * Invoked to add dimension system requirement.
          *
-         * @param dimensionSystem
-         *            dimension system
+         * @param dimensionSystem dimension system
          */
         protected void dimensionSystem(int dimensionSystem) {
         }
@@ -45,8 +43,7 @@ public final class GeometryUtils {
         /**
          * Invoked before writing a LINESTRING.
          *
-         * @param numPoints
-         *            number of points in line string
+         * @param numPoints number of points in line string
          */
         protected void startLineString(int numPoints) {
         }
@@ -55,10 +52,8 @@ public final class GeometryUtils {
          * Invoked before writing a POLYGON. If polygon is empty, both
          * parameters are 0.
          *
-         * @param numInner
-         *            number of inner polygons
-         * @param numPoints
-         *            number of points in outer polygon
+         * @param numInner  number of inner polygons
+         * @param numPoints number of points in outer polygon
          */
         protected void startPolygon(int numInner, int numPoints) {
         }
@@ -66,8 +61,7 @@ public final class GeometryUtils {
         /**
          * Invoked before writing an inner polygon in POLYGON.
          *
-         * @param numInner
-         *            number of points in inner polygon
+         * @param numInner number of points in inner polygon
          */
         protected void startPolygonInner(int numInner) {
         }
@@ -81,14 +75,12 @@ public final class GeometryUtils {
         /**
          * Invoked before writing of a collection.
          *
-         * @param type
-         *            type of collection, one of
-         *            {@link GeometryUtils#MULTI_POINT},
-         *            {@link GeometryUtils#MULTI_LINE_STRING},
-         *            {@link GeometryUtils#MULTI_POLYGON},
-         *            {@link GeometryUtils#GEOMETRY_COLLECTION}
-         * @param numItems
-         *            number of items in this collection
+         * @param type     type of collection, one of
+         *                 {@link GeometryUtils#MULTI_POINT},
+         *                 {@link GeometryUtils#MULTI_LINE_STRING},
+         *                 {@link GeometryUtils#MULTI_POLYGON},
+         *                 {@link GeometryUtils#GEOMETRY_COLLECTION}
+         * @param numItems number of items in this collection
          */
         protected void startCollection(int type, int numItems) {
         }
@@ -96,13 +88,11 @@ public final class GeometryUtils {
         /**
          * Invoked before writing of a collection item.
          *
-         * @param index
-         *            0-based index of this item in the collection
-         * @param total
-         *            total number of items in the collection
+         * @param index 0-based index of this item in the collection
+         * @param total total number of items in the collection
          * @return output target that should be used for processing of this
-         *         collection item. May return this target or an custom
-         *         sub-target.
+         * collection item. May return this target or an custom
+         * sub-target.
          */
         protected Target startCollectionItem(int index, int total) {
             return this;
@@ -113,14 +103,10 @@ public final class GeometryUtils {
          * the same target that was used for
          * {@link #startCollectionItem(int, int)}.
          *
-         * @param target
-         *            the result of {@link #startCollectionItem(int, int)}
-         * @param type
-         *            type of collection
-         * @param index
-         *            0-based index of this item in the collection
-         * @param total
-         *            total number of items in the collection
+         * @param target the result of {@link #startCollectionItem(int, int)}
+         * @param type   type of collection
+         * @param index  0-based index of this item in the collection
+         * @param total  total number of items in the collection
          */
         protected void endCollectionItem(Target target, int type, int index, int total) {
         }
@@ -128,8 +114,7 @@ public final class GeometryUtils {
         /**
          * Invoked after writing of the object.
          *
-         * @param type
-         *            type of the object
+         * @param type type of the object
          */
         protected void endObject(int type) {
         }
@@ -137,18 +122,12 @@ public final class GeometryUtils {
         /**
          * Invoked to add a coordinate to a geometry.
          *
-         * @param x
-         *            X coordinate
-         * @param y
-         *            Y coordinate
-         * @param z
-         *            Z coordinate (NaN if not used)
-         * @param m
-         *            M coordinate (NaN if not used)
-         * @param index
-         *            0-based index of coordinate in the current sequence
-         * @param total
-         *            total number of coordinates in the current sequence
+         * @param x     X coordinate
+         * @param y     Y coordinate
+         * @param z     Z coordinate (NaN if not used)
+         * @param m     M coordinate (NaN if not used)
+         * @param index 0-based index of coordinate in the current sequence
+         * @param total total number of coordinates in the current sequence
          */
         protected abstract void addCoordinate(double x, double y, double z, double m, int index, int total);
 
@@ -229,7 +208,7 @@ public final class GeometryUtils {
          * @return the envelope, or null
          */
         public double[] getEnvelope() {
-            return set ? new double[] { minX, maxX, minY, maxY } : null;
+            return set ? new double[]{minX, maxX, minY, maxY} : null;
         }
 
     }
@@ -383,8 +362,7 @@ public final class GeometryUtils {
     /**
      * Calculates an envelope of a specified geometry.
      *
-     * @param ewkb
-     *            EWKB of a geometry
+     * @param ewkb EWKB of a geometry
      * @return envelope, or null
      */
     public static double[] getEnvelope(byte[] ewkb) {
@@ -396,10 +374,8 @@ public final class GeometryUtils {
     /**
      * Checks whether two envelopes intersect with each other.
      *
-     * @param envelope1
-     *            first envelope, or null
-     * @param envelope2
-     *            second envelope, or null
+     * @param envelope1 first envelope, or null
+     * @param envelope2 second envelope, or null
      * @return whether the specified envelopes intersects
      */
     public static boolean intersects(double[] envelope1, double[] envelope2) {
@@ -414,10 +390,8 @@ public final class GeometryUtils {
      * Returns union of two envelopes. This method does not modify the specified
      * envelopes, but may return one of them as a result.
      *
-     * @param envelope1
-     *            first envelope, or null
-     * @param envelope2
-     *            second envelope, or null
+     * @param envelope1 first envelope, or null
+     * @param envelope2 second envelope, or null
      * @return union of two envelopes
      */
     public static double[] union(double[] envelope1, double[] envelope2) {
@@ -445,15 +419,14 @@ public final class GeometryUtils {
             maxY1 = maxY2;
             modified = true;
         }
-        return modified ? new double[] { minX1, maxX1, minY1, maxY1 } : envelope1;
+        return modified ? new double[]{minX1, maxX1, minY1, maxY1} : envelope1;
     }
 
     /**
      * Normalizes all NaNs into single type on NaN and negative zero to positive
      * zero.
      *
-     * @param d
-     *            double value
+     * @param d double value
      * @return normalized value
      */
     static double toCanonicalDouble(double d) {
@@ -463,8 +436,7 @@ public final class GeometryUtils {
     /**
      * Throw exception if param is not finite value (ie. NaN/inf/etc)
      *
-     * @param d
-     *            a double value
+     * @param d a double value
      * @return the same double value
      */
     static double checkFinite(double d) {

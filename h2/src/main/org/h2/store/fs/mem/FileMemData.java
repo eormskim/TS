@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+
 import org.h2.compress.CompressLZF;
 import org.h2.util.MathUtils;
 
@@ -29,7 +30,7 @@ class FileMemData {
     private static final byte[] COMPRESSED_EMPTY_BLOCK;
 
     private static final Cache<CompressItem, CompressItem> COMPRESS_LATER =
-        new Cache<>(CACHE_SIZE);
+            new Cache<>(CACHE_SIZE);
 
     private String name;
     private final int id;
@@ -73,11 +74,11 @@ class FileMemData {
     /**
      * Set the page data.
      *
-     * @param page the page id
+     * @param page    the page id
      * @param oldData the old data
      * @param newData the new data
-     * @param force whether the data should be overwritten even if the old data
-     *            doesn't match
+     * @param force   whether the data should be overwritten even if the old data
+     *                doesn't match
      */
     private void setPage(int page, byte[] oldData, byte[] newData, boolean force) {
         AtomicReference<byte[]>[] b = data;
@@ -298,10 +299,10 @@ class FileMemData {
     /**
      * Read or write.
      *
-     * @param pos the position
-     * @param b the byte array
-     * @param off the offset within the byte array
-     * @param len the number of bytes
+     * @param pos   the position
+     * @param b     the byte array
+     * @param off   the offset within the byte array
+     * @param len   the number of bytes
      * @param write true for writing
      * @return the new position
      */

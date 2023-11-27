@@ -37,7 +37,7 @@ public class TestObjectDataType extends TestBase {
     }
 
     private void testCommonValues() {
-        BigInteger largeBigInt = BigInteger.probablePrime(200,  new Random(1));
+        BigInteger largeBigInt = BigInteger.probablePrime(200, new Random(1));
         ObjectDataType ot = new ObjectDataType();
         Object[] array = {
                 false, true,
@@ -72,33 +72,33 @@ public class TestObjectDataType extends TestBase {
                 new UUID(Long.MAX_VALUE, Long.MAX_VALUE),
                 new java.util.Date(0), new java.util.Date(1000),
                 new java.util.Date(4000), new java.util.Date(5000),
-                new boolean[0], new boolean[] { false, false },
-                new boolean[] { true },
+                new boolean[0], new boolean[]{false, false},
+                new boolean[]{true},
                 new byte[0], new byte[1], new byte[15], new byte[16],
-                new byte[10000], new byte[] { (byte) 1 },
-                new byte[] { (byte) 0xff },
-                new short[0], new short[] { -1 }, new short[] { 1 },
+                new byte[10000], new byte[]{(byte) 1},
+                new byte[]{(byte) 0xff},
+                new short[0], new short[]{-1}, new short[]{1},
                 new char[0], new char[1], new char[10000],
-                new char[] { (char) 1 },
+                new char[]{(char) 1},
                 new int[0], new int[1], new int[15], new int[16],
-                new int[10000], new int[] { (byte) 1 },
+                new int[10000], new int[]{(byte) 1},
                 new long[0], new long[1], new long[15], new long[16],
-                new long[10000], new long[] { (byte) 1 },
+                new long[10000], new long[]{(byte) 1},
                 new float[0], new float[]{Float.NEGATIVE_INFINITY},
                 new float[1], new float[]{Float.POSITIVE_INFINITY},
                 new double[0], new double[]{Double.NEGATIVE_INFINITY},
                 new double[1], new double[]{Double.POSITIVE_INFINITY},
                 new Object[0],
                 new Object[100],
-                new Object[] { 1 },
-                new Object[] { 0.0, "Hello", null, Double.NaN },
-                new String[] { "Hello", null },
-                new String[] { "World" },
-                new java.sql.Date[] { },
-                new Timestamp[] { },
-                new Timestamp[] { null },
+                new Object[]{1},
+                new Object[]{0.0, "Hello", null, Double.NaN},
+                new String[]{"Hello", null},
+                new String[]{"World"},
+                new java.sql.Date[]{},
+                new Timestamp[]{},
+                new Timestamp[]{null},
                 new Timestamp(2000), new Timestamp(3000),
-            };
+        };
         Object otherType = false;
         Object last = null;
         for (Object x : array) {
@@ -155,7 +155,7 @@ public class TestObjectDataType extends TestBase {
         assertEquals(x.getClass().getName(), y.getClass().getName());
 
         ot.getMemory(last);
-        assertEquals(0, ot.compare(x,  y));
+        assertEquals(0, ot.compare(x, y));
         if (x.getClass().isArray()) {
             if (x instanceof byte[]) {
                 assertTrue(Arrays.equals((byte[]) x, (byte[]) y));

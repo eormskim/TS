@@ -75,14 +75,10 @@ public final class ValueInterval extends Value {
     /**
      * Create a ValueInterval instance.
      *
-     * @param qualifier
-     *            qualifier
-     * @param negative
-     *            whether interval is negative
-     * @param leading
-     *            value of leading field
-     * @param remaining
-     *            values of all remaining fields
+     * @param qualifier qualifier
+     * @param negative  whether interval is negative
+     * @param leading   value of leading field
+     * @param remaining values of all remaining fields
      * @return interval value
      */
     public static ValueInterval from(IntervalQualifier qualifier, boolean negative, long leading, long remaining) {
@@ -95,61 +91,58 @@ public final class ValueInterval extends Value {
      * Returns display size for the specified qualifier, precision and
      * fractional seconds precision.
      *
-     * @param type
-     *            the value type
-     * @param precision
-     *            leading field precision
-     * @param scale
-     *            fractional seconds precision. Ignored if specified type of
-     *            interval does not have seconds.
+     * @param type      the value type
+     * @param precision leading field precision
+     * @param scale     fractional seconds precision. Ignored if specified type of
+     *                  interval does not have seconds.
      * @return display size
      */
     public static int getDisplaySize(int type, int precision, int scale) {
         switch (type) {
-        case INTERVAL_YEAR:
-        case INTERVAL_HOUR:
-            // INTERVAL '-11' YEAR
-            // INTERVAL '-11' HOUR
-            return 17 + precision;
-        case INTERVAL_MONTH:
-            // INTERVAL '-11' MONTH
-            return 18 + precision;
-        case INTERVAL_DAY:
-            // INTERVAL '-11' DAY
-            return 16 + precision;
-        case INTERVAL_MINUTE:
-            // INTERVAL '-11' MINUTE
-            return 19 + precision;
-        case INTERVAL_SECOND:
-            // INTERVAL '-11' SECOND
-            // INTERVAL '-11.999999' SECOND
-            return scale > 0 ? 20 + precision + scale : 19 + precision;
-        case INTERVAL_YEAR_TO_MONTH:
-            // INTERVAL '-11-11' YEAR TO MONTH
-            return 29 + precision;
-        case INTERVAL_DAY_TO_HOUR:
-            // INTERVAL '-11 23' DAY TO HOUR
-            return 27 + precision;
-        case INTERVAL_DAY_TO_MINUTE:
-            // INTERVAL '-11 23:59' DAY TO MINUTE
-            return 32 + precision;
-        case INTERVAL_DAY_TO_SECOND:
-            // INTERVAL '-11 23:59.59' DAY TO SECOND
-            // INTERVAL '-11 23:59.59.999999' DAY TO SECOND
-            return scale > 0 ? 36 + precision + scale : 35 + precision;
-        case INTERVAL_HOUR_TO_MINUTE:
-            // INTERVAL '-11:59' HOUR TO MINUTE
-            return 30 + precision;
-        case INTERVAL_HOUR_TO_SECOND:
-            // INTERVAL '-11:59:59' HOUR TO SECOND
-            // INTERVAL '-11:59:59.999999' HOUR TO SECOND
-            return scale > 0 ? 34 + precision + scale : 33 + precision;
-        case INTERVAL_MINUTE_TO_SECOND:
-            // INTERVAL '-11:59' MINUTE TO SECOND
-            // INTERVAL '-11:59.999999' MINUTE TO SECOND
-            return scale > 0 ? 33 + precision + scale : 32 + precision;
-        default:
-            throw DbException.getUnsupportedException(Integer.toString(type));
+            case INTERVAL_YEAR:
+            case INTERVAL_HOUR:
+                // INTERVAL '-11' YEAR
+                // INTERVAL '-11' HOUR
+                return 17 + precision;
+            case INTERVAL_MONTH:
+                // INTERVAL '-11' MONTH
+                return 18 + precision;
+            case INTERVAL_DAY:
+                // INTERVAL '-11' DAY
+                return 16 + precision;
+            case INTERVAL_MINUTE:
+                // INTERVAL '-11' MINUTE
+                return 19 + precision;
+            case INTERVAL_SECOND:
+                // INTERVAL '-11' SECOND
+                // INTERVAL '-11.999999' SECOND
+                return scale > 0 ? 20 + precision + scale : 19 + precision;
+            case INTERVAL_YEAR_TO_MONTH:
+                // INTERVAL '-11-11' YEAR TO MONTH
+                return 29 + precision;
+            case INTERVAL_DAY_TO_HOUR:
+                // INTERVAL '-11 23' DAY TO HOUR
+                return 27 + precision;
+            case INTERVAL_DAY_TO_MINUTE:
+                // INTERVAL '-11 23:59' DAY TO MINUTE
+                return 32 + precision;
+            case INTERVAL_DAY_TO_SECOND:
+                // INTERVAL '-11 23:59.59' DAY TO SECOND
+                // INTERVAL '-11 23:59.59.999999' DAY TO SECOND
+                return scale > 0 ? 36 + precision + scale : 35 + precision;
+            case INTERVAL_HOUR_TO_MINUTE:
+                // INTERVAL '-11:59' HOUR TO MINUTE
+                return 30 + precision;
+            case INTERVAL_HOUR_TO_SECOND:
+                // INTERVAL '-11:59:59' HOUR TO SECOND
+                // INTERVAL '-11:59:59.999999' HOUR TO SECOND
+                return scale > 0 ? 34 + precision + scale : 33 + precision;
+            case INTERVAL_MINUTE_TO_SECOND:
+                // INTERVAL '-11:59' MINUTE TO SECOND
+                // INTERVAL '-11:59.999999' MINUTE TO SECOND
+                return scale > 0 ? 33 + precision + scale : 32 + precision;
+            default:
+                throw DbException.getUnsupportedException(Integer.toString(type));
         }
     }
 
@@ -184,10 +177,9 @@ public final class ValueInterval extends Value {
     /**
      * Check if the precision is smaller or equal than the given precision.
      *
-     * @param prec
-     *            the maximum precision
+     * @param prec the maximum precision
      * @return true if the precision of this value is smaller or equal to the
-     *         given precision
+     * given precision
      */
     boolean checkPrecision(long prec) {
         if (prec < MAXIMUM_PRECISION) {
@@ -203,23 +195,24 @@ public final class ValueInterval extends Value {
     ValueInterval setPrecisionAndScale(TypeInfo targetType, Object column) {
         int targetScale = targetType.getScale();
         ValueInterval v = this;
-        convertScale: if (targetScale < ValueInterval.MAXIMUM_SCALE) {
+        convertScale:
+        if (targetScale < ValueInterval.MAXIMUM_SCALE) {
             long range;
             switch (valueType) {
-            case INTERVAL_SECOND:
-                range = NANOS_PER_SECOND;
-                break;
-            case INTERVAL_DAY_TO_SECOND:
-                range = NANOS_PER_DAY;
-                break;
-            case INTERVAL_HOUR_TO_SECOND:
-                range = NANOS_PER_HOUR;
-                break;
-            case INTERVAL_MINUTE_TO_SECOND:
-                range = NANOS_PER_MINUTE;
-                break;
-            default:
-                break convertScale;
+                case INTERVAL_SECOND:
+                    range = NANOS_PER_SECOND;
+                    break;
+                case INTERVAL_DAY_TO_SECOND:
+                    range = NANOS_PER_DAY;
+                    break;
+                case INTERVAL_HOUR_TO_SECOND:
+                    range = NANOS_PER_HOUR;
+                    break;
+                case INTERVAL_MINUTE_TO_SECOND:
+                    range = NANOS_PER_MINUTE;
+                    break;
+                default:
+                    break convertScale;
             }
             long l = leading;
             long r = DateTimeUtils.convertScale(remaining, targetScale,

@@ -75,6 +75,7 @@ final class FullTextSettings {
 
     /**
      * Amend set of ignored words
+     *
      * @param words to add
      */
     public void addIgnored(Iterable<String> words) {
@@ -97,6 +98,7 @@ final class FullTextSettings {
 
     /**
      * Get id for a searchable word
+     *
      * @param word to find id for
      * @return Integer id or null if word is not found
      */
@@ -108,8 +110,9 @@ final class FullTextSettings {
 
     /**
      * Register searchable word
+     *
      * @param word to register
-     * @param id to register with
+     * @param id   to register with
      */
     public void addWord(String word, Integer id) {
         synchronized (words) {
@@ -189,7 +192,7 @@ final class FullTextSettings {
         if ("MEM:UNNAMED".equals(path)) {
             throw FullText.throwException(
                     "Fulltext search for private (unnamed) " +
-                    "in-memory databases is not supported.");
+                            "in-memory databases is not supported.");
         }
         rs.close();
         return path;
@@ -199,7 +202,7 @@ final class FullTextSettings {
      * Prepare a statement. The statement is cached in a soft reference cache.
      *
      * @param conn the connection
-     * @param sql the statement
+     * @param sql  the statement
      * @return the prepared statement
      * @throws SQLException on failure
      */

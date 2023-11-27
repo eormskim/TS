@@ -85,7 +85,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
     private final Object generatedKeysRequest;
 
     JdbcPreparedStatement(JdbcConnection conn, String sql, int id, int resultSetType, int resultSetConcurrency,
-            Object generatedKeysRequest) {
+                          Object generatedKeysRequest) {
         super(conn, id, resultSetType, resultSetConcurrency);
         this.generatedKeysRequest = generatedKeysRequest;
         setTrace(session.getTrace(), TraceObject.PREPARED_STATEMENT, id);
@@ -146,17 +146,17 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * and returns the update count.
      * If another result set exists for this statement, this will be closed
      * (even if this statement fails).
-     *
+     * <p>
      * If auto commit is on, this statement will be committed.
      * If the statement is a DDL statement (create, drop, alter) and does not
      * throw an exception, the current transaction (if any) is committed after
      * executing the statement.
      *
      * @return the update count (number of affected rows by a DML statement or
-     *         other statement able to return number of rows, or 0 if no rows
-     *         were affected or the statement returns nothing, or
-     *         {@link #SUCCESS_NO_INFO} if number of rows is too large for
-     *         {@code int} data type)
+     * other statement able to return number of rows, or 0 if no rows
+     * were affected or the statement returns nothing, or
+     * {@link #SUCCESS_NO_INFO} if number of rows is too large for
+     * {@code int} data type)
      * @throws SQLException if this object is closed or invalid
      * @see #executeLargeUpdate()
      */
@@ -178,15 +178,15 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * and returns the update count.
      * If another result set exists for this statement, this will be closed
      * (even if this statement fails).
-     *
+     * <p>
      * If auto commit is on, this statement will be committed.
      * If the statement is a DDL statement (create, drop, alter) and does not
      * throw an exception, the current transaction (if any) is committed after
      * executing the statement.
      *
      * @return the update count (number of affected rows by a DML statement or
-     *         other statement able to return number of rows, or 0 if no rows
-     *         were affected or the statement returns nothing)
+     * other statement able to return number of rows, or 0 if no rows
+     * were affected or the statement returns nothing)
      * @throws SQLException if this object is closed or invalid
      */
     @Override
@@ -328,7 +328,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets a parameter to null.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param sqlType the data type (Types.x)
+     * @param sqlType        the data type (Types.x)
      * @throws SQLException if this object is closed
      */
     @Override
@@ -347,7 +347,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -366,7 +366,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -385,7 +385,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -409,7 +409,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * </p>
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      * @see #setObject(int, Object)
      */
@@ -434,7 +434,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * </p>
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      * @see #setObject(int, Object)
      */
@@ -459,7 +459,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * </p>
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      * @see #setObject(int, Object)
      */
@@ -481,7 +481,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Objects of unknown classes are serialized (on the client side).
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -506,8 +506,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Objects of unknown classes are serialized (on the client side).
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value, null is allowed
-     * @param targetSqlType the type as defined in java.sql.Types
+     * @param x              the value, null is allowed
+     * @param targetSqlType  the type as defined in java.sql.Types
      * @throws SQLException if this object is closed
      */
     @Override
@@ -529,14 +529,14 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Objects of unknown classes are serialized (on the client side).
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value, null is allowed
-     * @param targetSqlType the type as defined in java.sql.Types
-     * @param scale is ignored
+     * @param x              the value, null is allowed
+     * @param targetSqlType  the type as defined in java.sql.Types
+     * @param scale          is ignored
      * @throws SQLException if this object is closed
      */
     @Override
     public void setObject(int parameterIndex, Object x, int targetSqlType,
-            int scale) throws SQLException {
+                          int scale) throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("setObject(" + parameterIndex + ", x, " + targetSqlType + ", " + scale + ')');
@@ -553,8 +553,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Objects of unknown classes are serialized (on the client side).
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value, null is allowed
-     * @param targetSqlType the SQL type
+     * @param x              the value, null is allowed
+     * @param targetSqlType  the SQL type
      * @throws SQLException if this object is closed
      */
     @Override
@@ -575,9 +575,9 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Objects of unknown classes are serialized (on the client side).
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value, null is allowed
-     * @param targetSqlType the SQL type
-     * @param scaleOrLength is ignored
+     * @param x              the value, null is allowed
+     * @param targetSqlType  the SQL type
+     * @param scaleOrLength  is ignored
      * @throws SQLException if this object is closed
      */
     @Override
@@ -609,7 +609,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -628,7 +628,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -647,7 +647,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -666,7 +666,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -685,7 +685,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -704,7 +704,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -737,8 +737,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * </p>
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
-     * @param calendar the calendar
+     * @param x              the value
+     * @param calendar       the calendar
      * @throws SQLException if this object is closed
      * @see #setObject(int, Object)
      */
@@ -769,8 +769,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * </p>
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
-     * @param calendar the calendar
+     * @param x              the value
+     * @param calendar       the calendar
      * @throws SQLException if this object is closed
      * @see #setObject(int, Object)
      */
@@ -801,8 +801,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * </p>
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
-     * @param calendar the calendar
+     * @param x              the value
+     * @param calendar       the calendar
      * @throws SQLException if this object is closed
      * @see #setObject(int, Object)
      */
@@ -839,8 +839,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets a parameter to null.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param sqlType the data type (Types.x)
-     * @param typeName this parameter is ignored
+     * @param sqlType        the data type (Types.x)
+     * @param typeName       this parameter is ignored
      * @throws SQLException if this object is closed
      */
     @Override
@@ -860,7 +860,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter as a Blob.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -888,7 +888,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The stream may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -909,7 +909,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter as a Clob.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -937,7 +937,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The reader may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -963,7 +963,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter as an Array.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -989,7 +989,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter as a byte array.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1010,8 +1010,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The stream may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
-     * @param length the maximum number of bytes
+     * @param x              the value
+     * @param length         the maximum number of bytes
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1035,8 +1035,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The stream may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
-     * @param length the maximum number of bytes
+     * @param x              the value
+     * @param length         the maximum number of bytes
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1051,7 +1051,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The stream may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1066,8 +1066,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The stream may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
-     * @param length the maximum number of bytes
+     * @param x              the value
+     * @param length         the maximum number of bytes
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1082,8 +1082,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The stream may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
-     * @param length the maximum number of bytes
+     * @param x              the value
+     * @param length         the maximum number of bytes
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1107,7 +1107,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The stream may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1122,8 +1122,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The reader may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
-     * @param length the maximum number of characters
+     * @param x              the value
+     * @param length         the maximum number of characters
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1138,7 +1138,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The reader may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1153,8 +1153,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The reader may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
-     * @param length the maximum number of characters
+     * @param x              the value
+     * @param length         the maximum number of characters
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1412,7 +1412,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1433,8 +1433,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The reader may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
-     * @param length the maximum number of characters
+     * @param x              the value
+     * @param length         the maximum number of characters
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1458,7 +1458,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The reader may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1471,7 +1471,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter as a Clob.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1499,7 +1499,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The reader may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1521,8 +1521,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * reader. The reader may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
-     * @param length the maximum number of characters
+     * @param x              the value
+     * @param length         the maximum number of characters
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1546,8 +1546,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The stream may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
-     * @param length the maximum number of bytes
+     * @param x              the value
+     * @param length         the maximum number of bytes
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1571,8 +1571,8 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * The reader may be closed after executing the statement.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
-     * @param length the maximum number of characters
+     * @param x              the value
+     * @param length         the maximum number of characters
      * @throws SQLException if this object is closed
      */
     @Override
@@ -1594,7 +1594,7 @@ public class JdbcPreparedStatement extends JdbcStatement implements PreparedStat
      * Sets the value of a parameter as a SQLXML.
      *
      * @param parameterIndex the parameter index (1, 2, ...)
-     * @param x the value
+     * @param x              the value
      * @throws SQLException if this object is closed
      */
     @Override

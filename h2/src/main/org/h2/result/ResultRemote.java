@@ -35,7 +35,7 @@ public final class ResultRemote extends FetchedResult {
     private final Trace trace;
 
     public ResultRemote(SessionRemote session, Transfer transfer, int id,
-            int columnCount, int fetchSize) throws IOException {
+                        int columnCount, int fetchSize) throws IOException {
         this.session = session;
         trace = session.getTrace();
         this.transfer = transfer;
@@ -228,21 +228,21 @@ public final class ResultRemote extends FetchedResult {
         int len = columns.length;
         for (int r = 0; r < fetch; r++) {
             switch (transfer.readByte()) {
-            case 1: {
-                Value[] values = new Value[len];
-                for (int i = 0; i < len; i++) {
-                    values[i] = transfer.readValue(columns[i].columnType);
+                case 1: {
+                    Value[] values = new Value[len];
+                    for (int i = 0; i < len; i++) {
+                        values[i] = transfer.readValue(columns[i].columnType);
+                    }
+                    result.add(values);
+                    break;
                 }
-                result.add(values);
-                break;
-            }
-            case 0:
-                sendClose();
-                return true;
-            case -1:
-                throw SessionRemote.readException(transfer);
-            default:
-                throw DbException.getInternalError();
+                case 0:
+                    sendClose();
+                    return true;
+                case -1:
+                    throw SessionRemote.readException(transfer);
+                default:
+                    throw DbException.getInternalError();
             }
         }
         if (rowCount >= 0L && rowOffset + result.size() >= rowCount) {

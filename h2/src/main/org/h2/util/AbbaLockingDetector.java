@@ -136,7 +136,7 @@ public class AbbaLockingDetector implements Runnable {
     }
 
     private synchronized void markHigher(List<String> lockOrder,
-            ThreadInfo threadInfo) {
+                                         ThreadInfo threadInfo) {
         String topLock = lockOrder.get(lockOrder.size() - 1);
         Map<String, String> map = lockOrdering.get(topLock);
         if (map == null) {
@@ -156,7 +156,7 @@ public class AbbaLockingDetector implements Runnable {
                     if (!knownDeadlocks.contains(deadlockType)) {
                         System.out.println(topLock + " synchronized after \n " + olderLock
                                 + ", but in the past before\n" + "AFTER\n" +
-                                    getStackTraceForThread(threadInfo)
+                                getStackTraceForThread(threadInfo)
                                 + "BEFORE\n" + e);
                         knownDeadlocks.add(deadlockType);
                     }
@@ -221,28 +221,28 @@ public class AbbaLockingDetector implements Runnable {
     }
 
     private static void dumpStackTraceElement(ThreadInfo info,
-            StringBuilder sb, int i, StackTraceElement e) {
+                                              StringBuilder sb, int i, StackTraceElement e) {
         sb.append('\t').append("at ").append(e)
                 .append('\n');
         if (i == 0 && info.getLockInfo() != null) {
             Thread.State ts = info.getThreadState();
             switch (ts) {
-            case BLOCKED:
-                sb.append("\t-  blocked on ")
-                        .append(info.getLockInfo())
-                        .append('\n');
-                break;
-            case WAITING:
-                sb.append("\t-  waiting on ")
-                        .append(info.getLockInfo())
-                        .append('\n');
-                break;
-            case TIMED_WAITING:
-                sb.append("\t-  waiting on ")
-                        .append(info.getLockInfo())
-                        .append('\n');
-                break;
-            default:
+                case BLOCKED:
+                    sb.append("\t-  blocked on ")
+                            .append(info.getLockInfo())
+                            .append('\n');
+                    break;
+                case WAITING:
+                    sb.append("\t-  waiting on ")
+                            .append(info.getLockInfo())
+                            .append('\n');
+                    break;
+                case TIMED_WAITING:
+                    sb.append("\t-  waiting on ")
+                            .append(info.getLockInfo())
+                            .append('\n');
+                    break;
+                default:
             }
         }
     }

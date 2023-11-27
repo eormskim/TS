@@ -45,7 +45,7 @@ public class FreeSpaceBitSet {
      * Create a new free space map.
      *
      * @param firstFreeBlock the first free block
-     * @param blockSize the block size
+     * @param blockSize      the block size
      */
     public FreeSpaceBitSet(int firstFreeBlock, int blockSize) {
         this.firstFreeBlock = firstFreeBlock;
@@ -64,7 +64,7 @@ public class FreeSpaceBitSet {
     /**
      * Check whether one of the blocks is in use.
      *
-     * @param pos the position in bytes
+     * @param pos    the position in bytes
      * @param length the number of bytes
      * @return true if a block is in use
      */
@@ -82,7 +82,7 @@ public class FreeSpaceBitSet {
     /**
      * Check whether one of the blocks is free.
      *
-     * @param pos the position in bytes
+     * @param pos    the position in bytes
      * @param length the number of bytes
      * @return true if a block is free
      */
@@ -110,27 +110,27 @@ public class FreeSpaceBitSet {
     /**
      * Allocate a number of blocks and mark them as used.
      *
-     * @param length the number of bytes to allocate
-     * @param reservedLow start block index of the reserved area (inclusive)
+     * @param length       the number of bytes to allocate
+     * @param reservedLow  start block index of the reserved area (inclusive)
      * @param reservedHigh end block index of the reserved area (exclusive),
      *                     special value -1 means beginning of the infinite free area
      * @return the start position in bytes
      */
     long allocate(int length, long reservedLow, long reservedHigh) {
-        return getPos(allocate(getBlockCount(length), (int)reservedLow, (int)reservedHigh, true));
+        return getPos(allocate(getBlockCount(length), (int) reservedLow, (int) reservedHigh, true));
     }
 
     /**
      * Calculate starting position of the prospective allocation.
      *
-     * @param blocks the number of blocks to allocate
-     * @param reservedLow start block index of the reserved area (inclusive)
+     * @param blocks       the number of blocks to allocate
+     * @param reservedLow  start block index of the reserved area (inclusive)
      * @param reservedHigh end block index of the reserved area (exclusive),
      *                     special value -1 means beginning of the infinite free area
      * @return the starting block index
      */
     long predictAllocation(int blocks, long reservedLow, long reservedHigh) {
-        return allocate(blocks, (int)reservedLow, (int)reservedHigh, false);
+        return allocate(blocks, (int) reservedLow, (int) reservedHigh, false);
     }
 
     boolean isFragmented() {
@@ -139,7 +139,7 @@ public class FreeSpaceBitSet {
 
     private int allocate(int blocks, int reservedLow, int reservedHigh, boolean allocate) {
         int freeBlocksTotal = 0;
-        for (int i = 0;;) {
+        for (int i = 0; ; ) {
             int start = set.nextClearBit(i);
             int end = set.nextSetBit(start + 1);
             int freeBlocks = end - start;
@@ -173,18 +173,18 @@ public class FreeSpaceBitSet {
     /**
      * Mark the space as in use.
      *
-     * @param pos the position in bytes
+     * @param pos    the position in bytes
      * @param length the number of bytes
      */
     public void markUsed(long pos, int length) {
         int start = getBlock(pos);
         int blocks = getBlockCount(length);
         // this is not an assert because we get called during file opening
-        if (set.nextSetBit(start) != -1 && set.nextSetBit(start) < start + blocks ) {
+        if (set.nextSetBit(start) != -1 && set.nextSetBit(start) < start + blocks) {
             throw DataUtils.newMVStoreException(
                     DataUtils.ERROR_FILE_CORRUPT,
                     "Double mark: " + Integer.toHexString(start) +
-                    "/" + Integer.toHexString(blocks) + " " + this);
+                            "/" + Integer.toHexString(blocks) + " " + this);
         }
         set.set(start, start + blocks);
     }
@@ -192,7 +192,7 @@ public class FreeSpaceBitSet {
     /**
      * Mark the space as free.
      *
-     * @param pos the position in bytes
+     * @param pos    the position in bytes
      * @param length the number of bytes
      */
     public void free(long pos, int length) {
@@ -230,9 +230,8 @@ public class FreeSpaceBitSet {
      * of sparsely populated chunk(s) and evacuation of still live data into a
      * new chunk.
      *
-     * @param vacatedBlocks
-     *            number of blocks vacated  as a result of live data evacuation less
-     *            number of blocks in prospective chunk with evacuated live data
+     * @param vacatedBlocks number of blocks vacated  as a result of live data evacuation less
+     *                      number of blocks in prospective chunk with evacuated live data
      * @return prospective fill rate (0 - 100)
      */
     int getProjectedFillRate(int vacatedBlocks) {
@@ -251,7 +250,7 @@ public class FreeSpaceBitSet {
         } while (totalBlocks != set.length() || usedBlocks > totalBlocks);
         usedBlocks -= firstFreeBlock + vacatedBlocks;
         totalBlocks -= firstFreeBlock;
-        return usedBlocks == 0 ? 0 : (int)((100L * usedBlocks + totalBlocks - 1) / totalBlocks);
+        return usedBlocks == 0 ? 0 : (int) ((100L * usedBlocks + totalBlocks - 1) / totalBlocks);
     }
 
     /**
@@ -329,10 +328,10 @@ public class FreeSpaceBitSet {
             }
             buff.append('\n')
                     .append(" on ").append(onCount).append(" off ").append(offCount)
-                    .append(' ').append(100 * onCount / (onCount+offCount)).append("% used ");
+                    .append(' ').append(100 * onCount / (onCount + offCount)).append("% used ");
         }
         buff.append('[');
-        for (int i = 0;;) {
+        for (int i = 0; ; ) {
             if (i > 0) {
                 buff.append(", ");
             }

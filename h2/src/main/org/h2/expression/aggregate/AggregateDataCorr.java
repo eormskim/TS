@@ -58,37 +58,37 @@ final class AggregateDataCorr extends AggregateDataBinarySet {
         }
         double v;
         switch (aggregateType) {
-        case CORR:
-            if (m2y == 0 || m2x == 0) {
-                return ValueNull.INSTANCE;
+            case CORR:
+                if (m2y == 0 || m2x == 0) {
+                    return ValueNull.INSTANCE;
+                }
+                v = (sumYX - sumX * sumY / count) / Math.sqrt(m2y * m2x);
+                break;
+            case REGR_SLOPE:
+                if (m2x == 0) {
+                    return ValueNull.INSTANCE;
+                }
+                v = (sumYX - sumX * sumY / count) / m2x;
+                break;
+            case REGR_INTERCEPT:
+                if (m2x == 0) {
+                    return ValueNull.INSTANCE;
+                }
+                v = meanY - (sumYX - sumX * sumY / count) / m2x * meanX;
+                break;
+            case REGR_R2: {
+                if (m2x == 0) {
+                    return ValueNull.INSTANCE;
+                }
+                if (m2y == 0) {
+                    return ValueDouble.ONE;
+                }
+                v = sumYX - sumX * sumY / count;
+                v = v * v / (m2y * m2x);
+                break;
             }
-            v = (sumYX - sumX * sumY / count) / Math.sqrt(m2y * m2x);
-            break;
-        case REGR_SLOPE:
-            if (m2x == 0) {
-                return ValueNull.INSTANCE;
-            }
-            v = (sumYX - sumX * sumY / count) / m2x;
-            break;
-        case REGR_INTERCEPT:
-            if (m2x == 0) {
-                return ValueNull.INSTANCE;
-            }
-            v = meanY - (sumYX - sumX * sumY / count) / m2x * meanX;
-            break;
-        case REGR_R2: {
-            if (m2x == 0) {
-                return ValueNull.INSTANCE;
-            }
-            if (m2y == 0) {
-                return ValueDouble.ONE;
-            }
-            v = sumYX - sumX * sumY / count;
-            v = v * v / (m2y * m2x);
-            break;
-        }
-        default:
-            throw DbException.getInternalError("type=" + aggregateType);
+            default:
+                throw DbException.getInternalError("type=" + aggregateType);
         }
         return ValueDouble.get(v);
     }

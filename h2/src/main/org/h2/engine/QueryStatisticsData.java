@@ -45,10 +45,10 @@ public class QueryStatisticsData {
     /**
      * Update query statistics.
      *
-     * @param sqlStatement the statement being executed
+     * @param sqlStatement       the statement being executed
      * @param executionTimeNanos the time in nanoseconds the query/update took
-     *            to execute
-     * @param rowCount the query or update row count
+     *                           to execute
+     * @param rowCount           the query or update row count
      */
     public synchronized void update(String sqlStatement, long executionTimeNanos, long rowCount) {
         QueryEntry entry = map.get(sqlStatement);
@@ -70,7 +70,7 @@ public class QueryStatisticsData {
             // Loop over the map using the set and remove
             // the oldest 1/3 of the entries.
             for (Iterator<Entry<String, QueryEntry>> it =
-                    map.entrySet().iterator(); it.hasNext();) {
+                 map.entrySet().iterator(); it.hasNext(); ) {
                 Entry<String, QueryEntry> mapEntry = it.next();
                 if (oldestSet.contains(mapEntry.getValue())) {
                     it.remove();
@@ -155,7 +155,7 @@ public class QueryStatisticsData {
          * Update the statistics entry.
          *
          * @param timeNanos the execution time in nanos
-         * @param rows the number of rows
+         * @param rows      the number of rows
          */
         void update(long timeNanos, long rows) {
             count++;

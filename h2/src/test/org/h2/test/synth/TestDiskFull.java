@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import org.h2.api.ErrorCode;
 import org.h2.store.fs.FileUtils;
 import org.h2.test.TestBase;
@@ -50,8 +51,8 @@ public class TestDiskFull extends TestDb {
         deleteDb("memFS:", null);
         fs.setDiskFullCount(x, 0);
         String url = "jdbc:h2:unstable:memFS:diskFull" + x +
-            ";FILE_LOCK=NO;TRACE_LEVEL_FILE=0;WRITE_DELAY=10;" +
-            "LOCK_TIMEOUT=100;CACHE_SIZE=4096;MAX_COMPACT_TIME=10";
+                ";FILE_LOCK=NO;TRACE_LEVEL_FILE=0;WRITE_DELAY=10;" +
+                "LOCK_TIMEOUT=100;CACHE_SIZE=4096;MAX_COMPACT_TIME=10";
         url = getURL(url, true);
         Connection conn = null;
         Statement stat = null;

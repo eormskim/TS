@@ -13,7 +13,7 @@ import org.h2.value.VersionedValue;
  *
  * @author <a href='mailto:andrei.tokar@gmail.com'>Andrei Tokar</a>
  */
-final class RollbackDecisionMaker extends MVMap.DecisionMaker<Record<?,?>> {
+final class RollbackDecisionMaker extends MVMap.DecisionMaker<Record<?, ?>> {
     private final TransactionStore store;
     private final long transactionId;
     private final long toLogId;
@@ -21,14 +21,14 @@ final class RollbackDecisionMaker extends MVMap.DecisionMaker<Record<?,?>> {
     private MVMap.Decision decision;
 
     RollbackDecisionMaker(TransactionStore store, long transactionId, long toLogId,
-                            TransactionStore.RollbackListener listener) {
+                          TransactionStore.RollbackListener listener) {
         this.store = store;
         this.transactionId = transactionId;
         this.toLogId = toLogId;
         this.listener = listener;
     }
 
-    @SuppressWarnings({"unchecked","rawtypes"})
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public MVMap.Decision decide(Record existingValue, Record providedValue) {
         assert decision == null;

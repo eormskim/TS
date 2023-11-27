@@ -58,14 +58,14 @@ public final class DayMonthNameFunction extends Function1 {
         long dateValue = DateTimeUtils.dateAndTimeFromValue(v, session)[0];
         String result;
         switch (function) {
-        case DAYNAME:
-            result = getMonthsAndWeeks(1)[DateTimeUtils.getDayOfWeek(dateValue, 0)];
-            break;
-        case MONTHNAME:
-            result = getMonthsAndWeeks(0)[DateTimeUtils.monthFromDateValue(dateValue) - 1];
-            break;
-        default:
-            throw DbException.getInternalError("function=" + function);
+            case DAYNAME:
+                result = getMonthsAndWeeks(1)[DateTimeUtils.getDayOfWeek(dateValue, 0)];
+                break;
+            case MONTHNAME:
+                result = getMonthsAndWeeks(0)[DateTimeUtils.monthFromDateValue(dateValue) - 1];
+                break;
+            default:
+                throw DbException.getInternalError("function=" + function);
         }
         return ValueVarchar.get(result, session);
     }
@@ -73,8 +73,7 @@ public final class DayMonthNameFunction extends Function1 {
     /**
      * Return names of month or weeks.
      *
-     * @param field
-     *            0 for months, 1 for weekdays
+     * @param field 0 for months, 1 for weekdays
      * @return names of month or weeks
      */
     private static String[] getMonthsAndWeeks(int field) {

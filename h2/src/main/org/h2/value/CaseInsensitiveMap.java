@@ -6,6 +6,7 @@
 package org.h2.value;
 
 import java.util.HashMap;
+
 import org.h2.util.StringUtils;
 
 /**

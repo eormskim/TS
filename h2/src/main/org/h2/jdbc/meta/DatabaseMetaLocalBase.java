@@ -75,7 +75,7 @@ abstract class DatabaseMetaLocalBase extends DatabaseMeta {
 
     @Override
     public final ResultInterface getAttributes(String catalog, String schemaPattern, String typeNamePattern,
-            String attributeNamePattern) {
+                                               String attributeNamePattern) {
         checkClosed();
         SimpleResult result = new SimpleResult();
         result.addColumn("TYPE_CAT", TypeInfo.TYPE_VARCHAR);
@@ -127,7 +127,7 @@ abstract class DatabaseMetaLocalBase extends DatabaseMeta {
 
     @Override
     public final ResultInterface getFunctionColumns(String catalog, String schemaPattern, String functionNamePattern,
-            String columnNamePattern) {
+                                                    String columnNamePattern) {
         checkClosed();
         SimpleResult result = new SimpleResult();
         result.addColumn("FUNCTION_CAT", TypeInfo.TYPE_VARCHAR);

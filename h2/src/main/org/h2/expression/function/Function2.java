@@ -37,12 +37,9 @@ public abstract class Function2 extends Operation2 implements NamedExpression {
     /**
      * Returns the value of this function.
      *
-     * @param session
-     *            the session
-     * @param v1
-     *            the value of first argument
-     * @param v2
-     *            the value of second argument
+     * @param session the session
+     * @param v1      the value of first argument
+     * @param v2      the value of second argument
      * @return the resulting value
      */
     protected Value getValue(SessionLocal session, Value v1, Value v2) {

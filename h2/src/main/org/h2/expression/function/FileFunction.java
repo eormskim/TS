@@ -60,45 +60,45 @@ public final class FileFunction extends Function1_2 {
             return ValueNull.INSTANCE;
         }
         switch (function) {
-        case FILE_READ: {
-            String fileName = v1.getString();
-            Database database = session.getDatabase();
-            try {
-                long fileLength = FileUtils.size(fileName);
-                ValueLob lob;
-                try (InputStream in = FileUtils.newInputStream(fileName)) {
-                    if (right == null) {
-                        lob = database.getLobStorage().createBlob(in, fileLength);
-                    } else {
-                        Value v2 = right.getValue(session);
-                        Reader reader = v2 == ValueNull.INSTANCE ? new InputStreamReader(in)
-                                : new InputStreamReader(in, v2.getString());
-                        lob = database.getLobStorage().createClob(reader, fileLength);
+            case FILE_READ: {
+                String fileName = v1.getString();
+                Database database = session.getDatabase();
+                try {
+                    long fileLength = FileUtils.size(fileName);
+                    ValueLob lob;
+                    try (InputStream in = FileUtils.newInputStream(fileName)) {
+                        if (right == null) {
+                            lob = database.getLobStorage().createBlob(in, fileLength);
+                        } else {
+                            Value v2 = right.getValue(session);
+                            Reader reader = v2 == ValueNull.INSTANCE ? new InputStreamReader(in)
+                                    : new InputStreamReader(in, v2.getString());
+                            lob = database.getLobStorage().createClob(reader, fileLength);
+                        }
                     }
-                }
-                v1 = session.addTemporaryLob(lob);
-            } catch (IOException e) {
-                throw DbException.convertIOException(e, fileName);
-            }
-            break;
-        }
-        case FILE_WRITE: {
-            Value v2 = right.getValue(session);
-            if (v2 == ValueNull.INSTANCE) {
-                v1 = ValueNull.INSTANCE;
-            } else {
-                String fileName = v2.getString();
-                try (OutputStream fileOutputStream = Files.newOutputStream(Paths.get(fileName));
-                        InputStream in = v1.getInputStream()) {
-                    v1 = ValueBigint.get(IOUtils.copy(in, fileOutputStream));
+                    v1 = session.addTemporaryLob(lob);
                 } catch (IOException e) {
                     throw DbException.convertIOException(e, fileName);
                 }
+                break;
             }
-            break;
-        }
-        default:
-            throw DbException.getInternalError("function=" + function);
+            case FILE_WRITE: {
+                Value v2 = right.getValue(session);
+                if (v2 == ValueNull.INSTANCE) {
+                    v1 = ValueNull.INSTANCE;
+                } else {
+                    String fileName = v2.getString();
+                    try (OutputStream fileOutputStream = Files.newOutputStream(Paths.get(fileName));
+                         InputStream in = v1.getInputStream()) {
+                        v1 = ValueBigint.get(IOUtils.copy(in, fileOutputStream));
+                    } catch (IOException e) {
+                        throw DbException.convertIOException(e, fileName);
+                    }
+                }
+                break;
+            }
+            default:
+                throw DbException.getInternalError("function=" + function);
         }
         return v1;
     }
@@ -110,15 +110,15 @@ public final class FileFunction extends Function1_2 {
             right = right.optimize(session);
         }
         switch (function) {
-        case FILE_READ:
-            type = right == null ? TypeInfo.getTypeInfo(Value.BLOB, Integer.MAX_VALUE, 0, null)
-                    : TypeInfo.getTypeInfo(Value.CLOB, Integer.MAX_VALUE, 0, null);
-            break;
-        case FILE_WRITE:
-            type = TypeInfo.TYPE_BIGINT;
-            break;
-        default:
-            throw DbException.getInternalError("function=" + function);
+            case FILE_READ:
+                type = right == null ? TypeInfo.getTypeInfo(Value.BLOB, Integer.MAX_VALUE, 0, null)
+                        : TypeInfo.getTypeInfo(Value.CLOB, Integer.MAX_VALUE, 0, null);
+                break;
+            case FILE_WRITE:
+                type = TypeInfo.TYPE_BIGINT;
+                break;
+            default:
+                throw DbException.getInternalError("function=" + function);
         }
         return this;
     }
@@ -126,13 +126,13 @@ public final class FileFunction extends Function1_2 {
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-        case ExpressionVisitor.DETERMINISTIC:
-        case ExpressionVisitor.QUERY_COMPARABLE:
-            return false;
-        case ExpressionVisitor.READONLY:
-            if (function == FILE_WRITE) {
+            case ExpressionVisitor.DETERMINISTIC:
+            case ExpressionVisitor.QUERY_COMPARABLE:
                 return false;
-            }
+            case ExpressionVisitor.READONLY:
+                if (function == FILE_WRITE) {
+                    return false;
+                }
         }
         return super.isEverything(visitor);
     }

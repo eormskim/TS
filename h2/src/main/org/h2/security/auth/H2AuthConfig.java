@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class H2AuthConfig {
 
-    private boolean allowUserRegistration=true;
-    private boolean createMissingRoles=true;
+    private boolean allowUserRegistration = true;
+    private boolean createMissingRoles = true;
     private List<RealmConfig> realms;
     private List<UserToRolesMapperConfig> userToRolesMappers;
 
@@ -23,7 +23,7 @@ public class H2AuthConfig {
      * creates external users in the database if not present.
      *
      * @return {@code true} in case user registration is allowed,
-     *          otherwise returns {@code false}.
+     * otherwise returns {@code false}.
      */
     public boolean isAllowUserRegistration() {
         return allowUserRegistration;
@@ -39,6 +39,7 @@ public class H2AuthConfig {
     /**
      * When set create roles not found in the database. If not set roles not
      * found in the database are silently skipped.
+     *
      * @return {@code true} if the flag is set, otherwise returns {@code false}.
      */
     public boolean isCreateMissingRoles() {
@@ -48,6 +49,7 @@ public class H2AuthConfig {
     /**
      * When set create roles not found in the database. If not set roles not
      * found in the database are silently skipped
+     *
      * @param createMissingRoles missing roles flag.
      */
     public void setCreateMissingRoles(boolean createMissingRoles) {

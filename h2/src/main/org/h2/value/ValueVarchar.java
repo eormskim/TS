@@ -47,7 +47,7 @@ public final class ValueVarchar extends ValueStringBase {
     /**
      * Get or create a VARCHAR value for the given string.
      *
-     * @param s the string
+     * @param s        the string
      * @param provider the cast information provider, or {@code null}
      * @return the value
      */

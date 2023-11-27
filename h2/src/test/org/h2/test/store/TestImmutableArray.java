@@ -117,33 +117,33 @@ public class TestImmutableArray extends TestBase {
                 buff.append("[" + j + "] ");
                 int opType = r.nextInt(3);
                 switch (opType) {
-                case 0: {
-                    int index = test.length() == 0 ? 0 : r.nextInt(test.length());
-                    int value = r.nextInt(100);
-                    buff.append("insert " + index + " " + value + "\n");
-                    test = test.insert(index, value);
-                    x.add(index, value);
-                    break;
-                }
-                case 1: {
-                    if (test.length() > 0) {
-                        int index = r.nextInt(test.length());
+                    case 0: {
+                        int index = test.length() == 0 ? 0 : r.nextInt(test.length());
                         int value = r.nextInt(100);
-                        buff.append("set " + index + " " + value + "\n");
-                        x.set(index, value);
-                        test = test.set(index, value);
+                        buff.append("insert " + index + " " + value + "\n");
+                        test = test.insert(index, value);
+                        x.add(index, value);
+                        break;
                     }
-                    break;
-                }
-                case 2: {
-                    if (test.length() > 0) {
-                        int index = r.nextInt(test.length());
-                        buff.append("remove " + index + "\n");
-                        x.remove(index);
-                        test = test.remove(index);
+                    case 1: {
+                        if (test.length() > 0) {
+                            int index = r.nextInt(test.length());
+                            int value = r.nextInt(100);
+                            buff.append("set " + index + " " + value + "\n");
+                            x.set(index, value);
+                            test = test.set(index, value);
+                        }
+                        break;
                     }
-                    break;
-                }
+                    case 2: {
+                        if (test.length() > 0) {
+                            int index = r.nextInt(test.length());
+                            buff.append("remove " + index + "\n");
+                            x.remove(index);
+                            test = test.remove(index);
+                        }
+                        break;
+                    }
                 }
                 assertEquals(x.size(), test.length());
                 assertEquals(toString(x.iterator()), toString(test.iterator()));

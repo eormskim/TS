@@ -12,6 +12,7 @@ import java.sql.Statement;
 import javax.sql.XAConnection;
 import javax.transaction.xa.XAResource;
 import javax.transaction.xa.Xid;
+
 import org.h2.jdbcx.JdbcDataSource;
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;

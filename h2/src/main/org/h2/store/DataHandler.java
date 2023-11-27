@@ -26,8 +26,8 @@ public interface DataHandler {
     /**
      * Open a file at the given location.
      *
-     * @param name the file name
-     * @param mode the mode
+     * @param name      the file name
+     * @param mode      the mode
      * @param mustExist whether the file must already exist
      * @return the file
      */
@@ -86,11 +86,11 @@ public interface DataHandler {
     /**
      * Read from a lob.
      *
-     * @param lobId the lob id
-     * @param hmac the message authentication code
+     * @param lobId  the lob id
+     * @param hmac   the message authentication code
      * @param offset the offset within the lob
-     * @param buff the target buffer
-     * @param off the offset within the target buffer
+     * @param buff   the target buffer
+     * @param off    the offset within the target buffer
      * @param length the number of bytes to read
      * @return the number of bytes read
      */

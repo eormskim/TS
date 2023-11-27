@@ -102,7 +102,7 @@ public class TestSpeed extends TestDb {
             prep.setInt(1, i);
             prep.setString(2,
                     "abchelloasdfaldsjflajdflajdslfoajlskdfkjasdf" +
-                    "abcfasdfadsfadfsalksdjflasjflajsdlkfjaksdjflkskd" + i);
+                            "abcfasdfadsfadfsalksdjflasjflajsdlkfjaksdjflkskd" + i);
             prep.execute();
         }
 

@@ -381,7 +381,7 @@ public class TestCallableStatement extends TestDb {
     }
 
     private void testArrayArgument(Connection connection) throws SQLException {
-        Array array = connection.createArrayOf("Int", new Object[] {0, 1, 2});
+        Array array = connection.createArrayOf("Int", new Object[]{0, 1, 2});
         try (Statement statement = connection.createStatement()) {
             statement.execute("CREATE ALIAS getArrayLength FOR '" + getClass().getName() + ".getArrayLength'");
 
@@ -416,10 +416,10 @@ public class TestCallableStatement extends TestDb {
     }
 
     private void testArrayReturnValue(Connection connection) throws SQLException {
-        Integer[][] arraysToTest = new Integer[][] {
-            {0, 1, 2},
-            {0, 1, 2},
-            {0, null, 2},
+        Integer[][] arraysToTest = new Integer[][]{
+                {0, 1, 2},
+                {0, 1, 2},
+                {0, null, 2},
         };
         try (Statement statement = connection.createStatement()) {
             statement.execute("CREATE ALIAS arrayIdentiy FOR '" + getClass().getName() + ".arrayIdentiy'");
@@ -468,6 +468,7 @@ public class TestCallableStatement extends TestDb {
 
     /**
      * Class factory unit test
+     *
      * @param b boolean value
      * @return !b
      */
@@ -499,14 +500,14 @@ public class TestCallableStatement extends TestDb {
      * This method is called via reflection from the database.
      *
      * @param conn the connection
-     * @param a the value a
-     * @param b the value b
-     * @param c the value c
-     * @param d the value d
+     * @param a    the value a
+     * @param b    the value b
+     * @param c    the value c
+     * @param d    the value d
      * @return a result set
      */
     public static ResultSet testCall(Connection conn, int a, String b,
-            Timestamp c, Timestamp d) throws SQLException {
+                                     Timestamp c, Timestamp d) throws SQLException {
         SimpleResultSet rs = new SimpleResultSet();
         rs.addColumn("A", Types.INTEGER, 0, 0);
         rs.addColumn("B", Types.VARCHAR, 0, 0);

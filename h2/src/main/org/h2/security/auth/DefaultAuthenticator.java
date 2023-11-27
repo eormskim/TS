@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.h2.api.CredentialsValidator;
 import org.h2.api.UserToRolesMapper;
 import org.h2.engine.Database;
@@ -79,8 +80,7 @@ public class DefaultAuthenticator implements Authenticator {
      * Create authenticator and optionally skip the default configuration. This
      * option is useful when the authenticator is configured at code level
      *
-     * @param skipDefaultInitialization
-     *            if true default initialization is skipped
+     * @param skipDefaultInitialization if true default initialization is skipped
      */
     public DefaultAuthenticator(boolean skipDefaultInitialization) {
         this.skipDefaultInitialization = skipDefaultInitialization;
@@ -90,7 +90,7 @@ public class DefaultAuthenticator implements Authenticator {
      * If set save users externals defined during the authentication.
      *
      * @return {@code true} if user will be persisted,
-     *      otherwise returns {@code false}
+     * otherwise returns {@code false}
      */
     public boolean isPersistUsers() {
         return persistUsers;
@@ -100,7 +100,7 @@ public class DefaultAuthenticator implements Authenticator {
      * If set to {@code true} saves users externals defined during the authentication.
      *
      * @param persistUsers {@code true} if user will be persisted,
-     *      otherwise {@code false}.
+     *                     otherwise {@code false}.
      */
     public void setPersistUsers(boolean persistUsers) {
         this.persistUsers = persistUsers;
@@ -110,7 +110,7 @@ public class DefaultAuthenticator implements Authenticator {
      * If set create external users in the database if not present.
      *
      * @return {@code true} if creation external user is allowed,
-     *      otherwise returns {@code false}
+     * otherwise returns {@code false}
      */
     public boolean isAllowUserRegistration() {
         return allowUserRegistration;
@@ -120,7 +120,7 @@ public class DefaultAuthenticator implements Authenticator {
      * If set to{@code true} creates external users in the database if not present.
      *
      * @param allowUserRegistration {@code true} if creation external user is allowed,
-     *      otherwise returns {@code false}
+     *                              otherwise returns {@code false}
      */
     public void setAllowUserRegistration(boolean allowUserRegistration) {
         this.allowUserRegistration = allowUserRegistration;
@@ -131,7 +131,7 @@ public class DefaultAuthenticator implements Authenticator {
      * found in the database are silently skipped.
      *
      * @return {@code true} if not found roles will be created,
-     *      {@code false} roles are silently skipped.
+     * {@code false} roles are silently skipped.
      */
     public boolean isCreateMissingRoles() {
         return createMissingRoles;
@@ -140,9 +140,8 @@ public class DefaultAuthenticator implements Authenticator {
     /**
      * Sets the flag that define behavior in case external roles not found in the database.
      *
-     *
      * @param createMissingRoles when is {@code true} not found roles are created,
-     *      when is {@code false} roles are silently skipped.
+     *                           when is {@code false} roles are silently skipped.
      */
     public void setCreateMissingRoles(boolean createMissingRoles) {
         this.createMissingRoles = createMissingRoles;
@@ -151,10 +150,8 @@ public class DefaultAuthenticator implements Authenticator {
     /**
      * Add an authentication realm. Realms are case insensitive
      *
-     * @param name
-     *            realm name
-     * @param credentialsValidator
-     *            credentials validator for realm
+     * @param name                 realm name
+     * @param credentialsValidator credentials validator for realm
      */
     public void addRealm(String name, CredentialsValidator credentialsValidator) {
         realms.put(StringUtils.toUpperEnglish(name), credentialsValidator);
@@ -179,7 +176,7 @@ public class DefaultAuthenticator implements Authenticator {
 
     /**
      * Initializes the authenticator.
-     *
+     * <p>
      * this method is skipped if skipDefaultInitialization is set Order of
      * initialization is
      * <ol>
@@ -246,9 +243,9 @@ public class DefaultAuthenticator implements Authenticator {
      * Configure the authenticator from a configuration file
      *
      * @param configUrl URL of configuration file
-     * @throws AuthenticationException on failure
-     * @throws SAXException on failure
-     * @throws IOException on failure
+     * @throws AuthenticationException      on failure
+     * @throws SAXException                 on failure
+     * @throws IOException                  on failure
      * @throws ParserConfigurationException on failure
      */
     public void configureFromUrl(URL configUrl) throws AuthenticationException,

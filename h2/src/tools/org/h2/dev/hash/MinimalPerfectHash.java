@@ -94,8 +94,8 @@ public class MinimalPerfectHash<K> {
      * The maximum offset for hash functions of small buckets. At most that many
      * hash functions are tried for the given size.
      */
-    private static final int[] MAX_OFFSETS = { 0, 0, 8, 18, 47, 123, 319, 831, 2162,
-            5622, 14617, 38006, 98815, 256920, 667993 };
+    private static final int[] MAX_OFFSETS = {0, 0, 8, 18, 47, 123, 319, 831, 2162,
+            5622, 14617, 38006, 98815, 256920, 667993};
 
     /**
      * The output value to split the bucket into many (more than 2) smaller
@@ -208,10 +208,10 @@ public class MinimalPerfectHash<K> {
      * Get the hash value for the given key, starting at a certain position and
      * level.
      *
-     * @param pos the start position
-     * @param x the key
+     * @param pos    the start position
+     * @param x      the key
      * @param isRoot whether this is the root of the tree
-     * @param level the level
+     * @param level  the level
      * @return the hash value
      */
     private int get(int pos, K x, boolean isRoot, int level) {
@@ -284,12 +284,12 @@ public class MinimalPerfectHash<K> {
      * The sum of the sizes between the start and end position.
      *
      * @param start the start position
-     * @param end the end position (excluding)
+     * @param end   the end position (excluding)
      * @return the sizes
      */
     private int getSizeSum(int start, int end) {
         int s = 0;
-        for (int pos = start; pos < end;) {
+        for (int pos = start; pos < end; ) {
             int n = readVarInt(data, pos);
             pos += getVarIntLength(data, pos);
             if (n < 2) {
@@ -304,7 +304,7 @@ public class MinimalPerfectHash<K> {
     }
 
     private static void writeSizeOffset(ByteArrayOutputStream out, int size,
-            int offset) {
+                                        int offset) {
         writeVarInt(out, SIZE_OFFSETS[size] + offset);
     }
 
@@ -325,7 +325,7 @@ public class MinimalPerfectHash<K> {
      * Generate the minimal perfect hash function data from the given set of
      * integers.
      *
-     * @param set the data
+     * @param set  the data
      * @param hash the universal hash function
      * @return the hash function description
      */
@@ -344,14 +344,14 @@ public class MinimalPerfectHash<K> {
     /**
      * Generate the perfect hash function data from the given set of integers.
      *
-     * @param list the data, in the form of a list
-     * @param hash the universal hash function
+     * @param list  the data, in the form of a list
+     * @param hash  the universal hash function
      * @param level the recursion level
-     * @param seed the random seed
-     * @param out the output stream
+     * @param seed  the random seed
+     * @param out   the output stream
      */
     static <K> void generate(ArrayList<K> list, UniversalHash<K> hash,
-            int level, int seed, ByteArrayOutputStream out) {
+                             int level, int seed, ByteArrayOutputStream out) {
         int size = list.size();
         if (size <= 1) {
             out.write(size);
@@ -508,15 +508,15 @@ public class MinimalPerfectHash<K> {
      * Calculate the hash of a key. The result depends on the key, the recursion
      * level, and the offset.
      *
-     * @param o the key
-     * @param level the recursion level
-     * @param seed the random seed
+     * @param o      the key
+     * @param level  the recursion level
+     * @param seed   the random seed
      * @param offset the index of the hash function
-     * @param size the size of the bucket
+     * @param size   the size of the bucket
      * @return the hash (a value between 0, including, and the size, excluding)
      */
     private static <K> int hash(K o, UniversalHash<K> hash, int level,
-            int seed, int offset, int size) {
+                                int seed, int offset, int size) {
         int x = hash.hashCode(o, level, seed);
         x += level + offset * 32;
         x = ((x >>> 16) ^ x) * 0x45d9f3b;
@@ -635,11 +635,11 @@ public class MinimalPerfectHash<K> {
         /**
          * Calculate the hash of the given object.
          *
-         * @param o the object
+         * @param o     the object
          * @param index the hash function index (index 0 is used first, so the
-         *            method should be very fast with index 0; index 1 and so on
-         *            are only called when really needed)
-         * @param seed the random seed (always the same for a hash table)
+         *              method should be very fast with index 0; index 1 and so on
+         *              are only called when really needed)
+         * @param seed  the random seed (always the same for a hash table)
          * @return the hash value
          */
         int hashCode(T o, int index, int seed);
@@ -693,9 +693,9 @@ public class MinimalPerfectHash<K> {
         /**
          * A cryptographically weak hash function. It is supposed to be fast.
          *
-         * @param o the string
+         * @param o     the string
          * @param index the hash function index
-         * @param seed the seed
+         * @param seed  the seed
          * @return the hash value
          */
         public static int getFastHash(String o, int index, int seed) {
@@ -712,7 +712,7 @@ public class MinimalPerfectHash<K> {
          * A cryptographically relatively secure hash function. It is supposed
          * to protected against hash-flooding denial-of-service attacks.
          *
-         * @param o the string
+         * @param o  the string
          * @param k0 key 0
          * @param k1 key 1
          * @return the hash value
@@ -726,11 +726,11 @@ public class MinimalPerfectHash<K> {
          * A cryptographically relatively secure hash function. It is supposed
          * to protected against hash-flooding denial-of-service attacks.
          *
-         * @param b the data
+         * @param b     the data
          * @param start the start position
-         * @param end the end position plus one
-         * @param k0 key 0
-         * @param k1 key 1
+         * @param end   the end position plus one
+         * @param k0    key 0
+         * @param k1    key 1
          * @return the hash value
          */
         public static int getSipHash24(byte[] b, int start, int end, long k0, long k1) {

@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
+
 import org.h2.api.ErrorCode;
 import org.h2.engine.Constants;
 import org.h2.message.DbException;
@@ -97,7 +98,7 @@ public class Csv implements SimpleRowSource {
      * Writes the result set to a file in the CSV format.
      *
      * @param writer the writer
-     * @param rs the result set
+     * @param rs     the result set
      * @return the number of rows written
      * @throws SQLException on failure
      */
@@ -117,9 +118,9 @@ public class Csv implements SimpleRowSource {
      * </pre>
      *
      * @param outputFileName the name of the csv file
-     * @param rs the result set - the result set must be positioned before the
-     *          first row.
-     * @param charset the charset or null to use the system default charset
+     * @param rs             the result set - the result set must be positioned before the
+     *                       first row.
+     * @param charset        the charset or null to use the system default charset
      * @return the number of rows written
      * @throws SQLException on failure
      */
@@ -137,16 +138,16 @@ public class Csv implements SimpleRowSource {
     /**
      * Writes the result set of a query to a file in the CSV format.
      *
-     * @param conn the connection
+     * @param conn           the connection
      * @param outputFileName the file name
-     * @param sql the query
-     * @param charset the charset or null to use the system default charset
-     *          (see system property file.encoding)
+     * @param sql            the query
+     * @param charset        the charset or null to use the system default charset
+     *                       (see system property file.encoding)
      * @return the number of rows written
      * @throws SQLException on failure
      */
     public int write(Connection conn, String outputFileName, String sql,
-            String charset) throws SQLException {
+                     String charset) throws SQLException {
         Statement stat = conn.createStatement();
         ResultSet rs = stat.executeQuery(sql);
         int rows = write(outputFileName, rs, charset);
@@ -158,7 +159,7 @@ public class Csv implements SimpleRowSource {
      * Reads from the CSV file and returns a result set. The rows in the result
      * set are created on demand, that means the file is kept open until all
      * rows are read or the result set is closed.
-     *
+     * <p>
      * If the columns are read from the CSV file, then the following rules are
      * used: columns names that start with a letter or '_', and only
      * contain letters, '_', and digits, are considered case insensitive
@@ -166,14 +167,14 @@ public class Csv implements SimpleRowSource {
      * case sensitive (that means they need to be quoted when accessed).
      *
      * @param inputFileName the file name
-     * @param colNames or null if the column names should be read from the CSV
-     *          file
-     * @param charset the charset or null to use the system default charset
+     * @param colNames      or null if the column names should be read from the CSV
+     *                      file
+     * @param charset       the charset or null to use the system default charset
      * @return the result set
      * @throws SQLException on failure
      */
     public ResultSet read(String inputFileName, String[] colNames,
-            String charset) throws SQLException {
+                          String charset) throws SQLException {
         init(inputFileName, charset);
         try {
             return readResultSet(colNames);
@@ -187,9 +188,9 @@ public class Csv implements SimpleRowSource {
      * result set are created on demand, that means the reader is kept open
      * until all rows are read or the result set is closed.
      *
-     * @param reader the reader
+     * @param reader   the reader
      * @param colNames or null if the column names should be read from the CSV
-     *            file
+     *                 file
      * @return the result set
      * @throws IOException on failure
      */

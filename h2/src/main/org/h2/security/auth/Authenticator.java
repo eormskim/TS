@@ -17,9 +17,9 @@ public interface Authenticator {
      * Perform user authentication.
      *
      * @param authenticationInfo authentication info.
-     * @param database target database instance.
+     * @param database           target database instance.
      * @return valid database user or null if user doesn't exists in the
-     *         database
+     * database
      * @throws AuthenticationException on failure
      */
     User authenticate(AuthenticationInfo authenticationInfo, Database database) throws AuthenticationException;

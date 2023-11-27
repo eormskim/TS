@@ -62,22 +62,22 @@ public final class RandFunction extends Function0_1 {
             v = null;
         }
         switch (function) {
-        case RAND: {
-            Random random = session.getRandom();
-            if (v != null) {
-                random.setSeed(v.getInt());
+            case RAND: {
+                Random random = session.getRandom();
+                if (v != null) {
+                    random.setSeed(v.getInt());
+                }
+                v = ValueDouble.get(random.nextDouble());
+                break;
             }
-            v = ValueDouble.get(random.nextDouble());
-            break;
-        }
-        case SECURE_RAND:
-            v = ValueVarbinary.getNoCopy(MathUtils.secureRandomBytes(v.getInt()));
-            break;
-        case RANDOM_UUID:
-            v = ValueUuid.getNewRandom();
-            break;
-        default:
-            throw DbException.getInternalError("function=" + function);
+            case SECURE_RAND:
+                v = ValueVarbinary.getNoCopy(MathUtils.secureRandomBytes(v.getInt()));
+                break;
+            case RANDOM_UUID:
+                v = ValueUuid.getNewRandom();
+                break;
+            default:
+                throw DbException.getInternalError("function=" + function);
         }
         return v;
     }
@@ -88,21 +88,21 @@ public final class RandFunction extends Function0_1 {
             arg = arg.optimize(session);
         }
         switch (function) {
-        case RAND:
-            type = TypeInfo.TYPE_DOUBLE;
-            break;
-        case SECURE_RAND: {
-            Value v;
-            type = arg.isConstant() && (v = arg.getValue(session)) != ValueNull.INSTANCE
-                    ? TypeInfo.getTypeInfo(Value.VARBINARY, Math.max(v.getInt(), 1), 0, null)
-                    : TypeInfo.TYPE_VARBINARY;
-            break;
-        }
-        case RANDOM_UUID:
-            type = TypeInfo.TYPE_UUID;
-            break;
-        default:
-            throw DbException.getInternalError("function=" + function);
+            case RAND:
+                type = TypeInfo.TYPE_DOUBLE;
+                break;
+            case SECURE_RAND: {
+                Value v;
+                type = arg.isConstant() && (v = arg.getValue(session)) != ValueNull.INSTANCE
+                        ? TypeInfo.getTypeInfo(Value.VARBINARY, Math.max(v.getInt(), 1), 0, null)
+                        : TypeInfo.TYPE_VARBINARY;
+                break;
+            }
+            case RANDOM_UUID:
+                type = TypeInfo.TYPE_UUID;
+                break;
+            default:
+                throw DbException.getInternalError("function=" + function);
         }
         return this;
     }
@@ -110,8 +110,8 @@ public final class RandFunction extends Function0_1 {
     @Override
     public boolean isEverything(ExpressionVisitor visitor) {
         switch (visitor.getType()) {
-        case ExpressionVisitor.DETERMINISTIC:
-            return false;
+            case ExpressionVisitor.DETERMINISTIC:
+                return false;
         }
         return super.isEverything(visitor);
     }

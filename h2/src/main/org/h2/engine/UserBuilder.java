@@ -13,12 +13,9 @@ public class UserBuilder {
     /**
      * Build the database user starting from authentication informations.
      *
-     * @param authenticationInfo
-     *            authentication info
-     * @param database
-     *            target database
-     * @param persistent
-     *            true if the user will be persisted in the database
+     * @param authenticationInfo authentication info
+     * @param database           target database
+     * @param persistent         true if the user will be persisted in the database
      * @return user bean
      */
     public static User buildUser(AuthenticationInfo authenticationInfo, Database database, boolean persistent) {

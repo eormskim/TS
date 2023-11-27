@@ -19,6 +19,7 @@ public interface JdbcException {
 
     /**
      * INTERNAL
+     *
      * @return original message
      */
     String getOriginalMessage();
@@ -35,7 +36,8 @@ public interface JdbcException {
 
     /**
      * INTERNAL
-     * @param sql  to set
+     *
+     * @param sql to set
      */
     void setSQL(String sql);
 

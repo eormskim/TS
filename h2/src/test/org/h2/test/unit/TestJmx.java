@@ -16,6 +16,7 @@ import javax.management.MBeanInfo;
 import javax.management.MBeanOperationInfo;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
+
 import org.h2.engine.Constants;
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;

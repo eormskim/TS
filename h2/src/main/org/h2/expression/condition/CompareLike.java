@@ -7,6 +7,7 @@ package org.h2.expression.condition;
 
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
 import org.h2.api.ErrorCode;
 import org.h2.engine.Database;
 import org.h2.engine.SessionLocal;
@@ -73,7 +74,9 @@ public final class CompareLike extends Condition {
 
     private char[] patternChars;
     private String patternString;
-    /** one of MATCH / ONE / ANY */
+    /**
+     * one of MATCH / ONE / ANY
+     */
     private int[] patternTypes;
     private int patternLength;
 
@@ -82,20 +85,26 @@ public final class CompareLike extends Condition {
     private boolean ignoreCase;
     private boolean fastCompare;
     private boolean invalidPattern;
-    /** indicates that we can shortcut the comparison and use startsWith */
+    /**
+     * indicates that we can shortcut the comparison and use startsWith
+     */
     private boolean shortcutToStartsWith;
-    /** indicates that we can shortcut the comparison and use endsWith */
+    /**
+     * indicates that we can shortcut the comparison and use endsWith
+     */
     private boolean shortcutToEndsWith;
-    /** indicates that we can shortcut the comparison and use contains */
+    /**
+     * indicates that we can shortcut the comparison and use contains
+     */
     private boolean shortcutToContains;
 
     public CompareLike(Database db, Expression left, boolean not, boolean whenOperand, Expression right,
-            Expression escape, LikeType likeType) {
+                       Expression escape, LikeType likeType) {
         this(db.getCompareMode(), db.getSettings().defaultEscape, left, not, whenOperand, right, escape, likeType);
     }
 
     public CompareLike(CompareMode compareMode, String defaultEscape, Expression left, boolean not,
-            boolean whenOperand, Expression right, Expression escape, LikeType likeType) {
+                       boolean whenOperand, Expression right, Expression escape, LikeType likeType) {
         this.compareMode = compareMode;
         this.defaultEscape = defaultEscape;
         this.likeType = likeType;
@@ -126,20 +135,20 @@ public final class CompareLike extends Condition {
             builder.append(" NOT");
         }
         switch (likeType) {
-        case LIKE:
-        case ILIKE:
-            builder.append(likeType == LikeType.LIKE ? " LIKE " : " ILIKE ");
-            right.getSQL(builder, sqlFlags, AUTO_PARENTHESES);
-            if (escape != null) {
-                escape.getSQL(builder.append(" ESCAPE "), sqlFlags, AUTO_PARENTHESES);
-            }
-            break;
-        case REGEXP:
-            builder.append(" REGEXP ");
-            right.getSQL(builder, sqlFlags, AUTO_PARENTHESES);
-            break;
-        default:
-            throw DbException.getUnsupportedException(likeType.name());
+            case LIKE:
+            case ILIKE:
+                builder.append(likeType == LikeType.LIKE ? " LIKE " : " ILIKE ");
+                right.getSQL(builder, sqlFlags, AUTO_PARENTHESES);
+                if (escape != null) {
+                    escape.getSQL(builder.append(" ESCAPE "), sqlFlags, AUTO_PARENTHESES);
+                }
+                break;
+            case REGEXP:
+                builder.append(" REGEXP ");
+                right.getSQL(builder, sqlFlags, AUTO_PARENTHESES);
+                break;
+            default:
+                throw DbException.getUnsupportedException(likeType.name());
         }
         return builder;
     }
@@ -184,8 +193,8 @@ public final class CompareLike extends Condition {
             }
             if (likeType != LikeType.REGEXP && "%".equals(p)) {
                 // optimization for X LIKE '%'
-                return new SearchedCase(new Expression[] { new NullPredicate(left, true, false),
-                        ValueExpression.getBoolean(!not), TypedValueExpression.UNKNOWN }).optimize(session);
+                return new SearchedCase(new Expression[]{new NullPredicate(left, true, false),
+                        ValueExpression.getBoolean(!not), TypedValueExpression.UNKNOWN}).optimize(session);
             }
             if (isFullMatch()) {
                 // optimization for X LIKE 'Hello': convert to X = 'Hello'
@@ -372,33 +381,33 @@ public final class CompareLike extends Condition {
     }
 
     private boolean compareAt(String s, int pi, int si, int sLen,
-            char[] pattern, int[] types) {
+                              char[] pattern, int[] types) {
         for (; pi < patternLength; pi++) {
             switch (types[pi]) {
-            case MATCH:
-                if ((si >= sLen) || !compare(pattern, s, pi, si++)) {
-                    return false;
-                }
-                break;
-            case ONE:
-                if (si++ >= sLen) {
-                    return false;
-                }
-                break;
-            case ANY:
-                if (++pi >= patternLength) {
-                    return true;
-                }
-                while (si < sLen) {
-                    if (compare(pattern, s, pi, si) &&
-                            compareAt(s, pi, si, sLen, pattern, types)) {
+                case MATCH:
+                    if ((si >= sLen) || !compare(pattern, s, pi, si++)) {
+                        return false;
+                    }
+                    break;
+                case ONE:
+                    if (si++ >= sLen) {
+                        return false;
+                    }
+                    break;
+                case ANY:
+                    if (++pi >= patternLength) {
                         return true;
                     }
-                    si++;
-                }
-                return false;
-            default:
-                throw DbException.getInternalError(Integer.toString(types[pi]));
+                    while (si < sLen) {
+                        if (compare(pattern, s, pi, si) &&
+                                compareAt(s, pi, si, sLen, pattern, types)) {
+                            return true;
+                        }
+                        si++;
+                    }
+                    return false;
+                default:
+                    throw DbException.getInternalError(Integer.toString(types[pi]));
             }
         }
         return si == sLen;
@@ -419,8 +428,8 @@ public final class CompareLike extends Condition {
      * Test if the value matches the pattern.
      *
      * @param testPattern the pattern
-     * @param value the value
-     * @param escapeChar the escape character
+     * @param value       the value
+     * @param escapeChar  the escape character
      * @return true if the value matches
      */
     public boolean test(String testPattern, String value, char escapeChar) {
@@ -444,7 +453,7 @@ public final class CompareLike extends Condition {
     /**
      * Initializes the pattern.
      *
-     * @param p the pattern
+     * @param p          the pattern
      * @param escapeChar the escape character
      */
     public void initPattern(String p, Character escapeChar) {
@@ -617,17 +626,17 @@ public final class CompareLike extends Condition {
     @Override
     public Expression getSubexpression(int index) {
         switch (index) {
-        case 0:
-            return left;
-        case 1:
-            return right;
-        case 2:
-            if (escape != null) {
-                return escape;
-            }
-            //$FALL-THROUGH$
-        default:
-            throw new IndexOutOfBoundsException();
+            case 0:
+                return left;
+            case 1:
+                return right;
+            case 2:
+                if (escape != null) {
+                    return escape;
+                }
+                //$FALL-THROUGH$
+            default:
+                throw new IndexOutOfBoundsException();
         }
     }
 

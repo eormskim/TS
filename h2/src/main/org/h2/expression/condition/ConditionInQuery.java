@@ -34,7 +34,7 @@ public final class ConditionInQuery extends PredicateWithSubquery {
     private final int compareType;
 
     public ConditionInQuery(Expression left, boolean not, boolean whenOperand, Query query, boolean all,
-            int compareType) {
+                            int compareType) {
         super(query);
         this.left = left;
         this.not = not;
@@ -92,7 +92,7 @@ public final class ConditionInQuery extends PredicateWithSubquery {
             if (left.getValueType() == Value.ROW) {
                 left = ((ValueRow) left).getList()[0];
             }
-            if (rows.containsDistinct(new Value[] { left })) {
+            if (rows.containsDistinct(new Value[]{left})) {
                 return ValueBoolean.get(!not);
             }
         }

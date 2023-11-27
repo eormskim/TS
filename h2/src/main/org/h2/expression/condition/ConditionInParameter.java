@@ -70,9 +70,9 @@ public final class ConditionInParameter extends Condition {
      * Gets evaluated condition value.
      *
      * @param session the session
-     * @param l left value.
-     * @param not whether the result should be negated
-     * @param value parameter value.
+     * @param l       left value.
+     * @param not     whether the result should be negated
+     * @param value   parameter value.
      * @return Evaluated condition value.
      */
     static Value getValue(SessionLocal session, Value l, boolean not, Value value) {
@@ -98,12 +98,10 @@ public final class ConditionInParameter extends Condition {
     /**
      * Create a new {@code = ANY(?)} condition.
      *
-     * @param left
-     *            the expression before {@code = ANY(?)}
-     * @param not whether the result should be negated
+     * @param left        the expression before {@code = ANY(?)}
+     * @param not         whether the result should be negated
      * @param whenOperand whether this is a when operand
-     * @param parameter
-     *            parameter
+     * @param parameter   parameter
      */
     public ConditionInParameter(Expression left, boolean not, boolean whenOperand, Parameter parameter) {
         this.left = left;

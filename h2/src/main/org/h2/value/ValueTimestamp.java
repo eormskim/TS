@@ -62,7 +62,7 @@ public final class ValueTimestamp extends Value {
      * Get or create a date value for the given date.
      *
      * @param dateValue the date value, a bit field with bits for the year,
-     *            month, and day
+     *                  month, and day
      * @param timeNanos the nanoseconds since midnight
      * @return the value
      */
@@ -75,10 +75,9 @@ public final class ValueTimestamp extends Value {
      * This method supports the format +/-year-month-day[ -]hour[:.]minute[:.]seconds.fractional
      * and an optional timezone part.
      *
-     * @param s the string to parse
-     * @param provider
-     *            the cast information provider, may be {@code null} for
-     *            literals without time zone
+     * @param s        the string to parse
+     * @param provider the cast information provider, may be {@code null} for
+     *                 literals without time zone
      * @return the date
      */
     public static ValueTimestamp parse(String s, CastDataProvider provider) {

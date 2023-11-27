@@ -112,7 +112,7 @@ public class BinaryArithmeticStream {
         /**
          * Write a bit.
          *
-         * @param value the value
+         * @param value       the value
          * @param probability the probability that the value is true
          */
         public void writeBit(boolean value, int probability) throws IOException {
@@ -143,7 +143,7 @@ public class BinaryArithmeticStream {
          * Write the Golomb code of a value.
          *
          * @param divisor the divisor
-         * @param value the value
+         * @param value   the value
          */
         public void writeGolomb(int divisor, int value) throws IOException {
             int q = value / divisor;
@@ -194,7 +194,7 @@ public class BinaryArithmeticStream {
         /**
          * Write a value.
          *
-         * @param out the output stream
+         * @param out   the output stream
          * @param value the value to write
          */
         public void write(Out out, int value) throws IOException {

@@ -49,8 +49,8 @@ public class FilePathUnstable extends FilePathWrapper {
      * random seed (for partial writes).
      *
      * @param count the number of write operations (0 to never fail,
-     *            Integer.MAX_VALUE to count the operations)
-     * @param seed the new seed
+     *              Integer.MAX_VALUE to count the operations)
+     * @param seed  the new seed
      */
     public void setDiskFullCount(int count, int seed) {
         diskFullOffCount = count;
@@ -295,7 +295,7 @@ class FileUnstable extends FileBase {
 
     @Override
     public synchronized FileLock tryLock(long position, long size,
-            boolean shared) throws IOException {
+                                         boolean shared) throws IOException {
         return channel.tryLock(position, size, shared);
     }
 

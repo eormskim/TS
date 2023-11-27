@@ -6,17 +6,20 @@ Initial Developer: H2 Group
 -->
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <title>${text.a.title}</title>
-    <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+    <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
     <script type="text/javascript" src="table.js"></script>
 </head>
 <body class="result">
 
 <div id="output">
-${result}
+    ${result}
 </div>
 
-<table id="h2auto" class="autoComp"><tbody></tbody></table>
+<table id="h2auto" class="autoComp">
+    <tbody></tbody>
+</table>
 
-</body></html>
+</body>
+</html>

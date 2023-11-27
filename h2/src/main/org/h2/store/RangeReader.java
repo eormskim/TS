@@ -21,14 +21,10 @@ public final class RangeReader extends Reader {
     /**
      * Creates new instance of range reader.
      *
-     * @param r
-     *            source reader
-     * @param offset
-     *            offset of the range
-     * @param limit
-     *            length of the range
-     * @throws IOException
-     *             on I/O exception during seeking to the specified offset
+     * @param r      source reader
+     * @param offset offset of the range
+     * @param limit  length of the range
+     * @throws IOException on I/O exception during seeking to the specified offset
      */
     public RangeReader(Reader r, long offset, long limit) throws IOException {
         this.r = r;

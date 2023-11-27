@@ -12,6 +12,7 @@ public class AuthenticatorFactory {
 
     /**
      * Factory method.
+     *
      * @return authenticator instance.
      */
     public static Authenticator createAuthenticator() {

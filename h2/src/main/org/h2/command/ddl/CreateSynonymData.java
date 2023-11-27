@@ -28,7 +28,9 @@ public class CreateSynonymData {
      */
     public String synonymFor;
 
-    /** Schema synonymFor is located in. */
+    /**
+     * Schema synonymFor is located in.
+     */
     public Schema synonymForSchema;
 
     /**

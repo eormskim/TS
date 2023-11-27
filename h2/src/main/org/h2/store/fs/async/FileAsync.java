@@ -12,6 +12,7 @@ import java.nio.channels.FileLock;
 import java.nio.file.Paths;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+
 import org.h2.store.fs.FileBaseDefault;
 import org.h2.store.fs.FileUtils;
 
@@ -25,7 +26,7 @@ class FileAsync extends FileBaseDefault {
 
     private static <T> T complete(Future<T> future) throws IOException {
         boolean interrupted = false;
-        for (;;) {
+        for (; ; ) {
             try {
                 T result = future.get();
                 if (interrupted) {

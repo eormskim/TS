@@ -65,29 +65,29 @@ public class AlterUser extends DefineCommand {
     public long update() {
         Database db = session.getDatabase();
         switch (type) {
-        case CommandInterface.ALTER_USER_SET_PASSWORD:
-            if (user != session.getUser()) {
+            case CommandInterface.ALTER_USER_SET_PASSWORD:
+                if (user != session.getUser()) {
+                    session.getUser().checkAdmin();
+                }
+                if (hash != null && salt != null) {
+                    CreateUser.setSaltAndHash(user, session, salt, hash);
+                } else {
+                    CreateUser.setPassword(user, session, password);
+                }
+                break;
+            case CommandInterface.ALTER_USER_RENAME:
                 session.getUser().checkAdmin();
-            }
-            if (hash != null && salt != null) {
-                CreateUser.setSaltAndHash(user, session, salt, hash);
-            } else {
-                CreateUser.setPassword(user, session, password);
-            }
-            break;
-        case CommandInterface.ALTER_USER_RENAME:
-            session.getUser().checkAdmin();
-            if (db.findUser(newName) != null || newName.equals(user.getName())) {
-                throw DbException.get(ErrorCode.USER_ALREADY_EXISTS_1, newName);
-            }
-            db.renameDatabaseObject(session, user, newName);
-            break;
-        case CommandInterface.ALTER_USER_ADMIN:
-            session.getUser().checkAdmin();
-            user.setAdmin(admin);
-            break;
-        default:
-            throw DbException.getInternalError("type=" + type);
+                if (db.findUser(newName) != null || newName.equals(user.getName())) {
+                    throw DbException.get(ErrorCode.USER_ALREADY_EXISTS_1, newName);
+                }
+                db.renameDatabaseObject(session, user, newName);
+                break;
+            case CommandInterface.ALTER_USER_ADMIN:
+                session.getUser().checkAdmin();
+                user.setAdmin(admin);
+                break;
+            default:
+                throw DbException.getInternalError("type=" + type);
         }
         db.updateMeta(session, user);
         return 0;

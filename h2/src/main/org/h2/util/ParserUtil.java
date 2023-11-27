@@ -595,8 +595,8 @@ public class ParserUtil {
      * Add double quotes around an identifier if required and appends it to the
      * specified string builder.
      *
-     * @param builder string builder to append to
-     * @param s the identifier
+     * @param builder  string builder to append to
+     * @param s        the identifier
      * @param sqlFlags formatting flags
      * @return the specified builder
      */
@@ -613,9 +613,9 @@ public class ParserUtil {
     /**
      * Checks if this string is a SQL keyword.
      *
-     * @param s the token to check
+     * @param s          the token to check
      * @param ignoreCase true if case should be ignored, false if only upper case
-     *            tokens are detected as keywords
+     *                   tokens are detected as keywords
      * @return true if it is a keyword
      */
     public static boolean isKeyword(String s, boolean ignoreCase) {
@@ -625,7 +625,7 @@ public class ParserUtil {
     /**
      * Is this a simple identifier (in the JDBC specification sense).
      *
-     * @param s identifier to check
+     * @param s               identifier to check
      * @param databaseToUpper whether unquoted identifiers are converted to upper case
      * @param databaseToLower whether unquoted identifiers are converted to lower case
      * @return is specified identifier may be used without quotes
@@ -668,12 +668,11 @@ public class ParserUtil {
     /**
      * Get the token type.
      *
-     * @param s the string with token
-     * @param ignoreCase true if case should be ignored, false if only upper case
-     *            tokens are detected as keywords
-     * @param additionalKeywords
-     *            whether context-sensitive keywords are returned as
-     *            {@link #KEYWORD}
+     * @param s                  the string with token
+     * @param ignoreCase         true if case should be ignored, false if only upper case
+     *                           tokens are detected as keywords
+     * @param additionalKeywords whether context-sensitive keywords are returned as
+     *                           {@link #KEYWORD}
      * @return the token type
      */
     public static int getTokenType(String s, boolean ignoreCase, boolean additionalKeywords) {

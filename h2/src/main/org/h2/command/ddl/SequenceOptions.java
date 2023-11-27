@@ -61,10 +61,8 @@ public class SequenceOptions {
     /**
      * Creates new instance of sequence options.
      *
-     * @param oldSequence
-     *            the sequence to copy options from
-     * @param dataType
-     *            the new data type
+     * @param oldSequence the sequence to copy options from
+     * @param dataType    the new data type
      */
     public SequenceOptions(Sequence oldSequence, TypeInfo dataType) {
         this.oldSequence = oldSequence;
@@ -131,10 +129,8 @@ public class SequenceOptions {
     /**
      * Gets restart value.
      *
-     * @param session
-     *            the session to calculate the value
-     * @param startValue
-     *            the start value to use if restart without value is specified
+     * @param session    the session to calculate the value
+     * @param startValue the start value to use if restart without value is specified
      * @return restart value or {@code null} if value is not defined.
      */
     public Long getRestartValue(SessionLocal session, long startValue) {
@@ -144,9 +140,8 @@ public class SequenceOptions {
     /**
      * Sets restart value expression, or {@link ValueExpression#DEFAULT}.
      *
-     * @param restart
-     *            RESTART WITH value expression, or
-     *            {@link ValueExpression#DEFAULT} for simple RESTART
+     * @param restart RESTART WITH value expression, or
+     *                {@link ValueExpression#DEFAULT} for simple RESTART
      */
     public void setRestartValue(Expression restart) {
         this.restart = restart;
@@ -175,7 +170,7 @@ public class SequenceOptions {
      * Gets max value.
      *
      * @param sequence the sequence to get default max value.
-     * @param session The session to calculate the value.
+     * @param session  The session to calculate the value.
      * @return max value when the MAXVALUE expression is set, otherwise returns default max value.
      */
     public Long getMaxValue(Sequence sequence, SessionLocal session) {
@@ -202,7 +197,7 @@ public class SequenceOptions {
      * Gets min value.
      *
      * @param sequence the sequence to get default min value.
-     * @param session The session to calculate the value.
+     * @param session  The session to calculate the value.
      * @return min value when the MINVALUE expression is set, otherwise returns default min value.
      */
     public Long getMinValue(Sequence sequence, SessionLocal session) {
@@ -255,67 +250,67 @@ public class SequenceOptions {
     public static long[] getBounds(TypeInfo dataType) {
         long min, max;
         switch (dataType.getValueType()) {
-        case Value.TINYINT:
-            min = Byte.MIN_VALUE;
-            max = Byte.MAX_VALUE;
-            break;
-        case Value.SMALLINT:
-            min = Short.MIN_VALUE;
-            max = Short.MAX_VALUE;
-            break;
-        case Value.INTEGER:
-            min = Integer.MIN_VALUE;
-            max = Integer.MAX_VALUE;
-            break;
-        case Value.BIGINT:
-            min = Long.MIN_VALUE;
-            max = Long.MAX_VALUE;
-            break;
-        case Value.REAL:
-            min = -0x100_0000;
-            max = 0x100_0000;
-            break;
-        case Value.DOUBLE:
-            min = -0x20_0000_0000_0000L;
-            max = 0x20_0000_0000_0000L;
-            break;
-        case Value.NUMERIC: {
-            if (dataType.getScale() != 0) {
-                throw DbException.getUnsupportedException(dataType.getTraceSQL());
-            }
-            long p = (dataType.getPrecision() - dataType.getScale());
-            if (p <= 0) {
-                throw DbException.getUnsupportedException(dataType.getTraceSQL());
-            } else if (p > 18) {
+            case Value.TINYINT:
+                min = Byte.MIN_VALUE;
+                max = Byte.MAX_VALUE;
+                break;
+            case Value.SMALLINT:
+                min = Short.MIN_VALUE;
+                max = Short.MAX_VALUE;
+                break;
+            case Value.INTEGER:
+                min = Integer.MIN_VALUE;
+                max = Integer.MAX_VALUE;
+                break;
+            case Value.BIGINT:
                 min = Long.MIN_VALUE;
                 max = Long.MAX_VALUE;
-            } else {
-                max = 10;
-                for (int i = 1; i < p; i++) {
-                    max *= 10;
+                break;
+            case Value.REAL:
+                min = -0x100_0000;
+                max = 0x100_0000;
+                break;
+            case Value.DOUBLE:
+                min = -0x20_0000_0000_0000L;
+                max = 0x20_0000_0000_0000L;
+                break;
+            case Value.NUMERIC: {
+                if (dataType.getScale() != 0) {
+                    throw DbException.getUnsupportedException(dataType.getTraceSQL());
                 }
-                min = - --max;
-            }
-            break;
-        }
-        case Value.DECFLOAT: {
-            long p = dataType.getPrecision();
-            if (p > 18) {
-                min = Long.MIN_VALUE;
-                max = Long.MAX_VALUE;
-            } else {
-                max = 10;
-                for (int i = 1; i < p; i++) {
-                    max *= 10;
+                long p = (dataType.getPrecision() - dataType.getScale());
+                if (p <= 0) {
+                    throw DbException.getUnsupportedException(dataType.getTraceSQL());
+                } else if (p > 18) {
+                    min = Long.MIN_VALUE;
+                    max = Long.MAX_VALUE;
+                } else {
+                    max = 10;
+                    for (int i = 1; i < p; i++) {
+                        max *= 10;
+                    }
+                    min = - --max;
                 }
-                min = -max;
+                break;
             }
-            break;
+            case Value.DECFLOAT: {
+                long p = dataType.getPrecision();
+                if (p > 18) {
+                    min = Long.MIN_VALUE;
+                    max = Long.MAX_VALUE;
+                } else {
+                    max = 10;
+                    for (int i = 1; i < p; i++) {
+                        max *= 10;
+                    }
+                    min = -max;
+                }
+                break;
+            }
+            default:
+                throw DbException.getUnsupportedException(dataType.getTraceSQL());
         }
-        default:
-            throw DbException.getUnsupportedException(dataType.getTraceSQL());
-        }
-        long bounds[] = { min, max };
+        long bounds[] = {min, max};
         return bounds;
     }
 

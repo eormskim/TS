@@ -69,23 +69,23 @@ public final class SortOrder implements Comparator<Value[]> {
     /**
      * Construct a new sort order object with default sort directions.
      *
-     * @param session the session
+     * @param session            the session
      * @param queryColumnIndexes the column index list
      */
     public SortOrder(SessionLocal session, int[] queryColumnIndexes) {
-        this (session, queryColumnIndexes, new int[queryColumnIndexes.length], null);
+        this(session, queryColumnIndexes, new int[queryColumnIndexes.length], null);
     }
 
     /**
      * Construct a new sort order object.
      *
-     * @param session the session
+     * @param session            the session
      * @param queryColumnIndexes the column index list
-     * @param sortType the sort order bit masks
-     * @param orderList the original query order list (if this is a query)
+     * @param sortType           the sort order bit masks
+     * @param orderList          the original query order list (if this is a query)
      */
     public SortOrder(SessionLocal session, int[] queryColumnIndexes, int[] sortType,
-            ArrayList<QueryOrderBy> orderList) {
+                     ArrayList<QueryOrderBy> orderList) {
         this.session = session;
         this.queryColumnIndexes = queryColumnIndexes;
         this.sortTypes = sortType;
@@ -96,9 +96,9 @@ public final class SortOrder implements Comparator<Value[]> {
      * Create the SQL snippet that describes this sort order.
      * This is the SQL snippet that usually appears after the ORDER BY clause.
      *
-     * @param builder string builder to append to
-     * @param list the expression list
-     * @param visible the number of columns in the select list
+     * @param builder  string builder to append to
+     * @param list     the expression list
+     * @param visible  the number of columns in the select list
      * @param sqlFlags formatting flags
      * @return the specified string builder
      */
@@ -120,8 +120,9 @@ public final class SortOrder implements Comparator<Value[]> {
 
     /**
      * Appends type information (DESC, NULLS FIRST, NULLS LAST) to the specified statement builder.
+     *
      * @param builder string builder
-     * @param type sort type
+     * @param type    sort type
      */
     public static void typeToString(StringBuilder builder, int type) {
         if ((type & DESCENDING) != 0) {
@@ -175,9 +176,9 @@ public final class SortOrder implements Comparator<Value[]> {
     /**
      * Sort a list of rows using offset and limit.
      *
-     * @param rows the list of rows
+     * @param rows          the list of rows
      * @param fromInclusive the start index, inclusive
-     * @param toExclusive the end index, exclusive
+     * @param toExclusive   the end index, exclusive
      */
     public void sort(ArrayList<Value[]> rows, int fromInclusive, int toExclusive) {
         if (toExclusive == 1 && fromInclusive == 0) {
@@ -210,7 +211,7 @@ public final class SortOrder implements Comparator<Value[]> {
      * Get the column for the given table filter, if the sort column is for this
      * filter.
      *
-     * @param index the column index (0, 1,..)
+     * @param index  the column index (0, 1,..)
      * @param filter the table filter
      * @return the column, or null
      */
@@ -260,7 +261,7 @@ public final class SortOrder implements Comparator<Value[]> {
      * {@link SortOrder#NULLS_LAST} explicitly set.
      *
      * @return bit masks with either {@link SortOrder#NULLS_FIRST} or {@link SortOrder#NULLS_LAST}
-     *         explicitly set.
+     * explicitly set.
      */
     public int[] getSortTypesWithNullOrdering() {
         return addNullOrdering(session.getDatabase(), sortTypes.clone());
@@ -270,10 +271,8 @@ public final class SortOrder implements Comparator<Value[]> {
      * Add explicit {@link SortOrder#NULLS_FIRST} or {@link SortOrder#NULLS_LAST} where they
      * aren't already specified.
      *
-     * @param database
-     *            the database
-     * @param sortTypes
-     *            bit masks
+     * @param database  the database
+     * @param sortTypes bit masks
      * @return the specified array with possibly modified bit masks
      */
     public static int[] addNullOrdering(Database database, int[] sortTypes) {

@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
+
 import org.h2.test.TestBase;
 import org.h2.test.TestDb;
 import org.h2.tools.DeleteDbFiles;
@@ -52,7 +53,7 @@ public class TestBtreeIndex extends TestDb {
             int count = 1000;
             stat.execute(
                     "insert into test select x from system_range(1, " +
-                    count + ")");
+                            count + ")");
             if (!config.memory) {
                 conn.close();
                 conn = getConnection(getTestName());

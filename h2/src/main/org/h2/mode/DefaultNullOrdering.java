@@ -41,8 +41,7 @@ public enum DefaultNullOrdering {
     /**
      * Returns default ordering of NULL values for the specified ordinal number.
      *
-     * @param ordinal
-     *            ordinal number
+     * @param ordinal ordinal number
      * @return default ordering of NULL values for the specified ordinal number
      * @see #ordinal()
      */
@@ -65,10 +64,9 @@ public enum DefaultNullOrdering {
      * Returns a sort type bit mask with {@link org.h2.result.SortOrder#NULLS_FIRST} or
      * {@link org.h2.result.SortOrder#NULLS_LAST} explicitly set
      *
-     * @param sortType
-     *            sort type bit mask
+     * @param sortType sort type bit mask
      * @return bit mask with {@link org.h2.result.SortOrder#NULLS_FIRST} or {@link org.h2.result.SortOrder#NULLS_LAST}
-     *         explicitly set
+     * explicitly set
      */
     public int addExplicitNullOrdering(int sortType) {
         if ((sortType & (NULLS_FIRST | NULLS_LAST)) == 0) {
@@ -80,12 +78,10 @@ public enum DefaultNullOrdering {
     /**
      * Compare two expressions where one of them is NULL.
      *
-     * @param aNull
-     *            whether the first expression is null
-     * @param sortType
-     *            the sort bit mask to use
+     * @param aNull    whether the first expression is null
+     * @param sortType the sort bit mask to use
      * @return the result of the comparison (-1 meaning the first expression
-     *         should appear before the second, 0 if they are equal)
+     * should appear before the second, 0 if they are equal)
      */
     public int compareNull(boolean aNull, int sortType) {
         if ((sortType & NULLS_FIRST) != 0) {

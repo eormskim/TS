@@ -6,6 +6,7 @@
 package org.h2.mvstore.type;
 
 import java.nio.ByteBuffer;
+
 import org.h2.mvstore.DataUtils;
 import org.h2.mvstore.WriteBuffer;
 
@@ -93,6 +94,6 @@ public abstract class BasicDataType<T> implements DataType<T> {
      */
     @SuppressWarnings("unchecked")
     protected final T[] cast(Object storage) {
-        return (T[])storage;
+        return (T[]) storage;
     }
 }

@@ -104,8 +104,8 @@ public class TestAuthentication extends TestBase {
                 if (name.equals(JAAS_CONFIG_NAME)) {
                     HashMap<String, String> options = new HashMap<>();
                     options.put("password", getExternalUserPassword());
-                    return new AppConfigurationEntry[] { new AppConfigurationEntry(MyLoginModule.class.getName(),
-                            LoginModuleControlFlag.REQUIRED, options) };
+                    return new AppConfigurationEntry[]{new AppConfigurationEntry(MyLoginModule.class.getName(),
+                            LoginModuleControlFlag.REQUIRED, options)};
                 }
                 return innerConfiguration.getAppConfigurationEntry(name);
             }
@@ -237,7 +237,7 @@ public class TestAuthentication extends TestBase {
             String validUserName = "new_" + getExternalUser();
             User validUser = new User(database, database.allocateObjectId(),
                     (validUserName.toUpperCase() + "@" + getRealmName()).toUpperCase(), false);
-            validUser.setUserPasswordHash(new byte[] {});
+            validUser.setUserPasswordHash(new byte[]{});
             database.addDatabaseObject(session, validUser);
             session.commit(false);
             Connection connectionWithRegisterUser = DriverManager.getConnection(
@@ -250,7 +250,7 @@ public class TestAuthentication extends TestBase {
     }
 
     private void testStaticUserCredentials() throws Exception {
-        String userName="STATICUSER3";
+        String userName = "STATICUSER3";
         try (Connection ignored = DriverManager.getConnection(
                 getDatabaseURL() + ";AUTHREALM=" + getRealmName().toUpperCase() + "_STATIC", userName,
                 "staticpassword")) {
@@ -259,7 +259,7 @@ public class TestAuthentication extends TestBase {
         }
     }
 
-    private void testSet() throws Exception{
+    private void testSet() throws Exception {
         try (Connection ignored = DriverManager.getConnection(
                 getDatabaseURL() + ";AUTHENTICATOR=FALSE", "DBA", "")) {
             try {
@@ -278,12 +278,12 @@ public class TestAuthentication extends TestBase {
         H2AuthConfig config = H2AuthConfigXml.parseFrom(inputStream);
         assertTrue(config.isAllowUserRegistration());
         assertFalse(config.isCreateMissingRoles());
-        assertEquals("ciao",config.getRealms().get(0).getName());
-        assertEquals("myclass",config.getRealms().get(0).getValidatorClass());
-        assertEquals("prop1",config.getRealms().get(1).getProperties().get(0).getName());
-        assertEquals("value1",config.getRealms().get(1).getProperties().get(0).getValue());
-        assertEquals("class1",config.getUserToRolesMappers().get(0).getClassName());
-        assertEquals("prop2",config.getUserToRolesMappers().get(0).getProperties().get(0).getName());
-        assertEquals("value2",config.getUserToRolesMappers().get(0).getProperties().get(0).getValue());
+        assertEquals("ciao", config.getRealms().get(0).getName());
+        assertEquals("myclass", config.getRealms().get(0).getValidatorClass());
+        assertEquals("prop1", config.getRealms().get(1).getProperties().get(0).getName());
+        assertEquals("value1", config.getRealms().get(1).getProperties().get(0).getValue());
+        assertEquals("class1", config.getUserToRolesMappers().get(0).getClassName());
+        assertEquals("prop2", config.getUserToRolesMappers().get(0).getProperties().get(0).getName());
+        assertEquals("value2", config.getUserToRolesMappers().get(0).getProperties().get(0).getValue());
     }
 }

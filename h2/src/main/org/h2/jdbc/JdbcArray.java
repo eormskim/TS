@@ -31,9 +31,10 @@ public final class JdbcArray extends TraceObject implements Array {
 
     /**
      * INTERNAL
-     * @param conn it belongs to
+     *
+     * @param conn  it belongs to
      * @param value of
-     * @param id of the trace object
+     * @param id    of the trace object
      */
     public JdbcArray(JdbcConnection conn, Value value, int id) {
         setTrace(conn.getSession().getTrace(), TraceObject.ARRAY, id);
@@ -108,7 +109,7 @@ public final class JdbcArray extends TraceObject implements Array {
      *
      * @param index the start index of the subset (starting with 1)
      * @param count the maximum number of values
-     * @param map is ignored. Only empty or null maps are supported
+     * @param map   is ignored. Only empty or null maps are supported
      * @return the Object array
      */
     @Override
@@ -230,12 +231,12 @@ public final class JdbcArray extends TraceObject implements Array {
      *
      * @param index the start index of the subset (starting with 1)
      * @param count the maximum number of values
-     * @param map is ignored. Only empty or null maps are supported
+     * @param map   is ignored. Only empty or null maps are supported
      * @return the result set
      */
     @Override
     public ResultSet getResultSet(long index, int count,
-            Map<String, Class<?>> map) throws SQLException {
+                                  Map<String, Class<?>> map) throws SQLException {
         try {
             if (isDebugEnabled()) {
                 debugCode("getResultSet(" + index + ", " + count + ", " + quoteMap(map) + ')');
@@ -308,6 +309,6 @@ public final class JdbcArray extends TraceObject implements Array {
     @Override
     public String toString() {
         return value == null ? "null" :
-            (getTraceObjectName() + ": " + value.getTraceSQL());
+                (getTraceObjectName() + ": " + value.getTraceSQL());
     }
 }

@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+
 import org.h2.store.fs.FileUtils;
 import org.h2.util.IOUtils;
 
@@ -110,7 +111,7 @@ public class FtpData extends Thread {
      * connected.
      *
      * @param fileName the source file name
-     * @param skip the number of bytes to skip
+     * @param skip     the number of bytes to skip
      */
     synchronized void send(String fileName, long skip) throws IOException {
         connect();

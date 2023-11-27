@@ -1,0 +1,39 @@
+/**
+"allowJs" : js파일도 컴파일 대상이라는 의미, 점진적으로 타입스크립트를 변환하기 위해 사용한다. 프로젝트가 큰 경우 js확장자를 가진 파일이 매우 많을 수 있는데 이 때 타입스크립트로 변환하기 위해 모든 파일의 확장자를 ts혹은 tsx로 바꾸지 않아도 js 또한 tsc로 컴파일 되도록 허용해놓았기 때문에 문제 없이 컴파일 된다. 그렇기 때문에 원하는 부분만 점진적으로 타입스크립트로 전환해갈 수 있는 것이다.
+"target" : tsc 로 컴파일 시 변환되는 ES버전
+"outDir" : 타입스크립트의 결과물이 들어가는 경로 설정
+"moduleResolution" : Promise base 코드 작성 시 Promise를 인식시켜주기 위해 설정
+"lib" : 컴파일 과정에 사용될 라이브러리 파일 설정, es2015는 프로미스 객체를 타입스크립트에서 인식할 수 있게 필요한 속성이고, dom 관련 속성은 DOM API를 사용하는 경우 필요하다.
+"include" : 프로젝트를 기준으로 어떤 폴더를 대상으로 타입스크립트를 컴파일 시킬 것이냐를 결정, 예를 들어 프로젝트 전체를 컴파일 할 것이냐 특정 폴더만 할 것이냐를 결정한다. include와 exclude는 디폴트 값이 있으므로 확인해야 함. 또한 아스타 2개와 1개를 사용하는 경우는 src 하위 파일을 모두 포함한다는 의미
+**/
+[
+  {
+    "compilerOptions": {
+      "allowJs": true,
+      "target": "ES5",
+      "outDir": "./dist",
+      "moduleResolution": "Node",
+      "lib": [
+        "ES2015",
+        "DOM",
+        "DOM.Iterable"
+      ]
+    },
+    "include": [
+      "./src/**/*"
+    ],
+    "exclude": [
+      "node_modules",
+      "dist"
+    ]
+  },
+  {
+    "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true
+  }
+]

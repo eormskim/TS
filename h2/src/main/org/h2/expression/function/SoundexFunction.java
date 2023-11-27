@@ -49,15 +49,15 @@ public final class SoundexFunction extends Function1_2 {
     @Override
     public Value getValue(SessionLocal session, Value v1, Value v2) {
         switch (function) {
-        case SOUNDEX:
-            v1 = ValueVarchar.get(new String(getSoundex(v1.getString()), StandardCharsets.ISO_8859_1), session);
-            break;
-        case DIFFERENCE: {
-            v1 = ValueInteger.get(getDifference(v1.getString(), v2.getString()));
-            break;
-        }
-        default:
-            throw DbException.getInternalError("function=" + function);
+            case SOUNDEX:
+                v1 = ValueVarchar.get(new String(getSoundex(v1.getString()), StandardCharsets.ISO_8859_1), session);
+                break;
+            case DIFFERENCE: {
+                v1 = ValueInteger.get(getDifference(v1.getString(), v2.getString()));
+                break;
+            }
+            default:
+                throw DbException.getInternalError("function=" + function);
         }
         return v1;
     }
@@ -75,7 +75,7 @@ public final class SoundexFunction extends Function1_2 {
     }
 
     private static byte[] getSoundex(String s) {
-        byte[] chars = { '0', '0', '0', '0' };
+        byte[] chars = {'0', '0', '0', '0'};
         byte lastDigit = '0';
         for (int i = 0, j = 0, l = s.length(); i < l && j < 4; i++) {
             char c = s.charAt(i);
@@ -105,14 +105,14 @@ public final class SoundexFunction extends Function1_2 {
             right = right.optimize(session);
         }
         switch (function) {
-        case SOUNDEX:
-            type = TypeInfo.getTypeInfo(Value.VARCHAR, 4, 0, null);
-            break;
-        case DIFFERENCE:
-            type = TypeInfo.TYPE_INTEGER;
-            break;
-        default:
-            throw DbException.getInternalError("function=" + function);
+            case SOUNDEX:
+                type = TypeInfo.getTypeInfo(Value.VARCHAR, 4, 0, null);
+                break;
+            case DIFFERENCE:
+                type = TypeInfo.TYPE_INTEGER;
+                break;
+            default:
+                throw DbException.getInternalError("function=" + function);
         }
         if (left.isConstant() && (right == null || right.isConstant())) {
             return TypedValueExpression.getTypedIfNull(getValue(session), type);

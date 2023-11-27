@@ -10,8 +10,7 @@ import java.math.BigDecimal;
 /**
  * Abstract JSON output target.
  *
- * @param <R>
- *            the type of the result
+ * @param <R> the type of the result
  */
 public abstract class JSONTarget<R> {
 
@@ -38,28 +37,27 @@ public abstract class JSONTarget<R> {
     /**
      * Name of a member.
      *
-     * @param name
-     *            the name
+     * @param name the name
      */
     public abstract void member(String name);
 
     /**
      * Parse "null".
-     *
+     * <p>
      * {@code null} value.
      */
     public abstract void valueNull();
 
     /**
      * Parse "false".
-     *
+     * <p>
      * {@code false} value.
      */
     public abstract void valueFalse();
 
     /**
      * Parse "true".
-     *
+     * <p>
      * {@code true} value.
      */
     public abstract void valueTrue();
@@ -67,16 +65,14 @@ public abstract class JSONTarget<R> {
     /**
      * A number value.
      *
-     * @param number
-     *            the number
+     * @param number the number
      */
     public abstract void valueNumber(BigDecimal number);
 
     /**
      * A string value.
      *
-     * @param string
-     *            the string
+     * @param string the string
      */
     public abstract void valueString(String string);
 

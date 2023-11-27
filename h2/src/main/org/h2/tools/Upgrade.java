@@ -126,16 +126,12 @@ public final class Upgrade {
     /**
      * Performs database upgrade from an older version of H2.
      *
-     * @param url
-     *            the JDBC connection URL
-     * @param info
-     *            the connection properties ("user", "password", etc).
-     * @param version
-     *            the old version of H2
+     * @param url     the JDBC connection URL
+     * @param info    the connection properties ("user", "password", etc).
+     * @param version the old version of H2
      * @return {@code true} on success, {@code false} if URL is a remote or
-     *         in-memory URL
-     * @throws Exception
-     *             on failure
+     * in-memory URL
+     * @throws Exception on failure
      */
     public static boolean upgrade(String url, Properties info, int version) throws Exception {
         Properties oldInfo = new Properties();
@@ -213,13 +209,10 @@ public final class Upgrade {
     /**
      * Loads the specified version of H2 in a separate class loader.
      *
-     * @param version
-     *            the version to load
+     * @param version the version to load
      * @return the driver of the specified version
-     * @throws IOException
-     *             on I/O exception
-     * @throws ReflectiveOperationException
-     *             on exception during initialization of the driver
+     * @throws IOException                  on I/O exception
+     * @throws ReflectiveOperationException on exception during initialization of the driver
      */
     public static java.sql.Driver loadH2(int version) throws IOException, ReflectiveOperationException {
         String prefix;
@@ -242,7 +235,7 @@ public final class Upgrade {
         ZipInputStream is = new ZipInputStream(new ByteArrayInputStream(data));
         HashMap<String, byte[]> map = new HashMap<>(version >= 198 ? 2048 : 1024);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        for (ZipEntry ze; (ze = is.getNextEntry()) != null;) {
+        for (ZipEntry ze; (ze = is.getNextEntry()) != null; ) {
             if (ze.isDirectory()) {
                 continue;
             }
@@ -273,10 +266,8 @@ public final class Upgrade {
     /**
      * Unloads the specified driver of H2.
      *
-     * @param driver
-     *            the driver to unload
-     * @throws ReflectiveOperationException
-     *             on exception
+     * @param driver the driver to unload
+     * @throws ReflectiveOperationException on exception
      */
     public static void unloadH2(java.sql.Driver driver) throws ReflectiveOperationException {
         driver.getClass().getDeclaredMethod("unload").invoke(null);

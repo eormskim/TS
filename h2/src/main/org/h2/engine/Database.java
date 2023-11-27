@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+
 import org.h2.api.DatabaseEventListener;
 import org.h2.api.ErrorCode;
 import org.h2.api.JavaObjectSerializer;
@@ -86,9 +87,9 @@ import org.h2.value.ValueTimestampTimeZone;
 
 /**
  * There is one database object per open database.
- *
+ * <p>
  * The format of the meta data table is:
- *  id int, 0, objectType int, sql varchar
+ * id int, 0, objectType int, sql varchar
  *
  * @since 2004-04-15 22:49
  */
@@ -244,7 +245,7 @@ public final class Database implements DataHandler, CastDataProvider {
         }
         String lockMethodName = ci.getProperty("FILE_LOCK", null);
         fileLockMethod = lockMethodName != null ? FileLock.getFileLockMethod(lockMethodName) :
-                            autoServerMode ? FileLockMethod.FILE : FileLockMethod.FS;
+                autoServerMode ? FileLockMethod.FILE : FileLockMethod.FS;
         this.databaseURL = ci.getURL();
         String s = ci.removeProperty("DATABASE_EVENT_LISTENER", null);
         if (s != null) {
@@ -349,7 +350,7 @@ public final class Database implements DataHandler, CastDataProvider {
             CreateTableData data = createSysTableData();
             starting = true;
             meta = mainSchema.createTable(data);
-            IndexColumn[] pkCols = IndexColumn.wrap(new Column[] { data.columns.get(0) });
+            IndexColumn[] pkCols = IndexColumn.wrap(new Column[]{data.columns.get(0)});
             metaIdIndex = meta.addIndex(systemSession, "SYS_ID", 0, pkCols, 1,
                     IndexType.createPrimaryKey(false, false), true, null);
             systemSession.commit(true);
@@ -526,7 +527,7 @@ public final class Database implements DataHandler, CastDataProvider {
      * Check if the file password hash is correct.
      *
      * @param testCipher the cipher algorithm
-     * @param testHash the hash code
+     * @param testHash   the hash code
      * @return true if the cipher algorithm and the password match
      */
     boolean validateFilePasswordHash(String testCipher, byte[] testHash) {
@@ -539,13 +540,14 @@ public final class Database implements DataHandler, CastDataProvider {
     private String parseDatabaseShortName() {
         String n = databaseName;
         int l = n.length(), i = l;
-        loop: while (--i >= 0) {
+        loop:
+        while (--i >= 0) {
             char ch = n.charAt(i);
             switch (ch) {
-            case '/':
-            case ':':
-            case '\\':
-                break loop;
+                case '/':
+                case ':':
+                case '\\':
+                    break loop;
             }
         }
         n = ++i == l ? "UNNAMED" : n.substring(i);
@@ -583,26 +585,26 @@ public final class Database implements DataHandler, CastDataProvider {
             MetaRecord rec = new MetaRecord(cursor.get());
             objectIds.set(rec.getId());
             switch (rec.getObjectType()) {
-            case DbObject.SETTING:
-            case DbObject.USER:
-            case DbObject.SCHEMA:
-            case DbObject.FUNCTION_ALIAS:
-                firstRecords.add(rec);
-                break;
-            case DbObject.DOMAIN:
-                domainRecords.add(rec);
-                break;
-            case DbObject.SEQUENCE:
-            case DbObject.CONSTANT:
-            case DbObject.TABLE_OR_VIEW:
-            case DbObject.INDEX:
-                middleRecords.add(rec);
-                break;
-            case DbObject.CONSTRAINT:
-                constraintRecords.add(rec);
-                break;
-            default:
-                lastRecords.add(rec);
+                case DbObject.SETTING:
+                case DbObject.USER:
+                case DbObject.SCHEMA:
+                case DbObject.FUNCTION_ALIAS:
+                    firstRecords.add(rec);
+                    break;
+                case DbObject.DOMAIN:
+                    domainRecords.add(rec);
+                    break;
+                case DbObject.SEQUENCE:
+                case DbObject.CONSTANT:
+                case DbObject.TABLE_OR_VIEW:
+                case DbObject.INDEX:
+                    middleRecords.add(rec);
+                    break;
+                case DbObject.CONSTRAINT:
+                    constraintRecords.add(rec);
+                    break;
+                default:
+                    lastRecords.add(rec);
             }
         }
         synchronized (systemSession) {
@@ -610,7 +612,7 @@ public final class Database implements DataHandler, CastDataProvider {
             // Domains may depend on other domains
             int count = domainRecords.size();
             if (count > 0) {
-                for (int j = 0;; count = j) {
+                for (int j = 0; ; count = j) {
                     DbException exception = null;
                     for (int i = 0; i < count; i++) {
                         MetaRecord rec = domainRecords.get(i);
@@ -825,7 +827,7 @@ public final class Database implements DataHandler, CastDataProvider {
      * Remove the given object from the meta data.
      *
      * @param session the session
-     * @param id the id of the object to remove
+     * @param id      the id of the object to remove
      */
     public void removeMeta(SessionLocal session, int id) {
         if (id > 0 && !starting) {
@@ -858,6 +860,7 @@ public final class Database implements DataHandler, CastDataProvider {
 
     /**
      * Mark some database ids as unused.
+     *
      * @param idsToRelease the ids to release
      */
     public void releaseDatabaseObjectIds(BitSet idsToRelease) {
@@ -870,24 +873,24 @@ public final class Database implements DataHandler, CastDataProvider {
     private Map<String, DbObject> getMap(int type) {
         Map<String, ? extends DbObject> result;
         switch (type) {
-        case DbObject.USER:
-        case DbObject.ROLE:
-            result = usersAndRoles;
-            break;
-        case DbObject.SETTING:
-            result = settings;
-            break;
-        case DbObject.RIGHT:
-            result = rights;
-            break;
-        case DbObject.SCHEMA:
-            result = schemas;
-            break;
-        case DbObject.COMMENT:
-            result = comments;
-            break;
-        default:
-            throw DbException.getInternalError("type=" + type);
+            case DbObject.USER:
+            case DbObject.ROLE:
+                result = usersAndRoles;
+                break;
+            case DbObject.SETTING:
+                result = settings;
+                break;
+            case DbObject.RIGHT:
+                result = rights;
+                break;
+            case DbObject.SCHEMA:
+                result = schemas;
+                break;
+            case DbObject.COMMENT:
+                result = comments;
+                break;
+            default:
+                throw DbException.getInternalError("type=" + type);
         }
         return (Map<String, DbObject>) result;
     }
@@ -896,7 +899,7 @@ public final class Database implements DataHandler, CastDataProvider {
      * Add a schema object to the database.
      *
      * @param session the session
-     * @param obj the object to add
+     * @param obj     the object to add
      */
     public void addSchemaObject(SessionLocal session, SchemaObject obj) {
         int id = obj.getId();
@@ -914,7 +917,7 @@ public final class Database implements DataHandler, CastDataProvider {
      * Add an object to the database.
      *
      * @param session the session
-     * @param obj the object to add
+     * @param obj     the object to add
      */
     public synchronized void addDatabaseObject(SessionLocal session, DbObject obj) {
         int id = obj.getId();
@@ -1026,7 +1029,7 @@ public final class Database implements DataHandler, CastDataProvider {
     /**
      * Create a session for the given user.
      *
-     * @param user the user
+     * @param user                  the user
      * @param networkConnectionInfo the network connection information, or {@code null}
      * @return the session, or null if the database is currently closing
      * @throws DbException if the database is in exclusive mode
@@ -1136,7 +1139,7 @@ public final class Database implements DataHandler, CastDataProvider {
      * Close the database.
      *
      * @param fromShutdownHook true if this method is called from the shutdown
-     *            hook
+     *                         hook
      */
     void close(boolean fromShutdownHook) {
         DbException b = backgroundException.getAndSet(null);
@@ -1276,8 +1279,8 @@ public final class Database implements DataHandler, CastDataProvider {
                 } else {
                     int allowedCompactionTime =
                             compactMode == CommandInterface.SHUTDOWN_COMPACT ||
-                            compactMode == CommandInterface.SHUTDOWN_DEFRAG ||
-                            dbSettings.defragAlways ? -1 : dbSettings.maxCompactTime;
+                                    compactMode == CommandInterface.SHUTDOWN_DEFRAG ||
+                                    dbSettings.defragAlways ? -1 : dbSettings.maxCompactTime;
                     store.close(allowedCompactionTime);
                 }
             }
@@ -1436,7 +1439,7 @@ public final class Database implements DataHandler, CastDataProvider {
      * Get all sessions that are currently connected to the database.
      *
      * @param includingSystemSession if the system session should also be
-     *            included
+     *                               included
      * @return the list of sessions
      */
     public SessionLocal[] getSessions(boolean includingSystemSession) {
@@ -1464,7 +1467,7 @@ public final class Database implements DataHandler, CastDataProvider {
      * Update an object in the system table.
      *
      * @param session the session
-     * @param obj the database object
+     * @param obj     the database object
      */
     public void updateMeta(SessionLocal session, DbObject obj) {
         int id = obj.getId();
@@ -1488,11 +1491,11 @@ public final class Database implements DataHandler, CastDataProvider {
      * Rename a schema object.
      *
      * @param session the session
-     * @param obj the object
+     * @param obj     the object
      * @param newName the new name
      */
     public synchronized void renameSchemaObject(SessionLocal session,
-            SchemaObject obj, String newName) {
+                                                SchemaObject obj, String newName) {
         checkWritingAllowed();
         obj.getSchema().rename(obj, newName);
         updateMetaAndFirstLevelChildren(session, obj);
@@ -1519,11 +1522,11 @@ public final class Database implements DataHandler, CastDataProvider {
      * Rename a database object.
      *
      * @param session the session
-     * @param obj the object
+     * @param obj     the object
      * @param newName the new name
      */
     public synchronized void renameDatabaseObject(SessionLocal session,
-            DbObject obj, String newName) {
+                                                  DbObject obj, String newName) {
         checkWritingAllowed();
         int type = obj.getType();
         Map<String, DbObject> map = getMap(type);
@@ -1572,7 +1575,7 @@ public final class Database implements DataHandler, CastDataProvider {
      * Remove the object from the database.
      *
      * @param session the session
-     * @param obj the object to remove
+     * @param obj     the object to remove
      */
     public synchronized void removeDatabaseObject(SessionLocal session, DbObject obj) {
         checkWritingAllowed();
@@ -1596,20 +1599,20 @@ public final class Database implements DataHandler, CastDataProvider {
     /**
      * Get the first table that depends on this object.
      *
-     * @param obj the object to find
+     * @param obj    the object to find
      * @param except the table to exclude (or null)
      * @return the first dependent table, or null
      */
     public Table getDependentTable(SchemaObject obj, Table except) {
         switch (obj.getType()) {
-        case DbObject.COMMENT:
-        case DbObject.CONSTRAINT:
-        case DbObject.INDEX:
-        case DbObject.RIGHT:
-        case DbObject.TRIGGER:
-        case DbObject.USER:
-            return null;
-        default:
+            case DbObject.COMMENT:
+            case DbObject.CONSTRAINT:
+            case DbObject.INDEX:
+            case DbObject.RIGHT:
+            case DbObject.TRIGGER:
+            case DbObject.USER:
+                return null;
+            default:
         }
         HashSet<DbObject> set = new HashSet<>();
         for (Schema schema : schemas.values()) {
@@ -1631,10 +1634,10 @@ public final class Database implements DataHandler, CastDataProvider {
      * Remove an object from the system table.
      *
      * @param session the session
-     * @param obj the object to be removed
+     * @param obj     the object to be removed
      */
     public void removeSchemaObject(SessionLocal session,
-            SchemaObject obj) {
+                                   SchemaObject obj) {
         int type = obj.getType();
         if (type == DbObject.TABLE_OR_VIEW) {
             Table table = (Table) obj;
@@ -1715,7 +1718,7 @@ public final class Database implements DataHandler, CastDataProvider {
      * Get a unique temporary table name.
      *
      * @param baseName the prefix of the returned name
-     * @param session the session
+     * @param session  the session
      * @return a unique name
      */
     public synchronized String getTempTableName(String baseName, SessionLocal session) {
@@ -1778,7 +1781,7 @@ public final class Database implements DataHandler, CastDataProvider {
     /**
      * Prepare a transaction.
      *
-     * @param session the session
+     * @param session     the session
      * @param transaction the name of the transaction
      */
     synchronized void prepareCommit(SessionLocal session, String transaction) {
@@ -1812,7 +1815,7 @@ public final class Database implements DataHandler, CastDataProvider {
 
     public Throwable getBackgroundException() {
         MVStoreException exception = store.getMvStore().getPanicException();
-        if(exception != null) {
+        if (exception != null) {
             return exception;
         }
         return backgroundException.getAndSet(null);
@@ -1862,9 +1865,9 @@ public final class Database implements DataHandler, CastDataProvider {
      * This method calls the {@link DatabaseEventListener} if one is registered.
      *
      * @param state the {@link DatabaseEventListener} state
-     * @param name the object name
-     * @param x the current position
-     * @param max the highest value or 0 if unknown
+     * @param name  the object name
+     * @param x     the current position
+     * @param max   the highest value or 0 if unknown
      */
     public void setProgress(int state, String name, long x, long max) {
         if (eventListener != null) {
@@ -1880,7 +1883,7 @@ public final class Database implements DataHandler, CastDataProvider {
      * This method is called after an exception occurred, to inform the database
      * event listener (if one is set).
      *
-     * @param e the exception
+     * @param e   the exception
      * @param sql the SQL statement
      */
     public void exceptionThrown(SQLException e, String sql) {
@@ -1914,15 +1917,15 @@ public final class Database implements DataHandler, CastDataProvider {
 
     public void setLockMode(int lockMode) {
         switch (lockMode) {
-        case Constants.LOCK_MODE_OFF:
-        case Constants.LOCK_MODE_READ_COMMITTED:
-            break;
-        case Constants.LOCK_MODE_TABLE:
-        case Constants.LOCK_MODE_TABLE_GC:
-            lockMode = Constants.LOCK_MODE_READ_COMMITTED;
-            break;
-        default:
-            throw DbException.getInvalidValueException("lock mode", lockMode);
+            case Constants.LOCK_MODE_OFF:
+            case Constants.LOCK_MODE_READ_COMMITTED:
+                break;
+            case Constants.LOCK_MODE_TABLE:
+            case Constants.LOCK_MODE_TABLE_GC:
+                lockMode = Constants.LOCK_MODE_READ_COMMITTED;
+                break;
+            default:
+                throw DbException.getInvalidValueException("lock mode", lockMode);
         }
         this.lockMode = lockMode;
     }
@@ -2088,7 +2091,7 @@ public final class Database implements DataHandler, CastDataProvider {
     }
 
     public void setMaxOperationMemory(int maxOperationMemory) {
-        this.maxOperationMemory  = maxOperationMemory;
+        this.maxOperationMemory = maxOperationMemory;
     }
 
     public int getMaxOperationMemory() {
@@ -2102,10 +2105,10 @@ public final class Database implements DataHandler, CastDataProvider {
     /**
      * Set the session that can exclusively access the database.
      *
-     * @param session the session
+     * @param session     the session
      * @param closeOthers whether other sessions are closed
      * @return true if success or if database is in exclusive mode
-     *         set by this session already, false otherwise
+     * set by this session already, false otherwise
      */
     public boolean setExclusiveSession(SessionLocal session, boolean closeOthers) {
         if (exclusiveSession.get() != session &&
@@ -2123,11 +2126,11 @@ public final class Database implements DataHandler, CastDataProvider {
      *
      * @param session the session
      * @return true if success or if database is in non-exclusive mode already,
-     *         false otherwise
+     * false otherwise
      */
     public boolean unsetExclusiveSession(SessionLocal session) {
         return exclusiveSession.get() == null
-            || exclusiveSession.compareAndSet(session, null);
+                || exclusiveSession.compareAndSet(session, null);
     }
 
     @Override
@@ -2161,14 +2164,14 @@ public final class Database implements DataHandler, CastDataProvider {
     /**
      * Open a new connection or get an existing connection to another database.
      *
-     * @param driver the database driver or null
-     * @param url the database URL
-     * @param user the user name
+     * @param driver   the database driver or null
+     * @param url      the database URL
+     * @param user     the user name
      * @param password the password
      * @return the connection
      */
     public TableLinkConnection getLinkConnection(String driver, String url,
-            String user, String password) {
+                                                 String user, String password) {
         if (linkConnections == null) {
             linkConnections = new HashMap<>();
         }
@@ -2290,8 +2293,8 @@ public final class Database implements DataHandler, CastDataProvider {
      * Create a new hash map. Depending on the configuration, the key is case
      * sensitive or case insensitive.
      *
-     * @param <V> the value type
-     * @param  initialCapacity the initial capacity
+     * @param <V>             the value type
+     * @param initialCapacity the initial capacity
      * @return the hash map
      */
     public <V> HashMap<String, V> newStringMap(int initialCapacity) {
@@ -2326,8 +2329,7 @@ public final class Database implements DataHandler, CastDataProvider {
     /**
      * Returns identifier in upper or lower case depending on database settings.
      *
-     * @param upperName
-     *            identifier in the upper case
+     * @param upperName identifier in the upper case
      * @return identifier in upper or lower case
      */
     public String sysIdentifier(String upperName) {
@@ -2435,6 +2437,7 @@ public final class Database implements DataHandler, CastDataProvider {
 
     /**
      * get authenticator for database users
+     *
      * @return authenticator set for database
      */
     public Authenticator getAuthenticator() {
@@ -2447,10 +2450,10 @@ public final class Database implements DataHandler, CastDataProvider {
      * @param authenticator = authenticator to set, null to revert to the Internal authenticator
      */
     public void setAuthenticator(Authenticator authenticator) {
-        if (authenticator!=null) {
+        if (authenticator != null) {
             authenticator.init(this);
         }
-        this.authenticator=authenticator;
+        this.authenticator = authenticator;
     }
 
     @Override

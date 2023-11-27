@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
 import org.h2.api.ErrorCode;
 import org.h2.command.CommandInterface;
 import org.h2.constraint.Constraint;
@@ -37,7 +38,7 @@ public class DropTable extends DefineCommand {
         super(session);
         dropAction = session.getDatabase().getSettings().dropRestrict ?
                 ConstraintActionType.RESTRICT :
-                    ConstraintActionType.CASCADE;
+                ConstraintActionType.CASCADE;
     }
 
     public void setIfExists(boolean b) {
@@ -47,7 +48,7 @@ public class DropTable extends DefineCommand {
     /**
      * Add a table to drop.
      *
-     * @param schema the schema
+     * @param schema    the schema
      * @param tableName the table name
      */
     public void addTable(Schema schema, String tableName) {

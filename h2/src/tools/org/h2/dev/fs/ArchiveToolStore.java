@@ -158,7 +158,7 @@ public class ArchiveToolStore {
             filesTemp.put(name, posArray);
         }
         storeTemp.commit();
-        ArrayList<Cursor<int[], byte[]>> list = new ArrayList<>(segmentId-1);
+        ArrayList<Cursor<int[], byte[]>> list = new ArrayList<>(segmentId - 1);
         totalSize = 0;
         for (int i = 1; i <= segmentId; i++) {
             MVMap<int[], byte[]> data = storeTemp.openMap("data" + i);
@@ -180,15 +180,15 @@ public class ArchiveToolStore {
                 int[] k2 = o2.getKey();
                 int comp = 0;
                 for (int i = 0; i < k1.length - 1; i++) {
-                long x1 = k1[i];
-                long x2 = k2[i];
-                if (x1 > x2) {
-                    comp = 1;
-                    break;
-                } else if (x1 < x2) {
-                    comp = -1;
-                    break;
-                }
+                    long x1 = k1[i];
+                    long x2 = k2[i];
+                    if (x1 > x2) {
+                        comp = 1;
+                        break;
+                    } else if (x1 < x2) {
+                        comp = -1;
+                        break;
+                    }
                 }
                 return comp;
             });
@@ -310,7 +310,7 @@ public class ArchiveToolStore {
         FileUtils.delete(tempFileName);
         long totalSize = 0;
         int lastSegment = 0;
-        for (int i = 1;; i++) {
+        for (int i = 1; ; i++) {
             if (!store.hasMap("data" + i)) {
                 lastSegment = i - 1;
                 break;
@@ -355,7 +355,7 @@ public class ArchiveToolStore {
                     dk[3] = keys[i + 3];
                     byte[] bytes = segmentData.get(dk);
                     if (bytes != null) {
-                        int[] k = new int[] { fileId, i / 4 };
+                        int[] k = new int[]{fileId, i / 4};
                         fileData.put(k, bytes);
                         chunkSize += bytes.length;
                         if (chunkSize > tempSize) {
@@ -371,7 +371,7 @@ public class ArchiveToolStore {
             storeTemp.commit();
         }
 
-        ArrayList<Cursor<int[], byte[]>> list = new ArrayList<>(lastSegment-1);
+        ArrayList<Cursor<int[], byte[]>> list = new ArrayList<>(lastSegment - 1);
         totalSize = 0;
         currentSize = 0;
         for (int i = 1; i <= lastSegment; i++) {

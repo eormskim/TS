@@ -7,6 +7,7 @@ package org.h2.jdbc;
 
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+
 import org.h2.message.DbException;
 import org.h2.message.Trace;
 import org.h2.message.TraceObject;
@@ -27,7 +28,7 @@ public final class JdbcResultSetMetaData extends TraceObject implements ResultSe
     private final int columnCount;
 
     JdbcResultSetMetaData(JdbcResultSet rs, JdbcPreparedStatement prep,
-            ResultInterface result, String catalog, Trace trace, int id) {
+                          ResultInterface result, String catalog, Trace trace, int id) {
         setTrace(trace, TraceObject.RESULT_SET_META_DATA, id);
         this.catalog = catalog;
         this.rs = rs;
@@ -409,10 +410,8 @@ public final class JdbcResultSetMetaData extends TraceObject implements ResultSe
      * Writes trace information and checks validity of this object and
      * parameter.
      *
-     * @param methodName
-     *            the called method name
-     * @param columnIndex
-     *            1-based column index
+     * @param methodName  the called method name
+     * @param columnIndex 1-based column index
      * @return 0-based column index
      */
     private int getColumn(String methodName, int columnIndex) {

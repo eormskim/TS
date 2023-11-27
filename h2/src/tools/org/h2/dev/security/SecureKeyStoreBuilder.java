@@ -60,24 +60,24 @@ public class SecureKeyStoreBuilder {
             Key key = store.getKey(alias, password.toCharArray());
             System.out.println(
                     "KeyFactory keyFactory = KeyFactory.getInstance(\""
-                    + key.getAlgorithm() + "\");");
+                            + key.getAlgorithm() + "\");");
             System.out.println("store.load(null, password.toCharArray());");
             String pkFormat = key.getFormat();
             String encoded = StringUtils.convertBytesToHex(key.getEncoded());
             System.out.println(
                     pkFormat + "EncodedKeySpec keySpec = new "
-                    + pkFormat + "EncodedKeySpec(getBytes(\""
-                    + encoded + "\"));");
+                            + pkFormat + "EncodedKeySpec(getBytes(\""
+                            + encoded + "\"));");
             System.out.println(
                     "PrivateKey privateKey = keyFactory.generatePrivate(keySpec);");
             System.out.println("Certificate[] certs = {");
             for (Certificate cert : store.getCertificateChain(alias)) {
                 System.out.println(
-                        "  CertificateFactory.getInstance(\""+cert.getType()+"\").");
+                        "  CertificateFactory.getInstance(\"" + cert.getType() + "\").");
                 String enc = StringUtils.convertBytesToHex(cert.getEncoded());
                 System.out.println(
                         "        generateCertificate(new ByteArrayInputStream(getBytes(\""
-                        + enc + "\"))),");
+                                + enc + "\"))),");
                 // PublicKey pubKey = cert.getPublicKey();
                 // System.out.println("    pubKey algorithm=" +
                 //         pubKey.getAlgorithm());

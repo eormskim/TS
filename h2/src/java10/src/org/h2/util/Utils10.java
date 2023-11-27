@@ -14,7 +14,7 @@ import jdk.net.ExtendedSocketOptions;
 
 /**
  * Utilities with specialized implementations for Java 10 and later versions.
- *
+ * <p>
  * This class contains implementations for Java 10 and later versions.
  */
 public final class Utils10 {
@@ -23,10 +23,8 @@ public final class Utils10 {
      * Converts the buffer's contents into a string by decoding the bytes using
      * the specified {@link java.nio.charset.Charset charset}.
      *
-     * @param baos
-     *            the buffer to decode
-     * @param charset
-     *            the charset to use
+     * @param baos    the buffer to decode
+     * @param charset the charset to use
      * @return the decoded string
      */
     public static String byteArrayOutputStreamToString(ByteArrayOutputStream baos, Charset charset) {
@@ -36,13 +34,10 @@ public final class Utils10 {
     /**
      * Returns the value of TCP_QUICKACK option.
      *
-     * @param socket
-     *            the socket
+     * @param socket the socket
      * @return the current value of TCP_QUICKACK option
-     * @throws IOException
-     *             on I/O exception
-     * @throws UnsupportedOperationException
-     *             if TCP_QUICKACK is not supported
+     * @throws IOException                   on I/O exception
+     * @throws UnsupportedOperationException if TCP_QUICKACK is not supported
      */
     public static boolean getTcpQuickack(Socket socket) throws IOException {
         return socket.getOption(ExtendedSocketOptions.TCP_QUICKACK);
@@ -51,10 +46,8 @@ public final class Utils10 {
     /**
      * Sets the value of TCP_QUICKACK option.
      *
-     * @param socket
-     *            the socket
-     * @param value
-     *            the value to set
+     * @param socket the socket
+     * @param value  the value to set
      * @return whether operation was successful
      */
     public static boolean setTcpQuickack(Socket socket, boolean value) {

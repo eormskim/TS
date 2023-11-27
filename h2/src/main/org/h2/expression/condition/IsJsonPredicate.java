@@ -35,7 +35,7 @@ public final class IsJsonPredicate extends Condition {
     private final JSONItemType itemType;
 
     public IsJsonPredicate(Expression left, boolean not, boolean whenOperand, boolean withUniqueKeys,
-            JSONItemType itemType) {
+                           JSONItemType itemType) {
         this.left = left;
         this.whenOperand = whenOperand;
         this.not = not;
@@ -61,19 +61,19 @@ public final class IsJsonPredicate extends Condition {
         }
         builder.append(" JSON");
         switch (itemType) {
-        case VALUE:
-            break;
-        case ARRAY:
-            builder.append(" ARRAY");
-            break;
-        case OBJECT:
-            builder.append(" OBJECT");
-            break;
-        case SCALAR:
-            builder.append(" SCALAR");
-            break;
-        default:
-            throw DbException.getInternalError("itemType=" + itemType);
+            case VALUE:
+                break;
+            case ARRAY:
+                builder.append(" ARRAY");
+                break;
+            case OBJECT:
+                builder.append(" OBJECT");
+                break;
+            case SCALAR:
+                builder.append(" SCALAR");
+                break;
+            default:
+                throw DbException.getInternalError("itemType=" + itemType);
         }
         if (withUniqueKeys) {
             builder.append(" WITH UNIQUE KEYS");
@@ -113,46 +113,46 @@ public final class IsJsonPredicate extends Condition {
     private boolean getValue(Value left) {
         boolean result;
         switch (left.getValueType()) {
-        case Value.VARBINARY:
-        case Value.BINARY:
-        case Value.BLOB: {
-            byte[] bytes = left.getBytesNoCopy();
-            JSONValidationTarget target = withUniqueKeys ? new JSONValidationTargetWithUniqueKeys()
-                    : new JSONValidationTargetWithoutUniqueKeys();
-            try {
-                result = itemType.includes(JSONBytesSource.parse(bytes, target)) ^ not;
-            } catch (RuntimeException ex) {
-                result = not;
-            }
-            break;
-        }
-        case Value.JSON: {
-            JSONItemType valueItemType = ((ValueJson) left).getItemType();
-            if (!itemType.includes(valueItemType)) {
-                result = not;
-                break;
-            } else if (!withUniqueKeys || valueItemType == JSONItemType.SCALAR) {
-                result = !not;
+            case Value.VARBINARY:
+            case Value.BINARY:
+            case Value.BLOB: {
+                byte[] bytes = left.getBytesNoCopy();
+                JSONValidationTarget target = withUniqueKeys ? new JSONValidationTargetWithUniqueKeys()
+                        : new JSONValidationTargetWithoutUniqueKeys();
+                try {
+                    result = itemType.includes(JSONBytesSource.parse(bytes, target)) ^ not;
+                } catch (RuntimeException ex) {
+                    result = not;
+                }
                 break;
             }
-        }
-        //$FALL-THROUGH$
-        case Value.VARCHAR:
-        case Value.VARCHAR_IGNORECASE:
-        case Value.CHAR:
-        case Value.CLOB: {
-            String string = left.getString();
-            JSONValidationTarget target = withUniqueKeys ? new JSONValidationTargetWithUniqueKeys()
-                    : new JSONValidationTargetWithoutUniqueKeys();
-            try {
-                result = itemType.includes(JSONStringSource.parse(string, target)) ^ not;
-            } catch (RuntimeException ex) {
-                result = not;
+            case Value.JSON: {
+                JSONItemType valueItemType = ((ValueJson) left).getItemType();
+                if (!itemType.includes(valueItemType)) {
+                    result = not;
+                    break;
+                } else if (!withUniqueKeys || valueItemType == JSONItemType.SCALAR) {
+                    result = !not;
+                    break;
+                }
             }
-            break;
-        }
-        default:
-            result = not;
+            //$FALL-THROUGH$
+            case Value.VARCHAR:
+            case Value.VARCHAR_IGNORECASE:
+            case Value.CHAR:
+            case Value.CLOB: {
+                String string = left.getString();
+                JSONValidationTarget target = withUniqueKeys ? new JSONValidationTargetWithUniqueKeys()
+                        : new JSONValidationTargetWithoutUniqueKeys();
+                try {
+                    result = itemType.includes(JSONStringSource.parse(string, target)) ^ not;
+                } catch (RuntimeException ex) {
+                    result = not;
+                }
+                break;
+            }
+            default:
+                result = not;
         }
         return result;
     }

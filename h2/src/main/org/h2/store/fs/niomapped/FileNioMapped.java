@@ -15,6 +15,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.NonWritableChannelException;
 import java.nio.file.Paths;
+
 import org.h2.engine.SysProperties;
 import org.h2.store.fs.FileBaseDefault;
 import org.h2.store.fs.FileUtils;
@@ -133,7 +134,7 @@ class FileNioMapped extends FileBaseDefault {
             if (len <= 0) {
                 return -1;
             }
-            mapped.position((int)pos);
+            mapped.position((int) pos);
             mapped.get(dst.array(), dst.arrayOffset() + dst.position(), len);
             dst.position(dst.position() + len);
             pos += len;
@@ -162,7 +163,7 @@ class FileNioMapped extends FileBaseDefault {
         }
         checkFileSizeLimit(newLength);
         unMap();
-        for (int i = 0;; i++) {
+        for (int i = 0; ; i++) {
             try {
                 long length = channel.size();
                 if (length >= newLength) {
@@ -195,14 +196,14 @@ class FileNioMapped extends FileBaseDefault {
         if (mapped.capacity() < position + len) {
             setFileLength(position + len);
         }
-        mapped.position((int)position);
+        mapped.position((int) position);
         mapped.put(src);
         return len;
     }
 
     @Override
     public synchronized FileLock tryLock(long position, long size,
-            boolean shared) throws IOException {
+                                         boolean shared) throws IOException {
         return channel.tryLock(position, size, shared);
     }
 

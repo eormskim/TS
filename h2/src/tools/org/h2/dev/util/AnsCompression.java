@@ -40,7 +40,7 @@ public class AnsCompression {
      * Scale the frequencies to a new total. Frequencies of 0 are kept as 0;
      * larger frequencies result in at least 1.
      *
-     * @param freq the (source and target) frequency table
+     * @param freq  the (source and target) frequency table
      * @param total the target total (sum of all frequencies)
      */
     public static void scaleFrequencies(int[] freq, int total) {
@@ -133,7 +133,7 @@ public class AnsCompression {
     }
 
     private static ByteBuffer encode(byte[] data, int[] freq,
-            int[] cumulativeFreq, ByteBuffer buff) {
+                                     int[] cumulativeFreq, ByteBuffer buff) {
         long state = TOP;
         // encoding happens backwards
         int b = buff.limit();
@@ -156,8 +156,8 @@ public class AnsCompression {
     /**
      * Decode the data.
      *
-     * @param freq the frequency table (will be scaled)
-     * @param data the compressed data
+     * @param freq   the frequency table (will be scaled)
+     * @param data   the compressed data
      * @param length the target length
      * @return the uncompressed result
      */
@@ -171,7 +171,7 @@ public class AnsCompression {
     }
 
     private static void decode(byte[] data, int[] freq, int[] cumulativeFreq,
-            byte[] freqToCode, byte[] out) {
+                               byte[] freqToCode, byte[] out) {
         ByteBuffer buff = ByteBuffer.wrap(data);
         long state = buff.getLong();
         for (int i = 0, size = out.length; i < size; i++) {

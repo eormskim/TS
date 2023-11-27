@@ -6,6 +6,7 @@
 package org.h2.schema;
 
 import java.util.ArrayList;
+
 import org.h2.constraint.Constraint;
 import org.h2.constraint.ConstraintDomain;
 import org.h2.engine.DbObject;
@@ -208,7 +209,7 @@ public final class Domain extends SchemaObject implements ColumnTemplate {
      * Check the specified value.
      *
      * @param session the session
-     * @param value the value
+     * @param value   the value
      */
     public void checkConstraints(SessionLocal session, Value value) {
         if (constraints != null) {

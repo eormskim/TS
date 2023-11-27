@@ -19,7 +19,7 @@ abstract class Condition extends Expression {
     /**
      * Add a cast around the expression (if necessary) so that the type is boolean.
      *
-     * @param session the session
+     * @param session    the session
      * @param expression the expression
      * @return the new expression
      */

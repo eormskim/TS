@@ -70,8 +70,7 @@ public final class JTSUtils {
         /**
          * Creates a new instance of JTS Geometry target.
          *
-         * @param dimensionSystem
-         *            dimension system to use
+         * @param dimensionSystem dimension system to use
          */
         public GeometryTarget(int dimensionSystem) {
             this.dimensionSystem = dimensionSystem;
@@ -120,20 +119,20 @@ public final class JTSUtils {
         protected void startCollection(int type, int numItems) {
             this.type = type;
             switch (type) {
-            case MULTI_POINT:
-                subgeometries = new Point[numItems];
-                break;
-            case MULTI_LINE_STRING:
-                subgeometries = new LineString[numItems];
-                break;
-            case MULTI_POLYGON:
-                subgeometries = new Polygon[numItems];
-                break;
-            case GEOMETRY_COLLECTION:
-                subgeometries = new Geometry[numItems];
-                break;
-            default:
-                throw new IllegalArgumentException();
+                case MULTI_POINT:
+                    subgeometries = new Point[numItems];
+                    break;
+                case MULTI_LINE_STRING:
+                    subgeometries = new LineString[numItems];
+                    break;
+                case MULTI_POLYGON:
+                    subgeometries = new Polygon[numItems];
+                    break;
+                case GEOMETRY_COLLECTION:
+                    subgeometries = new Geometry[numItems];
+                    break;
+                default:
+                    throw new IllegalArgumentException();
             }
         }
 
@@ -154,24 +153,24 @@ public final class JTSUtils {
         private CoordinateSequence createCoordinates(int numPoints) {
             int d, m;
             switch (dimensionSystem) {
-            case DIMENSION_SYSTEM_XY:
-                d = 2;
-                m = 0;
-                break;
-            case DIMENSION_SYSTEM_XYZ:
-                d = 3;
-                m = 0;
-                break;
-            case DIMENSION_SYSTEM_XYM:
-                d = 3;
-                m = 1;
-                break;
-            case DIMENSION_SYSTEM_XYZM:
-                d = 4;
-                m = 1;
-                break;
-            default:
-                throw DbException.getInternalError();
+                case DIMENSION_SYSTEM_XY:
+                    d = 2;
+                    m = 0;
+                    break;
+                case DIMENSION_SYSTEM_XYZ:
+                    d = 3;
+                    m = 0;
+                    break;
+                case DIMENSION_SYSTEM_XYM:
+                    d = 3;
+                    m = 1;
+                    break;
+                case DIMENSION_SYSTEM_XYZM:
+                    d = 4;
+                    m = 1;
+                    break;
+                default:
+                    throw DbException.getInternalError();
             }
             return factory.getCoordinateSequenceFactory().create(numPoints, d, m);
         }
@@ -186,42 +185,42 @@ public final class JTSUtils {
             coordinates.setOrdinate(index, X, checkFinite(x));
             coordinates.setOrdinate(index, Y, checkFinite(y));
             switch (dimensionSystem) {
-            case DIMENSION_SYSTEM_XYZM:
-                coordinates.setOrdinate(index, M, checkFinite(m));
-                //$FALL-THROUGH$
-            case DIMENSION_SYSTEM_XYZ:
-                coordinates.setOrdinate(index, Z, checkFinite(z));
-                break;
-            case DIMENSION_SYSTEM_XYM:
-                coordinates.setOrdinate(index, 2, checkFinite(m));
+                case DIMENSION_SYSTEM_XYZM:
+                    coordinates.setOrdinate(index, M, checkFinite(m));
+                    //$FALL-THROUGH$
+                case DIMENSION_SYSTEM_XYZ:
+                    coordinates.setOrdinate(index, Z, checkFinite(z));
+                    break;
+                case DIMENSION_SYSTEM_XYM:
+                    coordinates.setOrdinate(index, 2, checkFinite(m));
             }
         }
 
         Geometry getGeometry() {
             switch (type) {
-            case POINT:
-                return new Point(coordinates, factory);
-            case LINE_STRING:
-                return new LineString(coordinates, factory);
-            case POLYGON: {
-                LinearRing shell = new LinearRing(coordinates, factory);
-                int innerCount = innerCoordinates.length;
-                LinearRing[] holes = new LinearRing[innerCount];
-                for (int i = 0; i < innerCount; i++) {
-                    holes[i] = new LinearRing(innerCoordinates[i], factory);
+                case POINT:
+                    return new Point(coordinates, factory);
+                case LINE_STRING:
+                    return new LineString(coordinates, factory);
+                case POLYGON: {
+                    LinearRing shell = new LinearRing(coordinates, factory);
+                    int innerCount = innerCoordinates.length;
+                    LinearRing[] holes = new LinearRing[innerCount];
+                    for (int i = 0; i < innerCount; i++) {
+                        holes[i] = new LinearRing(innerCoordinates[i], factory);
+                    }
+                    return new Polygon(shell, holes, factory);
                 }
-                return new Polygon(shell, holes, factory);
-            }
-            case MULTI_POINT:
-                return new MultiPoint((Point[]) subgeometries, factory);
-            case MULTI_LINE_STRING:
-                return new MultiLineString((LineString[]) subgeometries, factory);
-            case MULTI_POLYGON:
-                return new MultiPolygon((Polygon[]) subgeometries, factory);
-            case GEOMETRY_COLLECTION:
-                return new GeometryCollection(subgeometries, factory);
-            default:
-                throw new IllegalStateException();
+                case MULTI_POINT:
+                    return new MultiPoint((Point[]) subgeometries, factory);
+                case MULTI_LINE_STRING:
+                    return new MultiLineString((LineString[]) subgeometries, factory);
+                case MULTI_POLYGON:
+                    return new MultiPolygon((Polygon[]) subgeometries, factory);
+                case GEOMETRY_COLLECTION:
+                    return new GeometryCollection(subgeometries, factory);
+                default:
+                    throw new IllegalStateException();
             }
         }
 
@@ -230,8 +229,7 @@ public final class JTSUtils {
     /**
      * Converts EWKB to a JTS geometry object.
      *
-     * @param ewkb
-     *            source EWKB
+     * @param ewkb source EWKB
      * @return JTS geometry object
      */
     public static Geometry ewkb2geometry(byte[] ewkb) {
@@ -241,10 +239,8 @@ public final class JTSUtils {
     /**
      * Converts EWKB to a JTS geometry object.
      *
-     * @param ewkb
-     *            source EWKB
-     * @param dimensionSystem
-     *            dimension system
+     * @param ewkb            source EWKB
+     * @param dimensionSystem dimension system
      * @return JTS geometry object
      */
     public static Geometry ewkb2geometry(byte[] ewkb, int dimensionSystem) {
@@ -256,8 +252,7 @@ public final class JTSUtils {
     /**
      * Converts Geometry to EWKB.
      *
-     * @param geometry
-     *            source geometry
+     * @param geometry source geometry
      * @return EWKB representation
      */
     public static byte[] geometry2ewkb(Geometry geometry) {
@@ -267,10 +262,8 @@ public final class JTSUtils {
     /**
      * Converts Geometry to EWKB.
      *
-     * @param geometry
-     *            source geometry
-     * @param dimensionSystem
-     *            dimension system
+     * @param geometry        source geometry
+     * @param dimensionSystem dimension system
      * @return EWKB representation
      */
     public static byte[] geometry2ewkb(Geometry geometry, int dimensionSystem) {
@@ -284,10 +277,8 @@ public final class JTSUtils {
     /**
      * Parses a JTS Geometry object.
      *
-     * @param geometry
-     *            geometry to parse
-     * @param target
-     *            output target
+     * @param geometry geometry to parse
+     * @param target   output target
      */
     public static void parseGeometry(Geometry geometry, Target target) {
         parseGeometry(geometry, target, 0);
@@ -296,12 +287,9 @@ public final class JTSUtils {
     /**
      * Parses a JTS Geometry object.
      *
-     * @param geometry
-     *            geometry to parse
-     * @param target
-     *            output target
-     * @param parentType
-     *            type of parent geometry collection, or 0 for the root geometry
+     * @param geometry   geometry to parse
+     * @param target     output target
+     * @param parentType type of parent geometry collection, or 0 for the root geometry
      */
     private static void parseGeometry(Geometry geometry, Target target, int parentType) {
         if (parentType == 0) {
@@ -420,7 +408,7 @@ public final class JTSUtils {
     }
 
     private static void addCoordinate(CoordinateSequence sequence, Target target, int index, int total, double x,
-            double y) {
+                                      double y) {
         double z = toCanonicalDouble(sequence.getZ(index));
         double m = toCanonicalDouble(sequence.getM(index));
         target.addCoordinate(x, y, z, m, index, total);
@@ -429,8 +417,7 @@ public final class JTSUtils {
     /**
      * Determines a dimension system of a JTS Geometry object.
      *
-     * @param geometry
-     *            geometry to parse
+     * @param geometry geometry to parse
      * @return the dimension system
      */
     public static int getDimensionSystem(Geometry geometry) {

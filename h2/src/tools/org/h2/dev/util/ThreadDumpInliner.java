@@ -30,7 +30,7 @@ public class ThreadDumpInliner {
                 new FileWriter(fileName + ".lines.txt")));
 
         StringBuilder buff = new StringBuilder();
-        for (String s; (s = in.readLine()) != null;) {
+        for (String s; (s = in.readLine()) != null; ) {
             if (s.trim().length() == 0) {
                 continue;
             }

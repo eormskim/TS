@@ -110,7 +110,7 @@ public class TestExclusive extends TestDb {
         }
     }
 
-    private static boolean getExclusiveMode(Connection connection) throws SQLException{
+    private static boolean getExclusiveMode(Connection connection) throws SQLException {
         boolean exclusiveMode = false;
 
         String sql = "SELECT SETTING_VALUE FROM INFORMATION_SCHEMA.SETTINGS WHERE SETTING_NAME = 'EXCLUSIVE'";

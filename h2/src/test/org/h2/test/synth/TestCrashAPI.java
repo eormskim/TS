@@ -54,15 +54,15 @@ public class TestCrashAPI extends TestDb implements Runnable {
 
     private static final boolean RECOVER_ALL = false;
 
-    private static final Class<?>[] INTERFACES = { Connection.class,
+    private static final Class<?>[] INTERFACES = {Connection.class,
             PreparedStatement.class, Statement.class, ResultSet.class,
             ResultSetMetaData.class, Savepoint.class, ParameterMetaData.class,
-            Clob.class, Blob.class, Array.class, CallableStatement.class };
+            Clob.class, Blob.class, Array.class, CallableStatement.class};
 
     private static final String DIR = "synth";
 
     private final ArrayList<Object> objects = new ArrayList<>();
-    private final HashMap<Class <?>, ArrayList<Method>> classMethods =
+    private final HashMap<Class<?>, ArrayList<Method>> classMethods =
             new HashMap<>();
     private RandomGen random = new RandomGen();
     private ArrayList<String> statements;
@@ -126,7 +126,7 @@ public class TestCrashAPI extends TestDb implements Runnable {
                 // ignore
             }
             ArrayList<String> dbFiles = FileLister.getDatabaseFiles("data", null, false);
-            for (String name: dbFiles) {
+            for (String name : dbFiles) {
                 if (!name.endsWith(".h2.db")) {
                     continue;
                 }
@@ -381,7 +381,7 @@ public class TestCrashAPI extends TestDb implements Runnable {
         // TODO m.isDefault() can be used on Java 8
         boolean isDefault =
                 (m.getModifiers() & (Modifier.ABSTRACT | Modifier.PUBLIC | Modifier.STATIC)) == Modifier.PUBLIC
-                && m.getDeclaringClass().isInterface();
+                        && m.getDeclaringClass().isInterface();
         boolean allowNPE = isDefault || o instanceof Blob && "setBytes".equals(m.getName());
         Class<?>[] paramClasses = m.getParameterTypes();
         Object[] params = new Object[paramClasses.length];
@@ -514,7 +514,7 @@ public class TestCrashAPI extends TestDb implements Runnable {
     }
 
     private Class<?> getJdbcInterface(Object o) {
-        for (Class <?> in : o.getClass().getInterfaces()) {
+        for (Class<?> in : o.getClass().getInterfaces()) {
             if (classMethods.get(in) != null) {
                 return in;
             }

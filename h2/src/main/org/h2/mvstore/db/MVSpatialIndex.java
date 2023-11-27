@@ -6,6 +6,7 @@
 package org.h2.mvstore.db;
 
 import org.h2.mvstore.rtree.Spatial;
+
 import static org.h2.util.geometry.GeometryUtils.MAX_X;
 import static org.h2.util.geometry.GeometryUtils.MAX_Y;
 import static org.h2.util.geometry.GeometryUtils.MIN_X;
@@ -13,6 +14,7 @@ import static org.h2.util.geometry.GeometryUtils.MIN_Y;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.h2.api.ErrorCode;
 import org.h2.command.query.AllColumnsForPlan;
 import org.h2.engine.Database;
@@ -61,16 +63,16 @@ public class MVSpatialIndex extends MVIndex<Spatial, Value> implements SpatialIn
     /**
      * Constructor.
      *
-     * @param db the database
-     * @param table the table instance
-     * @param id the index id
-     * @param indexName the index name
-     * @param columns the indexed columns (only one geometry column allowed)
+     * @param db                the database
+     * @param table             the table instance
+     * @param id                the index id
+     * @param indexName         the index name
+     * @param columns           the indexed columns (only one geometry column allowed)
      * @param uniqueColumnCount count of unique columns (0 or 1)
-     * @param indexType the index type (only spatial index)
+     * @param indexType         the index type (only spatial index)
      */
     public MVSpatialIndex(Database db, MVTable table, int id, String indexName, IndexColumn[] columns,
-            int uniqueColumnCount, IndexType indexType) {
+                          int uniqueColumnCount, IndexType indexType) {
         super(table, id, indexName, columns, uniqueColumnCount, indexType);
         if (columns.length != 1) {
             throw DbException.getUnsupportedException(
@@ -92,7 +94,7 @@ public class MVSpatialIndex extends MVIndex<Spatial, Value> implements SpatialIn
         if (col.column.getType().getValueType() != Value.GEOMETRY) {
             throw DbException.getUnsupportedException(
                     "Spatial index on non-geometry column, "
-                    + col.column.getCreateSQL());
+                            + col.column.getCreateSQL());
         }
         this.mvTable = table;
         if (!database.isStarting()) {
@@ -102,7 +104,7 @@ public class MVSpatialIndex extends MVIndex<Spatial, Value> implements SpatialIn
         VersionedValueType<Value, Database> valueType = new VersionedValueType<>(NullValueDataType.INSTANCE);
         MVRTreeMap.Builder<VersionedValue<Value>> mapBuilder =
                 new MVRTreeMap.Builder<VersionedValue<Value>>().
-                valueType(valueType);
+                        valueType(valueType);
         spatialMap = db.getStore().getMvStore().openMap(mapName, mapBuilder);
         Transaction t = mvTable.getTransactionBegin();
         dataMap = t.openMapX(spatialMap);
@@ -229,14 +231,14 @@ public class MVSpatialIndex extends MVIndex<Spatial, Value> implements SpatialIn
 
     /**
      * Returns the estimated minimum bounding box that encloses all keys.
-     *
+     * <p>
      * The returned value may be incorrect.
      *
      * @param session the session
      * @return the estimated minimum bounding box that encloses all keys, or null
      */
     public Value getEstimatedBounds(SessionLocal session) {
-        Page<Spatial,VersionedValue<Value>> p = spatialMap.getRootPage();
+        Page<Spatial, VersionedValue<Value>> p = spatialMap.getRootPage();
         int count = p.getKeyCount();
         if (count > 0) {
             Spatial key = p.getKey(0);
@@ -257,7 +259,7 @@ public class MVSpatialIndex extends MVIndex<Spatial, Value> implements SpatialIn
                     bmaxyf = maxyf;
                 }
             }
-            return ValueGeometry.fromEnvelope(new double[] {bminxf, bmaxxf, bminyf, bmaxyf});
+            return ValueGeometry.fromEnvelope(new double[]{bminxf, bmaxxf, bminyf, bmaxyf});
         }
         return ValueNull.INSTANCE;
     }
@@ -280,14 +282,15 @@ public class MVSpatialIndex extends MVIndex<Spatial, Value> implements SpatialIn
 
     @Override
     public double getCost(SessionLocal session, int[] masks, TableFilter[] filters,
-            int filter, SortOrder sortOrder,
-            AllColumnsForPlan allColumnsSet) {
+                          int filter, SortOrder sortOrder,
+                          AllColumnsForPlan allColumnsSet) {
         return getCostRangeIndex(masks, columns);
     }
 
     /**
      * Compute spatial index cost
-     * @param masks Search mask
+     *
+     * @param masks   Search mask
      * @param columns Table columns
      * @return Index cost hint
      */
@@ -434,7 +437,7 @@ public class MVSpatialIndex extends MVIndex<Spatial, Value> implements SpatialIn
         private Spatial current;
 
         SpatialKeyIterator(TransactionMap<Spatial, Value> map,
-                            Iterator<Spatial> iterator, boolean includeUncommitted) {
+                           Iterator<Spatial> iterator, boolean includeUncommitted) {
             this.map = map;
             this.iterator = iterator;
             this.includeUncommitted = includeUncommitted;
@@ -481,8 +484,8 @@ public class MVSpatialIndex extends MVIndex<Spatial, Value> implements SpatialIn
 
         private double bminxd, bmaxxd, bminyd, bmaxyd;
 
-        FindBoundsCursor(Page<Spatial,VersionedValue<Value>> root, Spatial filter, SessionLocal session,
-                TransactionMap<Spatial, Value> map, int columnId) {
+        FindBoundsCursor(Page<Spatial, VersionedValue<Value>> root, Spatial filter, SessionLocal session,
+                         TransactionMap<Spatial, Value> map, int columnId) {
             super(root, filter);
             this.session = session;
             this.map = map;
@@ -540,7 +543,7 @@ public class MVSpatialIndex extends MVIndex<Spatial, Value> implements SpatialIn
         }
 
         Value getBounds() {
-            return hasBounds ? ValueGeometry.fromEnvelope(new double[] {bminxd, bmaxxd, bminyd, bmaxyd})
+            return hasBounds ? ValueGeometry.fromEnvelope(new double[]{bminxd, bmaxxd, bminyd, bmaxyd})
                     : ValueNull.INSTANCE;
         }
 

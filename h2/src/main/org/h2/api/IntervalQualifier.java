@@ -80,40 +80,39 @@ public enum IntervalQualifier {
     /**
      * Returns the interval qualifier with the specified ordinal value.
      *
-     * @param ordinal
-     *            Java ordinal value (0-based)
+     * @param ordinal Java ordinal value (0-based)
      * @return interval qualifier with the specified ordinal value
      */
     public static IntervalQualifier valueOf(int ordinal) {
         switch (ordinal) {
-        case 0:
-            return YEAR;
-        case 1:
-            return MONTH;
-        case 2:
-            return DAY;
-        case 3:
-            return HOUR;
-        case 4:
-            return MINUTE;
-        case 5:
-            return SECOND;
-        case 6:
-            return YEAR_TO_MONTH;
-        case 7:
-            return DAY_TO_HOUR;
-        case 8:
-            return DAY_TO_MINUTE;
-        case 9:
-            return DAY_TO_SECOND;
-        case 10:
-            return HOUR_TO_MINUTE;
-        case 11:
-            return HOUR_TO_SECOND;
-        case 12:
-            return MINUTE_TO_SECOND;
-        default:
-            throw new IllegalArgumentException();
+            case 0:
+                return YEAR;
+            case 1:
+                return MONTH;
+            case 2:
+                return DAY;
+            case 3:
+                return HOUR;
+            case 4:
+                return MINUTE;
+            case 5:
+                return SECOND;
+            case 6:
+                return YEAR_TO_MONTH;
+            case 7:
+                return DAY_TO_HOUR;
+            case 8:
+                return DAY_TO_MINUTE;
+            case 9:
+                return DAY_TO_SECOND;
+            case 10:
+                return HOUR_TO_MINUTE;
+            case 11:
+                return HOUR_TO_SECOND;
+            case 12:
+                return MINUTE_TO_SECOND;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 
@@ -164,13 +163,13 @@ public enum IntervalQualifier {
      */
     public boolean hasDays() {
         switch (this) {
-        case DAY:
-        case DAY_TO_HOUR:
-        case DAY_TO_MINUTE:
-        case DAY_TO_SECOND:
-            return true;
-        default:
-            return false;
+            case DAY:
+            case DAY_TO_HOUR:
+            case DAY_TO_MINUTE:
+            case DAY_TO_SECOND:
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -181,15 +180,15 @@ public enum IntervalQualifier {
      */
     public boolean hasHours() {
         switch (this) {
-        case HOUR:
-        case DAY_TO_HOUR:
-        case DAY_TO_MINUTE:
-        case DAY_TO_SECOND:
-        case HOUR_TO_MINUTE:
-        case HOUR_TO_SECOND:
-            return true;
-        default:
-            return false;
+            case HOUR:
+            case DAY_TO_HOUR:
+            case DAY_TO_MINUTE:
+            case DAY_TO_SECOND:
+            case HOUR_TO_MINUTE:
+            case HOUR_TO_SECOND:
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -200,15 +199,15 @@ public enum IntervalQualifier {
      */
     public boolean hasMinutes() {
         switch (this) {
-        case MINUTE:
-        case DAY_TO_MINUTE:
-        case DAY_TO_SECOND:
-        case HOUR_TO_MINUTE:
-        case HOUR_TO_SECOND:
-        case MINUTE_TO_SECOND:
-            return true;
-        default:
-            return false;
+            case MINUTE:
+            case DAY_TO_MINUTE:
+            case DAY_TO_SECOND:
+            case HOUR_TO_MINUTE:
+            case HOUR_TO_SECOND:
+            case MINUTE_TO_SECOND:
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -219,13 +218,13 @@ public enum IntervalQualifier {
      */
     public boolean hasSeconds() {
         switch (this) {
-        case SECOND:
-        case DAY_TO_SECOND:
-        case HOUR_TO_SECOND:
-        case MINUTE_TO_SECOND:
-            return true;
-        default:
-            return false;
+            case SECOND:
+            case DAY_TO_SECOND:
+            case HOUR_TO_SECOND:
+            case MINUTE_TO_SECOND:
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -247,7 +246,7 @@ public enum IntervalQualifier {
      * Returns full type name.
      *
      * @param precision precision, or {@code -1}
-     * @param scale fractional seconds precision, or {@code -1}
+     * @param scale     fractional seconds precision, or {@code -1}
      * @return full type name
      */
     public String getTypeName(int precision, int scale) {
@@ -257,9 +256,9 @@ public enum IntervalQualifier {
     /**
      * Appends full type name to the specified string builder.
      *
-     * @param builder string builder
-     * @param precision precision, or {@code -1}
-     * @param scale fractional seconds precision, or {@code -1}
+     * @param builder       string builder
+     * @param precision     precision, or {@code -1}
+     * @param scale         fractional seconds precision, or {@code -1}
      * @param qualifierOnly if {@code true}, don't add the INTERVAL prefix
      * @return the specified string builder
      */
@@ -268,83 +267,83 @@ public enum IntervalQualifier {
             builder.append("INTERVAL ");
         }
         switch (this) {
-        case YEAR:
-        case MONTH:
-        case DAY:
-        case HOUR:
-        case MINUTE:
-            builder.append(string);
-            if (precision > 0) {
-                builder.append('(').append(precision).append(')');
-            }
-            break;
-        case SECOND:
-            builder.append(string);
-            if (precision > 0 || scale >= 0) {
-                builder.append('(').append(precision > 0 ? precision : 2);
-                if (scale >= 0) {
-                    builder.append(", ").append(scale);
+            case YEAR:
+            case MONTH:
+            case DAY:
+            case HOUR:
+            case MINUTE:
+                builder.append(string);
+                if (precision > 0) {
+                    builder.append('(').append(precision).append(')');
                 }
-                builder.append(')');
-            }
-            break;
-        case YEAR_TO_MONTH:
-            builder.append("YEAR");
-            if (precision > 0) {
-                builder.append('(').append(precision).append(')');
-            }
-            builder.append(" TO MONTH");
-            break;
-        case DAY_TO_HOUR:
-            builder.append("DAY");
-            if (precision > 0) {
-                builder.append('(').append(precision).append(')');
-            }
-            builder.append(" TO HOUR");
-            break;
-        case DAY_TO_MINUTE:
-            builder.append("DAY");
-            if (precision > 0) {
-                builder.append('(').append(precision).append(')');
-            }
-            builder.append(" TO MINUTE");
-            break;
-        case DAY_TO_SECOND:
-            builder.append("DAY");
-            if (precision > 0) {
-                builder.append('(').append(precision).append(')');
-            }
-            builder.append(" TO SECOND");
-            if (scale >= 0) {
-                builder.append('(').append(scale).append(')');
-            }
-            break;
-        case HOUR_TO_MINUTE:
-            builder.append("HOUR");
-            if (precision > 0) {
-                builder.append('(').append(precision).append(')');
-            }
-            builder.append(" TO MINUTE");
-            break;
-        case HOUR_TO_SECOND:
-            builder.append("HOUR");
-            if (precision > 0) {
-                builder.append('(').append(precision).append(')');
-            }
-            builder.append(" TO SECOND");
-            if (scale >= 0) {
-                builder.append('(').append(scale).append(')');
-            }
-            break;
-        case MINUTE_TO_SECOND:
-            builder.append("MINUTE");
-            if (precision > 0) {
-                builder.append('(').append(precision).append(')');
-            }
-            builder.append(" TO SECOND");
-            if (scale >= 0) {
-                builder.append('(').append(scale).append(')');
-            }
+                break;
+            case SECOND:
+                builder.append(string);
+                if (precision > 0 || scale >= 0) {
+                    builder.append('(').append(precision > 0 ? precision : 2);
+                    if (scale >= 0) {
+                        builder.append(", ").append(scale);
+                    }
+                    builder.append(')');
+                }
+                break;
+            case YEAR_TO_MONTH:
+                builder.append("YEAR");
+                if (precision > 0) {
+                    builder.append('(').append(precision).append(')');
+                }
+                builder.append(" TO MONTH");
+                break;
+            case DAY_TO_HOUR:
+                builder.append("DAY");
+                if (precision > 0) {
+                    builder.append('(').append(precision).append(')');
+                }
+                builder.append(" TO HOUR");
+                break;
+            case DAY_TO_MINUTE:
+                builder.append("DAY");
+                if (precision > 0) {
+                    builder.append('(').append(precision).append(')');
+                }
+                builder.append(" TO MINUTE");
+                break;
+            case DAY_TO_SECOND:
+                builder.append("DAY");
+                if (precision > 0) {
+                    builder.append('(').append(precision).append(')');
+                }
+                builder.append(" TO SECOND");
+                if (scale >= 0) {
+                    builder.append('(').append(scale).append(')');
+                }
+                break;
+            case HOUR_TO_MINUTE:
+                builder.append("HOUR");
+                if (precision > 0) {
+                    builder.append('(').append(precision).append(')');
+                }
+                builder.append(" TO MINUTE");
+                break;
+            case HOUR_TO_SECOND:
+                builder.append("HOUR");
+                if (precision > 0) {
+                    builder.append('(').append(precision).append(')');
+                }
+                builder.append(" TO SECOND");
+                if (scale >= 0) {
+                    builder.append('(').append(scale).append(')');
+                }
+                break;
+            case MINUTE_TO_SECOND:
+                builder.append("MINUTE");
+                if (precision > 0) {
+                    builder.append('(').append(precision).append(')');
+                }
+                builder.append(" TO SECOND");
+                if (scale >= 0) {
+                    builder.append('(').append(scale).append(')');
+                }
         }
         return builder;
     }

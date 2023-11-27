@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
+
 import org.h2.api.ErrorCode;
 import org.h2.mvstore.MVStore;
 import org.h2.mvstore.MVStoreException;
@@ -86,8 +87,8 @@ public class TestOutOfMemory extends TestDb {
                     map.put(i, data);
                 }
                 Throwable throwable = exRef.get();
-                if(throwable instanceof OutOfMemoryError) throw (OutOfMemoryError)throwable;
-                if(throwable instanceof MVStoreException) throw (MVStoreException)throwable;
+                if (throwable instanceof OutOfMemoryError) throw (OutOfMemoryError) throwable;
+                if (throwable instanceof MVStoreException) throw (MVStoreException) throwable;
                 fail();
             } catch (OutOfMemoryError | MVStoreException e) {
                 // expected
@@ -123,9 +124,9 @@ public class TestOutOfMemory extends TestDb {
             } catch (SQLException e) {
                 assertTrue("Unexpected error code: " + e.getErrorCode(),
                         ErrorCode.OUT_OF_MEMORY == e.getErrorCode() ||
-                        ErrorCode.FILE_CORRUPTED_1 == e.getErrorCode() ||
-                        ErrorCode.DATABASE_IS_CLOSED == e.getErrorCode() ||
-                        ErrorCode.GENERAL_ERROR_1 == e.getErrorCode());
+                                ErrorCode.FILE_CORRUPTED_1 == e.getErrorCode() ||
+                                ErrorCode.DATABASE_IS_CLOSED == e.getErrorCode() ||
+                                ErrorCode.GENERAL_ERROR_1 == e.getErrorCode());
             }
             recoverAfterOOM(memoryFree * 3 / 4);
             try {
@@ -134,9 +135,9 @@ public class TestOutOfMemory extends TestDb {
             } catch (SQLException e) {
                 assertTrue("Unexpected error code: " + e.getErrorCode(),
                         ErrorCode.OUT_OF_MEMORY == e.getErrorCode() ||
-                        ErrorCode.FILE_CORRUPTED_1 == e.getErrorCode() ||
-                        ErrorCode.DATABASE_IS_CLOSED == e.getErrorCode() ||
-                        ErrorCode.GENERAL_ERROR_1 == e.getErrorCode());
+                                ErrorCode.FILE_CORRUPTED_1 == e.getErrorCode() ||
+                                ErrorCode.DATABASE_IS_CLOSED == e.getErrorCode() ||
+                                ErrorCode.GENERAL_ERROR_1 == e.getErrorCode());
             }
             recoverAfterOOM(memoryFree * 3 / 4);
             conn = DriverManager.getConnection(url);

@@ -72,8 +72,8 @@ public class RangeIndex extends VirtualTableIndex {
 
     @Override
     public double getCost(SessionLocal session, int[] masks,
-            TableFilter[] filters, int filter, SortOrder sortOrder,
-            AllColumnsForPlan allColumnsSet) {
+                          TableFilter[] filters, int filter, SortOrder sortOrder,
+                          AllColumnsForPlan allColumnsSet) {
         return 1d;
     }
 
@@ -96,7 +96,7 @@ public class RangeIndex extends VirtualTableIndex {
             throw DbException.get(ErrorCode.STEP_SIZE_MUST_NOT_BE_ZERO);
         }
         return new SingleRowCursor((step > 0 ? min <= max : min >= max)
-                ? Row.get(new Value[]{ ValueBigint.get(first ^ min >= max ? min : max) }, 1) : null);
+                ? Row.get(new Value[]{ValueBigint.get(first ^ min >= max ? min : max)}, 1) : null);
     }
 
     @Override

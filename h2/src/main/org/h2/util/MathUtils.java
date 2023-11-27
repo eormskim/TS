@@ -39,7 +39,7 @@ public class MathUtils {
      * operations are done: 0 stays 0; values 1..8 results in 8, 9..16 results
      * in 16, and so on.
      *
-     * @param x the value to be rounded
+     * @param x                 the value to be rounded
      * @param blockSizePowerOf2 the block size
      * @return the rounded value
      */
@@ -53,7 +53,7 @@ public class MathUtils {
      * operations are done: 0 stays 0; values 1..8 results in 8, 9..16 results
      * in 16, and so on.
      *
-     * @param x the value to be rounded
+     * @param x                 the value to be rounded
      * @param blockSizePowerOf2 the block size
      * @return the rounded value
      */

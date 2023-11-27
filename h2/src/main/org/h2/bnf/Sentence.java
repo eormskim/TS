@@ -81,12 +81,12 @@ public class Sentence {
     /**
      * Add a word to the set of next tokens.
      *
-     * @param n the token name
+     * @param n      the token name
      * @param string an example text
-     * @param type the token type
+     * @param type   the token type
      */
     public void add(String n, String string, int type) {
-        next.put(type+"#"+n, string);
+        next.put(type + "#" + n, string);
     }
 
     /**

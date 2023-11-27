@@ -6,6 +6,7 @@
 package org.h2.expression;
 
 import java.util.HashSet;
+
 import org.h2.command.query.AllColumnsForPlan;
 import org.h2.engine.DbObject;
 import org.h2.table.Column;
@@ -157,10 +158,10 @@ public final class ExpressionVisitor {
     private final ColumnResolver resolver;
 
     private ExpressionVisitor(int type,
-            int queryLevel,
-            HashSet<?> set,
-            AllColumnsForPlan columns1, Table table, ColumnResolver resolver,
-            long[] maxDataModificationId) {
+                              int queryLevel,
+                              HashSet<?> set,
+                              AllColumnsForPlan columns1, Table table, ColumnResolver resolver,
+                              long[] maxDataModificationId) {
         this.type = type;
         this.queryLevel = queryLevel;
         this.set = set;
@@ -239,7 +240,7 @@ public final class ExpressionVisitor {
      * Create a new visitor to get all referenced columns.
      *
      * @param columns the columns map
-     * @param table table to gather columns from, or {@code null} to gather all columns
+     * @param table   table to gather columns from, or {@code null} to gather all columns
      * @return the new visitor
      */
     public static ExpressionVisitor getColumnsVisitor(HashSet<Column> columns, Table table) {
@@ -255,15 +256,13 @@ public final class ExpressionVisitor {
      * Create a new visitor to decrement query level in columns with the
      * specified resolvers.
      *
-     * @param columnResolvers
-     *            column resolvers
-     * @param queryDecrement
-     *            0 to check whether operation is allowed, 1 to actually perform
-     *            the decrement
+     * @param columnResolvers column resolvers
+     * @param queryDecrement  0 to check whether operation is allowed, 1 to actually perform
+     *                        the decrement
      * @return the new visitor
      */
     public static ExpressionVisitor getDecrementQueryLevelVisitor(HashSet<ColumnResolver> columnResolvers,
-            int queryDecrement) {
+                                                                  int queryDecrement) {
         return new ExpressionVisitor(DECREMENT_QUERY_LEVEL, queryDecrement, columnResolvers, null, null, null, null);
     }
 
@@ -402,7 +401,7 @@ public final class ExpressionVisitor {
     /**
      * Get the set of columns of all tables.
      *
-     * @param filters the filters
+     * @param filters       the filters
      * @param allColumnsSet the on-demand all-columns set
      */
     public static void allColumnsForTableFilters(TableFilter[] filters, AllColumnsForPlan allColumnsSet) {

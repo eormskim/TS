@@ -111,13 +111,13 @@ public class TestAlter extends TestDb {
         stat.execute("create table test(id int, b varchar, c int, d int)");
         stat.execute("alter table test drop column (b, c)");
         assertThrows(ErrorCode.COLUMN_NOT_FOUND_1, stat).
-            execute("alter table test drop column b");
+                execute("alter table test drop column b");
         stat.execute("alter table test drop (d)");
         stat.execute("drop table test");
         // Test-Case: Error if dropping all columns
         stat.execute("create table test(id int, name varchar, name2 varchar)");
         assertThrows(ErrorCode.CANNOT_DROP_LAST_COLUMN, stat).
-            execute("alter table test drop column id, name, name2");
+                execute("alter table test drop column id, name, name2");
         stat.execute("drop table test");
     }
 
@@ -178,7 +178,6 @@ public class TestAlter extends TestDb {
         stat.execute("alter table t add (y int)");
         stat.execute("drop table t");
     }
-
 
 
     // column and field names must be upper-case due to getMetaData sensitivity

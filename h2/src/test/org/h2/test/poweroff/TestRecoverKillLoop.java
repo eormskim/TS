@@ -7,6 +7,7 @@ package org.h2.test.poweroff;
 
 import java.io.InputStream;
 import java.util.Random;
+
 import org.h2.store.fs.FileUtils;
 import org.h2.test.TestBase;
 import org.h2.test.synth.OutputCatcher;

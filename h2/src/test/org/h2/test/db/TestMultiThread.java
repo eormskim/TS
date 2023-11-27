@@ -21,6 +21,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.h2.api.ErrorCode;
 import org.h2.test.TestAll;
 import org.h2.test.TestBase;
@@ -222,7 +223,7 @@ public class TestMultiThread extends TestDb implements Runnable {
 
             stat.execute(
                     "CREATE TABLE INVOICE_DETAIL(DETAIL_ID INT PRIMARY KEY, " +
-                    "INVOICE_ID INT, DESCRIPTION VARCHAR)");
+                            "INVOICE_ID INT, DESCRIPTION VARCHAR)");
             stat.execute(
                     "CREATE VIEW INVOICE_DETAIL_VIEW as SELECT * FROM INVOICE_DETAIL");
 
@@ -344,7 +345,7 @@ public class TestMultiThread extends TestDb implements Runnable {
         try {
             conn.createStatement().execute(
                     "CREATE TABLE IF NOT EXISTS ACCOUNT" +
-                    "(ID NUMBER(18,0) not null PRIMARY KEY, BALANCE NUMBER null)");
+                            "(ID NUMBER(18,0) not null PRIMARY KEY, BALANCE NUMBER null)");
             final PreparedStatement mergeAcctStmt = conn
                     .prepareStatement("MERGE INTO Account(id, balance) key (id) VALUES (?, ?)");
             for (int i = 0; i < objectCount; i++) {

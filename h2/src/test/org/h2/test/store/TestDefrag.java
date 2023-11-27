@@ -21,7 +21,7 @@ import org.h2.test.TestDb;
  *
  * @author <a href='mailto:andrei.tokar@gmail.com'>Andrei Tokar</a>
  */
-public class TestDefrag  extends TestDb {
+public class TestDefrag extends TestDb {
 
     /**
      * Run just this test.
@@ -46,7 +46,7 @@ public class TestDefrag  extends TestDb {
         try (Connection c = getConnection(dbName)) {
             try (Statement st = c.createStatement()) {
                 st.execute("CREATE TABLE IF NOT EXISTS test (id INT PRIMARY KEY, txt varchar)" +
-                            " AS SELECT x, x || SPACE(200) FROM SYSTEM_RANGE(1,10000000)");
+                        " AS SELECT x, x || SPACE(200) FROM SYSTEM_RANGE(1,10000000)");
                 st.execute("checkpoint");
             }
             long origSize = dbFile.length();

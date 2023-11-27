@@ -61,7 +61,7 @@ public class TestFileLockProcess extends TestDb {
     @Override
     public void test() throws Exception {
         deleteDb("lock");
-        String url = "jdbc:h2:"+getBaseDir()+"/lock";
+        String url = "jdbc:h2:" + getBaseDir() + "/lock";
 
         println("socket");
         test(4, url + ";file_lock=socket");
@@ -79,9 +79,9 @@ public class TestFileLockProcess extends TestDb {
         url = getURL(url, true);
         Connection conn = getConnection(url);
         String selfDestruct = SelfDestructor.getPropertyString(60);
-        String[] procDef = { getJVM(), selfDestruct,
+        String[] procDef = {getJVM(), selfDestruct,
                 "-cp", getClassPath(),
-                getClass().getName(), url };
+                getClass().getName(), url};
         ArrayList<Process> processes = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             Thread.sleep(100);

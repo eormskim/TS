@@ -39,9 +39,9 @@ import java.util.Set;
  * Write access and moving entries to the top of the stack is synchronized per
  * segment.
  *
- * @author Thomas Mueller
  * @param <K> the key type
  * @param <V> the value type
+ * @author Thomas Mueller
  */
 public class CacheLIRS<K, V> extends AbstractMap<K, V> {
 
@@ -71,14 +71,14 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
     /**
      * Create a new cache with the given memory size.
      *
-     * @param maxMemory the maximum memory to use (1 or larger)
-     * @param segmentCount the number of cache segments (must be a power of 2)
+     * @param maxMemory         the maximum memory to use (1 or larger)
+     * @param segmentCount      the number of cache segments (must be a power of 2)
      * @param stackMoveDistance how many other item are to be moved to the top
-     *        of the stack before the current item is moved
+     *                          of the stack before the current item is moved
      */
     @SuppressWarnings("unchecked")
     public CacheLIRS(long maxMemory, int segmentCount,
-            int stackMoveDistance) {
+                     int stackMoveDistance) {
         setMaxMemory(maxMemory);
         if (Integer.bitCount(segmentCount) != 1) {
             throw new IllegalArgumentException(
@@ -141,8 +141,8 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
      * cache yet. This method will usually mark unknown entries as cold and
      * known entries as hot.
      *
-     * @param key the key (may not be null)
-     * @param value the value (may not be null)
+     * @param key    the key (may not be null)
+     * @param value  the value (may not be null)
      * @param memory the memory used for the given entry
      * @return the old value, or null if there was no resident entry
      */
@@ -178,7 +178,7 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
     /**
      * Add an entry to the cache using a memory size of 1.
      *
-     * @param key the key (may not be null)
+     * @param key   the key (may not be null)
      * @param value the value (may not be null)
      * @return the old value, or null if there was no resident entry
      */
@@ -190,7 +190,7 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
     /**
      * Get the size of the given value. The default implementation returns 1.
      *
-     * @param key the key
+     * @param key   the key
      * @param value the value
      * @return the size
      */
@@ -331,7 +331,7 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
     public Set<Map.Entry<K, V>> entrySet() {
         HashMap<K, V> map = new HashMap<>();
         for (K k : keySet()) {
-            map.put(k,  find(k).value);
+            map.put(k, find(k).value);
         }
         return map.entrySet();
     }
@@ -407,7 +407,7 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
      * Get the list of keys. This method allows to read the internal state of
      * the cache.
      *
-     * @param cold if true, only keys for the cold entries are returned
+     * @param cold        if true, only keys for the cold entries are returned
      * @param nonResident true for non-resident entries
      * @return the key list
      */
@@ -508,11 +508,11 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
         /**
          * Create a new cache segment.
          *
-         * @param cache the cache
-         * @param maxMemory the maximum memory to use
+         * @param cache             the cache
+         * @param maxMemory         the maximum memory to use
          * @param stackMoveDistance the number of other entries to be moved to
-         *        the top of the stack before moving an entry to the top
-         * @param len the number of hash table buckets (must be a power of 2)
+         *                          the top of the stack before moving an entry to the top
+         * @param len               the number of hash table buckets (must be a power of 2)
          */
         Segment(CacheLIRS<K, V> cache, long maxMemory,
                 int stackMoveDistance, int len) {
@@ -613,7 +613,7 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
         /**
          * Get the memory used for the given key.
          *
-         * @param key the key (may not be null)
+         * @param key  the key (may not be null)
          * @param hash the hash
          * @return the memory, or 0 if there is no resident entry
          */
@@ -627,7 +627,7 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
          * adjusts the internal state of the cache sometimes, to ensure commonly
          * used entries stay in the cache.
          *
-         * @param key the key (may not be null)
+         * @param key  the key (may not be null)
          * @param hash the hash
          * @return the value, or null if there is no resident entry
          */
@@ -707,9 +707,9 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
          * cache yet. This method will usually mark unknown entries as cold and
          * known entries as hot.
          *
-         * @param key the key (may not be null)
-         * @param hash the hash
-         * @param value the value (may not be null)
+         * @param key    the key (may not be null)
+         * @param hash   the hash
+         * @param value  the value (may not be null)
          * @param memory the memory used for the given entry
          * @return the old value, or null if there was no resident entry
          */
@@ -757,7 +757,7 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
          * Remove an entry. Both resident and non-resident entries can be
          * removed.
          *
-         * @param key the key (may not be null)
+         * @param key  the key (may not be null)
          * @param hash the hash
          * @return the old value, or null if there was no resident entry
          */
@@ -877,7 +877,7 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
         /**
          * Try to find an entry in the map.
          *
-         * @param key the key
+         * @param key  the key
          * @param hash the hash
          * @return the entry (might be a non-resident)
          */
@@ -946,7 +946,7 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
          * Get the list of keys. This method allows to read the internal state
          * of the cache.
          *
-         * @param cold if true, only keys for the cold entries are returned
+         * @param cold        if true, only keys for the cold entries are returned
          * @param nonResident true for non-resident entries
          * @return the key list
          */
@@ -955,12 +955,12 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
             if (cold) {
                 Entry<K, V> start = nonResident ? queue2 : queue;
                 for (Entry<K, V> e = start.queueNext; e != start;
-                        e = e.queueNext) {
+                     e = e.queueNext) {
                     keys.add(e.key);
                 }
             } else {
                 for (Entry<K, V> e = stack.stackNext; e != stack;
-                        e = e.stackNext) {
+                     e = e.stackNext) {
                     keys.add(e.key);
                 }
             }
@@ -971,7 +971,7 @@ public class CacheLIRS<K, V> extends AbstractMap<K, V> {
          * Check whether there is a resident entry for the given key. This
          * method does not adjust the internal state of the cache.
          *
-         * @param key the key (may not be null)
+         * @param key  the key (may not be null)
          * @param hash the hash
          * @return true if there is a resident entry
          */

@@ -8,6 +8,7 @@ package org.h2.test.unit;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+
 import org.h2.message.TraceSystem;
 import org.h2.store.fs.FileUtils;
 import org.h2.test.TestBase;

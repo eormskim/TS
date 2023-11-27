@@ -32,13 +32,10 @@ public final class JSONStringTarget extends JSONTarget<String> {
     /**
      * Encodes a JSON string and appends it to the specified string builder.
      *
-     * @param builder
-     *            the string builder to append to
-     * @param s
-     *            the string to encode
-     * @param asciiPrintableOnly
-     *            whether all non-printable, non-ASCII characters, and {@code '}
-     *            (single quote) characters should be escaped
+     * @param builder            the string builder to append to
+     * @param s                  the string to encode
+     * @param asciiPrintableOnly whether all non-printable, non-ASCII characters, and {@code '}
+     *                           (single quote) characters should be escaped
      * @return the specified string builder
      */
     public static StringBuilder encodeString(StringBuilder builder, String s, boolean asciiPrintableOnly) {
@@ -46,48 +43,48 @@ public final class JSONStringTarget extends JSONTarget<String> {
         for (int i = 0, length = s.length(); i < length; i++) {
             char c = s.charAt(i);
             switch (c) {
-            case '\b':
-                builder.append("\\b");
-                break;
-            case '\t':
-                builder.append("\\t");
-                break;
-            case '\f':
-                builder.append("\\f");
-                break;
-            case '\n':
-                builder.append("\\n");
-                break;
-            case '\r':
-                builder.append("\\r");
-                break;
-            case '"':
-                builder.append("\\\"");
-                break;
-            case '\'':
-                if (asciiPrintableOnly) {
-                    builder.append("\\u0027");
-                } else {
-                    builder.append('\'');
-                }
-                break;
-            case '\\':
-                builder.append("\\\\");
-                break;
-            default:
-                if (c < ' ') {
-                    builder.append("\\u00") //
-                            .append(HEX[c >>> 4 & 0xf]) //
-                            .append(HEX[c & 0xf]);
-                } else if (!asciiPrintableOnly || c <= 0x7f) {
-                    builder.append(c);
-                } else {
-                    builder.append("\\u") //
-                            .append(HEX[c >>> 12 & 0xf]) //
-                            .append(HEX[c >>> 8 & 0xf]) //
-                            .append(HEX[c >>> 4 & 0xf]) //
-                            .append(HEX[c & 0xf]);
-                }
+                case '\b':
+                    builder.append("\\b");
+                    break;
+                case '\t':
+                    builder.append("\\t");
+                    break;
+                case '\f':
+                    builder.append("\\f");
+                    break;
+                case '\n':
+                    builder.append("\\n");
+                    break;
+                case '\r':
+                    builder.append("\\r");
+                    break;
+                case '"':
+                    builder.append("\\\"");
+                    break;
+                case '\'':
+                    if (asciiPrintableOnly) {
+                        builder.append("\\u0027");
+                    } else {
+                        builder.append('\'');
+                    }
+                    break;
+                case '\\':
+                    builder.append("\\\\");
+                    break;
+                default:
+                    if (c < ' ') {
+                        builder.append("\\u00") //
+                                .append(HEX[c >>> 4 & 0xf]) //
+                                .append(HEX[c & 0xf]);
+                    } else if (!asciiPrintableOnly || c <= 0x7f) {
+                        builder.append(c);
+                    } else {
+                        builder.append("\\u") //
+                                .append(HEX[c >>> 12 & 0xf]) //
+                                .append(HEX[c >>> 8 & 0xf]) //
+                                .append(HEX[c >>> 4 & 0xf]) //
+                                .append(HEX[c & 0xf]);
+                    }
             }
         }
         return builder.append('"');
@@ -113,9 +110,8 @@ public final class JSONStringTarget extends JSONTarget<String> {
     /**
      * Creates new instance of JSON String target.
      *
-     * @param asciiPrintableOnly
-     *            whether all non-printable, non-ASCII characters, and {@code '}
-     *            (single quote) characters should be escaped
+     * @param asciiPrintableOnly whether all non-printable, non-ASCII characters, and {@code '}
+     *                           (single quote) characters should be escaped
      */
     public JSONStringTarget(boolean asciiPrintableOnly) {
         builder = new StringBuilder();

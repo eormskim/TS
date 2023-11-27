@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import org.h2.mvstore.DataUtils;
 import org.h2.mvstore.MVStore;
 import org.h2.mvstore.MVStoreException;
@@ -100,7 +101,7 @@ public class TestTransactionStore extends TestBase {
             assertEquals(new SimpleImmutableEntry<>(10L, 100L), map.firstEntry());
             assertEquals((Object) 10L, map.firstKey());
             // lastEntry() & lastKey()
-            assertEquals(new SimpleImmutableEntry<>(40L, 400L),map.lastEntry());
+            assertEquals(new SimpleImmutableEntry<>(40L, 400L), map.lastEntry());
             assertEquals((Object) 40L, map.lastKey());
             // higherEntry() & higherKey()
             assertEquals(new SimpleImmutableEntry<>(20L, 200L), map.higherEntry(10L));
@@ -918,7 +919,7 @@ public class TestTransactionStore extends TestBase {
             TransactionStore ts = new TransactionStore(s);
             ts.init();
             Transaction t = ts.begin();
-            TransactionMap<Long,String> map = t.openMap("test", LongDataType.INSTANCE, StringDataType.INSTANCE);
+            TransactionMap<Long, String> map = t.openMap("test", LongDataType.INSTANCE, StringDataType.INSTANCE);
             map.put(1L, "A");
             s.removeMap("test");
             try {
@@ -947,12 +948,12 @@ public class TestTransactionStore extends TestBase {
         try (MVStore s = MVStore.open(null)) {
             s.setAutoCommitDelay(0);
             TransactionStore ts = new TransactionStore(s,
-                                    new MetaType<>(null, s.backgroundExceptionHandler), new ObjectDataType(), 10000);
+                    new MetaType<>(null, s.backgroundExceptionHandler), new ObjectDataType(), 10000);
             ts.init();
             Transaction t = ts.begin();
-            TransactionMap<Long,Long> m = t.openMap("test", LongDataType.INSTANCE, LongDataType.INSTANCE);
+            TransactionMap<Long, Long> m = t.openMap("test", LongDataType.INSTANCE, LongDataType.INSTANCE);
             for (int i = 0; i < threadCount; i++) {
-                m.put((long)i, 0L);
+                m.put((long) i, 0L);
             }
             t.commit();
 
@@ -993,7 +994,7 @@ public class TestTransactionStore extends TestBase {
                     checkErrorCode(DataUtils.ERROR_TRANSACTIONS_DEADLOCK, exception);
                 }
             }
-            assertEquals(" "+stepCount, stepCount, failureCount);
+            assertEquals(" " + stepCount, stepCount, failureCount);
             t = ts.begin();
             m = t.openMap("test", LongDataType.INSTANCE, LongDataType.INSTANCE);
             int count = 0;
@@ -1003,7 +1004,7 @@ public class TestTransactionStore extends TestBase {
                 count += value;
             }
             t.commit();
-            assertEquals(" "+stepCount, (stepCount+1) * (threadCount - failureCount), count);
+            assertEquals(" " + stepCount, (stepCount + 1) * (threadCount - failureCount), count);
         }
     }
 }
