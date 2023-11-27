@@ -24,7 +24,7 @@ public class BoardController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+ㅇ
     @GetMapping("/")
     public String list(Model model
             , @RequestParam(required = false, defaultValue = "0", value = "page") int page
