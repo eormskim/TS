@@ -34,6 +34,13 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.8.6'
 }
 
+task compileTypeScript(type: Exec) {
+	commandLine 'node', '../../../../../../node_modules/typescript/bin/tsc'
+	workingDir 'src/main/resources/static/js/ts' // 타입스크립트 파일이 있는 디렉토리
+}
+
+processResources.dependsOn compileTypeScript
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/default_layout">
+
+<th:block layout:fagment="head" th:include="@{/common/head}">
+</th:block>
+<th:block layout:fagment="script">
+    <script src="/js/ts/test/exampleTS.js"></script>
+</th:block>
+
+<div layout:fragment="content" class="content">
+    <div class="container">
+        <h1 class="page-header">TS 테스트페이지</h1>
+        <div class="text-right">
+            <a href="/" class="btn btn-primary">첫화면으로</a>
+        </div>
+        <br>
+        <br />
+        <form>
+
+        </form>
+    </div>
+</div>
+</html>
+
+<script th:inline="javascript">
+
+    //검색기능
+    function search(){
+        let searchVal = $.trim($("#searchVal").val());
+        location.href="/?searchVal="+searchVal;
+    }
+
+    //엔터키 클릭시 검색
+    function enterkey() {
+        if (window.event.keyCode == 13) {
+            // 엔터키가 눌렸을 때
+            search()
+        }
+    }
+
+</script>

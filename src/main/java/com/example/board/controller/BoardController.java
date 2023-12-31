@@ -101,6 +101,6 @@ public class BoardController {
 
     @GetMapping("/ts")
     public String tsPage(){
-        return "ts/test";
+        return "chart/test";
     }
 }

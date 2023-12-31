@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": true,
+    "outDir": "../../../../../../resources/static/js",
+    "moduleResolution": "node"
+  },
+  "include": [
+    "../../../../../../src/main/resources/static/js/ts/**/*.ts"
+  ],
+  "exclude": [
+    "../../../../../../resources/static/js"
+  ]
+}
