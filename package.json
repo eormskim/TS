@@ -10,9 +10,17 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^5.3.3"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "ts-node": "^10.9.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eormskim/TS.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eormskim/TS/issues"
+  },
+  "homepage": "https://github.com/eormskim/TS#readme"
 }

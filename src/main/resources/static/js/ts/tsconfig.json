@@ -1,15 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
+    "target": "ES2020",
+    "module": "ES6",
+    "lib": ["ES2020", "DOM"],
     "sourceMap": true,
-    "outDir": "../../../../../../resources/static/js",
-    "moduleResolution": "node"
+    "outDir": "../",  // js 폴더로 출력
+    "rootDir": "./",   // 현재 ts 폴더
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "esModuleInterop": true
   },
   "include": [
-    "../../../../../../src/main/resources/static/js/ts/**/*.ts"
+    "./**/*.ts"
   ],
   "exclude": [
-    "../../../../../../resources/static/js"
+    "../*.js"
   ]
 }

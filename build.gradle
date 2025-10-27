@@ -35,9 +35,18 @@ dependencies {
 }
 
 task compileTypeScript(type: Exec) {
-	commandLine 'node', '../../../../../../node_modules/typescript/bin/tsc'
-	workingDir 'src/main/resources/static/js/ts' // 타입스크립트 파일이 있는 디렉토리
+	workingDir file('src/main/resources/static/js/ts')
+
+	// Windows
+	if (System.properties['os.name'].toLowerCase().contains('windows')) {
+		commandLine 'cmd', '/c', 'npx', 'tsc'
+	} else {
+		// Mac/Linux
+		commandLine 'npx', 'tsc'
+	}
 }
+
+processResources.dependsOn compileTypeScript
 
 processResources.dependsOn compileTypeScript
 
